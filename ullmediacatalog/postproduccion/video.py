@@ -1,6 +1,6 @@
 #encoding: utf-8
 from django.shortcuts import render_to_response
-from postproduccion.encoder import get_mm_info, format_types, encode_mixed_video
+from postproduccion.encoder import get_mm_info, get_file_info, format_types, encode_mixed_video
 
 import os
 import tempfile
@@ -61,3 +61,14 @@ def encode_pil(video, logfile):
 
     # Borra el fichero temporal
     os.unlink(path)
+
+"""
+"""
+def generate_tecdata(v):
+    if not v.tecdata:
+        v.tecdata = TecData()
+
+    for (key, value) in get_file_data(v.fichero).items():
+        setattr(v.tecdata, key, value)
+    
+    v.save()

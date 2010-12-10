@@ -34,6 +34,28 @@ class PlantillaFDV(models.Model):   # (Fondo-Disapositiva-Video)
     def __unicode__(self):
         return self.nombre
 
+class TecData(models.Model):
+    audio_bitrate = models.FloatField(null=True)
+    audio_channels = models.CharField(max_length=20, null=True)
+    audio_codec = models.CharField(max_length=10, null=True)
+    audio_rate = models.PositiveSmallIntegerField(null=True)
+    bitrate = models.PositiveSmallIntegerField(null=True)
+    duration = models.FloatField(null=True)
+    format = models.CharField(max_length=30, null=True)
+    size = models.PositiveIntegerField(null=True)
+    video_bitrate = models.FloatField(null=True)
+    video_codec = models.CharField(max_length=10, null=True)
+    video_color = models.CharField(max_length=10, null=True)
+    video_height = models.PositiveSmallIntegerField(null=True)
+    video_rate = models.FloatField(null=True)
+    video_wh_ratio = models.FloatField(null=True)
+    video_width = models.PositiveSmallIntegerField(null=True)
+
+    class Meta:
+        verbose_name = u'Información técnica'
+        verbose_name_plural = u'Informaciones técnicas'
+
+
 class Video(models.Model):
     VIDEO_STATUS = (
         ('PTE', 'Pendiente'),
@@ -46,6 +68,8 @@ class Video(models.Model):
     fichero = models.CharField(max_length=255) # En el futuro tal vez sea models.FilePathField
     status = models.CharField(max_length=3, choices=VIDEO_STATUS)
     plantilla = models.ForeignKey(PlantillaFDV, null=True, blank=True)
+
+    tecdata = models.OneToOneField(TecData, null=True, blank=True)
 
     ## Metadata
     titulo = models.CharField(max_length=30)

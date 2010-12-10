@@ -1,5 +1,5 @@
 from django.contrib import admin
-from postproduccion.models import Cola, Video, FicheroEntrada, TipoVideo, PlantillaFDV
+from postproduccion.models import Cola, Video, FicheroEntrada, TipoVideo, PlantillaFDV, TecData
 
 class ColaAdmin(admin.ModelAdmin):
     list_display = ('id', 'video', 'tipo', 'status', 'comienzo', 'fin', 'logfile')
@@ -22,3 +22,4 @@ admin.site.register(Cola, ColaAdmin)
 admin.site.register(PlantillaFDV, PlantillaFDVAdmin)
 admin.site.register(Video, VideoAdmin)
 admin.site.register(TipoVideo)
+admin.site.register(TecData)
