@@ -8,8 +8,12 @@ class FicherosInline(admin.StackedInline):
     model = FicheroEntrada
     extra = 1
 
+class TecDataInline(admin.StackedInline):
+    model = TecData
+    man_num = 1
+
 class VideoAdmin(admin.ModelAdmin):
-    inlines = [FicherosInline]
+    inlines = [FicherosInline, TecDataInline]
 
 class PlantillaFDVAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -22,4 +26,3 @@ admin.site.register(Cola, ColaAdmin)
 admin.site.register(PlantillaFDV, PlantillaFDVAdmin)
 admin.site.register(Video, VideoAdmin)
 admin.site.register(TipoVideo)
-admin.site.register(TecData)

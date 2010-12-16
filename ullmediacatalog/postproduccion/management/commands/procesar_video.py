@@ -9,4 +9,6 @@ class Command(NoArgsCommand):
     def handle_noargs(self, **options):
 
         if get_option('MAX_ENCODING_TASKS') > Cola.objects.count_actives():
-            process_task(Cola.objects.get_next_pending())
+            t = Cola.objects.get_next_pending()
+            if t:
+                process_task(t)

@@ -1,9 +1,10 @@
 #encoding: utf-8
 from postproduccion.models import Cola
-from postproduccion.video import encode_pil
+from postproduccion.video import create_pil, create_preview
 from settings import MEDIA_ROOT
 
 import os
+import re
 import tempfile
 from datetime import datetime
 
@@ -15,6 +16,13 @@ def enqueue_pil(video_id):
     c.save()
 
 """
+Encola un vídeo para generar su previsualización.
+"""
+def enqueue_preview(video_id):
+    c = Cola(video=video_id, tipo='PRE')
+    c.save()
+
+"""
 Procesa el elemento dado de la cola.
 """
 def process_task(task):
@@ -23,13 +31,15 @@ def process_task(task):
     (handle, path) = tempfile.mkstemp(suffix = '.log', dir = MEDIA_ROOT + '/logs')
 
     # Actualiza la información de la base de datos.
-    task.logfile = os.path.basename(path)
+    task.logfile = 'logs/' + os.path.basename(path)
     task.comienzo = datetime.now()
     task.status = 'PRO'
     task.save()
 
     if task.tipo == 'PIL':
-        encode_pil(task.video, handle)
+        create_pil(task.video, handle)
+    if task.tipo == 'PRE':
+        create_preview(task.video, handle)
 
     # Cierra el fichero de registro
     os.close(handle)
@@ -39,3 +49,26 @@ def process_task(task):
     task.status = 'HEC'
     task.save()
 
+"""
+Devuelve el progreso de codificación de una tarea.
+"""
+def progress(task):
+    if task.status == 'PEN':
+        return 0
+    if task.status == 'HEC':
+        return 100
+
+    fd = os.open(task.logfile.path, os.O_RDONLY)
+    try:
+        os.lseek(fd, -255, os.SEEK_END)
+        data = os.read(fd, 255)
+        if task.tipo == 'PIL':
+            pro = int(re.sub('.*percentage: *','',data).split(' ')[0])
+        if task.tipo == 'PRE':
+            pro = int(float(re.sub('.*time=','',data).split(' ')[0]) * 100 / task.video.tecdata.duration)
+    except:
+        pro = 0
+
+    os.close(fd)
+
+    return pro

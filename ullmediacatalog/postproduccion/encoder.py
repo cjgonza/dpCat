@@ -1,4 +1,5 @@
 #encoding: utf-8
+from configuracion import config
 import subprocess
 import os
 import re
@@ -8,7 +9,7 @@ Llama al mplayer para obtener la información multimedia de un vídeo y
 devuelve la información en un hash.
 """
 def get_mm_info(filename):
-    command = "mplayer -really-quiet -identify -nolirc %s -ao null -vo null -frames 0" % filename
+    command = "%s -really-quiet -identify -nolirc %s -ao null -vo null -frames 0" % (config.get_option('MPLAYER_PATH'), filename)
     data = os.popen(command).read()
     return dict([s.split('=') for s in data.strip().split('\n')])
 
@@ -17,7 +18,7 @@ Llama al ffmpeg y para obtener la información completa del fichero y
 devuelve la información procesada en un hash.
 """
 def get_file_info(filename):
-    command = "ffmpeg -i %s -acodec copy -vcodec copy -f null /dev/null 2>&1" % filename
+    command = "%s -i %s -acodec copy -vcodec copy -f null /dev/null 2>&1" % (config.get_option('FFMPEG_PATH'), filename)
     data = os.popen(command).read()
 
     info = dict()
@@ -40,9 +41,9 @@ def get_file_info(filename):
     else:
         return False
 
-    info['video_rate'] = float(frame_count) / float(info['duration']) if frame_count > 0 else "N/A"
-    info['video_bitrate'] = float(video_size) / float(info['duration']) if video_size > 0 else "N/A"
-    info['audio_bitrate'] = float(audio_size) / float(info['duration']) if audio_size > 0 else "N/A"
+    info['video_rate'] = float(frame_count) / float(info['duration']) if frame_count > 0 else None
+    info['video_bitrate'] = float(video_size) / float(info['duration']) if video_size > 0 else None
+    info['audio_bitrate'] = float(audio_size) / float(info['duration']) if audio_size > 0 else None
 
     m = re.search('Input #0, ([^ ]+), from', data)
     info['format'] = m.group(1) if m else "N/A"
@@ -95,7 +96,13 @@ format_types = {
 Realiza el montaje de un video
 """
 def encode_mixed_video(mltfile, outfile, logfile):
-    command = "melt -progress -verbose %s -consumer avformat:/%s deinterlace=1 acodec=libfaac ab=348k ar=48000 pix_fmt=yuv420p f=mp4 vcodec=libx264 minrate=0 b=1000k aspect=@16/9 s=1280x720i fpre=lossless-max" % (mltfile, outfile)
+    command = "%s -progress -verbose %s -consumer avformat:/%s deinterlace=1 acodec=libfaac ab=348k ar=48000 pix_fmt=yuv420p f=mp4 vcodec=libx264 minrate=0 b=1000k aspect=@16/9 s=1280x720i fpre=lossless-max" % (config.get_option('MELT_PATH'), mltfile, outfile)
+    p = subprocess.Popen(command, shell = True, stderr=logfile)
+
+    return os.waitpid(p.pid, 0)[1]
+
+def encode_preview(filename, outfile, size, logfile):
+    command = "%s -y -i %s -f flv -vcodec flv -r 30 -b 512000 -s %sx%s -aspect %s -acodec libmp3lame -ab 128000 -ar 22050 %s" % (config.get_option('FFMPEG_PATH'), filename, size['width'], size['height'], size['ratio'], outfile)
     p = subprocess.Popen(command, shell = True, stderr=logfile)
 
     return os.waitpid(p.pid, 0)[1]

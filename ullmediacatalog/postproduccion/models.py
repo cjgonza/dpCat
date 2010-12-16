@@ -34,28 +34,6 @@ class PlantillaFDV(models.Model):   # (Fondo-Disapositiva-Video)
     def __unicode__(self):
         return self.nombre
 
-class TecData(models.Model):
-    audio_bitrate = models.FloatField(null=True)
-    audio_channels = models.CharField(max_length=20, null=True)
-    audio_codec = models.CharField(max_length=10, null=True)
-    audio_rate = models.PositiveSmallIntegerField(null=True)
-    bitrate = models.PositiveSmallIntegerField(null=True)
-    duration = models.FloatField(null=True)
-    format = models.CharField(max_length=30, null=True)
-    size = models.PositiveIntegerField(null=True)
-    video_bitrate = models.FloatField(null=True)
-    video_codec = models.CharField(max_length=10, null=True)
-    video_color = models.CharField(max_length=10, null=True)
-    video_height = models.PositiveSmallIntegerField(null=True)
-    video_rate = models.FloatField(null=True)
-    video_wh_ratio = models.FloatField(null=True)
-    video_width = models.PositiveSmallIntegerField(null=True)
-
-    class Meta:
-        verbose_name = u'Información técnica'
-        verbose_name_plural = u'Informaciones técnicas'
-
-
 class Video(models.Model):
     VIDEO_STATUS = (
         ('PTE', 'Pendiente'),
@@ -69,7 +47,6 @@ class Video(models.Model):
     status = models.CharField(max_length=3, choices=VIDEO_STATUS)
     plantilla = models.ForeignKey(PlantillaFDV, null=True, blank=True)
 
-    tecdata = models.OneToOneField(TecData, null=True, blank=True)
 
     ## Metadata
     titulo = models.CharField(max_length=30)
@@ -85,6 +62,33 @@ class FicheroEntrada(models.Model):
     tipo = models.ForeignKey(TipoVideo)
     fichero = models.CharField(max_length=255)
 
+class TecData(models.Model):
+    audio_bitrate = models.FloatField(null=True)
+    audio_channels = models.CharField(max_length=20, null=True)
+    audio_codec = models.CharField(max_length=10, null=True)
+    audio_rate = models.PositiveIntegerField(null=True)
+    bitrate = models.PositiveIntegerField(null=True)
+    duration = models.FloatField(null=True)
+    format = models.CharField(max_length=30, null=True)
+    size = models.PositiveIntegerField(null=True)
+    video_bitrate = models.FloatField(null=True)
+    video_codec = models.CharField(max_length=10, null=True)
+    video_color = models.CharField(max_length=10, null=True)
+    video_height = models.PositiveIntegerField(null=True)
+    video_rate = models.FloatField(null=True)
+    video_wh_ratio = models.FloatField(null=True)
+    video_width = models.PositiveIntegerField(null=True)
+
+    video = models.OneToOneField(Video)
+
+    class Meta:
+        verbose_name = u'Información técnica'
+        verbose_name_plural = u'Informaciones técnicas'
+
+    def __unicode__(self):
+        return self.video.titulo
+
+
 ## COLA ##
 
 class ColaManager(models.Manager):
@@ -95,10 +99,11 @@ class ColaManager(models.Manager):
         return super(ColaManager, self).get_query_set().filter(status='PRO').count()
 
     """
-    Devuelve la lista ordenada de vídeos encolados pendientes de ser codificados.
+    Devuelve el siguiente vídeo encolado pendiente de ser codificado.
     """
     def get_next_pending(self):
-         return super(ColaManager, self).get_query_set().filter(status='PEN').order_by('id')[0]
+         pendings = super(ColaManager, self).get_query_set().filter(status='PEN').order_by('id')
+         return pendings[0] if len(pendings) else None
 
 class Cola(models.Model):
     QUEUE_STATUS = (
@@ -108,8 +113,8 @@ class Cola(models.Model):
     )
 
     QUEUE_TYPE = (
-        ('PIL', 'Píldora'),
-        ('PRE', 'Previsualización')
+        ('PIL', u'Píldora'),
+        ('PRE', u'Previsualización')
     )
 
     objects = ColaManager()
@@ -122,7 +127,7 @@ class Cola(models.Model):
     logfile = models.FileField(upload_to = "logs", null = True, blank = True)
 
     def __unicode__(self):
-       return self.video.__unicode__()
+       return dict(self.QUEUE_TYPE)[self.tipo] + ": " + self.video.__unicode__()
 
     class Meta:
         verbose_name = u'tarea'

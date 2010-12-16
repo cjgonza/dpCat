@@ -1,6 +1,8 @@
 #encoding: utf-8
 from django.shortcuts import render_to_response
-from postproduccion.encoder import get_mm_info, get_file_info, format_types, encode_mixed_video
+from postproduccion.encoder import get_mm_info, get_file_info, format_types, encode_mixed_video, encode_preview
+from postproduccion.models import TecData
+from configuracion import config
 
 import os
 import tempfile
@@ -50,7 +52,7 @@ def get_fdv_template(v):
 """
 
 """
-def encode_pil(video, logfile):
+def create_pil(video, logfile):
     # Guarda la plantilla en un fichero temporal
     (handler, path) = tempfile.mkstemp(suffix='.mlt')
     os.write(handler, get_fdv_template(video).content)
@@ -59,16 +61,64 @@ def encode_pil(video, logfile):
     # Montaje y codificación de la píldora
     encode_mixed_video(path, video.fichero, logfile)
 
+    # Obtiene la información técnica del vídeo generado.
+    generate_tecdata(video)
+
     # Borra el fichero temporal
     os.unlink(path)
 
 """
 """
 def generate_tecdata(v):
-    if not v.tecdata:
-        v.tecdata = TecData()
+    try:
+        t = v.tecdata
+    except TecData.DoesNotExist:
+        t = TecData(video = v)
+        t.save()
 
-    for (key, value) in get_file_data(v.fichero).items():
-        setattr(v.tecdata, key, value)
+    for (key, value) in get_file_info(v.fichero).items():
+        setattr(t, key, value)
     
-    v.save()
+    t.save()
+
+def calculate_preview_size(v):
+    width = float(v.tecdata.video_width)
+    height = float(v.tecdata.video_height)
+    ratio = float(v.tecdata.video_wh_ratio)
+    max_width = float(config.get_option('MAX_PREVIEW_WIDTH'))
+    max_height = float(config.get_option('MAX_PREVIEW_HEIGHT'))
+
+    # Hace los pixels cuadrados
+    if ratio > 0:
+        width = height * ratio
+    else:
+        try:
+            height = width / ratio
+        except ZeroDivisionError:
+            pass
+    
+    # Reduce el ancho
+    if width > max_width:
+        r = max_width / width
+        width *= r
+        height *= r
+
+    # Reduce el alto
+    if height > max_height:
+        r = max_height / height
+        width *= r
+        height *= r
+
+    # Hace el tamaño par (necesario para algunos codecs)
+    width = int((width + 1) / 2) * 2
+    height = int((height + 1) / 2) * 2
+
+    return dict({'width' : width, 'height' : height, 'ratio' : ratio})
+
+
+def create_preview(video, logfile):
+    size = calculate_preview_size(video)
+    filename = video.fichero
+    outfile = "/tmp/loquesea.flv"
+
+    encode_preview(filename, outfile, size, logfile)
