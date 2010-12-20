@@ -50,7 +50,8 @@ class Video(models.Model):
 
     ## Metadata
     titulo = models.CharField(max_length=30)
-    descripcion = models.TextField()
+    observacion = models.TextField()
+    fecha_grabacion = models.DateTimeField(auto_now_add=True)
     autor = models.CharField(max_length=30)
     email = models.EmailField()
 
