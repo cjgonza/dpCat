@@ -43,8 +43,8 @@ class Video(models.Model):
         ('REC', 'Rechazado')
     )
 
-    fichero = models.CharField(max_length=255) # En el futuro tal vez sea models.FilePathField
-    status = models.CharField(max_length=3, choices=VIDEO_STATUS)
+    fichero = models.CharField(max_length=255, editable=False) # En el futuro tal vez sea models.FilePathField
+    status = models.CharField(max_length=3, choices=VIDEO_STATUS, editable=False, default='PTE')
     plantilla = models.ForeignKey(PlantillaFDV, null=True, blank=True)
 
 
