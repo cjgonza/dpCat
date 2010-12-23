@@ -50,6 +50,9 @@ import os
 dirname = os.path.dirname(globals()["__file__"])
 MEDIA_ROOT = os.path.join(dirname, 'files')
 
+# Ruta para el JQuery
+JQUERY_ROOT = os.path.join(MEDIA_ROOT, 'jquery')
+
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"

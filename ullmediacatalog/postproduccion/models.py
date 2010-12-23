@@ -4,29 +4,29 @@ from django.db import models
 # Create your models here.
 
 class TipoVideo(models.Model):
-    nombre = models.CharField(max_length=30)
+    nombre = models.CharField(max_length = 30)
 
     def __unicode__(self):
         return self.nombre
 
 class PlantillaFDV(models.Model):   # (Fondo-Disapositiva-Video)
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length = 50)
 
-    fondo = models.ImageField(upload_to='plantillas')
+    fondo = models.ImageField(upload_to = 'plantillas')
 
-    diapositiva_tipo = models.ForeignKey(TipoVideo, related_name="t_diap")
+    diapositiva_tipo = models.ForeignKey(TipoVideo, related_name = "t_diap")
     diapositiva_x = models.PositiveSmallIntegerField()
     diapositiva_y = models.PositiveSmallIntegerField()
     diapositiva_ancho = models.PositiveSmallIntegerField()
     diapositiva_alto = models.PositiveSmallIntegerField()
-    diapositiva_mix = models.PositiveSmallIntegerField(default=100)
+    diapositiva_mix = models.PositiveSmallIntegerField(default = 100)
 
-    video_tipo = models.ForeignKey(TipoVideo, related_name="t_vid")
+    video_tipo = models.ForeignKey(TipoVideo, related_name = "t_vid")
     video_x = models.PositiveSmallIntegerField()
     video_y = models.PositiveSmallIntegerField()
     video_ancho = models.PositiveSmallIntegerField()
     video_alto = models.PositiveSmallIntegerField()
-    video_mix = models.PositiveSmallIntegerField(default=100)
+    video_mix = models.PositiveSmallIntegerField(default = 100)
 
     class Meta:
         verbose_name = u'Plantilla Fondo-Diapositiva-Vídeo'
@@ -36,6 +36,7 @@ class PlantillaFDV(models.Model):   # (Fondo-Disapositiva-Video)
 
 class Video(models.Model):
     VIDEO_STATUS = (
+        ('INC', 'Incompleto'),
         ('PTE', 'Pendiente'),
         ('PRO', 'Procesando'),
         ('LIS', 'Listo'),
@@ -43,42 +44,42 @@ class Video(models.Model):
         ('REC', 'Rechazado')
     )
 
-    fichero = models.CharField(max_length=255, editable=False) # En el futuro tal vez sea models.FilePathField
-    status = models.CharField(max_length=3, choices=VIDEO_STATUS, editable=False, default='PTE')
-    plantilla = models.ForeignKey(PlantillaFDV, null=True, blank=True)
+    fichero = models.CharField(max_length = 255, editable = False) # En el futuro tal vez sea models.FilePathField
+    status = models.CharField(max_length = 3, choices = VIDEO_STATUS, editable = False, default = 'INC')
+    plantilla = models.ForeignKey(PlantillaFDV, null = True, blank = True)
 
-
+ 
     ## Metadata
-    titulo = models.CharField(max_length=30)
-    observacion = models.TextField()
-    fecha_grabacion = models.DateTimeField(auto_now_add=True)
-    autor = models.CharField(max_length=30)
+    titulo = models.CharField(max_length = 30)
+    observacion = models.TextField(null = True, blank = True)
+    fecha_grabacion = models.DateTimeField(auto_now_add = True)
+    autor = models.CharField(max_length = 30)
     email = models.EmailField()
 
     def __unicode__(self):
         return self.titulo
 
 class FicheroEntrada(models.Model):
-    video = models.ForeignKey(Video)
-    tipo = models.ForeignKey(TipoVideo)
-    fichero = models.CharField(max_length=255)
+    video = models.ForeignKey(Video, editable = False)
+    tipo = models.ForeignKey(TipoVideo, editable = False, null = True)
+    fichero = models.CharField(max_length = 255)
 
 class TecData(models.Model):
-    audio_bitrate = models.FloatField(null=True)
-    audio_channels = models.CharField(max_length=20, null=True)
-    audio_codec = models.CharField(max_length=10, null=True)
-    audio_rate = models.PositiveIntegerField(null=True)
-    bitrate = models.PositiveIntegerField(null=True)
-    duration = models.FloatField(null=True)
-    format = models.CharField(max_length=30, null=True)
-    size = models.PositiveIntegerField(null=True)
-    video_bitrate = models.FloatField(null=True)
-    video_codec = models.CharField(max_length=10, null=True)
-    video_color = models.CharField(max_length=10, null=True)
-    video_height = models.PositiveIntegerField(null=True)
-    video_rate = models.FloatField(null=True)
-    video_wh_ratio = models.FloatField(null=True)
-    video_width = models.PositiveIntegerField(null=True)
+    audio_bitrate = models.FloatField(null = True)
+    audio_channels = models.CharField(max_length = 20, null = True)
+    audio_codec = models.CharField(max_length = 10, null = True)
+    audio_rate = models.PositiveIntegerField(null = True)
+    bitrate = models.PositiveIntegerField(null = True)
+    duration = models.FloatField(null = True)
+    format = models.CharField(max_length = 30, null = True)
+    size = models.PositiveIntegerField(null = True)
+    video_bitrate = models.FloatField(null = True)
+    video_codec = models.CharField(max_length = 10, null = True)
+    video_color = models.CharField(max_length = 10, null = True)
+    video_height = models.PositiveIntegerField(null = True)
+    video_rate = models.FloatField(null = True)
+    video_wh_ratio = models.FloatField(null = True)
+    video_width = models.PositiveIntegerField(null = True)
 
     video = models.OneToOneField(Video)
 
@@ -89,6 +90,10 @@ class TecData(models.Model):
     def __unicode__(self):
         return self.video.titulo
 
+class Previsualizacion(models.Model):
+    video = models.OneToOneField(Video)
+    fichero = models.CharField(max_length = 255)
+
 
 ## COLA ##
 
@@ -97,13 +102,13 @@ class ColaManager(models.Manager):
     Devuelve el número de trabajos que están siendo codificados en este momento.
     """
     def count_actives(self):
-        return super(ColaManager, self).get_query_set().filter(status='PRO').count()
+        return super(ColaManager, self).get_query_set().filter(status = 'PRO').count()
 
     """
     Devuelve el siguiente vídeo encolado pendiente de ser codificado.
     """
     def get_next_pending(self):
-         pendings = super(ColaManager, self).get_query_set().filter(status='PEN').order_by('id')
+         pendings = super(ColaManager, self).get_query_set().filter(status = 'PEN').order_by('id')
          return pendings[0] if len(pendings) else None
 
 class Cola(models.Model):
@@ -114,6 +119,7 @@ class Cola(models.Model):
     )
 
     QUEUE_TYPE = (
+        ('COP', u'Copia'),
         ('PIL', u'Píldora'),
         ('PRE', u'Previsualización')
     )

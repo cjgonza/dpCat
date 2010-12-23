@@ -10,7 +10,7 @@ class FicherosInline(admin.StackedInline):
 
 class TecDataInline(admin.StackedInline):
     model = TecData
-    man_num = 1
+    max_num = 1
 
 class VideoAdmin(admin.ModelAdmin):
     inlines = [FicherosInline, TecDataInline]

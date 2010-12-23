@@ -4,7 +4,6 @@ import string
 import random
 import unicodedata
 import os
-from datetime import date
 
 from configuracion import config
 
@@ -20,6 +19,8 @@ def set_defalut_settings():
         [ 'MAX_PREVIEW_WIDTH',  400 ],
         [ 'MAX_PREVIEW_HEIGHT', 300 ],
         [ 'VIDEO_LIBRARY_PATH', '/home/adminudv/videos/videoteca/'],
+        [ 'VIDEO_INPUT_PATH' ,  '/home/adminudv/videos/'],
+        [ 'PREVIEWS_PATH' ,  '/home/adminudv/videos/previews/'],
     ]
 
     for op in defaults:
@@ -34,15 +35,15 @@ def generate_token(length):
 """
 Genera un nombre de fichero para un nuevo vídeo
 """
-def generate_safe_filename(name, extension):
-    day = date.today().strftime("%Y/%m/%d")
+def generate_safe_filename(name, date, extension):
+    day = date.strftime("%Y/%m/%d")
     safename = unicodedata.normalize('NFKD', name).encode('ascii','ignore').translate(None, string.punctuation).replace(' ', '_')
-    return "%s_%s_%s.%s" % (day, safename, generate_token(8), extension)
+    return "%s_%s_%s%s" % (day, safename, generate_token(8), extension)
 
 """
 Se asegura de que exista un directorio antes de crear un fichero en él.
 """
 def ensure_dir(f):
-    d = es.path.dirname(f)
+    d = os.path.dirname(f)
     if not os.path.exists(d):
         os.makedirs(d)

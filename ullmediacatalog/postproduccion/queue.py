@@ -1,12 +1,19 @@
 #encoding: utf-8
 from postproduccion.models import Cola
-from postproduccion.video import create_pil, create_preview
+from postproduccion.video import create_pil, create_preview, copy_video
 from settings import MEDIA_ROOT
 
 import os
 import re
 import tempfile
 from datetime import datetime
+
+"""
+Encola el video de tipo normal dado para que sea copiado.
+"""
+def enqueue_copy(video_id):
+    c = Cola(video=video_id, tipo='COP')
+    c.save()
 
 """
 Encola el video de tipo píldora dado para que sea montado.
@@ -36,8 +43,12 @@ def process_task(task):
     task.status = 'PRO'
     task.save()
 
+    if task.tipo == 'COP':
+        copy_video(task.video, handle)
+        enqueue_preview(task.video)
     if task.tipo == 'PIL':
         create_pil(task.video, handle)
+        enqueue_preview(task.video)
     if task.tipo == 'PRE':
         create_preview(task.video, handle)
 
