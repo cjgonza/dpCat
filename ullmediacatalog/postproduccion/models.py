@@ -105,11 +105,16 @@ class ColaManager(models.Manager):
         return super(ColaManager, self).get_query_set().filter(status = 'PRO').count()
 
     """
-    Devuelve el siguiente vídeo encolado pendiente de ser codificado.
+    Devuelve el número de trabajos que están pendientes de ser procesados
     """
-    def get_next_pending(self):
-         pendings = super(ColaManager, self).get_query_set().filter(status = 'PEN').order_by('id')
-         return pendings[0] if len(pendings) else None
+    def count_pendings(self):
+        return super(ColaManager, self).get_query_set().filter(status = 'PEN').count()
+
+    """
+    Devuelve la lista de vídeos pendientes de ser procesados.
+    """
+    def get_pendings(self):
+         return super(ColaManager, self).get_query_set().filter(status = 'PEN').order_by('id')
 
 class Cola(models.Model):
     QUEUE_STATUS = (
