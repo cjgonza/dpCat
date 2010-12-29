@@ -5,9 +5,9 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 
-from postproduccion.models import Video
+from postproduccion.models import Video, Cola
 from postproduccion.forms import VideoForm, FicheroEntradaForm
-from postproduccion.queue import enqueue_copy
+from postproduccion.queue import enqueue_copy, progress
 from postproduccion import utils
 from configuracion import config
 
@@ -85,3 +85,22 @@ def dirlist(request):
         r.append('Could not load directory: %s' % str(e))
     r.append('</ul>')
     return HttpResponse(''.join(r))
+
+def cola_base(request):
+    return render_to_response("postproduccion/cola_base.html", context_instance=RequestContext(request))
+
+def cola_listado(request):
+    import json
+    data = list()
+    for task in Cola.objects.order_by('pk'):
+        linea = dict()
+        linea['video'] = task.video.titulo
+        linea['tipo'] = dict(Cola.QUEUE_TYPE)[task.tipo]
+        linea['comienzo'] = task.comienzo.__str__() if task.comienzo else ""
+        linea['fin'] = task.fin.__str__() if task.fin else ""
+        linea['logfile'] = task.logfile.name
+        linea['id'] = task.pk
+        linea['status'] = progress(task) if task.status == 'PRO' else dict(Cola.QUEUE_STATUS)[task.status]
+        data.append(linea)
+        pass
+    return HttpResponse(json.dumps(data))

@@ -1,0 +1,84 @@
+<html>
+<head>
+    <style>
+        /* progress bar container */
+        .progressbar{
+                border:1px solid black;
+                width:200px;
+                height:20px;
+                position:relative;
+                color:black; 
+        }
+        /* color bar */
+        .progressbar div.progress{
+                position:absolute;
+                width:0;
+                height:100%;
+                overflow:hidden;
+                background-color:#369;
+        }
+        /* text on bar */
+        .progressbar div.progress .text{
+                position:absolute;
+                text-align:center;
+                color:white;
+        }
+        /* text off bar */
+        .progressbar div.text{
+                position:absolute;
+                width:100%;
+                height:100%;
+                text-align:center;
+        }
+    </style>
+    <script src="/js/jquery.js" type="text/javascript"></script>
+    <script src="/js/jqueryprogressbar.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function creaLinea(data) {
+            str = '';
+            keys = ['id', 'video', 'tipo', 'comienzo', 'fin', 'logfile'];
+            for (var i in keys)
+                str += '<td>' + data[keys[i]] + '</td>';
+            str += '<td><div id="status' + data['id'] + '">' + data['status'] + '</div></td>';
+            return str
+        }
+        function creaTabla(data) {
+            str = '<tbody>';
+            for (var i = 0; i < data.length; i++)
+                str += '<tr>' + creaLinea(data[i]) + '</tr>';
+            str += '</tbody>';
+            return str;
+        }
+        function mostrarProgreso(data) {
+            for (var i = 0; i < data.length; i++) {
+                st = $('#status' + data[i]['id']);
+                if (!isNaN(st[0].innerHTML)) {
+                    value = st[0].innerHTML;
+                    st[0].innerHTML = "";
+                    st.addClass("progressbar");
+                    st.reportprogress(value);
+                }
+            }
+        }
+        function refrescar() {
+            $.getJSON('/postproduccion/cola_listado/', function(data) { 
+                $(creaTabla(data)).replaceAll("tbody"); 
+                mostrarProgreso(data);
+            });
+            setTimeout("refrescar();", 1000);
+        }
+        $(document).ready( function() {
+            refrescar();
+        });
+    </script>
+</head>
+<body>
+<table border="1">
+    <thead>
+        <tr><th>ID</th><th>V&iacute;deo</th><th>Tipo</th><th>Comienzo</th><th>Fin</th><th>Log</th><th>Estado</th>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+</body>
+</head>

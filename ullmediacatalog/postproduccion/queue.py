@@ -69,6 +69,16 @@ def progress(task):
     if task.status == 'HEC':
         return 100
 
+    if task.tipo == 'COP':
+        src = task.video.ficheroentrada_set.all()[0].fichero
+        dst = task.video.fichero
+        try:
+            src_size = os.stat(src).st_size
+            dst_size = os.stat(dst).st_size
+            return int(float(dst_size) * 100 / float(src_size))
+        except:
+            return 0
+
     fd = os.open(task.logfile.path, os.O_RDONLY)
     try:
         os.lseek(fd, -255, os.SEEK_END)
@@ -80,6 +90,15 @@ def progress(task):
     except:
         pro = 0
 
+    if pro < 0 or pro > 100:
+        pro = 0
+
     os.close(fd)
 
     return pro
+
+"""
+Elimina de la lista los trabajos completados.
+"""
+def removeCompleted():
+    Cola.objects.filter(status='HEC').delete()
