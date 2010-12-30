@@ -1,5 +1,6 @@
 #encoding: utf-8
 from django.db import models
+from postproduccion import utils
 
 # Create your models here.
 
@@ -59,6 +60,11 @@ class Video(models.Model):
     def __unicode__(self):
         return self.titulo
 
+    def delete(self, *args, **kwargs):
+        if self.fichero:
+            utils.remove_file_path(self.fichero)
+        super(Video, self).delete(*args, **kwargs)
+
 class FicheroEntrada(models.Model):
     video = models.ForeignKey(Video, editable = False)
     tipo = models.ForeignKey(TipoVideo, editable = False, null = True)
@@ -93,6 +99,12 @@ class TecData(models.Model):
 class Previsualizacion(models.Model):
     video = models.OneToOneField(Video)
     fichero = models.CharField(max_length = 255)
+
+    def delete(self, *args, **kwargs):
+        if self.fichero:
+            utils.remove_file_path(self.fichero)
+        super(Previsualizacion, self).delete(*args, **kwargs)
+
 
 
 ## COLA ##

@@ -47,3 +47,14 @@ def ensure_dir(f):
     d = os.path.dirname(f)
     if not os.path.exists(d):
         os.makedirs(d)
+
+"""
+Borra el fichero dado y los directorios que lo contienen si están vacíos.
+"""
+def remove_file_path(f):
+    if os.path.isfile(f):
+        os.remove(f)
+        try:
+            os.removedirs(os.path.dirname(f))
+        except OSError:
+            pass
