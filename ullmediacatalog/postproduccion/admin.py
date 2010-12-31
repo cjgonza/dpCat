@@ -24,12 +24,12 @@ class VideoAdmin(admin.ModelAdmin):
 
     custom_delete_selected.short_description = "Borrar videos y ficheros (sin confirmacion)"
 
+class TipoVideoInline(admin.StackedInline):
+    model = TipoVideo
+    extra = 1
+
 class PlantillaFDVAdmin(admin.ModelAdmin):
-    fieldsets = [
-        (None, {'fields': ['nombre', 'fondo']}),
-        ('Diapositiva', {'fields': ['diapositiva_tipo', 'diapositiva_x', 'diapositiva_y', 'diapositiva_ancho', 'diapositiva_alto', 'diapositiva_mix']}),
-        ('Video', {'fields': ['video_tipo', 'video_x', 'video_y', 'video_ancho', 'video_alto', 'video_mix']}),
-    ]
+    inlines = [TipoVideoInline]
 
 admin.site.register(Cola, ColaAdmin)
 admin.site.register(PlantillaFDV, PlantillaFDVAdmin)

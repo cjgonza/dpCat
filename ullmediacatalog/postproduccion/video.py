@@ -13,41 +13,30 @@ import shutil
 Renderiza el fichero de configuración del MELT para la codificación de una píldora
 """
 def get_fdv_template(v):
-
     data = dict()
+    data['fondo'] = v.plantilla.fondo.path
 
-    data['plantilla'] = dict([
-        ('fondo', v.plantilla.fondo.path),
-        ('d_geom', "%d,%d:%dx%d:%d" % (
-            v.plantilla.diapositiva_x,
-            v.plantilla.diapositiva_y,
-            v.plantilla.diapositiva_ancho,
-            v.plantilla.diapositiva_alto,
-            v.plantilla.diapositiva_mix,
-        )),
-        ('v_geom', "%d,%d:%dx%d:%d" % (
-            v.plantilla.video_x,
-            v.plantilla.video_y,
-            v.plantilla.video_ancho,
-            v.plantilla.video_alto,
-            v.plantilla.video_mix,
-        )),
-    ])
-
-    data['diapositiva'] = dict()
-    data['presentador'] = dict()
-
-    data['diapositiva']['fichero'] = v.ficheroentrada_set.filter(tipo=v.plantilla.diapositiva_tipo)[0].fichero
-    data['presentador']['fichero'] = v.ficheroentrada_set.filter(tipo=v.plantilla.video_tipo)[0].fichero
-
-    d_info = get_mm_info(data['diapositiva']['fichero'])
-    p_info = get_mm_info(data['presentador']['fichero'])
-
-    data['duracion'] = int(float(d_info['ID_LENGTH'] if d_info['ID_LENGTH'] < p_info['ID_LENGTH'] else p_info['ID_LENGTH'])) * 25
-
-    data['diapositiva']['vcodec'] = format_types[d_info['ID_VIDEO_CODEC']]
-    data['presentador']['vcodec'] = format_types[p_info['ID_VIDEO_CODEC']]
-    data['presentador']['acodec'] = format_types[p_info['ID_AUDIO_CODEC']]
+    videos = list()
+    duracion = list()
+    for i in v.ficheroentrada_set.all():
+        fe = dict()
+        fe['fichero'] = i.fichero
+        fe['geom'] = "%d,%d:%dx%d:%d" % (
+            i.tipo.x,
+            i.tipo.y,
+            i.tipo.ancho,
+            i.tipo.alto,
+            i.tipo.mix
+        )
+        info = get_mm_info(i.fichero)
+        fe['vcodec'] = format_types[info['ID_VIDEO_CODEC']]
+        if 'ID_AUDIO_ID' in info:
+            fe['acodec'] = format_types[info['ID_AUDIO_CODEC']]
+        duracion.append(float(info['ID_LENGTH']))
+        
+        videos.append(fe)
+    data['videos'] = videos
+    data['duracion'] = int(min(duracion)) * 25
 
     return render_to_response('postproduccion/get_fdv_template.mlt', { 'data' : data })
 

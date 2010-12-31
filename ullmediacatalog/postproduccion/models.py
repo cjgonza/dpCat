@@ -4,33 +4,26 @@ from postproduccion import utils
 
 # Create your models here.
 
-class TipoVideo(models.Model):
-    nombre = models.CharField(max_length = 30)
-
-    def __unicode__(self):
-        return self.nombre
-
 class PlantillaFDV(models.Model):   # (Fondo-Disapositiva-Video)
     nombre = models.CharField(max_length = 50)
 
     fondo = models.ImageField(upload_to = 'plantillas')
 
-    diapositiva_tipo = models.ForeignKey(TipoVideo, related_name = "t_diap")
-    diapositiva_x = models.PositiveSmallIntegerField()
-    diapositiva_y = models.PositiveSmallIntegerField()
-    diapositiva_ancho = models.PositiveSmallIntegerField()
-    diapositiva_alto = models.PositiveSmallIntegerField()
-    diapositiva_mix = models.PositiveSmallIntegerField(default = 100)
-
-    video_tipo = models.ForeignKey(TipoVideo, related_name = "t_vid")
-    video_x = models.PositiveSmallIntegerField()
-    video_y = models.PositiveSmallIntegerField()
-    video_ancho = models.PositiveSmallIntegerField()
-    video_alto = models.PositiveSmallIntegerField()
-    video_mix = models.PositiveSmallIntegerField(default = 100)
-
     class Meta:
         verbose_name = u'Plantilla Fondo-Diapositiva-Vídeo'
+
+    def __unicode__(self):
+        return self.nombre
+
+class TipoVideo(models.Model):
+    nombre = models.CharField(max_length = 30)
+    plantilla =  models.ForeignKey(PlantillaFDV)
+
+    x = models.PositiveSmallIntegerField()
+    y = models.PositiveSmallIntegerField()
+    ancho = models.PositiveSmallIntegerField()
+    alto = models.PositiveSmallIntegerField()
+    mix = models.PositiveSmallIntegerField(default = 100)
 
     def __unicode__(self):
         return self.nombre
