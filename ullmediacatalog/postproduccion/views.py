@@ -4,10 +4,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
+from django.forms.formsets import formset_factory
+from django.forms.models import modelformset_factory
 
-from postproduccion.models import Video, Cola
-from postproduccion.forms import VideoForm, FicheroEntradaForm
-from postproduccion.queue import enqueue_copy, progress
+from postproduccion.models import Video, Cola, FicheroEntrada
+from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseModelFormSet
+from postproduccion.queue import enqueue_copy, enqueue_pil, progress
 from postproduccion import utils
 from configuracion import config
 
@@ -48,8 +50,27 @@ def _fichero_entrada_simple(request, v):
 """
 Muestra el formulario para seleccionar los ficheros de entrada.
 """
-def _fichero_entrada_doble(request, v):
-    return HttpResponse("Video plantilla")
+def _fichero_entrada_multiple(request, v):
+    n = v.plantilla.tipovideo_set.count()
+    FicheroEntradaFormSet = modelformset_factory(FicheroEntrada, extra = n, formset = RequiredBaseModelFormSet)
+    tipos = v.plantilla.tipovideo_set.all().order_by('id')
+    if request.method == 'POST':
+        formset = FicheroEntradaFormSet(request.POST)
+        if formset.is_valid():
+            instances = formset.save(commit = False)
+            for i in range(n):
+                instances[i].fichero = os.path.normpath(config.get_option('VIDEO_INPUT_PATH') + instances[i].fichero)
+                instances[i].video = v
+                instances[i].tipo = tipos[i]
+                instances[i].save()
+            enqueue_pil(v)
+            return HttpResponse("Video introducido y encolado")
+    else:
+        formset = FicheroEntradaFormSet()
+    
+    for i in range(n):
+        formset.forms[i].titulo = tipos[i].nombre
+    return render_to_response("postproduccion/ficheros_entrada.html", { 'formset' : formset }, context_instance=RequestContext(request))
 
 """
 Llama al método privado adecuado para insertar los ficheros de entrada según
@@ -58,7 +79,7 @@ el tipo de vídeo.
 def fichero_entrada(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
     if v.plantilla:
-        return _fichero_entrada_doble(request, v)
+        return _fichero_entrada_multiple(request, v)
     else:
         return _fichero_entrada_simple(request, v)
 

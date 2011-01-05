@@ -63,6 +63,9 @@ class FicheroEntrada(models.Model):
     tipo = models.ForeignKey(TipoVideo, editable = False, null = True)
     fichero = models.CharField(max_length = 255)
 
+    def __unicode__(self):
+        return self.tipo.nombre
+
 class TecData(models.Model):
     audio_bitrate = models.FloatField(null = True)
     audio_channels = models.CharField(max_length = 20, null = True)
