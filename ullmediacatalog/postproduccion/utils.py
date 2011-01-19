@@ -5,9 +5,7 @@ import random
 import unicodedata
 import os
 import threading
-import datetime
 
-from settings import MEDIA_ROOT
 from configuracion import config
 
 """
@@ -68,11 +66,3 @@ def remove_file_path(f):
             os.removedirs(os.path.dirname(f))
         except OSError:
             pass
-
-"""
-Escribe un mensaje en el log de la aplicación
-"""
-def printl(msg):
-   f = open(MEDIA_ROOT + '/logs/application.log', 'a')
-   f.write("[%s] %s\n" % (datetime.datetime.now().__str__(), msg))
-   f.close()
