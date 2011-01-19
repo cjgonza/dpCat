@@ -5,10 +5,10 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.forms.formsets import formset_factory
-from django.forms.models import modelformset_factory
+from django.forms.models import inlineformset_factory
 
 from postproduccion.models import Video, Cola, FicheroEntrada
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseModelFormSet
+from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet
 from postproduccion.queue import enqueue_copy, enqueue_pil, progress
 from postproduccion import utils
 from configuracion import config
@@ -42,6 +42,7 @@ def _fichero_entrada_simple(request, v):
             fe.fichero = os.path.normpath(config.get_option('VIDEO_INPUT_PATH') + fe.fichero)
             fe.save()
             enqueue_copy(v)
+            v.set_status('DEF')
             return HttpResponse("Video introducido y encolado")
     else:
         form = FicheroEntradaForm()
@@ -52,10 +53,10 @@ Muestra el formulario para seleccionar los ficheros de entrada.
 """
 def _fichero_entrada_multiple(request, v):
     n = v.plantilla.tipovideo_set.count()
-    FicheroEntradaFormSet = modelformset_factory(FicheroEntrada, extra = n, formset = RequiredBaseModelFormSet)
+    FicheroEntradaFormSet = inlineformset_factory(Video, FicheroEntrada, formset = RequiredBaseInlineFormSet, extra = n, max_num = n, can_delete = False)
     tipos = v.plantilla.tipovideo_set.all().order_by('id')
     if request.method == 'POST':
-        formset = FicheroEntradaFormSet(request.POST)
+        formset = FicheroEntradaFormSet(request.POST, instance = v)
         if formset.is_valid():
             instances = formset.save(commit = False)
             for i in range(n):
@@ -64,9 +65,10 @@ def _fichero_entrada_multiple(request, v):
                 instances[i].tipo = tipos[i]
                 instances[i].save()
             enqueue_pil(v)
+            v.set_status('DEF')
             return HttpResponse("Video introducido y encolado")
     else:
-        formset = FicheroEntradaFormSet()
+        formset = FicheroEntradaFormSet(instance = v)
     
     for i in range(n):
         formset.forms[i].titulo = tipos[i].nombre

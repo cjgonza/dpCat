@@ -9,7 +9,7 @@ Llama al mplayer para obtener la información multimedia de un vídeo y
 devuelve la información en un hash.
 """
 def get_mm_info(filename):
-    command = "%s -really-quiet -identify -nolirc %s -ao null -vo null -frames 0" % (config.get_option('MPLAYER_PATH'), filename)
+    command = "/usr/bin/env TERM=xterm %s -really-quiet -identify -nolirc %s -ao null -vo null -frames 0 " % (config.get_option('MPLAYER_PATH'), filename)
     data = os.popen(command).read()
     return dict([s.split('=') for s in data.strip().split('\n')])
 
@@ -91,12 +91,42 @@ format_types = {
     }
 }
 
+"""
+Devuelve los parámetros preestablecidos para el codec x264
+"""
+def x264_presets():
+    params = [
+        [ 'coder',        '1'],
+        [ 'flags',        '+loop'],
+        [ 'cmp',          '+chroma'],
+        [ 'partitions',   '+parti8x8+parti4x4+partp8x8+partb8x8'],
+        [ 'me_method',    'hex'],
+        [ 'subq',         '7'],
+        [ 'me_range',     '16'],
+        [ 'g',            '250'],
+        [ 'keyint_min',   '25'],
+        [ 'sc_threshold', '40'],
+        [ 'i_qfactor',    '0.71'],
+        [ 'b_strategy',   '1'],
+        [ 'qcomp',        '0.6'],
+        [ 'qmin',         '10'],
+        [ 'qmax',         '51'],
+        [ 'qdiff',        '4'],
+        [ 'bf',           '3'],
+        [ 'refs',         '3'],
+        [ 'directpred',   '1'],
+        [ 'trellis',      '1'],
+        [ 'flags2',       '+bpyramid+mixed_refs+wpred+dct8x8+fastpskip'],
+        [ 'wpredp',       '2'],
+    ]
+
+    return " ".join(map(lambda x: "%s=%s" % tuple(x), params))
 
 """
 Realiza el montaje de un video
 """
 def encode_mixed_video(mltfile, outfile, logfile):
-    command = "%s -progress -verbose %s -consumer avformat:/%s deinterlace=1 acodec=libfaac ab=348k ar=48000 pix_fmt=yuv420p f=mp4 vcodec=libx264 minrate=0 b=1000k aspect=@16/9 s=1280x720i fpre=lossless-max" % (config.get_option('MELT_PATH'), mltfile, outfile)
+    command = "%s -progress -verbose %s -consumer avformat:/%s deinterlace=1 acodec=libfaac ab=348k ar=48000 pix_fmt=yuv420p f=mp4 vcodec=libx264 minrate=0 b=1000k aspect=@16/9 s=1280x720i %s" % (config.get_option('MELT_PATH'), mltfile, outfile, x264_presets())
     p = subprocess.Popen(command, shell = True, stderr=logfile)
 
     return os.waitpid(p.pid, 0)[1]

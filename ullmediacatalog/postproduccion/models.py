@@ -30,15 +30,18 @@ class TipoVideo(models.Model):
 
 class Video(models.Model):
     VIDEO_STATUS = (
-        ('INC', 'Incompleto'),
-        ('PTE', 'Pendiente'),
-        ('PRO', 'Procesando'),
-        ('LIS', 'Listo'),
-        ('APR', 'Aprobado'),
-        ('REC', 'Rechazado')
+        ('INC', u'Incompleto'),                  # Creado pero sin ficheros de entrada.
+        ('DEF', u'Definido'),                    # Definidos los ficheros de entrada (en cola para ser procesado).
+        ('PRV', u'Procesando vídeo'),            # Está siendo procesado (montaje o copia).
+        ('COM', u'Completado'),                  # Procesamiento completado (en cola para generar previsualización).
+        ('PRP', u'Procesando previsualización'), # Está siendo generada la previsualización.
+        ('PTE', u'Pendiente'),                   # A la espera de que el usuario rellene los metadatos y acepte el vídeo.
+        ('ACE', u'Aceptado'),                    # Aceptado por el usuario, a la espera de que lo valide el operador.
+        ('REC', u'Rechazado'),                   # Rechazado por el usuario, a la espera de que el operador tome las medidas necesarias.
+        ('LIS', u'Listo'),                       # Validado por el operador, todos los procedimientos terminados.
     )
 
-    fichero = models.CharField(max_length = 255, editable = False) # En el futuro tal vez sea models.FilePathField
+    fichero = models.CharField(max_length = 255, editable = False)
     status = models.CharField(max_length = 3, choices = VIDEO_STATUS, editable = False, default = 'INC')
     plantilla = models.ForeignKey(PlantillaFDV, null = True, blank = True)
 
@@ -58,13 +61,19 @@ class Video(models.Model):
             utils.remove_file_path(self.fichero)
         super(Video, self).delete(*args, **kwargs)
 
+    def set_status(self, st):
+        self.status = st
+        self.save()
+
 class FicheroEntrada(models.Model):
     video = models.ForeignKey(Video, editable = False)
     tipo = models.ForeignKey(TipoVideo, editable = False, null = True)
     fichero = models.CharField(max_length = 255)
 
     def __unicode__(self):
-        return self.tipo.nombre
+        if self.tipo:
+            return "%s (%s)" % (self.video.titulo, self.tipo.nombre)
+        return self.video.titulo
 
 class TecData(models.Model):
     audio_bitrate = models.FloatField(null = True)
@@ -128,7 +137,8 @@ class Cola(models.Model):
     QUEUE_STATUS = (
         ('PEN', 'Pendiente'),
         ('PRO', 'Procesando'),
-        ('HEC', 'Hecho')
+        ('HEC', 'Hecho'),
+        ('ERR', 'Error'),
     )
 
     QUEUE_TYPE = (
@@ -148,6 +158,10 @@ class Cola(models.Model):
 
     def __unicode__(self):
        return dict(self.QUEUE_TYPE)[self.tipo] + ": " + self.video.__unicode__()
+
+    def set_status(self, st):
+        self.status = st
+        self.save()
 
     class Meta:
         verbose_name = u'tarea'

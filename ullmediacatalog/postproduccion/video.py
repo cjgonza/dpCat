@@ -36,7 +36,7 @@ def get_fdv_template(v):
         
         videos.append(fe)
     data['videos'] = videos
-    data['duracion'] = int(min(duracion)) * 25
+    data['duracion'] = min(duracion) * 25
 
     return render_to_response('postproduccion/get_fdv_template.mlt', { 'data' : data })
 
@@ -92,6 +92,11 @@ def calculate_preview_size(v):
 
 """
 def create_pil(video, logfile):
+    utils.printl("Comienza a montar la píldora '%s'" % video.__str__())
+
+    # Actualiza el estado del vídeo
+    video.set_status('PRV')
+
     # Guarda la plantilla en un fichero temporal
     (handler, path) = tempfile.mkstemp(suffix='.mlt')
     os.write(handler, get_fdv_template(video).content)
@@ -100,10 +105,15 @@ def create_pil(video, logfile):
     # Genera el nombre del fichero de salida
     video.fichero = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.fecha_grabacion.date(), ".mp4"))
     video.save()
+    utils.ensure_dir(video.fichero)
 
     # Montaje y codificación de la píldora
-    utils.ensure_dir(video.fichero)
-    encode_mixed_video(path, video.fichero, logfile)
+    if encode_mixed_video(path, video.fichero, logfile) != 0:
+        video.set_status('DEF')
+        os.unlink(path)
+        os.unlink(video.fichero)
+        utils.printl("Error al montar la píldora '%s'" % video.__str__())
+        return False
 
     # Obtiene la información técnica del vídeo generado.
     generate_tecdata(video)
@@ -111,7 +121,17 @@ def create_pil(video, logfile):
     # Borra el fichero temporal
     os.unlink(path)
 
+    # Actualiza el estado del vídeo
+    video.set_status('COM')
+    
+    utils.printl("Termina de montar la píldora '%s'" %  video.__str__())
+    return True
+
 def copy_video(video, logfile):
+    utils.printl("Comienza a copiar el vídeo '%s'" % video.__str__())
+    # Actualiza el estado del vídeo
+    video.set_status('PRV')
+
     # Obtiene los nombres de ficheros origen y destino
     src = video.ficheroentrada_set.all()[0].fichero
     dst = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.fecha_grabacion.date(), os.path.splitext(src)[1]))
@@ -120,14 +140,28 @@ def copy_video(video, logfile):
 
     # Copia el fichero.
     utils.ensure_dir(video.fichero)
-    shutil.copy(src, dst)
-    os.write(logfile, '%s -> %s\n' % (src, dst))
+    try:
+        shutil.copy(src, dst)
+        os.write(logfile, '%s -> %s\n' % (src, dst))
+    except IOError as error:
+        os.write(logfile, error.__str__())
+        video.set_status('DEF')
+        utils.printl("Error al copiar el vídeo '%s'" % video.__str__())
+        return False
 
     # Obtiene la información técnica del vídeo copiado.
     generate_tecdata(video)
 
+    # Actualiza el estado del vídeo
+    video.set_status('COM')
+    utils.printl("Termina de copiar el vídeo '%s'" % video.__str__())
+    return True
 
 def create_preview(video, logfile):
+    utils.printl("Comienza la previsualización de '%s'" % video.__str__())
+    # Actualiza el estado del vídeo
+    video.set_status('PRP')
+
     # Obtiene los nombres de ficheros origen y destino
     src = video.fichero
     dst = os.path.join(config.get_option('PREVIEWS_PATH'), utils.generate_safe_filename(video.titulo, video.fecha_grabacion.date(), ".flv"))
@@ -141,4 +175,13 @@ def create_preview(video, logfile):
 
     # Codifica la previsualización.
     utils.ensure_dir(pv.fichero)
-    encode_preview(src, dst, size, logfile)
+    if encode_preview(src, dst, size, logfile) != 0:
+        video.set_status('COM')
+        os.unlink(dst)
+        utils.printl("Error al crear la previsualización de '%s'" % video.__str__())
+        return False
+
+    # Actualiza el estado del vídeo
+    video.set_status('PTE')
+    utils.printl("Termina la previsualización de '%s'" % video.__str__())
+    return True

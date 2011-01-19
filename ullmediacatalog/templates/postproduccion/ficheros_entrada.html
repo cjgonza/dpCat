@@ -19,9 +19,9 @@
         {% for form in formset.forms %}
         $(document).ready( function() {
             $('#fileTree-{{ forloop.counter0 }}').fileTree({ script: '/postproduccion/dirlist/', multiFolder: false }, function(file) {
-                $('#id_form-{{ forloop.counter0 }}-fichero')[0].value = file;
+                $('#id_ficheroentrada_set-{{ forloop.counter0 }}-fichero')[0].value = file;
             });
-            $('#id_form-{{ forloop.counter0 }}-fichero')[0].readOnly = true;
+            $('#id_ficheroentrada_set-{{ forloop.counter0 }}-fichero')[0].readOnly = true;
         });
         {% endfor %}
     </script>

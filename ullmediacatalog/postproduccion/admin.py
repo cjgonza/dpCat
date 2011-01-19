@@ -13,6 +13,7 @@ class TecDataInline(admin.StackedInline):
     max_num = 1
 
 class VideoAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'status')
     inlines = [FicherosInline, TecDataInline]
     actions = ['custom_delete_selected']
 

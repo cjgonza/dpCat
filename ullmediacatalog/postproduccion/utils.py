@@ -4,8 +4,16 @@ import string
 import random
 import unicodedata
 import os
+import threading
+import datetime
 
+from settings import MEDIA_ROOT
 from configuracion import config
+
+"""
+Declara un cerrojo global para los bloqueos entre threads.
+"""
+lock = threading.Lock()
 
 """
 Fija los valores de configuración por defecto
@@ -45,8 +53,10 @@ Se asegura de que exista un directorio antes de crear un fichero en él.
 """
 def ensure_dir(f):
     d = os.path.dirname(f)
+    lock.acquire()
     if not os.path.exists(d):
         os.makedirs(d)
+    lock.release()
 
 """
 Borra el fichero dado y los directorios que lo contienen si están vacíos.
@@ -58,3 +68,11 @@ def remove_file_path(f):
             os.removedirs(os.path.dirname(f))
         except OSError:
             pass
+
+"""
+Escribe un mensaje en el log de la aplicación
+"""
+def printl(msg):
+   f = open(MEDIA_ROOT + '/logs/application.log', 'a')
+   f.write("[%s] %s\n" % (datetime.datetime.now().__str__(), msg))
+   f.close()

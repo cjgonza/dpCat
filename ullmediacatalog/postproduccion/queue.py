@@ -2,6 +2,7 @@
 from postproduccion.models import Cola
 from postproduccion.video import create_pil, create_preview, copy_video
 from settings import MEDIA_ROOT
+from configuracion import config
 
 import os
 import re
@@ -11,28 +12,30 @@ from datetime import datetime
 """
 Encola el video de tipo normal dado para que sea copiado.
 """
-def enqueue_copy(video_id):
-    c = Cola(video=video_id, tipo='COP')
+def enqueue_copy(v):
+    c = Cola(video=v, tipo='COP')
     c.save()
 
 """
 Encola el video de tipo píldora dado para que sea montado.
 """
-def enqueue_pil(video_id):
-    c = Cola(video=video_id, tipo='PIL')
+def enqueue_pil(v):
+    c = Cola(video=v, tipo='PIL')
     c.save()
 
 """
 Encola un vídeo para generar su previsualización.
 """
-def enqueue_preview(video_id):
-    c = Cola(video=video_id, tipo='PRE')
+def enqueue_preview(v):
+    c = Cola(video=v, tipo='PRE')
     c.save()
 
 """
 Procesa el elemento dado de la cola.
 """
 def process_task(task):
+
+    error = False
 
     # Crea el fichero para el registro de la salida de codificación.
     (handle, path) = tempfile.mkstemp(suffix = '.log', dir = MEDIA_ROOT + '/logs')
@@ -44,20 +47,26 @@ def process_task(task):
     task.save()
 
     if task.tipo == 'COP':
-        copy_video(task.video, handle)
-        enqueue_preview(task.video)
+        if not copy_video(task.video, handle):
+            error = True
+            pass
+        else:
+            enqueue_preview(task.video)
     if task.tipo == 'PIL':
-        create_pil(task.video, handle)
-        enqueue_preview(task.video)
+        if not create_pil(task.video, handle):
+            error = True
+        else:
+            enqueue_preview(task.video)
     if task.tipo == 'PRE':
-        create_preview(task.video, handle)
+        if not create_preview(task.video, handle):
+            error = True
 
     # Cierra el fichero de registro
     os.close(handle)
     
     # Actualiza la información de la base de datos.
     task.fin = datetime.now()
-    task.status = 'HEC'
+    task.status = 'HEC' if not error else 'ERR'
     task.save()
 
 """
@@ -102,3 +111,9 @@ Elimina de la lista los trabajos completados.
 """
 def removeCompleted():
     Cola.objects.filter(status='HEC').delete()
+
+"""
+Devuelve el número de puestos libres para iniciar el proceso de codificación.
+"""
+def available_slots():
+    return int(config.get_option('MAX_ENCODING_TASKS')) - Cola.objects.count_actives()

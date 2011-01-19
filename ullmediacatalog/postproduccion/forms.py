@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from django.forms.models import BaseModelFormSet
+from django.forms.models import BaseInlineFormSet
 from postproduccion.models import Video, FicheroEntrada
 
 class VideoForm(ModelForm):
@@ -10,8 +10,8 @@ class FicheroEntradaForm(ModelForm):
     class Meta:
         model = FicheroEntrada
 
-class RequiredBaseModelFormSet(BaseModelFormSet):
+class RequiredBaseInlineFormSet(BaseInlineFormSet):
     def _construct_form(self, i, **kwargs):
-        form = super(RequiredBaseModelFormSet, self)._construct_form(i, **kwargs)
+        form = super(RequiredBaseInlineFormSet, self)._construct_form(i, **kwargs)
         form.empty_permitted = False
         return form

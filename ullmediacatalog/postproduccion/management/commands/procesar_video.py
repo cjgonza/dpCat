@@ -1,7 +1,7 @@
+# -*- encoding: utf-8 -*-
 from django.core.management.base import NoArgsCommand
 from ullmediacatalog.postproduccion.models import Cola
-from ullmediacatalog.postproduccion.queue import process_task
-from ullmediacatalog.configuracion.config import get_option
+from ullmediacatalog.postproduccion.queue import process_task, available_slots
 import threading
 
 class Command(NoArgsCommand):
@@ -11,8 +11,10 @@ class Command(NoArgsCommand):
 
         while True:
             threads = []
-            for t in Cola.objects.get_pendings():
-                if get_option('MAX_ENCODING_TASKS') > Cola.objects.count_actives():
+            pendings = list(Cola.objects.get_pendings())
+            for t in pendings:
+                if available_slots():
+                    t.set_status('PRO')
                     th = threading.Thread(target = process_task, kwargs = {'task' : t})
                     th.start()
                     threads.append(th)
@@ -22,5 +24,6 @@ class Command(NoArgsCommand):
             for th in threads:
                 th.join()
 
-            if not Cola.objects.count_pendings():
+            # Si no hay trabajos esperando o está lleno el cupo de trabajos en proceso, salimos.
+            if not Cola.objects.count_pendings() or not available_slots():
                 break
