@@ -4,7 +4,6 @@ from postproduccion.encoder import get_mm_info, get_file_info, format_types, enc
 from postproduccion.models import TecData, Previsualizacion
 from configuracion import config
 from postproduccion import utils
-from postproduccion import log
 
 import os
 import tempfile
@@ -93,8 +92,6 @@ def calculate_preview_size(v):
 
 """
 def create_pil(video, logfile):
-    log.pil_start(video)
-
     # Actualiza el estado del vídeo
     video.set_status('PRV')
 
@@ -113,7 +110,6 @@ def create_pil(video, logfile):
         video.set_status('DEF')
         os.unlink(path)
         os.unlink(video.fichero)
-        log.pil_error(video)
         return False
 
     # Obtiene la información técnica del vídeo generado.
@@ -125,11 +121,9 @@ def create_pil(video, logfile):
     # Actualiza el estado del vídeo
     video.set_status('COM')
     
-    log.pil_finish(video)
     return True
 
 def copy_video(video, logfile):
-    log.copy_start(video)
     # Actualiza el estado del vídeo
     video.set_status('PRV')
 
@@ -147,7 +141,6 @@ def copy_video(video, logfile):
     except IOError as error:
         os.write(logfile, error.__str__())
         video.set_status('DEF')
-        log.copy_error(video)
         return False
 
     # Obtiene la información técnica del vídeo copiado.
@@ -155,11 +148,9 @@ def copy_video(video, logfile):
 
     # Actualiza el estado del vídeo
     video.set_status('COM')
-    log.copy_finish(video)
     return True
 
 def create_preview(video, logfile):
-    log.preview_start(video)
     # Actualiza el estado del vídeo
     video.set_status('PRP')
 
@@ -179,10 +170,8 @@ def create_preview(video, logfile):
     if encode_preview(src, dst, size, logfile) != 0:
         video.set_status('COM')
         os.unlink(dst)
-        log.preview_error(video)
         return False
 
     # Actualiza el estado del vídeo
     video.set_status('PTE')
-    log.preview_finish(video)
     return True

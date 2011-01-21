@@ -3,6 +3,7 @@ from postproduccion.models import Cola
 from postproduccion.video import create_pil, create_preview, copy_video
 from settings import MEDIA_ROOT
 from configuracion import config
+from postproduccion import log
 
 import os
 import re
@@ -13,6 +14,7 @@ from datetime import datetime
 Encola el video de tipo normal dado para que sea copiado.
 """
 def enqueue_copy(v):
+    log.copy_enqueue(v)
     c = Cola(video=v, tipo='COP')
     c.save()
 
@@ -20,6 +22,7 @@ def enqueue_copy(v):
 Encola el video de tipo píldora dado para que sea montado.
 """
 def enqueue_pil(v):
+    log.pil_enqueue(v)
     c = Cola(video=v, tipo='PIL')
     c.save()
 
@@ -27,6 +30,7 @@ def enqueue_pil(v):
 Encola un vídeo para generar su previsualización.
 """
 def enqueue_preview(v):
+    log.preview_enqueue(v)
     c = Cola(video=v, tipo='PRE')
     c.save()
 
@@ -47,18 +51,29 @@ def process_task(task):
     task.save()
 
     if task.tipo == 'COP':
-        if not copy_video(task.video, handle):
-            error = True
-            pass
-        else:
+        log.copy_start(task.video)
+        if copy_video(task.video, handle):
+            log.copy_finish(task.video)
             enqueue_preview(task.video)
+        else:
+            log.copy_error(task.video)
+            error = True
+
     if task.tipo == 'PIL':
-        if not create_pil(task.video, handle):
-            error = True
-        else:
+        log.pil_start(task.video)
+        if create_pil(task.video, handle):
+            log.pil_finish(task.video)
             enqueue_preview(task.video)
+        else:
+            log.pil_error(task.video)
+            error = True
+
     if task.tipo == 'PRE':
-        if not create_preview(task.video, handle):
+        log.preview_start(task.video)
+        if create_preview(task.video, handle):
+            log.preview_finish(task.video)
+        else:
+            log.preview_error(task.video)
             error = True
 
     # Cierra el fichero de registro
