@@ -155,6 +155,7 @@ class Cola(models.Model):
     comienzo = models.DateTimeField(null = True, blank = True)
     fin = models.DateTimeField(null = True, blank = True)
     logfile = models.FileField(upload_to = "logs", null = True, blank = True)
+    pid = models.IntegerField(null = True, editable = False)
 
     def __unicode__(self):
        return dict(self.QUEUE_TYPE)[self.tipo] + ": " + self.video.__unicode__()

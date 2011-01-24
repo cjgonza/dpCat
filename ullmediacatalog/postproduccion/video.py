@@ -91,7 +91,7 @@ def calculate_preview_size(v):
 """
 
 """
-def create_pil(video, logfile):
+def create_pil(video, logfile, pid_notifier = None):
     # Actualiza el estado del vídeo
     video.set_status('PRV')
 
@@ -106,10 +106,13 @@ def create_pil(video, logfile):
     utils.ensure_dir(video.fichero)
 
     # Montaje y codificación de la píldora
-    if encode_mixed_video(path, video.fichero, logfile) != 0:
+    if encode_mixed_video(path, video.fichero, logfile, pid_notifier) != 0:
         video.set_status('DEF')
         os.unlink(path)
-        os.unlink(video.fichero)
+        try:
+            os.unlink(video.fichero)
+        except:
+            pass
         return False
 
     # Obtiene la información técnica del vídeo generado.
@@ -150,7 +153,7 @@ def copy_video(video, logfile):
     video.set_status('COM')
     return True
 
-def create_preview(video, logfile):
+def create_preview(video, logfile, pid_notifier = None):
     # Actualiza el estado del vídeo
     video.set_status('PRP')
 
@@ -167,9 +170,12 @@ def create_preview(video, logfile):
 
     # Codifica la previsualización.
     utils.ensure_dir(pv.fichero)
-    if encode_preview(src, dst, size, logfile) != 0:
+    if encode_preview(src, dst, size, logfile, pid_notifier) != 0:
         video.set_status('COM')
-        os.unlink(dst)
+        try:
+            os.unlink(dst)
+        except:
+            pass
         return False
 
     # Actualiza el estado del vídeo

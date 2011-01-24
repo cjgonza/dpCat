@@ -8,6 +8,7 @@ from postproduccion import log
 import os
 import re
 import tempfile
+import signal
 from datetime import datetime
 
 """
@@ -33,6 +34,19 @@ def enqueue_preview(v):
     log.preview_enqueue(v)
     c = Cola(video=v, tipo='PRE')
     c.save()
+
+"""
+Crea una funcion de notificación de PID para la tarea dada.
+"""
+def make_pid_notifier(task):
+    """
+    Almacena el PID del proceso en ejecución
+    """
+    def pid_notifier(pid):
+        task.pid = pid
+        task.save()
+
+    return pid_notifier
 
 """
 Procesa el elemento dado de la cola.
@@ -61,7 +75,7 @@ def process_task(task):
 
     if task.tipo == 'PIL':
         log.pil_start(task.video)
-        if create_pil(task.video, handle):
+        if create_pil(task.video, handle, make_pid_notifier(task)):
             log.pil_finish(task.video)
             enqueue_preview(task.video)
         else:
@@ -70,7 +84,7 @@ def process_task(task):
 
     if task.tipo == 'PRE':
         log.preview_start(task.video)
-        if create_preview(task.video, handle):
+        if create_preview(task.video, handle, make_pid_notifier(task)):
             log.preview_finish(task.video)
         else:
             log.preview_error(task.video)
@@ -132,3 +146,10 @@ Devuelve el número de puestos libres para iniciar el proceso de codificación.
 """
 def available_slots():
     return int(config.get_option('MAX_ENCODING_TASKS')) - Cola.objects.count_actives()
+
+"""
+Cancela la ejecución de una tarea
+"""
+def cancel_task(task):
+    if task.status == 'PRO' and task.pid:
+        os.kill(task.pid, signal.SIGTERM)
