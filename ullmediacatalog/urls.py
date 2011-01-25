@@ -9,4 +9,5 @@ urlpatterns = patterns('',
     (r'^postproduccion/', include('postproduccion.urls')),
     (r'^admin/', include(admin.site.urls)),
     (r'^js/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.JQUERY_ROOT}),
+    (r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name' : 'postproduccion/login.html'}),
 )

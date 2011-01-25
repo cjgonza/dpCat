@@ -16,9 +16,13 @@ from configuracion import config
 import os
 import urllib
 
+from django.contrib.auth.decorators import permission_required
+
+
 """
 Muestra el formulario para insertar un nuevo proyecto de vídeo.
 """
+@permission_required('postproduccion.video_manager')
 def crear(request):
     if request.method == 'POST':
         form = VideoForm(request.POST)
@@ -33,6 +37,7 @@ def crear(request):
 """
 Muestra el formulario para seleccionar el fichero de entrada.
 """
+@permission_required('postproduccion.video_manager')
 def _fichero_entrada_simple(request, v):
     if request.method == 'POST':
         form = FicheroEntradaForm(request.POST)
@@ -51,6 +56,7 @@ def _fichero_entrada_simple(request, v):
 """
 Muestra el formulario para seleccionar los ficheros de entrada.
 """
+@permission_required('postproduccion.video_manager')
 def _fichero_entrada_multiple(request, v):
     n = v.plantilla.tipovideo_set.count()
     FicheroEntradaFormSet = inlineformset_factory(Video, FicheroEntrada, formset = RequiredBaseInlineFormSet, extra = n, max_num = n, can_delete = False)
@@ -78,6 +84,7 @@ def _fichero_entrada_multiple(request, v):
 Llama al método privado adecuado para insertar los ficheros de entrada según
 el tipo de vídeo.
 """
+@permission_required('postproduccion.video_manager')
 def fichero_entrada(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
     if v.plantilla:
@@ -89,6 +96,7 @@ def fichero_entrada(request, video_id):
 Devuelve una lista (html) con el contenido de un directorio para usar con la
 llamada AJAX del jqueryFileTree.
 """
+@permission_required('postproduccion.video_manager')
 def dirlist(request):
     r=['<ul class="jqueryFileTree" style="display: none;">']
     try:
@@ -109,9 +117,11 @@ def dirlist(request):
     r.append('</ul>')
     return HttpResponse(''.join(r))
 
+@permission_required('postproduccion.video_manager')
 def cola_base(request):
     return render_to_response("postproduccion/cola_base.html", context_instance=RequestContext(request))
 
+@permission_required('postproduccion.video_manager')
 def cola_listado(request):
     import json
     data = list()

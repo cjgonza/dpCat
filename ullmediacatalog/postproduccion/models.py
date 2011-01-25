@@ -46,7 +46,6 @@ class Video(models.Model):
     plantilla = models.ForeignKey(PlantillaFDV, null = True, blank = True)
 
  
-    ## Metadata
     titulo = models.CharField(max_length = 30)
     observacion = models.TextField(null = True, blank = True)
     fecha_grabacion = models.DateTimeField(auto_now_add = True)
@@ -64,6 +63,12 @@ class Video(models.Model):
     def set_status(self, st):
         self.status = st
         self.save()
+
+    class Meta:
+        permissions = (
+            ("video_manager", u"Puede gestionar la creación de vídeos"),
+            ("video_library", u"Puede consultar la videoteca"),
+        )
 
 class FicheroEntrada(models.Model):
     video = models.ForeignKey(Video, editable = False)
