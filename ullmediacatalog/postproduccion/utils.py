@@ -16,7 +16,7 @@ lock = threading.Lock()
 """
 Fija los valores de configuración por defecto
 """
-def set_defalut_settings():
+def set_default_settings():
     defaults = [
         [ 'MAX_ENCODING_TASKS', 5 ],
         [ 'MELT_PATH' ,         '/usr/bin/melt' ], 
