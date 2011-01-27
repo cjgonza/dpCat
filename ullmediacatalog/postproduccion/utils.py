@@ -20,7 +20,6 @@ def set_default_settings():
     defaults = [
         [ 'MAX_ENCODING_TASKS', 5 ],
         [ 'MELT_PATH' ,         '/usr/bin/melt' ], 
-        [ 'MPLAYER_PATH',       '/usr/bin/mplayer' ],
         [ 'FFMPEG_PATH',        '/usr/local/bin/ffmpeg' ],
         [ 'MAX_PREVIEW_WIDTH',  400 ],
         [ 'MAX_PREVIEW_HEIGHT', 300 ],

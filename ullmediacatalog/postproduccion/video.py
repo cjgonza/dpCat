@@ -1,6 +1,6 @@
 #encoding: utf-8
 from django.shortcuts import render_to_response
-from postproduccion.encoder import get_mm_info, get_file_info, format_types, encode_mixed_video, encode_preview
+from postproduccion.encoder import get_file_info, encode_mixed_video, encode_preview
 from postproduccion.models import TecData, Previsualizacion
 from configuracion import config
 from postproduccion import utils
@@ -28,11 +28,7 @@ def get_fdv_template(v):
             i.tipo.alto,
             i.tipo.mix
         )
-        info = get_mm_info(i.fichero)
-        fe['vcodec'] = format_types[info['ID_VIDEO_CODEC']]
-        if 'ID_AUDIO_ID' in info:
-            fe['acodec'] = format_types[info['ID_AUDIO_CODEC']]
-        duracion.append(float(info['ID_LENGTH']))
+        duracion.append(float(get_file_info(i.fichero)['duration']))
         
         videos.append(fe)
     data['videos'] = videos

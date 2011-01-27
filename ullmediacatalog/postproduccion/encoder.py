@@ -1,25 +1,17 @@
 #encoding: utf-8
 from configuracion import config
 import subprocess
+import shlex
 import os
 import re
-
-"""
-Llama al mplayer para obtener la información multimedia de un vídeo y
-devuelve la información en un hash.
-"""
-def get_mm_info(filename):
-    command = "/usr/bin/env TERM=xterm %s -really-quiet -identify -nolirc %s -ao null -vo null -frames 0 " % (config.get_option('MPLAYER_PATH'), filename)
-    data = os.popen(command).read()
-    return dict([s.split('=') for s in data.strip().split('\n')])
 
 """
 Llama al ffmpeg y para obtener la información completa del fichero y
 devuelve la información procesada en un hash.
 """
 def get_file_info(filename):
-    command = "%s -i %s -acodec copy -vcodec copy -f null /dev/null 2>&1" % (config.get_option('FFMPEG_PATH'), filename)
-    data = os.popen(command).read()
+    command = "%s -i %s -acodec copy -vcodec copy -f null /dev/null" % (config.get_option('FFMPEG_PATH'), filename)
+    data = subprocess.Popen(shlex.split(str(command)), stderr=subprocess.PIPE).communicate()[1]
 
     info = dict()
 
@@ -70,28 +62,6 @@ def get_file_info(filename):
     return info
 
 """
-Diccionario con los nombres de los formatos de codecs.
-"""
-format_types = {
-    'ffdv' : {
-        'short': 'dvvideo',
-        'long' : 'DV_(Digital Video)'
-    },
-    'pcm' : {
-        'short': 'pcm_s16le',
-        'long' : 'PCM_signed 16bitlittleendian'
-    },
-    'ffwmv3' : {
-        'short': 'wmv3',
-        'long' : 'Windows_Media_Video_9'
-    },
-    'ffwmav2' : {
-        'short': 'wmav2',
-        'long' : 'Windows_Media_Audio_2'
-    }
-}
-
-"""
 Devuelve los parámetros preestablecidos para el codec x264
 """
 def x264_presets():
@@ -127,7 +97,7 @@ Realiza el montaje de un video
 """
 def encode_mixed_video(mltfile, outfile, logfile, pid_notifier = None):
     command = "%s -progress -verbose %s -consumer avformat:/%s deinterlace=1 acodec=libfaac ab=348k ar=48000 pix_fmt=yuv420p f=mp4 vcodec=libx264 minrate=0 b=1000k aspect=@16/9 s=1280x720i %s" % (config.get_option('MELT_PATH'), mltfile, outfile, x264_presets())
-    p = subprocess.Popen(command, shell = True, stderr=logfile)
+    p = subprocess.Popen(shlex.split(str(command)), stderr=logfile)
 
     if pid_notifier:
         pid_notifier(p.pid)
@@ -136,7 +106,7 @@ def encode_mixed_video(mltfile, outfile, logfile, pid_notifier = None):
 
 def encode_preview(filename, outfile, size, logfile, pid_notifier = None):
     command = "%s -y -i %s -f flv -vcodec flv -r 30 -b 512000 -s %sx%s -aspect %s -acodec libmp3lame -ab 128000 -ar 22050 %s" % (config.get_option('FFMPEG_PATH'), filename, size['width'], size['height'], size['ratio'], outfile)
-    p = subprocess.Popen(command, shell = True, stderr=logfile)
+    p = subprocess.Popen(shlex.split(str(command)), stderr=logfile)
 
     if pid_notifier:
         pid_notifier(p.pid)

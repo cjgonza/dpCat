@@ -3,14 +3,8 @@
 
  <!-- Productor de la imagen de fondo -->
  <producer in="0" out="{{ data.duracion }}" id="producer_0" >
-  <property name="mlt_type" >producer</property>
-  <property name="aspect_ratio" >1</property>
   <property name="length" >{{ data.duracion }}</property>
-  <property name="eof" >pause</property>
   <property name="resource" >{{ data.fondo }}</property>
-  <property name="ttl" >25</property>
-  <property name="progressive" >1</property>
-  <property name="mlt_service" >pixbuf</property>
  </producer>
 
  <!-- Lista de reproducción de la imagen de fondo -->
@@ -21,55 +15,8 @@
  {% for video in data.videos %}
  <!-- Productor del video #{{ forloop.counter }} -->
  <producer in="0" out="{{ data.duracion }}" id="producer_{{ forloop.counter }}" >
-  <property name="mlt_type" >producer</property>
-  <property name="aspect_ratio" >1.000000</property>
   <property name="length" >{{ data.duracion }}</property>
-  <property name="eof" >pause</property>
   <property name="resource" >{{ video.fichero }}</property>
-  {% if video.acodec %}
-  <property name="meta.media.nb_streams" >2</property>
-  <property name="meta.media.0.stream.type" >audio</property>
-  <property name="meta.media.0.codec.sample_fmt" >s16</property>
-  <property name="meta.media.0.codec.sample_rate" >44100</property>
-  <property name="meta.media.0.codec.channels" >2</property>
-  <property name="meta.media.0.codec.name" >{{ video.acodec.short }}</property>
-  <property name="meta.media.0.codec.long_name" >{{ video.acodec.long }}</property>
-  <property name="meta.media.0.codec.bit_rate" >320032</property>
-  <property name="meta.media.0.codec.profile" >-99</property>
-  <property name="meta.media.0.codec.level" >-99</property>
-  <property name="meta.media.1.stream.type" >video</property>
-  <property name="meta.media.1.stream.frame_rate" >25</property>
-  <property name="meta.media.1.codec.pix_fmt" >yuv420p</property>
-  <property name="meta.media.1.codec.name" >{{ video.vcodec.short }}</property>
-  <property name="meta.media.1.codec.long_name" >{{ video.vcodec.long }}</property>
-  <property name="meta.media.1.codec.bit_rate" >5000000</property>
-  <property name="meta.media.1.codec.profile" >-99</property>
-  <property name="meta.media.1.codec.level" >-99</property>
-  <property name="audio_index" >0</property>
-  <property name="video_index" >1</property>
-  {% else %}
-  <property name="meta.media.nb_streams" >1</property>
-  <property name="meta.media.0.stream.type" >video</property>
-  <property name="meta.media.0.stream.frame_rate" >25</property>
-  <property name="meta.media.0.codec.pix_fmt" >yuv420p</property>
-  <property name="meta.media.0.codec.name" >{{ video.vcodec.short }}</property>
-  <property name="meta.media.0.codec.long_name" >{{ video.vcodec.long }}</property>
-  <property name="meta.media.0.codec.bit_rate" >5000000</property>
-  <property name="meta.media.0.codec.profile" >-99</property>
-  <property name="meta.media.0.codec.level" >-99</property>
-  <property name="audio_index" >-1</property>
-  <property name="video_index" >0</property>
-  {% endif %}
-  <property name="seekable" >1</property>
-  <property name="meta.attr.title.markup" />
-  <property name="meta.attr.author.markup" />
-  <property name="meta.attr.copyright.markup" />
-  <property name="meta.attr.comment.markup" />
-  <property name="meta.attr.album.markup" />
-  <property name="av_bypass" >0</property>
-  <property name="mlt_service" >avformat</property>
-  <property name="source_fps" >1000.000000</property>
-  <property name="top_field_first" >0</property>
  </producer>
 
  <!-- Lista de reproducción del video #{{ forloop.counter }} -->
@@ -92,22 +39,8 @@
   <transition in="0" out="{{ data.duracion }}" id="transition_{{ forloop.counter }}" >
    <property name="a_track" >0</property>
    <property name="b_track" >{{ forloop.counter }}</property>
-   <property name="start" >0,0:100%x100%</property>
-   <property name="factory" >loader</property>
-   <property name="aligned" >1</property>
-   <property name="mlt_type" >transition</property>
    <property name="mlt_service" >composite</property>
-   <property name="automatic" >1</property>
-   <property name="deinterlace" >1</property>
-   <property name="distort" >1</property>
-   <property name="fill" >0</property>
    <property name="geometry" >{{ video.geom }}</property>
-   <property name="luma_invert" >0</property>
-   <property name="operator" >over</property>
-   <property name="progressive" >1</property>
-   <property name="softness" >1</property>
-   <property name="force_track" >1</property>
-   <property name="luma" />
   </transition>
   {% endfor %}
 
