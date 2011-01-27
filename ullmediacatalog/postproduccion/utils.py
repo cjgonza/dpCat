@@ -20,7 +20,7 @@ def set_default_settings():
     defaults = [
         [ 'MAX_ENCODING_TASKS', 5 ],
         [ 'MELT_PATH' ,         '/usr/bin/melt' ], 
-        [ 'FFMPEG_PATH',        '/usr/local/bin/ffmpeg' ],
+        [ 'FFMPEG_PATH',        '/usr/bin/ffmpeg' ],
         [ 'MAX_PREVIEW_WIDTH',  400 ],
         [ 'MAX_PREVIEW_HEIGHT', 300 ],
         [ 'VIDEO_LIBRARY_PATH', '/home/adminudv/videos/videoteca/'],
