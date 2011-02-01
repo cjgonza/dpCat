@@ -172,3 +172,12 @@ class Cola(models.Model):
     class Meta:
         verbose_name = u'tarea'
         verbose_name_plural = u'tareas'
+
+class Token(models.Model):
+
+    token = models.CharField(max_length = 128)
+    instante = models.DateTimeField(auto_now_add = True)
+    video = models.OneToOneField(Video)
+
+    def __unicode__(self):
+        return self.video.titulo

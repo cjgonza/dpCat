@@ -23,9 +23,10 @@ def set_default_settings():
         [ 'FFMPEG_PATH',        '/usr/bin/ffmpeg' ],
         [ 'MAX_PREVIEW_WIDTH',  400 ],
         [ 'MAX_PREVIEW_HEIGHT', 300 ],
-        [ 'VIDEO_LIBRARY_PATH', '/home/adminudv/videos/videoteca/'],
-        [ 'VIDEO_INPUT_PATH' ,  '/home/adminudv/videos/'],
-        [ 'PREVIEWS_PATH' ,  '/home/adminudv/videos/previews/'],
+        [ 'VIDEO_LIBRARY_PATH', '/home/adminudv/videos/videoteca/' ],
+        [ 'VIDEO_INPUT_PATH' ,  '/home/adminudv/videos/' ],
+        [ 'PREVIEWS_PATH' ,     '/home/adminudv/videos/previews/' ],
+        [ 'TOKEN_VALID_DAYS' ,  7 ],
     ]
 
     for op in defaults:
