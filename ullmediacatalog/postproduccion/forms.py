@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.forms.models import BaseInlineFormSet
-from postproduccion.models import Video, FicheroEntrada
+from postproduccion.models import Video, FicheroEntrada, Metadata
 
 class VideoForm(ModelForm):
     class Meta:
@@ -15,3 +15,7 @@ class RequiredBaseInlineFormSet(BaseInlineFormSet):
         form = super(RequiredBaseInlineFormSet, self)._construct_form(i, **kwargs)
         form.empty_permitted = False
         return form
+
+class MetadataForm(ModelForm):
+    class Meta:
+        model = Metadata

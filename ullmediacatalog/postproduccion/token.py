@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 Crea un nuevo token y devuelve su valor.
 """
 def create_token(v):
-    t = Token(video = v, token = utils.generate_token(128))
+    t = Token(video = v, token = utils.generate_token(25))
     t.save()
     return t.token
 

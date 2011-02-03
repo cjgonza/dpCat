@@ -1,5 +1,5 @@
 from django.contrib import admin
-from postproduccion.models import Cola, Video, FicheroEntrada, TipoVideo, PlantillaFDV, TecData
+from postproduccion.models import Cola, Video, FicheroEntrada, TipoVideo, PlantillaFDV, TecData, Metadata
 
 class ColaAdmin(admin.ModelAdmin):
     list_display = ('id', 'video', 'tipo', 'status', 'comienzo', 'fin', 'logfile')
@@ -11,10 +11,14 @@ class FicherosInline(admin.StackedInline):
 class TecDataInline(admin.StackedInline):
     model = TecData
     max_num = 1
+ 
+class MetadataInline(admin.StackedInline):
+    model = Metadata
+    max_num = 1
 
 class VideoAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'status')
-    inlines = [FicherosInline, TecDataInline]
+    inlines = [FicherosInline, TecDataInline, MetadataInline]
     actions = ['custom_delete_selected']
 
     def custom_delete_selected(self, request, queryset):
@@ -36,3 +40,4 @@ admin.site.register(Cola, ColaAdmin)
 admin.site.register(PlantillaFDV, PlantillaFDVAdmin)
 admin.site.register(Video, VideoAdmin)
 admin.site.register(TipoVideo)
+admin.site.register(Metadata)

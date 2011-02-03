@@ -115,6 +115,21 @@ class Previsualizacion(models.Model):
             utils.remove_file_path(self.fichero)
         super(Previsualizacion, self).delete(*args, **kwargs)
 
+class Metadata(models.Model):
+    video = models.OneToOneField(Video, editable = False)
+
+    # TODO: Metadatos iniciales a modo de ejemplo, cambiar por los definitivos.
+    titulo = models.CharField(max_length = 30)
+    subtitulo = models.CharField(max_length = 100)
+    descripcion = models.TextField()
+    autor = models.CharField(max_length = 30)
+
+    class Meta:
+        verbose_name = u'Metadatos'
+        verbose_name_plural = u'Metadatos'
+
+    def __unicode__(self):
+        return self.video.titulo
 
 
 ## COLA ##
@@ -175,7 +190,7 @@ class Cola(models.Model):
 
 class Token(models.Model):
 
-    token = models.CharField(max_length = 128)
+    token = models.CharField(max_length = 25)
     instante = models.DateTimeField(auto_now_add = True)
     video = models.OneToOneField(Video)
 

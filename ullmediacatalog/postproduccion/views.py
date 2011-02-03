@@ -1,6 +1,6 @@
 # Create your views here.
 # -*- encoding: utf-8 -*-
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
@@ -8,9 +8,10 @@ from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
 
 from postproduccion.models import Video, Cola, FicheroEntrada
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet
+from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm
 from postproduccion.queue import enqueue_copy, enqueue_pil, progress
 from postproduccion import utils
+from postproduccion import token
 from configuracion import config
 
 import os
@@ -137,3 +138,22 @@ def cola_listado(request):
         data.append(linea)
         pass
     return HttpResponse(json.dumps(data))
+
+"""
+Vista para que el usuario verifique un vídeo, lo apruebe o rechace y rellene
+los metadatos de dicho vídeo.
+"""
+def definir_metadatos(request, tk_str):
+    v = token.is_valid_token(tk_str)
+    if not v: raise Http404
+
+    if request.method == 'POST':
+        form = MetadataForm(request.POST)
+        if form.is_valid():
+            m = form.save(commit = False)
+            m.video = v
+            m.save()
+            return HttpResponse("Puta madre, todo salvado")
+    else:
+        form = MetadataForm()
+    return render_to_response("postproduccion/definir_metadatos.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
