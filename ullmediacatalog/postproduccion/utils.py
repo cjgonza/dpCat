@@ -26,6 +26,7 @@ def set_default_settings():
         [ 'VIDEO_LIBRARY_PATH', '/home/adminudv/videos/videoteca/' ],
         [ 'VIDEO_INPUT_PATH' ,  '/home/adminudv/videos/' ],
         [ 'PREVIEWS_PATH' ,     '/home/adminudv/videos/previews/' ],
+        [ 'PREVIEWS_URL' ,      '/static/previews/' ],
         [ 'TOKEN_VALID_DAYS' ,  7 ],
     ]
 

@@ -10,6 +10,7 @@ from django.forms.models import inlineformset_factory
 from postproduccion.models import Video, Cola, FicheroEntrada
 from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm
 from postproduccion.queue import enqueue_copy, enqueue_pil, progress
+from postproduccion.video import preview_url
 from postproduccion import utils
 from postproduccion import token
 from configuracion import config
@@ -156,4 +157,4 @@ def definir_metadatos(request, tk_str):
             return HttpResponse("Puta madre, todo salvado")
     else:
         form = MetadataForm()
-    return render_to_response("postproduccion/definir_metadatos.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/definir_metadatos.html", { 'form' : form, 'v' : v, 'preview' : preview_url(v.previsualizacion.fichero) }, context_instance=RequestContext(request))
