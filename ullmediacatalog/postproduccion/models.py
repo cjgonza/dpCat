@@ -1,5 +1,6 @@
 #encoding: utf-8
 from django.db import models
+from django.contrib.auth.models import User
 from postproduccion import utils
 
 # Create your models here.
@@ -47,8 +48,6 @@ class Video(models.Model):
 
  
     titulo = models.CharField(max_length = 30)
-    observacion = models.TextField(null = True, blank = True)
-    fecha_grabacion = models.DateTimeField(auto_now_add = True)
     autor = models.CharField(max_length = 30)
     email = models.EmailField()
 
@@ -69,6 +68,16 @@ class Video(models.Model):
             ("video_manager", u"Puede gestionar la creación de vídeos"),
             ("video_library", u"Puede consultar la videoteca"),
         )
+
+class InformeProduccion(models.Model):
+    video = models.OneToOneField(Video, editable = False)
+    operador = models.ForeignKey(User, editable = False)
+    observacion = models.TextField(null = True, blank = True)
+    fecha_grabacion = models.DateTimeField(auto_now_add = True)
+    aprobacion = models.BooleanField(default = True)
+    aprobado = models.NullBooleanField()
+    comentario = models.TextField(null = True, blank = True)
+
 
 class FicheroEntrada(models.Model):
     video = models.ForeignKey(Video, editable = False)

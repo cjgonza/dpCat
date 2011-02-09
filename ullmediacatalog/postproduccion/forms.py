@@ -1,10 +1,15 @@
 from django.forms import ModelForm
 from django.forms.models import BaseInlineFormSet
-from postproduccion.models import Video, FicheroEntrada, Metadata
+from postproduccion.models import Video, FicheroEntrada, Metadata, InformeProduccion
 
 class VideoForm(ModelForm):
     class Meta:
         model = Video
+
+class InformeCreacionForm(ModelForm):
+    class Meta:
+        model = InformeProduccion
+        exclude = ('aprobado', 'comentario')
 
 class FicheroEntradaForm(ModelForm):
     class Meta:

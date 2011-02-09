@@ -97,7 +97,7 @@ def create_pil(video, logfile, pid_notifier = None):
     os.close(handler)
 
     # Genera el nombre del fichero de salida
-    video.fichero = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.fecha_grabacion.date(), ".mp4"))
+    video.fichero = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_grabacion.date(), ".mp4"))
     video.save()
     utils.ensure_dir(video.fichero)
 
@@ -128,7 +128,7 @@ def copy_video(video, logfile):
 
     # Obtiene los nombres de ficheros origen y destino
     src = video.ficheroentrada_set.all()[0].fichero
-    dst = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.fecha_grabacion.date(), os.path.splitext(src)[1]))
+    dst = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_grabacion.date(), os.path.splitext(src)[1]))
     video.fichero = dst
     video.save()
 
@@ -161,8 +161,7 @@ def create_preview(video, logfile, pid_notifier = None):
 
     # Obtiene los nombres de ficheros origen y destino
     src = video.fichero
-    #dst = os.path.join(config.get_option('PREVIEWS_PATH'), utils.generate_safe_filename(video.titulo, video.fecha_grabacion.date(), ".flv"))
-    dst = utils.generate_safe_filename(video.titulo, video.fecha_grabacion.date(), ".flv")
+    dst = utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_grabacion.date(), ".flv")
 
     # Crea el objecto previsualización
     pv = Previsualizacion(video = video, fichero = dst)

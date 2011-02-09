@@ -8,7 +8,7 @@ from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
 
 from postproduccion.models import Video, Cola, FicheroEntrada
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm
+from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm
 from postproduccion.queue import enqueue_copy, enqueue_pil, progress
 from postproduccion.video import preview_url
 from postproduccion import utils
@@ -27,13 +27,19 @@ Muestra el formulario para insertar un nuevo proyecto de vídeo.
 @permission_required('postproduccion.video_manager')
 def crear(request):
     if request.method == 'POST':
-        form = VideoForm(request.POST)
-        if form.is_valid():
-            v = form.save()
+        vform = VideoForm(request.POST)
+        iform = InformeCreacionForm(request.POST)
+        if vform.is_valid():
+            v = vform.save()
+            i = iform.save(commit = False)
+            i.video = v
+            i.operador = request.user
+            i.save()
             return HttpResponseRedirect(reverse('postproduccion.views.fichero_entrada', args=(v.id,)))
     else:
-        form = VideoForm()
-    return render_to_response("postproduccion/crear.html", { 'form' : form }, context_instance=RequestContext(request))
+        vform = VideoForm()
+        iform = InformeCreacionForm()
+    return render_to_response("postproduccion/crear.html", { 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
 
 
 """
