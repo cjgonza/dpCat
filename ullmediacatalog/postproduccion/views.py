@@ -8,9 +8,8 @@ from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
 
 from postproduccion.models import Video, Cola, FicheroEntrada
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm
+from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, InformeAprobacionForm
 from postproduccion.queue import enqueue_copy, enqueue_pil, progress
-from postproduccion.video import preview_url
 from postproduccion import utils
 from postproduccion import token
 from configuracion import config
@@ -147,12 +146,32 @@ def cola_listado(request):
     return HttpResponse(json.dumps(data))
 
 """
-Vista para que el usuario verifique un vídeo, lo apruebe o rechace y rellene
-los metadatos de dicho vídeo.
+Vista para que el usuario verifique un vídeo y lo apruebe o rechace.
+"""
+def aprobacion_video(request, tk_str):
+    v = token.is_valid_token(tk_str)
+    if not v: raise Http404
+    preview_url = reverse('postproduccion.views.stream_preview', args=(tk_str,))
+
+    if request.method == 'POST':
+        if request.POST['aprobado'] == 'true':
+            v.informeproduccion.aprobado = True
+            redirect = reverse('postproduccion.views.definir_metadatos', args=(tk_str,))
+        else:
+            v.informeproduccion.aprobado = False
+            redirect = "/" # TODO: Redirigir a donde debe.
+        v.informeproduccion.save()
+        return HttpResponseRedirect(redirect)
+
+    return render_to_response("postproduccion/aprobacion_video.html", { 'v' : v, 'preview_url' : preview_url }, context_instance=RequestContext(request))
+
+"""
+Vista para que el usuario rellene los metadatos de un vídeo.
 """
 def definir_metadatos(request, tk_str):
     v = token.is_valid_token(tk_str)
     if not v: raise Http404
+    preview_url = reverse('postproduccion.views.stream_preview', args=(tk_str,))
 
     if request.method == 'POST':
         form = MetadataForm(request.POST)
@@ -163,4 +182,17 @@ def definir_metadatos(request, tk_str):
             return HttpResponse("Puta madre, todo salvado")
     else:
         form = MetadataForm()
-    return render_to_response("postproduccion/definir_metadatos.html", { 'form' : form, 'v' : v, 'preview' : preview_url(v.previsualizacion.fichero) }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/definir_metadatos.html", { 'form' : form, 'v' : v, 'preview_url' : preview_url }, context_instance=RequestContext(request))
+
+@permission_required('postproduccion.video_library')
+def stream_video(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    resp = HttpResponse(utils.stream_file(v.fichero), mimetype='video/mp4')
+    resp['Content-Length'] = os.path.getsize(v.fichero)
+    return resp
+
+def stream_preview(request, tk_str):
+    v = token.is_valid_token(tk_str)
+    resp = HttpResponse(utils.stream_file(v.previsualizacion.fichero), mimetype='video/x-flv')
+    resp['Content-Length'] = os.path.getsize(v.previsualizacion.fichero)
+    return resp

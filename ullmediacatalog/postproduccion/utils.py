@@ -26,7 +26,6 @@ def set_default_settings():
         [ 'VIDEO_LIBRARY_PATH', '/home/adminudv/videos/videoteca/' ],
         [ 'VIDEO_INPUT_PATH' ,  '/home/adminudv/videos/' ],
         [ 'PREVIEWS_PATH' ,     '/home/adminudv/videos/previews/' ],
-        [ 'PREVIEWS_URL' ,      '/static/previews/' ],
         [ 'TOKEN_VALID_DAYS' ,  7 ],
     ]
 
@@ -67,3 +66,21 @@ def remove_file_path(f):
             os.removedirs(os.path.dirname(f))
         except OSError:
             pass
+
+class FileIterWrapper(object):
+    def __init__(self, flo, chunk_size = 1024**2):
+        self.flo = flo
+        self.chunk_size = chunk_size
+
+    def next(self):
+        data = self.flo.read(self.chunk_size)
+        if data:
+            return data
+        else:
+            raise StopIteration
+
+    def __iter__(self):
+        return self
+
+def stream_file(filename):
+    return FileIterWrapper(open(filename, "rb"))

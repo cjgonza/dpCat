@@ -149,19 +149,13 @@ def copy_video(video, logfile):
     video.set_status('COM')
     return True
 
-def preview_path(filename):
-    return os.path.join(config.get_option('PREVIEWS_PATH'), filename)
-
-def preview_url(filename):
-    return os.path.join(config.get_option('PREVIEWS_URL'), filename)
-
 def create_preview(video, logfile, pid_notifier = None):
     # Actualiza el estado del vídeo
     video.set_status('PRP')
 
     # Obtiene los nombres de ficheros origen y destino
     src = video.fichero
-    dst = utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_grabacion.date(), ".flv")
+    dst = os.path.join(config.get_option('PREVIEWS_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_grabacion.date(), ".flv"))
 
     # Crea el objecto previsualización
     pv = Previsualizacion(video = video, fichero = dst)
@@ -171,11 +165,11 @@ def create_preview(video, logfile, pid_notifier = None):
     size = calculate_preview_size(video)
 
     # Codifica la previsualización.
-    utils.ensure_dir(preview_path(pv.fichero))
-    if encode_preview(src, preview_path(dst), size, logfile, pid_notifier) != 0:
+    utils.ensure_dir(pv.fichero)
+    if encode_preview(src, dst, size, logfile, pid_notifier) != 0:
         video.set_status('COM')
         try:
-            os.unlink(preview_path(dst))
+            os.unlink(dst)
         except:
             pass
         return False

@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, BooleanField, Select
 from django.forms.models import BaseInlineFormSet
 from postproduccion.models import Video, FicheroEntrada, Metadata, InformeProduccion
 
@@ -9,7 +9,12 @@ class VideoForm(ModelForm):
 class InformeCreacionForm(ModelForm):
     class Meta:
         model = InformeProduccion
-        exclude = ('aprobado', 'comentario')
+        fields = ('observacion', 'aprobacion')
+
+class InformeAprobacionForm(ModelForm):
+    class Meta:
+        model = InformeProduccion
+        fields = ('aprobado', 'comentario')
 
 class FicheroEntradaForm(ModelForm):
     class Meta:

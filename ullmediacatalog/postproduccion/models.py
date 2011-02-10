@@ -119,12 +119,10 @@ class Previsualizacion(models.Model):
     video = models.OneToOneField(Video)
     fichero = models.CharField(max_length = 255)
 
-    """
     def delete(self, *args, **kwargs):
         if self.fichero:
             utils.remove_file_path(self.fichero)
         super(Previsualizacion, self).delete(*args, **kwargs)
-    """
 
 class Metadata(models.Model):
     video = models.OneToOneField(Video, editable = False)

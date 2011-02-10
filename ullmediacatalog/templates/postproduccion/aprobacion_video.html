@@ -13,6 +13,11 @@
 <h2>{{ v.titulo }}</h2>
 <form method="post" action="">
 {% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Enviar" />
+<input type="hidden" name="aprobado" value="true" />
+<input type="submit" value="Aprobar" />
+</form>
+<form method="post" action="">
+{% csrf_token %}
+<input type="hidden" name="aprobado" value="false" />
+<input type="submit" value="Rechazar" />
 </form>
