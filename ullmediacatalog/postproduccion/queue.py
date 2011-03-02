@@ -3,7 +3,7 @@ from postproduccion.models import Cola
 from postproduccion.video import create_pil, create_preview, copy_video
 from settings import MEDIA_ROOT
 from configuracion import config
-from postproduccion import log
+from postproduccion import log, token
 
 import os
 import re
@@ -68,7 +68,8 @@ def process_task(task):
         log.copy_start(task.video)
         if copy_video(task.video, handle):
             log.copy_finish(task.video)
-            enqueue_preview(task.video)
+            if task.video.status == 'COM':
+                enqueue_preview(task.video)
         else:
             log.copy_error(task.video)
             error = True
@@ -77,7 +78,8 @@ def process_task(task):
         log.pil_start(task.video)
         if create_pil(task.video, handle, make_pid_notifier(task)):
             log.pil_finish(task.video)
-            enqueue_preview(task.video)
+            if task.video.status == 'COM':
+                enqueue_preview(task.video)
         else:
             log.pil_error(task.video)
             error = True
@@ -86,6 +88,7 @@ def process_task(task):
         log.preview_start(task.video)
         if create_preview(task.video, handle, make_pid_notifier(task)):
             log.preview_finish(task.video)
+            token.send_mail_to_user(task.video)
         else:
             log.preview_error(task.video)
             error = True
@@ -148,8 +151,17 @@ def available_slots():
     return int(config.get_option('MAX_ENCODING_TASKS')) - Cola.objects.count_actives()
 
 """
-Cancela la ejecución de una tarea
+Cancela la ejecución de una tarea.
 """
 def cancel_task(task):
     if task.status == 'PRO' and task.pid:
         os.kill(task.pid, signal.SIGTERM)
+
+"""
+Devuelve el contenido del log de una tarea.
+"""
+def get_log(task):
+    task.logfile.file.open()
+    data = task.logfile.file.read()
+    task.logfile.file.close()
+    return data

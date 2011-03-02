@@ -1,4 +1,4 @@
-from django.forms import ModelForm, BooleanField, Select
+from django.forms import ModelForm, CharField, Textarea, widgets
 from django.forms.models import BaseInlineFormSet
 from postproduccion.models import Video, FicheroEntrada, Metadata, InformeProduccion
 
@@ -11,10 +11,12 @@ class InformeCreacionForm(ModelForm):
         model = InformeProduccion
         fields = ('observacion', 'aprobacion')
 
-class InformeAprobacionForm(ModelForm):
+class InformeRechazoForm(ModelForm):
+    comentario = CharField(required = True, widget = Textarea())
+
     class Meta:
         model = InformeProduccion
-        fields = ('aprobado', 'comentario')
+        fields = ('comentario',)
 
 class FicheroEntradaForm(ModelForm):
     class Meta:

@@ -8,8 +8,8 @@ from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
 
 from postproduccion.models import Video, Cola, FicheroEntrada
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, InformeAprobacionForm
-from postproduccion.queue import enqueue_copy, enqueue_pil, progress
+from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, InformeRechazoForm
+from postproduccion.queue import enqueue_copy, enqueue_pil, progress, get_log
 from postproduccion import utils
 from postproduccion import token
 from configuracion import config
@@ -136,14 +136,21 @@ def cola_listado(request):
         linea = dict()
         linea['video'] = task.video.titulo
         linea['tipo'] = dict(Cola.QUEUE_TYPE)[task.tipo]
-        linea['comienzo'] = task.comienzo.__str__() if task.comienzo else ""
-        linea['fin'] = task.fin.__str__() if task.fin else ""
+        linea['comienzo'] = task.comienzo.__str__() if task.comienzo else None
+        linea['fin'] = task.fin.__str__() if task.fin else None
         linea['logfile'] = task.logfile.name
+        linea['logurl'] = reverse('postproduccion.views.mostrar_log', args=(task.pk,)) if task.logfile.name else None
         linea['id'] = task.pk
         linea['status'] = progress(task) if task.status == 'PRO' else dict(Cola.QUEUE_STATUS)[task.status]
         data.append(linea)
         pass
     return HttpResponse(json.dumps(data))
+
+
+@permission_required('postproduccion.video_manager')
+def mostrar_log(request, task_id):
+    task = get_object_or_404(Cola, pk=task_id)
+    return HttpResponse(get_log(task), mimetype='text/plain')
 
 """
 Vista para que el usuario verifique un vídeo y lo apruebe o rechace.
@@ -156,10 +163,10 @@ def aprobacion_video(request, tk_str):
     if request.method == 'POST':
         if request.POST['aprobado'] == 'true':
             v.informeproduccion.aprobado = True
-            redirect = reverse('postproduccion.views.definir_metadatos', args=(tk_str,))
+            redirect = reverse('postproduccion.views.definir_metadatos_user', args=(tk_str,))
         else:
             v.informeproduccion.aprobado = False
-            redirect = "/" # TODO: Redirigir a donde debe.
+            redirect = reverse('postproduccion.views.rechazar_video', args=(tk_str,))
         v.informeproduccion.save()
         return HttpResponseRedirect(redirect)
 
@@ -168,7 +175,7 @@ def aprobacion_video(request, tk_str):
 """
 Vista para que el usuario rellene los metadatos de un vídeo.
 """
-def definir_metadatos(request, tk_str):
+def definir_metadatos_user(request, tk_str):
     v = token.is_valid_token(tk_str)
     if not v: raise Http404
     preview_url = reverse('postproduccion.views.stream_preview', args=(tk_str,))
@@ -179,10 +186,53 @@ def definir_metadatos(request, tk_str):
             m = form.save(commit = False)
             m.video = v
             m.save()
+            token.token_attended(v)
+            v.status = 'ACE'
+            v.save()
+            return HttpResponse("Datos enviados al operador para su aprobación")
+    else:
+        form = MetadataForm()
+    return render_to_response("postproduccion/definir_metadatos.html", { 'form' : form, 'v' : v, 'url' : preview_url }, context_instance=RequestContext(request))
+
+"""
+Vista para qeu el operador rellene los metadatos de un vídeo.
+"""
+@permission_required('postproduccion.video_manager')
+def definir_metadatos_oper(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    video_url = reverse('postproduccion.views.stream_video', args = (video_id,))
+
+    if request.method == 'POST':
+        form = MetadataForm(request.POST)
+        if form.is_valid():
+            m = form.save(commit = False)
+            m.video = v
+            m.save()
+            v.status = 'LIS'
+            v.save()
             return HttpResponse("Puta madre, todo salvado")
     else:
         form = MetadataForm()
-    return render_to_response("postproduccion/definir_metadatos.html", { 'form' : form, 'v' : v, 'preview_url' : preview_url }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/definir_metadatos.html", { 'form' : form, 'v' : v, 'url' : video_url }, context_instance=RequestContext(request))
+
+"""
+Solicita al usuario una razón por la cual el vídeo ha sido rechazado
+"""
+def rechazar_video(request, tk_str):
+    v = token.is_valid_token(tk_str)
+    if not v: raise Http404
+
+    if request.method == 'POST':
+        form = InformeRechazoForm(request.POST, instance = v.informeproduccion)
+        if form.is_valid():
+            form.save()
+            token.token_attended(v)
+            v.status = 'REC'
+            v.save()
+            return HttpResponse("Enviada notificación al operador para que atienda la incidencia")
+    else:
+        form = InformeRechazoForm()
+    return render_to_response("postproduccion/rechazar_video.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
 
 @permission_required('postproduccion.video_library')
 def stream_video(request, video_id):

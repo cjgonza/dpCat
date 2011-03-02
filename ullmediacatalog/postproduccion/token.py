@@ -1,18 +1,23 @@
 #encoding: utf-8
 
-from postproduccion.models import Token
+from django.shortcuts import render_to_response
+from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
+from postproduccion.models import Token, Video
 from postproduccion import utils
 from configuracion import config
 
 from datetime import datetime, timedelta
+from urlparse import urljoin
 
 """
 Crea un nuevo token y devuelve su valor.
 """
 def create_token(v):
+    if hasattr(v, 'token'): v.token.delete()
     t = Token(video = v, token = utils.generate_token(25))
     t.save()
-    return t.token
+    return Video.objects.get(token = t)
 
 """
 Verifica que una petición es válida. En caso afirmativo devuelve el vídeo asociado.
@@ -33,3 +38,28 @@ Borra de la base de datos un token que ya ha sido atendido
 """
 def token_attended(v):
     v.token.delete()
+    return Video.objects.get(id = v.id)
+
+"""
+Genera el mensaje de correo con las indicaciones para usar el token.
+"""
+def generate_mail_message(v):
+    (nombre, titulo, vid, fecha) = (v.autor, v.titulo, v.id, v.informeproduccion.fecha_grabacion)
+    url = urljoin(config.get_option('SITE_URL'), reverse('postproduccion.views.aprobacion_video', args=(v.token.token,))) 
+    return render_to_response('postproduccion/mail_message.txt', { 
+        'nombre' : nombre,
+        'titulo' : titulo,
+        'vid'    : vid,
+        'fecha'  : fecha,
+        'url'    : url,
+        }).content
+    
+
+"""
+Envía un correo al usuario para solicitar la aprobación y los metadatos de un vídeo.
+"""
+def send_mail_to_user(v):
+    v = create_token(v)
+    send_mail('UDV: Vídeo completado', generate_mail_message(v), 'pchinea@ull.es', [v.email])
+    return v
+

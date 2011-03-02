@@ -118,7 +118,10 @@ def create_pil(video, logfile, pid_notifier = None):
     os.unlink(path)
 
     # Actualiza el estado del vídeo
-    video.set_status('COM')
+    if video.informeproduccion.aprobacion:
+        video.set_status('COM')
+    else:
+        video.set_status('PTO')
     
     return True
 
@@ -146,7 +149,11 @@ def copy_video(video, logfile):
     generate_tecdata(video)
 
     # Actualiza el estado del vídeo
-    video.set_status('COM')
+    if video.informeproduccion.aprobacion:
+        video.set_status('COM')
+    else:
+        video.set_status('PTO')
+
     return True
 
 def create_preview(video, logfile, pid_notifier = None):
@@ -175,5 +182,5 @@ def create_preview(video, logfile, pid_notifier = None):
         return False
 
     # Actualiza el estado del vídeo
-    video.set_status('PTE')
+    video.set_status('PTU')
     return True

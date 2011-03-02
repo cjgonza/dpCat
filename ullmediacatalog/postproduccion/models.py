@@ -36,7 +36,8 @@ class Video(models.Model):
         ('PRV', u'Procesando vídeo'),            # Está siendo procesado (montaje o copia).
         ('COM', u'Completado'),                  # Procesamiento completado (en cola para generar previsualización).
         ('PRP', u'Procesando previsualización'), # Está siendo generada la previsualización.
-        ('PTE', u'Pendiente'),                   # A la espera de que el usuario rellene los metadatos y acepte el vídeo.
+        ('PTU', u'Pendiente del usuario'),       # A la espera de que el usuario rellene los metadatos y acepte el vídeo.
+        ('PTO', u'Pendiente del operador'),      # A la espera de que el operador rellene los metadatos.
         ('ACE', u'Aceptado'),                    # Aceptado por el usuario, a la espera de que lo valide el operador.
         ('REC', u'Rechazado'),                   # Rechazado por el usuario, a la espera de que el operador tome las medidas necesarias.
         ('LIS', u'Listo'),                       # Validado por el operador, todos los procedimientos terminados.

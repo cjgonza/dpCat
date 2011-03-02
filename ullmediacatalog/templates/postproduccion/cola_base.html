@@ -36,9 +36,18 @@
     <script type="text/javascript">
         function creaLinea(data) {
             str = '';
-            keys = ['id', 'video', 'tipo', 'comienzo', 'fin', 'logfile'];
+            keys = ['id', 'video', 'tipo', 'comienzo', 'fin'];
             for (var i in keys)
-                str += '<td>' + data[keys[i]] + '</td>';
+                if (data[keys[i]]) {
+                    str += '<td>' + data[keys[i]] + '</td>';
+                } else {
+                    str += '<td>&nbsp;</td>';
+                }
+            if (data['logurl']) {
+                str += '<td><a href="' + data['logurl'] +'" target="_blank">' + data['logfile'] +'</a></td>';
+            } else {
+                str += '<td>&nbsp;</td>';
+            }
             str += '<td><div id="status' + data['id'] + '">' + data['status'] + '</div></td>';
             return str
         }
@@ -65,7 +74,7 @@
                 $(creaTabla(data)).replaceAll("tbody"); 
                 mostrarProgreso(data);
             });
-            setTimeout("refrescar();", 100);
+            setTimeout("refrescar();", 1000);
         }
         $(document).ready( function() {
             refrescar();
