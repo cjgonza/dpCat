@@ -1,4 +1,4 @@
-Estimado {{ nombre }}, le informamos que la grabación realizada a fecha {{ fecha }}, con título "{{ titulo }}" y número de referencia #{{ vid }} ya ha sido procesada. Por favor, acceda a la siguiente dirección para notificar su conformidad con el resultado e introducir la información requerida para su clasificación.
+Estimado/a {{ nombre }}, le informamos que la grabación realizada a fecha {{ fecha }}, con título "{{ titulo }}" y número de referencia #{{ vid }} ya ha sido procesada. Por favor, acceda a la siguiente dirección para notificar su conformidad con el resultado e introducir la información requerida para su clasificación.
 
 {{ url }}
 

@@ -181,7 +181,7 @@ def definir_metadatos_user(request, tk_str):
     preview_url = reverse('postproduccion.views.stream_preview', args=(tk_str,))
 
     if request.method == 'POST':
-        form = MetadataForm(request.POST)
+        form = MetadataForm(request.POST, instance = v.metadata) if  hasattr(v, 'metadata') else MetadataForm(request.POST)
         if form.is_valid():
             m = form.save(commit = False)
             m.video = v
@@ -191,11 +191,11 @@ def definir_metadatos_user(request, tk_str):
             v.save()
             return HttpResponse("Datos enviados al operador para su aprobación")
     else:
-        form = MetadataForm()
+        form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
     return render_to_response("postproduccion/definir_metadatos.html", { 'form' : form, 'v' : v, 'url' : preview_url }, context_instance=RequestContext(request))
 
 """
-Vista para qeu el operador rellene los metadatos de un vídeo.
+Vista para que el operador rellene los metadatos de un vídeo.
 """
 @permission_required('postproduccion.video_manager')
 def definir_metadatos_oper(request, video_id):
