@@ -1,0 +1,69 @@
+
+body {
+    background: url(../img/login_bg.jpg) 0 0 no-repeat;
+    font: normal 12px Arial;
+}
+
+
+
+/* login.html */
+
+#loginbox {
+    width: 508px;
+    margin: 0 auto;
+    background: url(../img/loginbox_bg.png) 0 0 no-repeat;
+    height: 272px;
+    margin-top: 150px;
+}
+
+#loginbox form {
+    padding: 25px;
+}
+
+#loginbox form ul {
+    list-style: none;
+    width: 355px;
+    margin: 0px auto;
+    padding: 0px;
+margin-top: 65px;
+}
+
+#loginbox form li {
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+#loginbox form li label {
+    width: 125px;
+    display: block;
+    clear: both;
+    float: left;
+    margin-right: 15px;
+    text-align: right;
+    color: #336699;
+    font: bold 13px Arial; 
+    text-shadow: 0 1px #eee;
+    line-height: 28px;
+}
+
+#loginbox form li input {
+    float: left;
+    clear: right;
+    line-height: 25px;
+    border: solid 1px #336699;
+    -moz-border-radius: 2px;
+    padding: 5px;
+    color: #555555;
+    width: 200px;
+}
+
+#loginbox input[type="submit"] {
+    background: #336699;
+    color: #fff;
+    border: 0px;
+    -moz-border-radius: 3px;
+    float: right;
+    margin-right: 54px;
+    padding: 3px 15px;
+    font-size: 11px;
+    font-weight: bold;
+}
