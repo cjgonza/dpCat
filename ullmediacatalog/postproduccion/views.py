@@ -19,6 +19,15 @@ import urllib
 
 from django.contrib.auth.decorators import permission_required
 
+"""
+Muestra la página inicial
+"""
+@permission_required('postproduccion.video_manager')
+def index(request):
+    linkcrear = reverse('postproduccion.views.crear')
+    linkcola = reverse('postproduccion.views.cola_base')
+    return render_to_response("postproduccion/index.html", { 'linkcrear' : linkcrear, 'linkcola' : linkcola }, context_instance=RequestContext(request))
+
 
 """
 Muestra el formulario para insertar un nuevo proyecto de vídeo.
