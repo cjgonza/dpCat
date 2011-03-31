@@ -6,26 +6,27 @@
 
 {% block content %}
 
-{% if form.errors %} <p>Your username and password didn't match. Please try again.</p> {% endif %}
 
 <div id="loginbox">
-<form method="post" action="{% url django.contrib.auth.views.login %}">
-{% csrf_token %}
-<ul>
-    <li>
-    {{ form.username.label_tag }} 
-    {{ form.username }}
-    </li>
-    <li>
-    {{ form.password.label_tag }}
-    {{ form.password }}
-    </li>
-    </ul>
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
+    {% if form.errors %}
+    <p class="mensaje rojo">Los datos introducidos no coinciden con ning&uacute;n usuario existente.</p>
+    {% endif %}
 
-
+    <form method="post" action="{% url django.contrib.auth.views.login %}">
+        {% csrf_token %}
+        <ul>
+            <li>
+            {{ form.username.label_tag }} 
+            {{ form.username }}
+            </li>
+            <li>
+            {{ form.password.label_tag }}
+            {{ form.password }}
+            </li>
+        </ul>
+        <input type="submit" value="login" />
+        <input type="hidden" name="next" value="{{ next }}" />
+    </form>
 </div>
 
 <div class="footer-box">
@@ -33,7 +34,7 @@
         <ul>
            <li><a href="www.udv.ull.es">P&aacute;gina web del proyecto</a></li>
            <li><a href="www.udv.ull.es">Acerca de</a></li>
-            <li class="name">&copy; DpBox 2011</li>
+            <li class="name">&copy; XXXXX 2011</li>
         </ul>
     </div>
 </div>
