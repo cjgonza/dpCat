@@ -1,6 +1,5 @@
 <a href="{{linkcrear}}">Crear</a>
 <a href="{{linkcola}}">Cola</a>
 
-{% url users:logout as logout %}
 
-<a href="{{logout}}">cerrar sesion</a>
+<a href="{% url django.contrib.auth.views.logout %}">cerrar sesion</a>
