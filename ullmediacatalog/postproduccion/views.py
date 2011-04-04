@@ -6,6 +6,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
+from django.db.models import Q
 
 from postproduccion.models import Video, Cola, FicheroEntrada
 from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, InformeRechazoForm
@@ -152,14 +153,48 @@ def cola_listado(request):
         linea['id'] = task.pk
         linea['status'] = progress(task) if task.status == 'PRO' else dict(Cola.QUEUE_STATUS)[task.status]
         data.append(linea)
-        pass
     return HttpResponse(json.dumps(data))
 
-
+"""
+Muestra el fichero de log para una tarea.
+"""
 @permission_required('postproduccion.video_manager')
 def mostrar_log(request, task_id):
     task = get_object_or_404(Cola, pk=task_id)
     return HttpResponse(get_log(task), mimetype='text/plain')
+
+"""
+Lista los vídeos que están pendientes de atención por parte del operador.
+"""
+@permission_required('postproduccion.video_manager')
+def listar_pendientes(request):
+    filtro = Q(status = 'PTO') | Q(status = 'ACE') | Q(status = 'REC')
+    return listar(request, filtro)
+
+"""
+Lista los vídeos que están siendo procesados.
+"""
+@permission_required('postproduccion.video_manager')
+def listar_en_proceso(request):
+    return listar(request)
+
+"""
+Lista los vídeos que están siendo procesados que cumplan el filto dado.
+"""
+@permission_required('postproduccion.video_manager')
+def listar(request, filtro = None):
+    data = list()
+    videolist = Video.objects.filter(~Q(status = 'LIS'))
+    videolist = videolist.filter(filtro) if filtro else videolist
+    for v in videolist.order_by('pk'):
+        linea = dict()
+        linea['id'] = v.pk
+        linea['titulo'] = v.titulo
+        linea['operador'] = v.informeproduccion.operador.username
+        linea['fecha'] = str(v.informeproduccion.fecha_grabacion)
+        linea['tipo'] = v.status.lower()
+        data.append(linea)
+    return render_to_response("postproduccion/listar.html", { 'list' : data }, context_instance=RequestContext(request))
 
 """
 Vista para que el usuario verifique un vídeo y lo apruebe o rechace.

@@ -15,4 +15,6 @@ urlpatterns = patterns('postproduccion.views',
     (r'^(?P<tk_str>\w{25})/rechazar_video/$', 'rechazar_video'),
     (r'^(?P<video_id>\d+)/stream.mp4$', 'stream_video'),
     (r'^(?P<tk_str>\w{25})/stream.flv$', 'stream_preview'),
+    (r'^enproceso/$', 'listar_en_proceso'),
+    (r'^pendientes/$', 'listar_pendientes'),
 )

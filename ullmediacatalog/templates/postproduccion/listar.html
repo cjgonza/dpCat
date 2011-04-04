@@ -1,0 +1,10 @@
+<table border = "1">
+  <thead>
+    <th>ID</th><th>T&iacute;tulo</th><th>Operador</th><th>Fecha</th>
+  </thead>
+  <tbody>
+    {% for video in list %}
+    <tr><td class="{{ video.tipo }}">#{{ video.id}}</td><td>{{ video.titulo }}</td><td>{{ video.operador }}</td><td>{{ video.fecha }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
