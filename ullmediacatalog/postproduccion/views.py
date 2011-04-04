@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
 
 from postproduccion.models import Video, Cola, FicheroEntrada
 from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, InformeRechazoForm
@@ -114,6 +115,7 @@ Devuelve una lista (html) con el contenido de un directorio para usar con la
 llamada AJAX del jqueryFileTree.
 """
 @permission_required('postproduccion.video_manager')
+@csrf_exempt
 def dirlist(request):
     r=['<ul class="jqueryFileTree" style="display: none;">']
     try:
