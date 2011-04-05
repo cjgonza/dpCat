@@ -1,5 +1,46 @@
-<a href="{{linkcrear}}">Crear</a>
-<a href="{{linkcola}}">Cola</a>
+{% extends "postproduccion/base.html" %}
 
 
-<a href="{% url django.contrib.auth.views.logout %}">cerrar sesion</a>
+{% block body-class %}index{% endblock %}
+{% block title %} - Prueba del primer titulo {% endblock %}
+
+
+{% block content %}
+
+
+<div id="page-index">
+
+<div id="main-header">
+    <div id="inner-header"> 
+<div id="logo"><a href="#">Soy el logo</a></div>
+<div id="menu-header">
+<ul>
+<li><a class="icon-logout" title="Cerrar sesi&oacute;n en dpCat" href="{% url django.contrib.auth.views.logout %}">Cerrar sesi&oacute;n</a></li>
+</div>
+    </div>
+</div>
+<div id="main-content">
+    <div id="inner-content">
+        <h1>Resumen de actividad</h1>
+        <div id="content">
+            Soy content, muestro los tipos de mensajes:
+            <div class="mensaje rojo">mensaje rojo</div>
+            <div class="mensaje verde">mensaje verde</div>
+            <div class="mensaje amarillo">mensaje amarillo</div>
+            <div class="mensaje">mensaje</div>
+        </div>
+    </div>
+</div>
+<div id="main-footer">
+    <div id="inner-footer">
+    &copy; dpCat - 2011
+    </div>
+</div>
+
+    <a href="{{linkcrear}}">Crear</a>
+    <a href="{{linkcola}}">Cola</a>
+
+
+</div>
+
+{% endblock %}
