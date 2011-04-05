@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from django.core.management.base import NoArgsCommand
-from ullmediacatalog.postproduccion.models import Cola
-from ullmediacatalog.postproduccion.queue import process_task, available_slots
+from postproduccion.models import Cola
+from postproduccion.queue import process_task, available_slots
 import threading
 
 class Command(NoArgsCommand):
