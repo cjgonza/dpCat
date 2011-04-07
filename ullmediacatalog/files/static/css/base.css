@@ -168,31 +168,40 @@ body.login {
 /* main-header y derivados */
 /****************************/
 #main-header {
-    height: 100px;
+    height: 90px;
     background: url(../img/login_bg.jpg) 0 0 no-repeat;
 }
 
 #inner-header {
-    width: 960px;
+    max-width: 1260px;
+    min-width: 850px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 10px 0px;
+    padding: 10px 20px;
 }
 
 #logo {
     float: left;
     width: 250px;
     height: 60px;
-    background: red;
     margin: 0px;
     padding: 0px;
 }
 
+/* Logo en caso de tener imagen.
 #logo a {
     display: block;
     height: 70px;
     width: 250px;
     text-indent:-9999px;
+}*/
+
+#logo a {
+    color: #fff;
+    font: bold 45px Arial;
+    text-decoration: none;
+    line-height: 90px;
+    text-shadow: 2px 2px 7px #111;
 }
 
 #menu-header {
@@ -230,9 +239,10 @@ body.login {
     padding: 0px;
 }
 #inner-content {
-    width: 960px;
     margin: 0px auto;
-    padding-top: 20px;
+     max-width: 1260px;
+    min-width: 850px;
+   padding: 20px 20px 0px 20px;
 }
 
 #inner-content h1 {
