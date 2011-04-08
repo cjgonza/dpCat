@@ -122,13 +122,26 @@ def _parse_log_line(line):
     return { 'status' : STATUS_TEXT[line[0]], 'msg' : line[1:].strip() }
 
 """
-Devuelve una lista con todas las entradas del log
+Devuelve una lista con todas las entradas del fichero de log dado
 """
-def getlog():
-    f = open(LOGFILE, 'r')
+def _get_logfile(fname):
+    f = open(fname, 'r')
     log = map(_parse_log_line, f.readlines())
     f.close()
     return log
+
+"""
+Devuelve una lista con todas las entradas del log
+"""
+def get_log():
+    return _get_logfile(LOGFILE)
+
+"""
+Devuelve una lista con todas las entradas del log antiguo
+"""
+def get_old_log():
+    return _get_logfile("%s.%s" % (LOGFILE, 1))
+
 
 #
 # Rotación del registro
@@ -149,7 +162,7 @@ def _compress_file(fname):
 Rota los registros comprimiendo los más antiguos.
 """
 def _logrotate():
-    for i in range(8, 1, -1):
+    for i in range(int(config.get_option('MAX_NUM_LOGFILES')) - 1, 1, -1):
         if os.path.isfile('%s.%s.gz' % (LOGFILE, i)):
             os.rename('%s.%s.gz' % (LOGFILE, i), '%s.%s.gz' % (LOGFILE, i + 1))
     if os.path.isfile('%s.%s' % (LOGFILE, 1)):

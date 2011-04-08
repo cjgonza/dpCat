@@ -29,6 +29,7 @@ def set_default_settings():
         [ 'TOKEN_VALID_DAYS' ,  7 ],
         [ 'SITE_URL' ,          'http://127.0.0.1:8000' ],
         [ 'LOG_MAX_LINES',      1000 ],
+        [ 'MAX_NUM_LOGFILES',   6 ],
     ]
 
     for op in defaults:
