@@ -12,13 +12,23 @@
 
 <div id="main-header">
     <div id="inner-header"> 
-<div id="logo"><a href="#">dpCat</a></div>
-<div id="menu-header">
-<ul>
-<li><a class="icon-logout" title="Cerrar sesi&oacute;n en dpCat" href="{% url django.contrib.auth.views.logout %}">Cerrar sesi&oacute;n</a></li>
-</div>
+        <div id="logo"><a href="#">dpCat</a></div>
+        <div id="menu-header">
+            <ul>
+                <li><a class="icon-logout" title="Cerrar sesi&oacute;n en dpCat" href="{% url django.contrib.auth.views.logout %}">Cerrar sesi&oacute;n</a></li>
+        </div>
     </div>
+    <div id="inner-menu">
+        <ul>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Videoteca</a></li>
+            <li><a href="#">Centro de Alertas</a></li>
+        </ul>
+    </div>
+
 </div>
+
+
 <div id="main-content">
     <div id="inner-content">
         <h1>Resumen de actividad</h1>
