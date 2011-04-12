@@ -17,4 +17,6 @@ urlpatterns = patterns('postproduccion.views',
     (r'^stream/(?P<tk_str>\w{25}).flv$', 'stream_preview'),
     (r'^enproceso/$', 'listar_en_proceso'),
     (r'^pendientes/$', 'listar_pendientes'),
+    (r'^log/$', 'showlog'),
+    (r'^log/old/$', 'showlog', { 'old' : True }),
 )

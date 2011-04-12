@@ -26,7 +26,7 @@ Escribe un mensaje en el log de la aplicación
 def _print_log(status, msg):
     _register_entry()
     f = open(LOGFILE, 'a')
-    f.write("%c[%s] %s\n" % (status, datetime.datetime.now(), msg))
+    f.write("%c[%s] %s\n" % (status, datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"), msg))
     f.close()
 
 #
@@ -119,7 +119,7 @@ def _parse_log_line(line):
         ERROR   : "error",
         DEBUG   : "debug"
     }
-    return { 'status' : STATUS_TEXT[line[0]], 'msg' : line[1:].strip() }
+    return { 'status' : STATUS_TEXT[line[0]], 'time' : line[2:28], 'msg' : line[30:].strip() }
 
 """
 Devuelve una lista con todas las entradas del fichero de log dado

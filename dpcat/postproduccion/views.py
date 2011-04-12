@@ -14,6 +14,7 @@ from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInli
 from postproduccion.queue import enqueue_copy, enqueue_pil, progress, get_log
 from postproduccion import utils
 from postproduccion import token
+from postproduccion import log
 from configuracion import config
 
 import os
@@ -148,8 +149,8 @@ def cola_listado(request):
         linea = dict()
         linea['video'] = task.video.titulo
         linea['tipo'] = dict(Cola.QUEUE_TYPE)[task.tipo]
-        linea['comienzo'] = task.comienzo.__str__() if task.comienzo else None
-        linea['fin'] = task.fin.__str__() if task.fin else None
+        linea['comienzo'] = task.comienzo.strftime("%d/%m/%Y %H:%M:%S.%f") if task.comienzo else None
+        linea['fin'] = task.fin.strftime("%d/%m/%Y %H:%M:%S.%f") if task.fin else None
         linea['logfile'] = task.logfile.name
         linea['logurl'] = reverse('postproduccion.views.mostrar_log', args=(task.pk,)) if task.logfile.name else None
         linea['id'] = task.pk
@@ -193,7 +194,7 @@ def listar(request, filtro = None):
         linea['id'] = v.pk
         linea['titulo'] = v.titulo
         linea['operador'] = v.informeproduccion.operador.username
-        linea['fecha'] = str(v.informeproduccion.fecha_grabacion)
+        linea['fecha'] = v.informeproduccion.fecha_grabacion.strftime("%d/%m/%Y %H:%M:%S.%f")
         linea['tipo'] = v.status.lower()
         data.append(linea)
     return render_to_response("postproduccion/listar.html", { 'list' : data }, context_instance=RequestContext(request))
@@ -292,3 +293,11 @@ def stream_preview(request, tk_str):
     resp = HttpResponse(utils.stream_file(v.previsualizacion.fichero), mimetype='video/x-flv')
     resp['Content-Length'] = os.path.getsize(v.previsualizacion.fichero)
     return resp
+
+"""
+Muestra el registro de eventos de la aplicación.
+"""
+@permission_required('postproduccion.video_manager')
+def showlog(request, old = False):
+    logdata = log.get_log() if not old else log.get_old_log()
+    return render_to_response("postproduccion/log.html", { 'log' : logdata }, context_instance=RequestContext(request))
