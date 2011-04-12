@@ -27,9 +27,7 @@ Muestra la página inicial
 """
 @permission_required('postproduccion.video_manager')
 def index(request):
-    linkcrear = reverse('postproduccion.views.crear')
-    linkcola = reverse('postproduccion.views.cola_base')
-    return render_to_response("postproduccion/index.html", { 'linkcrear' : linkcrear, 'linkcola' : linkcola }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/inicio.html", { }, context_instance=RequestContext(request))
 
 
 """

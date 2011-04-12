@@ -20,9 +20,10 @@
     </div>
     <div id="inner-menu">
         <ul>
-            <li><a href="#">Inicio</a></li>
+            <li><a href="{% url postproduccion.views.index %}">Inicio</a></li>
             <li><a href="#">Videoteca</a></li>
-            <li><a href="#">Centro de Alertas</a></li>
+            <li><a href="#">Centro de monitorizaci&oacute;n</a></li>
+            <li><a href="{% url postproduccion.views.crear %}">Nueva producci&oacute;n</a></li>
         </ul>
     </div>
 
@@ -31,14 +32,11 @@
 
 <div id="main-content">
     <div id="inner-content">
-        <h1>Resumen de actividad</h1>
-        <div id="content">
-            Soy content, muestro los tipos de mensajes:
-            <div class="mensaje rojo">mensaje rojo</div>
-            <div class="mensaje verde">mensaje verde</div>
-            <div class="mensaje amarillo">mensaje amarillo</div>
-            <div class="mensaje">mensaje</div>
-        </div>
+
+    
+{% block seccion %} {% endblock %}
+
+
     </div>
 </div>
 <div id="main-footer">
@@ -47,8 +45,11 @@
     </div>
 </div>
 
-    <a href="{{linkcrear}}">Crear</a>
-    <a href="{{linkcola}}">Cola</a>
+
+
+
+
+    <a href="{% url postproduccion.views.cola_base %}">Cola</a>
 
 
 </div>

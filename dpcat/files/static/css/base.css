@@ -57,7 +57,7 @@ body.login {
     clear: both;
     float: left;
     margin-right: 15px;
-    text-align: right;
+    text-align: left;
     color: #336699;
     font: bold 14px Arial; 
     text-shadow: -1px 1px #ddd;
@@ -97,7 +97,6 @@ body.login {
 }
 
 .footer-content {
-    margin: 0px 30px;
     border-top: solid 1px #336699;
     overflow: hidden;
 }
@@ -119,8 +118,9 @@ body.login {
 
 .footer-content ul li a{
     text-decoration: none;
-    font-size: 13px;
-    color: #5c85ad;
+    font-size: 10px;
+    font-weight: bold;
+    color: #fff;
 }
 
 
@@ -194,6 +194,35 @@ body.login {
     padding: 10px 20px;
 }
 
+#inner-menu {
+    border-top: solid 2px #2b5782;
+}
+
+#inner-menu ul {
+    margin: 0 auto;
+    max-width: 1260px;
+    min-width: 850px;
+    padding: 0px;
+}
+
+#inner-menu li {
+    float: left;
+    margin-right: 30px;
+}
+
+#inner-menu li a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    font: bold 13px Arial;
+    line-height: 38px;
+    text-shadow: #000 0px 0px 20px;
+}
+
+#inner-menu li a:hover {
+    text-shadow: #fff 0px 0px 20px;
+}
+
 #logo {
     float: left;
     width: 250px;
@@ -248,10 +277,10 @@ body.login {
 /* main-content y derivados */
 /****************************/
 #main-content {
-    height: 400px;
     background: url(../img/bg-content.png) 0 0 repeat-x;
     margin: 0px;
     padding: 0px;
+    
 }
 #inner-content {
     margin: 0px auto;
@@ -275,7 +304,83 @@ body.login {
     border: solid 1px #d6e0eb;
     -moz-border-radius: 4px;
     padding: 15px;
-    height: 300px;
+    overflow: hidden;
+}
+
+#content.crear p {
+    margin: 0px;
+    margin-bottom: 20px;
+}
+
+#content.crear hr {
+   border: dotted 1px #336699; 
+}
+#content.crear p label {
+    width: 130px;
+    text-align: left;
+    display: block;
+    height: 25px;
+    float: left;
+    font: bold 12px Arial;
+    color: #336699;
+    line-height: 28px;
+}
+
+#content.crear p textarea,
+#content.crear p select,
+#content.crear p input[type="text"] {
+    height: 25px;
+    padding: 3px 5px;
+    width: 300px;
+    border: solid 1px #acacac;
+    -moz-border-radius: 3px;
+}
+
+
+#content.crear p:last-child {
+    background: red;
+}
+#content.crear input[type="submit"],
+#content.crear input[type="reset"] {
+    background: #336699;
+    color: #fff;
+    border: 0px;
+    -moz-border-radius: 3px;
+    padding: 8px 40px;
+    font: bold 12px Arial;
+    letter-spacing: 1px;
+    margin-top: 5px;
+    float: right;
+}
+
+#content.crear input[type="reset"] {
+    background: #bfbfbf;
+    color: #666;
+    margin-right: 20px;
+    margin-top: 10px;
+    padding: 4px 10px;
+}
+
+#content.crear p select {
+    height: 30px;
+    width: 312px;
+}
+#content.crear p textarea {
+    height: 150px;
+    width: 400px;
+}
+
+#content-left {
+    float: left;
+    overflow: hidden;
+    margin-left: 20px;
+
+}
+#content-right {
+    background: green;
+    float: right;
+    width: 300px;
+    height: 400px;
 }
 
 /****************************/
@@ -283,9 +388,7 @@ body.login {
 /****************************/
 #main-footer {
     height: 50px;
-    margin-top: 20px;
-    bottom: 0px;
-    position: absolute;
+    margin-top: 50px;
     width: 100%;
 }
 
@@ -294,3 +397,32 @@ body.login {
     color: #aaa;
     padding: 10px;
 }
+
+ul.errorlist {
+margin: 0px;
+padding: 0px;
+    background: #D63921;
+    margin-left: 130px; 
+    color: #fff;
+    font: bold 12px Arial;
+    width: 250px;
+    margin-bottom: 10px;
+    background: url(../img/errorlist-left.png) 0 0 no-repeat;
+    height: 34px;
+    line-height: 28px;
+    padding-left: 22px;
+}
+
+ul.errorlist li {
+margin: 0px;
+padding: 0px;
+    background: url(../img/errorlist-right.png) 100% 0 no-repeat;
+    padding-left: 5px;
+}
+
+
+
+
+
+
+

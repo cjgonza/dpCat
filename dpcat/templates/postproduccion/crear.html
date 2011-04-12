@@ -1,6 +1,28 @@
-<form method="post" action="">
-{% csrf_token %}
-{{ vform.as_p }}
-{{ iform.as_p }}
-<input type="submit" value="Crear" />
-</form>
+
+{% extends "postproduccion/index.html" %}
+
+
+{% block seccion %} 
+
+
+<h1>Nueva producci&oacute;n</h1>
+
+<div id="content" class="crear">
+
+<div id="content-left">
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ vform.as_p }}
+        {{ iform.as_p }}
+        <hr/>
+        <input type="submit" value="Crear" />
+        <input type="reset" value="Limpiar" />
+    </form>
+</div>
+<div id="content-right">
+soy la columna derecha
+</div>
+</div>
+
+
+{% endblock %}
