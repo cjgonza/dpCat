@@ -57,7 +57,7 @@ Muestra el formulario para seleccionar el fichero de entrada.
 @permission_required('postproduccion.video_manager')
 def _fichero_entrada_simple(request, v):
     if request.method == 'POST':
-        form = FicheroEntradaForm(request.POST)
+        form = FicheroEntradaForm(request.POST, instance = v.ficheroentrada_set.all()[0]) if v.ficheroentrada_set.count() else FicheroEntradaForm(request.POST)
         if form.is_valid():
             fe = form.save(commit = False)
             fe.video = v
@@ -67,7 +67,7 @@ def _fichero_entrada_simple(request, v):
             v.set_status('DEF')
             return HttpResponse("Video introducido y encolado")
     else:
-        form = FicheroEntradaForm()
+        form = FicheroEntradaForm(instance = v.ficheroentrada_set.all()[0]) if v.ficheroentrada_set.count() else FicheroEntradaForm()
     return render_to_response("postproduccion/fichero_entrada.html", { 'form' : form }, context_instance=RequestContext(request))
 
 """
