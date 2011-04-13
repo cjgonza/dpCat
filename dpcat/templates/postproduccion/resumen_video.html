@@ -1,0 +1,14 @@
+<ul>
+    <li>{{ v.plantilla.nombre }}</li>
+    <li>{{ v.titulo }}</li>
+    <li>{{ v.autor }}</li>
+    <li>{{ v.email }}</li>
+    <li>{{ v.informeproduccion.observacion }}</li>
+    <li>{{ v.informeproduccion.aprobacion|yesno:"con,sin" }} aprobaci&oacute;n</li>
+    {% for f in v.ficheroentrada_set.all %}
+    <li>{{ f.tipo.nombre }}: {{ f.fichero }}</li>
+    {% endfor %}
+</ul>
+
+
+<a href="{% url postproduccion.views.crear v.id %}">Modificar</a>

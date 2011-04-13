@@ -34,10 +34,11 @@ def index(request):
 Muestra el formulario para insertar un nuevo proyecto de vídeo.
 """
 @permission_required('postproduccion.video_manager')
-def crear(request):
+def crear(request, video_id = None):
+    v = get_object_or_404(Video, pk=video_id) if video_id else None
     if request.method == 'POST':
-        vform = VideoForm(request.POST)
-        iform = InformeCreacionForm(request.POST)
+        vform = VideoForm(request.POST, instance = v) if v else VideoForm(request.POST)
+        iform = InformeCreacionForm(request.POST, instance = v.informeproduccion) if v else InformeCreacionForm(request.POST)
         if vform.is_valid():
             v = vform.save()
             i = iform.save(commit = False)
@@ -46,8 +47,8 @@ def crear(request):
             i.save()
             return HttpResponseRedirect(reverse('postproduccion.views.fichero_entrada', args=(v.id,)))
     else:
-        vform = VideoForm()
-        iform = InformeCreacionForm()
+        vform = VideoForm(instance = v) if v else VideoForm()
+        iform = InformeCreacionForm(instance = v.informeproduccion) if v else InformeCreacionForm()
     return render_to_response("postproduccion/crear.html", { 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
 
 
@@ -108,6 +109,14 @@ def fichero_entrada(request, video_id):
         return _fichero_entrada_multiple(request, v)
     else:
         return _fichero_entrada_simple(request, v)
+
+"""
+Muestra un resumen del vídeo creado.
+"""
+@permission_required('postproduccion.video_manager')
+def resumen_video(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    return render_to_response("postproduccion/resumen_video.html", { 'v' : v }, context_instance=RequestContext(request))
 
 """
 Devuelve una lista (html) con el contenido de un directorio para usar con la
