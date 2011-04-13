@@ -1,28 +1,17 @@
+{% extends "postproduccion/form-nueva-produccion.html" %}
 
-{% extends "postproduccion/index.html" %}
+{% block numero-paso %}paso1{% endblock %}
+{% block contenido-paso %} 
 
-
-{% block seccion %} 
-
-
-<h1>Nueva producci&oacute;n</h1>
-
-<div id="content" class="crear">
-
-<div id="content-left">
-    <form method="post" action="">
-        {% csrf_token %}
-        {{ vform.as_p }}
-        {{ iform.as_p }}
-        <hr/>
-        <input type="submit" value="Crear" />
-        <input type="reset" value="Limpiar" />
-    </form>
-</div>
-<div id="content-right">
-soy la columna derecha
-</div>
-</div>
-
+        <div id="progreso" class="uno"></div>
+        <h2>Paso 1: Incluye los datos b&aacute;sicos de la producci&oacute;n</h2>
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ vform.as_p }}
+            {{ iform.as_p }}
+            <hr/>
+            <input type="submit" value="Crear" />
+            <input type="reset" value="Limpiar" />
+        </form>
 
 {% endblock %}

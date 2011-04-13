@@ -424,5 +424,47 @@ padding: 0px;
 
 
 
+/* Barra de progreso formulario: Nueva producción */
+#progreso {
+    width: 543px;
+    height: 32px;
+    margin-bottom: 10px;
+}
+
+#progreso.uno { background: url(../img/barra-progreso-new.png) 0 0 no-repeat; }
+#progreso.dos { background: url(../img/barra-progreso-new.png) 0 -32px no-repeat; }
+#progreso.tres { background: url(../img/barra-progreso-new.png) 0 -64px no-repeat; }
 
 
+#content-left h2 {
+    font: normal 20px Arial;
+    color: #e98b59;
+    margin-bottom: 30px;
+}
+
+
+/* Selección de archivos */
+.navegador {
+    width: 540px;
+    height: 150px;
+    border: solid 1px #BBB;
+    background: #FFF;
+    overflow: auto;
+    padding: 5px;
+}
+
+#content.crear.paso2 form h3{
+    color: #336699;
+    font: bold 12px Arial;
+    height: 25px;
+    clear: both;
+}
+
+#content.crear.paso2 form p label {
+    display: none;
+}
+#content.crear.paso2 form p {
+    margin-top: 5px;
+}
+#content.crear.paso2 form p input[type="text"] {
+}

@@ -1,17 +1,12 @@
-<head>
-    <style type="text/css">
-        .demo {
-            width: 200px;
-            height: 400px;
-            border-top: solid 1px #BBB;
-            border-left: solid 1px #BBB;
-            border-bottom: solid 1px #FFF;
-            border-right: solid 1px #FFF;
-            background: #FFF;
-            overflow: scroll;
-            padding: 5px;
-        }
-    </style>
+{% extends "postproduccion/form-nueva-produccion.html" %}
+
+{% block numero-paso %}paso2{% endblock %}
+
+{% block contenido-paso %} 
+
+
+
+
     <script src="/static/js/jquery.js" type="text/javascript"></script>
     <script src="/static/js/jqueryFileTree/jqueryFileTree.js" type="text/javascript"></script>
     <link href="/static/js/jqueryFileTree/jqueryFileTree.css" rel="stylesheet" type="text/css" media="screen" />
@@ -20,13 +15,25 @@
             $('#fileTree').fileTree({ script: '/postproduccion/dirlist/', multiFolder: false }, function(file) {
                 $('#id_fichero')[0].value = file;
             });
-            $('#id_fichero')[0].readOnly = true;
         });
     </script>
-</head>
+
+
+
+    <div id="progreso" class="dos"></div>
+    <h2>Paso 2: Selecciona el contenido de la producci&oacute;n</h2>
 <form method="post" action="">
 {% csrf_token %}
-<div id="fileTree" class="demo"></div>
+<h3>Selecciona el fichero de entrada</h3>
+<div id="fileTree" class="navegador"></div>
 {{ form.as_p }}
+<hr/>
 <input type="submit" value="A&ntilde;adir" />
+
+        <input type="reset" value="Limpiar" />
 </form>
+
+
+{% endblock %}
+
+

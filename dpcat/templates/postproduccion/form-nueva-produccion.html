@@ -1,0 +1,18 @@
+{% extends "postproduccion/index.html" %}
+
+{% block seccion %} 
+
+<h1>Nueva producci&oacute;n</h1>
+
+<div id="content" class="crear {% block numero-paso %} {% endblock %}">
+
+    <div id="content-left">
+
+{% block contenido-paso %} {% endblock %}
+
+    </div>
+
+    <div id="content-right">soy la columna derecha</div>
+</div>
+
+{% endblock %}
