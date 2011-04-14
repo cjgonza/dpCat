@@ -64,11 +64,14 @@ def _fichero_entrada_simple(request, v):
             fe.video = v
             fe.fichero = os.path.normpath(config.get_option('VIDEO_INPUT_PATH') + fe.fichero)
             fe.save()
-            enqueue_copy(v)
-            v.set_status('DEF')
-            return HttpResponse("Video introducido y encolado")
+            return HttpResponseRedirect(reverse('postproduccion.views.resumen_video', args=(v.id,)))
     else:
-        form = FicheroEntradaForm(instance = v.ficheroentrada_set.all()[0]) if v.ficheroentrada_set.count() else FicheroEntradaForm()
+        if  v.ficheroentrada_set.count():
+            fe = v.ficheroentrada_set.all()[0]
+            fe.fichero = os.path.join('/', os.path.relpath(fe.fichero, config.get_option('VIDEO_INPUT_PATH')))
+            form = FicheroEntradaForm(instance = fe)
+        else:
+            form = FicheroEntradaForm()
     return render_to_response("postproduccion/fichero_entrada.html", { 'form' : form }, context_instance=RequestContext(request))
 
 """
@@ -88,14 +91,13 @@ def _fichero_entrada_multiple(request, v):
                 instances[i].video = v
                 instances[i].tipo = tipos[i]
                 instances[i].save()
-            enqueue_pil(v)
-            v.set_status('DEF')
-            return HttpResponse("Video introducido y encolado")
+            return HttpResponseRedirect(reverse('postproduccion.views.resumen_video', args=(v.id,)))
     else:
         formset = FicheroEntradaFormSet(instance = v)
     
     for i in range(n):
         formset.forms[i].titulo = tipos[i].nombre
+        formset.forms[i].initial['fichero'] = os.path.join('/', os.path.relpath(formset.forms[i].initial['fichero'], config.get_option('VIDEO_INPUT_PATH')))
     return render_to_response("postproduccion/ficheros_entrada.html", { 'formset' : formset }, context_instance=RequestContext(request))
 
 """
@@ -116,6 +118,13 @@ Muestra un resumen del vídeo creado.
 @permission_required('postproduccion.video_manager')
 def resumen_video(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
+    if request.method == 'POST':
+        if v.plantilla:
+            enqueue_pil(v)
+        else:
+            enqueue_copy(v)
+        v.set_status('DEF')
+        return HttpResponseRedirect(reverse('postproduccion.views.index'))
     return render_to_response("postproduccion/resumen_video.html", { 'v' : v }, context_instance=RequestContext(request))
 
 """

@@ -1,14 +1,18 @@
 <ul>
-    <li>{{ v.plantilla.nombre }}</li>
+    {% if v.plantilla %}<li>{{ v.plantilla.nombre }}</li>{% endif %}
     <li>{{ v.titulo }}</li>
     <li>{{ v.autor }}</li>
     <li>{{ v.email }}</li>
     <li>{{ v.informeproduccion.observacion }}</li>
     <li>{{ v.informeproduccion.aprobacion|yesno:"con,sin" }} aprobaci&oacute;n</li>
     {% for f in v.ficheroentrada_set.all %}
-    <li>{{ f.tipo.nombre }}: {{ f.fichero }}</li>
+    <li>{% if v.plantilla %}{{ f.tipo.nombre }}{% else %}Fichero de entrada{% endif %}: {{ f.fichero }}</li>
     {% endfor %}
 </ul>
 
 
 <a href="{% url postproduccion.views.crear v.id %}">Modificar</a>
+<form method="post" action="">
+    {% csrf_token %}
+    <input type="submit" value="Terminar y procesar" />
+</form>
