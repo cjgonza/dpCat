@@ -8,7 +8,7 @@
 <h2>Paso 3: Revisa y valida los datos de la nueva producci&oacute;n</h2>
 
 
-    <h3>Datos de la nueva producci&oacute;n</h3>
+    <h3>Datos de la nueva producci&oacute;n:</h3>
 {% if v.plantilla %}
     <p><label>Plantilla:</label><input type="text" value="{{ v.plantilla.nombre }}" readonly disabled="disabled"></p> 
 {% endif %}
@@ -23,7 +23,7 @@
 {% if v.plantilla %}
   <label>{{ f.tipo.nombre }}</label>
     {% else %}
-    Fichero de entrada
+    <label>Entrada</label>
     {% endif %}
     <input type="text" value="{{ f.fichero }}" readonly disabled="disabled"><br/>
     {% endfor %}
