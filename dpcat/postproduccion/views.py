@@ -318,3 +318,23 @@ Muestra el registro de eventos de la aplicación.
 def showlog(request, old = False):
     logdata = log.get_log() if not old else log.get_old_log()
     return render_to_response("postproduccion/log.html", { 'log' : logdata }, context_instance=RequestContext(request))
+
+"""
+Muestra las alertas de la aplicación.
+"""
+@permission_required('postproduccion.video_manager')
+def alerts(request):
+    lista = list()
+    # Añade los vídeos incompletos.
+    for i in Video.objects.filter(status='INC'):
+        lista.append({ 'tipo' : 'video-incompleto', 'v' : i, 'fecha' : i.informeproduccion.fecha_grabacion })
+    # Añade las tareas fallidas.
+    for i in Cola.objects.filter(status='ERR'):
+        lista.append({ 'tipo' : 'trabajo-fail', 't' : i, 'fecha' : i.comienzo })
+    # Añade los tokens caducados.
+    for i in token.get_expired_tokens():
+        lista.append({ 'tipo' : 'token-caducado', 't' : i, 'fecha' : token.get_expire_time(i) })
+    # Ordena los elementos cronológicamente
+    lista = sorted(lista, key=lambda it: it['fecha'])
+    return render_to_response("postproduccion/alertas.html", { 'lista' : lista })
+

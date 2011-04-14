@@ -28,10 +28,22 @@ def is_valid_token(tk_str):
     return tk_query[0].video
 
 """
+Devuelve los tokens caducados.
+"""
+def get_expired_tokens():
+    return Token.objects.filter(instante__lt = datetime.now() - timedelta(days = int(config.get_option('TOKEN_VALID_DAYS'))))
+
+"""
 Borra los tokens caducados.
 """
 def purge_expired_tokens():
-    Token.objects.filter(instante__lt = datetime.now() - timedelta(days = int(config.get_option('TOKEN_VALID_DAYS')))).delete()
+    get_expired_tokens().delete()
+
+"""
+Devuelve la fecha de caducidad de un token.
+"""
+def get_expire_time(t):
+    return t.instante + timedelta(days = int(config.get_option('TOKEN_VALID_DAYS')))
 
 """
 Borra de la base de datos un token que ya ha sido atendido
