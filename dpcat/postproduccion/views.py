@@ -97,7 +97,8 @@ def _fichero_entrada_multiple(request, v):
     
     for i in range(n):
         formset.forms[i].titulo = tipos[i].nombre
-        formset.forms[i].initial['fichero'] = os.path.join('/', os.path.relpath(formset.forms[i].initial['fichero'], config.get_option('VIDEO_INPUT_PATH')))
+        if formset.forms[i].initial:
+            formset.forms[i].initial['fichero'] = os.path.join('/', os.path.relpath(formset.forms[i].initial['fichero'], config.get_option('VIDEO_INPUT_PATH')))
     return render_to_response("postproduccion/ficheros_entrada.html", { 'formset' : formset }, context_instance=RequestContext(request))
 
 """
