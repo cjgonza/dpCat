@@ -9,6 +9,15 @@ body.login {
     background: url(../img/login_bg.jpg) 0 0 no-repeat;
 }
 
+/* tamaño global */
+#inner-content,
+#inner-menu-content,
+#inner-header {
+    max-width: 1260px;
+    min-width: 940px;
+    margin: 0 auto;
+}
+
 /* login.html */
 
 #main-login {
@@ -186,22 +195,23 @@ body.login {
     background: url(../img/login_bg.jpg) 0 0 no-repeat;
 }
 
+#inner-menu-content,
 #inner-header {
-    max-width: 1260px;
-    min-width: 850px;
-    margin: 0 auto;
     overflow: hidden;
     padding: 10px 20px;
+
 }
 
+#inner-menu-content {
+    padding: 0px 20px;
+}
 #inner-menu {
     border-top: solid 2px #2b5782;
+    padding: 0px;
 }
 
 #inner-menu ul {
-    margin: 0 auto;
-    max-width: 1260px;
-    min-width: 850px;
+    margin: 0px;
     padding: 0px;
 }
 
@@ -219,9 +229,50 @@ body.login {
     text-shadow: #000 0px 0px 20px;
 }
 
-#inner-menu li a:hover {
+#inner-menu ul li a:hover {
     text-shadow: #fff 0px 0px 20px;
 }
+
+#inner-menu ul.utils {
+    float: right;
+    margin: 6px 0px;
+}
+
+#inner-menu ul.utils li {
+    margin-right: 10px;
+}
+#inner-menu ul.utils li a {
+    line-height: 26px;
+    font-size: 11px;
+    border-left: solid 2px #2B5782;
+    
+}
+
+
+#inner-menu ul.utils li a.icon-logout:hover,
+#inner-menu ul.utils li a:hover {
+    text-shadow: none;
+}
+#inner-menu ul.utils li a.icon-config {
+    background:url(../img/icon/config.png) 8px 50% no-repeat;
+padding-left: 30px;
+}
+
+#inner-menu ul.utils li a.icon-logout {
+    background:url(../img/icon/logout.png) 8px 50% no-repeat;
+padding-left: 30px;
+}
+/*
+ul.utils li a {
+    padding: 4px 8px;
+    text-decoration: none;
+    color: #336699;
+    -moz-border-radius: 3px;
+    border: solid 1px #063A6C;
+    font-size: 11px;
+}
+*/
+
 
 #logo {
     float: left;
@@ -248,26 +299,6 @@ body.login {
     padding: 0px;
 }
 
-#menu-header {
-    float: right;
-    width: 400px;
-}
-
-#menu-header ul li {
-    float: right;
-    margin-left: 10px;
-}
-
-#menu-header ul li a {
-    background: #fff url(../img/icon/logout.png) 0 0 no-repeat;
-    padding: 4px 8px;
-    text-decoration: none;
-    color: #336699;
-    -moz-border-radius: 3px;
-    border: solid 1px #063A6C;
-    font-size: 11px;
-}
-
 #menu-header ul li a.icon-logout {
     background: #fff url(../img/icon/logout.png) 4px 50% no-repeat;
     padding-left: 25px;
@@ -283,9 +314,6 @@ body.login {
     
 }
 #inner-content {
-    margin: 0px auto;
-     max-width: 1260px;
-    min-width: 850px;
    padding: 20px 20px 0px 20px;
 }
 
@@ -310,11 +338,13 @@ body.login {
 #content.crear p {
     margin: 0px;
     margin-bottom: 20px;
+    overflow: hidden;
 }
 
 #content.crear hr {
    border: dotted 1px #336699; 
 }
+
 #content.crear p label {
     width: 130px;
     text-align: left;
@@ -324,6 +354,17 @@ body.login {
     font: bold 12px Arial;
     color: #336699;
     line-height: 28px;
+}
+
+#content.crear h3 {
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    font: bold 12px Arial;
+    color: #373737;
+    border-bottom: solid 1px #ccc;
+}
+#content.crear.paso3 p label {
+    margin-left: 10px;
 }
 
 #content.crear p textarea,
@@ -346,19 +387,24 @@ body.login {
     color: #fff;
     border: 0px;
     -moz-border-radius: 3px;
-    padding: 8px 40px;
+    padding: 8px 60px;
     font: bold 12px Arial;
     letter-spacing: 1px;
     margin-top: 5px;
     float: right;
+    cursor: pointer;
 }
 
 #content.crear input[type="reset"] {
     background: #bfbfbf;
-    color: #666;
+    background: #ececec;
+    color: #bfbfbf;
+    color: #949494;
     margin-right: 20px;
-    margin-top: 10px;
+    margin-top: 9px;
     padding: 4px 10px;
+    float: left;
+    font-size: 11px;
 }
 
 #content.crear p select {
@@ -467,4 +513,27 @@ padding: 0px;
     margin-top: 5px;
 }
 #content.crear.paso2 form p input[type="text"] {
+}
+
+#content.crear.paso2 ul.errorlist {
+    margin-left: 0px;
+    margin-top: 15px;
+}
+
+#content.crear #volver a {
+    text-decoration: none;
+    font: bold 12px Arial;
+    background: #c1d1e0;
+    color: #fff;
+    color: #336699;
+    padding: 0px 10px;
+    -moz-border-radius: 3px;
+    display: block;
+    line-height: 33px;
+}
+#content.crear #volver {
+    float: right;
+    height: 33px;
+    margin-top: 5px;
+    margin-right: 10px;
 }

@@ -24,14 +24,14 @@
 {% csrf_token %}
 {{ formset.management_form }}
 {% for form in formset.forms %}
-    <h3>Fichero para el: "{{ form.titulo }}"</h3>
+    <h3>Selecciona un fichero para: "{{ form.titulo }}"</h3>
     <div id="fileTree-{{ forloop.counter0 }}" class="navegador"></div>
 {{ form.as_p }}
 {% endfor %}
 <hr/>
-<input type="submit" value="A&ntilde;adir" />
-
-        <input type="reset" value="Limpiar" />
+<input type="submit" value="Siguiente" />
+<div id="volver"><a class="volver" href="{% url postproduccion.views.crear v.id %}">Anterior</a></div>
+     <input type="reset" value="Restaurar formulario" />
 </form>
 
 {% endblock %}

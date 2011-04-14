@@ -28,11 +28,10 @@
 <div id="fileTree" class="navegador"></div>
 {{ form.as_p }}
 <hr/>
-<input type="submit" value="A&ntilde;adir" />
-
-        <input type="reset" value="Limpiar" />
+<input type="submit" value="Siguiente" />
+<div id="volver"><a class="volver" href="{% url postproduccion.views.crear v.id %}">Anterior</a></div>
+<input type="reset" value="Restaurar formulario" />
 </form>
-
 
 {% endblock %}
 
