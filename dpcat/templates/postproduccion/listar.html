@@ -1,6 +1,16 @@
-<table border = "1">
+{% extends "postproduccion/base-tablas.html" %}
+
+
+{% block titulo %}Producciones en proceso{% endblock %}
+{% block descripcion %}<div class="mensaje verde">Producciones que actualmente estan siendo procesadas</div>{% endblock %}
+{% block tabla %} 
+
+<table id="tabla">
   <thead>
-    <th>ID</th><th>T&iacute;tulo</th><th>Operador</th><th>Fecha</th>
+    <th class="id">ID</th>
+    <th class="title">T&iacute;tulo</th>
+    <th class="oper">Operador</th>
+    <th class="date">Fecha</th>
   </thead>
   <tbody>
     {% for video in list %}
@@ -8,3 +18,15 @@
     {% endfor %}
   </tbody>
 </table>
+
+
+{% endblock %}
+
+{% block right-block %}
+<div id="content-right">
+    <h3>Informaci&oacute;n de inter&eacute;s</h3>
+    <ul>
+        <li class="tip">Poner descripci&oacute;n o enlaces sobre esta tabla</li>
+    </ul>
+</div>
+{% endblock %}

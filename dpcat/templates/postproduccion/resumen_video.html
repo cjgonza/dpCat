@@ -16,7 +16,7 @@
     <p><label>Autor:</label><input type="text" value="{{ v.autor }}" readonly disabled="disabled"></p>
     <p><label>Email:</label><input type="text" value="{{ v.email }}" readonly disabled="disabled"></p>
     <p><label>Observaci&oacute;n</label><textarea cols="40" rows="10" readonly disabled="disabled">{{ v.informeproduccion.observacion }}</textarea></p>
-    <p><label>Requiere aprobaci&oacute;n</label><input type="checkbox" value="{{ v.informeproduccion.aprobacion|yesno:"ON,OFF" }}" disabled="disabled"></p>
+    <p><label>Requiere aprobaci&oacute;n</label><input type="checkbox" {{ v.informeproduccion.aprobacion|yesno:"checked," }} disabled="disabled"></p>
     <h3>Fichero(s) de entrada:</h3>
 <p>
 {% for f in v.ficheroentrada_set.all %}
@@ -25,7 +25,7 @@
     {% else %}
     <label>Entrada</label>
     {% endif %}
-    <input type="text" value="{{ f.fichero }}" readonly disabled="disabled"><br/>
+    <input type="text" value="{{ f.fichero }}" readonly disabled="disabled"><br/><br/>
     {% endfor %}
 </span></p>
 </ul>

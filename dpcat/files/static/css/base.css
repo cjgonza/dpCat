@@ -419,14 +419,41 @@ ul.utils li a {
 #content-left {
     float: left;
     overflow: hidden;
-    margin-left: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 
 }
 #content-right {
-    background: green;
     float: right;
     width: 300px;
-    height: 400px;
+    border: solid 1px #E9E9E9;
+    -moz-border-radius: 4px;
+    padding-bottom: 20px;
+}
+
+#content #content-right h3 {
+    background: #336699;
+    color: #ffffff;
+    height: 30px;
+    padding: 4px 8px;
+    font: normal 14px Arial;
+    -moz-border-radius-topleft:4px;
+    line-height: 30px;
+    -moz-border-radius-topright:4px;
+    letter-spacing: 1px;
+}
+
+#content #content-right ul {
+    padding: 5px 15px;
+}
+
+#content #content-right ul li {
+color: #373737;    
+font: normal 13px Arial;
+}
+#content #content-right ul li.tip {
+    background: url(../img/icon/lightbulb.png) 0 0 no-repeat;
+    padding-left: 25px;
 }
 
 /****************************/
@@ -536,4 +563,40 @@ padding: 0px;
     height: 33px;
     margin-top: 5px;
     margin-right: 10px;
+}
+
+
+/* Formateando las tablas */
+
+#tabla th {
+    height: 40px;
+    text-align: left;
+    padding: 0 0 0 10px;
+    background: red;
+    background: #336699;
+    font: bold 13px Arial;
+    line-height: 40px;
+    color: #fff;
+    text-shadow: 1px 1px 2px #111;
+}
+
+
+#tabla {
+    min-width: 100%;
+    background: red;
+}
+#tabla th.id {
+    min-width: 10%;
+}
+
+#tabla th.title {
+    width: 200px;
+}
+
+#tabla th.oper {
+    width: 80px;
+}
+
+#tabla th.date {
+    width: 150px;
 }
