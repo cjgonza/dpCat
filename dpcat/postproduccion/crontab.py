@@ -14,7 +14,7 @@ Devuelve una lista donde cada elemento es una línea de crontab actual (puede co
 """
 def _get_crontab():
     command = "%s -l" % config.get_option('CRONTAB_PATH')
-    return subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE).communicate()[0].strip().split('\n')
+    return subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()[0].strip().split('\n')
 
 """
 Fija al crontab las líneas que componen la lista dada.
