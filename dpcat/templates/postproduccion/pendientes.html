@@ -1,0 +1,43 @@
+{% extends "postproduccion/base-tablas.html" %}
+
+
+{% block titulo %}Producciones pendientes{% endblock %}
+{% block descripcion %}<div class="mensaje verde">Producciones que actualmente estan pendientes</div>{% endblock %}
+{% block tabla %} 
+
+<table id="tabla">
+  <thead>
+    <th class="id">ID</th>
+    <th class="status">Estado</th>
+    <th class="title">T&iacute;tulo</th>
+    <th class="oper">Operador</th>
+    <th class="date">Fecha</th>
+  </thead>
+  <tbody>
+    {% for video in list %}
+    <tr class="{{ video.tipo }} {%cycle 'odd' 'even' %}">
+        <td class="id">{{ video.id }}</td>
+        <td class="status">{{ video.status }}</td>
+        <td class="title">{{ video.titulo }}</td>
+        <td class="oper">{{ video.operador }}</td>
+        <td class="date">{{ video.fecha }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5"><div class="mensaje rojo">No hay ning&uacute;n elemento que mostrar en esta tabla.</div></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}
+
+{% block right-block %}
+<div id="content-right">
+    <h3>Informaci&oacute;n de inter&eacute;s</h3>
+    <ul>
+        <li class="tip">Poner descripci&oacute;n o enlaces sobre esta tabla</li>
+    </ul>
+</div>
+{% endblock %}

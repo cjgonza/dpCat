@@ -153,29 +153,36 @@ body.login {
     font: normal 12px Arial;
     border: solid 1px #adc2d6;
     -moz-border-radius: 3px;
-    margin: 10px auto;
+    margin: 20px auto;
     color: #2e74b2;
-    background: #d8e1e9 url(../img/azul_16.png) 7px 7px no-repeat;
-    padding: 8px;
+    padding: 10px;
     padding-left: 30px;
+    background-position: 7px 9px;
+    background-repeat: no-repeat;
+    background-color: #d8e1e9;
+    background-image: url(../img/azul_16.png);
 }
 
 .rojo {
     color: #CE2700;
-    background: #FBD3B1 url(../img/rojo_16.png) 7px 7px no-repeat;
     border-color: #f5c69a;
+    background-color: #FBD3B1;
+    background-image: url(../img/rojo_16.png);   
 }
 
 .verde {
     color: #6da84c;
-    background: #e0f2cb url(../img/verde_16.png) 7px 7px no-repeat;
     border-color: #ccebac;
+    background-color: #e0f2cb;
+    background-image: url(../img/verde_16.png);
 }
 
 .amarillo {
     color: #ec9300;
-    background: #fff4cc url(../img/amarillo_16.png) 7px 7px no-repeat;
     border-color: #f8e3ac;
+    background-color: #fff4cc;
+    background-image: url(../img/amarillo_16.png);
+
 }
 
 
@@ -420,12 +427,12 @@ ul.utils li a {
     float: left;
     overflow: hidden;
     margin-left: 10px;
-    margin-right: 10px;
+    width: 70%;
 
 }
 #content-right {
     float: right;
-    width: 300px;
+    width: 27.5%;
     border: solid 1px #E9E9E9;
     -moz-border-radius: 4px;
     padding-bottom: 20px;
@@ -436,11 +443,11 @@ ul.utils li a {
     color: #ffffff;
     height: 30px;
     padding: 4px 8px;
-    font: normal 14px Arial;
+    font: bold 13px Arial;
+    text-shadow: 0px 1px 0px #111;
     -moz-border-radius-topleft:4px;
     line-height: 30px;
     -moz-border-radius-topright:4px;
-    letter-spacing: 1px;
 }
 
 #content #content-right ul {
@@ -551,7 +558,6 @@ padding: 0px;
     text-decoration: none;
     font: bold 12px Arial;
     background: #c1d1e0;
-    color: #fff;
     color: #336699;
     padding: 0px 10px;
     -moz-border-radius: 3px;
@@ -568,35 +574,62 @@ padding: 0px;
 
 /* Formateando las tablas */
 
+#tabla {
+    -moz-border-radius-topleft: 8px;
+    -moz-border-radius-topright: 8px;
+    border-collapse: separate;
+}
 #tabla th {
-    height: 40px;
+    height: 32px;
     text-align: left;
-    padding: 0 0 0 10px;
-    background: red;
-    background: #336699;
+    padding: 0px;
+    margin: 0px;
     font: bold 13px Arial;
-    line-height: 40px;
-    color: #fff;
-    text-shadow: 1px 1px 2px #111;
+    line-height: 32px;
+    color: #373737;
+    text-shadow: 1px 1px 0px #fff;
+    border-bottom: solid 2px #373737;
+    background: #d9d9d9 url(../img/title-bg.png) 0 0 no-repeat;
+    padding-left: 10px;
+}
+
+#tabla thead th:first-child {
+    -moz-border-radius-topleft: 8px;
+}
+
+#tabla thead th:last-child {
+    -moz-border-radius-topright: 8px;
 }
 
 
+#tabla tbody tr td:last-child {
+    border-right: solid 1px #dedede; 
+}
+#tabla tbody tr td{
+    padding: 10px;
+    border-left: solid 1px #dedede; 
+    border-bottom: solid 1px #dedede;
+    border-collapse: collapse;
+}
 #tabla {
     min-width: 100%;
-    background: red;
-}
-#tabla th.id {
-    min-width: 10%;
 }
 
+#tabla th.id {
+    min-width: 7%;
+}
+
+#tabla th.status {
+    min-width: 13%;
+}
 #tabla th.title {
-    width: 200px;
+    min-width: 45%;
 }
 
 #tabla th.oper {
-    width: 80px;
+    min-width: 10%;
 }
 
 #tabla th.date {
-    width: 150px;
+    min-width: 22%;
 }
