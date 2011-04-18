@@ -189,20 +189,19 @@ Lista los vídeos que están pendientes de atención por parte del operador.
 @permission_required('postproduccion.video_manager')
 def listar_pendientes(request):
     filtro = Q(status = 'PTO') | Q(status = 'ACE') | Q(status = 'REC')
-    return listar(request, filtro)
+    return render_to_response("postproduccion/pendientes.html", { 'list' : listar(filtro) }, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados.
 """
 @permission_required('postproduccion.video_manager')
 def listar_en_proceso(request):
-    return listar(request)
+    return render_to_response("postproduccion/enproceso.html", { 'list' : listar() }, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados que cumplan el filto dado.
 """
-@permission_required('postproduccion.video_manager')
-def listar(request, filtro = None):
+def listar(filtro = None):
     data = list()
     videolist = Video.objects.filter(~Q(status = 'LIS'))
     videolist = videolist.filter(filtro) if filtro else videolist
@@ -215,7 +214,7 @@ def listar(request, filtro = None):
         linea['tipo'] = v.status.lower()
         linea['status'] = dict(Video.VIDEO_STATUS)[v.status]
         data.append(linea)
-    return render_to_response("postproduccion/listar.html", { 'list' : data }, context_instance=RequestContext(request))
+    return data
 
 """
 Vista para que el usuario verifique un vídeo y lo apruebe o rechace.
