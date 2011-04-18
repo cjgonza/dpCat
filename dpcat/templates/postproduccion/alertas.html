@@ -11,5 +11,8 @@
     {% if i.tipo == 'token-caducado' %}
     <li class="{{ i.tipo }}">El ticket envíado al autor del vídeo #{{ i.t.video.id }} con título "{{ i.t.video.titulo }}" se ha caducado sin ser atendido.</li>
     {% endif %}
+
+    {% empty %}
+    <li>Actualmente no existe ninguna alerta</li>
 {% endfor %}
 </ul>

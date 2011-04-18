@@ -1,5 +1,7 @@
 <ul>
     {% for item in log %}
     <li class="{{ item.status }}"><span>{{ item.time }}</span>{{ item.msg }}</li>
+    {% empty %}
+    <li>No hay entradas en el registro</li>
     {% endfor %}
 </ul>

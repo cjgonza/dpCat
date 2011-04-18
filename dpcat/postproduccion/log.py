@@ -125,7 +125,10 @@ def _parse_log_line(line):
 Devuelve una lista con todas las entradas del fichero de log dado
 """
 def _get_logfile(fname):
-    f = open(fname, 'r')
+    try:
+        f = open(fname, 'r')
+    except IOError:
+        return
     log = map(_parse_log_line, f.readlines())
     f.close()
     return log
