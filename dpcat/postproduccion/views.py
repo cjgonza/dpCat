@@ -211,8 +211,9 @@ def listar(request, filtro = None):
         linea['id'] = v.pk
         linea['titulo'] = v.titulo
         linea['operador'] = v.informeproduccion.operador.username
-        linea['fecha'] = v.informeproduccion.fecha_grabacion.strftime("%d/%m/%Y %H:%M:%S.%f")
+        linea['fecha'] = v.informeproduccion.fecha_grabacion.strftime("%H:%M:%S - %d/%m/%Y")
         linea['tipo'] = v.status.lower()
+        linea['status'] = dict(Video.VIDEO_STATUS)[v.status]
         data.append(linea)
     return render_to_response("postproduccion/listar.html", { 'list' : data }, context_instance=RequestContext(request))
 
