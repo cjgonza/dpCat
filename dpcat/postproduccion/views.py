@@ -19,6 +19,7 @@ from configuracion import config
 
 import os
 import urllib
+import datetime
 
 from django.contrib.auth.decorators import permission_required
 
@@ -334,6 +335,21 @@ def alerts(request):
     # Añade los tokens caducados.
     for i in token.get_expired_tokens():
         lista.append({ 'tipo' : 'token-caducado', 't' : i, 'fecha' : token.get_expire_time(i) })
+    # Comprueba los ejecutables.
+    if not utils.ffmpeg_version():
+        lista.append({ 'tipo' : 'ejecutable', 'exe' : 'ffmpeg', 'fecha' : datetime.datetime.min })
+    if not utils.melt_version():
+        lista.append({ 'tipo' : 'ejecutable', 'exe' : 'melt', 'fecha' : datetime.datetime.min })
+    if not utils.is_exec(config.get_option('CRONTAB_PATH')):
+        lista.append({ 'tipo' : 'ejecutable', 'exe' : 'crontab', 'fecha' : datetime.datetime.min })
+    # Comprueba las rutas a los directorios.
+    for i in [config.get_option(x) for x in ['VIDEO_LIBRARY_PATH', 'VIDEO_INPUT_PATH', 'PREVIEWS_PATH']]:
+        if not utils.check_dir(i):
+            lista.append({ 'tipo' : 'ruta',  'path' : i, 'fecha' : datetime.datetime.min })
+        else:
+            cap = utils.df(i)[3]
+            if int(cap.rstrip('%')) > 90:
+                lista.append({ 'tipo' : 'disco', 'path' : i, 'cap' : cap, 'fecha' : datetime.datetime.min })
     # Ordena los elementos cronológicamente
     lista = sorted(lista, key=lambda it: it['fecha'])
     return render_to_response("postproduccion/alertas.html", { 'lista' : lista })

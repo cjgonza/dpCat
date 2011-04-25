@@ -5,6 +5,9 @@ import random
 import unicodedata
 import os
 import threading
+import subprocess
+import shlex
+import re
 
 from configuracion import config
 
@@ -19,9 +22,9 @@ Fija los valores de configuración por defecto
 def set_default_settings():
     defaults = [
         [ 'MAX_ENCODING_TASKS', 5 ],
-        [ 'MELT_PATH' ,         '/usr/bin/melt' ], 
-        [ 'FFMPEG_PATH',        '/usr/bin/ffmpeg' ],
-        [ 'CRONTAB_PATH',       '/usr/bin/crontab' ],
+        [ 'MELT_PATH' ,         which('melt') ], 
+        [ 'FFMPEG_PATH',        which('ffmpeg') ],
+        [ 'CRONTAB_PATH',       which('crontab') ],
         [ 'MAX_PREVIEW_WIDTH',  400 ],
         [ 'MAX_PREVIEW_HEIGHT', 300 ],
         [ 'VIDEO_LIBRARY_PATH', '/home/adminudv/videos/videoteca/' ],
@@ -71,6 +74,65 @@ def remove_file_path(f):
         except OSError:
             pass
 
+"""
+Comprueba si la ruta dada corresponde a un fichero ejecutable
+"""
+def is_exec(fpath):
+    return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+
+"""
+Trata de localizar la ruta del ejecutable dado en el PATH
+"""
+def which(fpath):
+    command = "which %s" % fpath
+    return subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE).communicate()[0].strip()
+
+"""
+Devuelve la versión del ffmpeg instalado.
+"""
+def ffmpeg_version():
+    fpath = config.get_option('FFMPEG_PATH')
+    if is_exec(fpath):
+        command = "%s -version" % fpath
+        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()[0]
+        return re.search('svn-r([0-9]+)', data, re.I).group(1)
+    
+"""
+Devuelve la versión del melt instalado.
+"""
+def melt_version():
+    fpath = config.get_option('MELT_PATH')
+    if is_exec(fpath):
+        command = "%s -version" % fpath
+        data = subprocess.Popen(shlex.split(str(command)), stderr = subprocess.PIPE).communicate()[1]
+        return re.search('mlt melt ([\.0-9]+)', data, re.I).group(1)
+   
+"""
+Devuelve la información de uso del sistema de ficheros en el que se encuentra la ruta dada.
+"""
+def df(fpath):
+    command = "df %s -Ph" % fpath
+    data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE).communicate()[0].strip().splitlines()[1]
+    return re.search('^.* +([0-9,]+[KMGTPEZY]?) +([0-9,]+[KMGTPEZY]?) +([0-9,]+[KMGTPEZY]?) +([0-9,]+%) +(/.*$)', data).group(1, 2, 3, 4, 5)
+
+"""
+Comprueba si el directorio dado existe y es accesible. Si no existe y puede, lo creará y devolverá verdadero.
+"""
+def check_dir(fpath):
+    if os.path.isdir(fpath) and os.access(fpath, os.R_OK | os.W_OK | os.X_OK):
+        return True
+    if not os.path.exists(fpath):
+        try:
+            os.makedirs(fpath)
+        except:
+            return False
+        return True
+    else:
+        return False
+
+"""
+Clase envoltorio que permite iterar sobre un fichero.
+"""
 class FileIterWrapper(object):
     def __init__(self, flo, chunk_size = 1024**2):
         self.flo = flo
@@ -86,5 +148,8 @@ class FileIterWrapper(object):
     def __iter__(self):
         return self
 
+"""
+Devuelve a modo de flujo el contenido del fichero dado.
+"""
 def stream_file(filename):
     return FileIterWrapper(open(filename, "rb"))

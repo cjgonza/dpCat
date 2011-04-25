@@ -119,7 +119,7 @@ def _parse_log_line(line):
         ERROR   : "error",
         DEBUG   : "debug"
     }
-    return { 'status' : STATUS_TEXT[line[0]], 'time' : line[2:28], 'msg' : line[30:].strip() }
+    return { 'status' : STATUS_TEXT[line[0]], 'time' : line[2:21], 'msg' : line[30:].strip() }
 
 """
 Devuelve una lista con todas las entradas del fichero de log dado
