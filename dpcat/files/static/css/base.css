@@ -428,7 +428,11 @@ ul.utils li a {
     overflow: hidden;
     margin-left: 10px;
     width: 70%;
+}
 
+#inner-content-left {
+    margin: 0 auto;
+    width: 100%;
 }
 #content-right {
     float: right;
