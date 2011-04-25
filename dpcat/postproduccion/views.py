@@ -318,7 +318,7 @@ Muestra el registro de eventos de la aplicación.
 @permission_required('postproduccion.video_manager')
 def showlog(request, old = False):
     logdata = log.get_log() if not old else log.get_old_log()
-    return render_to_response("postproduccion/log.html", { 'log' : logdata }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/log.html", { 'log' : logdata, 'old' : old }, context_instance=RequestContext(request))
 
 """
 Muestra las alertas de la aplicación.

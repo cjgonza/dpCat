@@ -1,7 +1,68 @@
-<ul>
+{% extends "postproduccion/base-tablas.html" %}
+
+{% block titulo %}Registro del sistema{% endblock %}
+{% block descripcion %}
+
+{% if old %}
+<p>Informaci&oacute;n y registro antiguo de las acciones realizadas por el sistema. </p>
+{% else %}
+
+<p>Informaci&oacute;n y registro actual de las acciones realizadas por el sistema. </p>
+{% endif %}
+
+
+{% endblock %}
+
+{% block tabla %} 
+
+<table id="tabla" class="log">
+  <thead>
+    <th class="icon">Tipo</th>
+    <th class="date">Fecha</th>
+    <th class="log-msg">Descripci&oacute;n</th>
+  </thead>
+  <tbody>
     {% for item in log %}
-    <li class="{{ item.status }}"><span>{{ item.time }}</span>{{ item.msg }}</li>
+    <tr class="{{ item.status }} {%cycle 'odd' 'even' %}">
+        <td class="icon">{{ item.status }}</td>
+        <td class="date">{{ item.time }}</td>
+        <td class="log-msg">{{ item.msg }}</td>
+    </tr>
     {% empty %}
-    <li>No hay entradas en el registro</li>
+    <tr>
+        <td colspan="5"><div class="mensaje rojo">No existe ning&uacute;n registro que mostrar.</div></td>
+    </tr>
     {% endfor %}
-</ul>
+  </tbody>
+</table>
+
+
+{% endblock %}
+
+{% block right-block %}
+<div id="content-right">
+<div id="right-block">
+
+{% if old %}
+    <h3 class="links">Registro actual</h3>
+    <ul>
+        <li><a href="{% url log %}">Acceder al registro actual del sistema.</a></li> 
+    </ul>
+
+{% else %}
+    <h3 class="links">Registro antiguo</h3>
+    <ul>
+        <li><a href="{% url oldlog %}">Acceder al registro antiguo del sistema.</a></li> 
+    </ul>
+
+{% endif %}
+</div>
+
+<div id="right-block" class="info">
+    <h3>Informaci&oacute;n de inter&eacute;s</h3>
+    <ul>
+        <li class="tip">La longitud de los mensajes de registro del sistema es configurable por el administrador.<br/><br/>Existen dos versiones del fichero de registro, una actual y una m&aacute;s antigua, accesibles desde el bloque superior.</li>
+    </ul>
+</div>
+</div>
+{% endblock %}

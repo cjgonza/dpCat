@@ -437,12 +437,16 @@ ul.utils li a {
 #content-right {
     float: right;
     width: 27.5%;
+}
+
+#content-right #right-block {
     border: solid 1px #E9E9E9;
     -moz-border-radius: 4px;
     padding-bottom: 20px;
+    margin-bottom: 15px;
 }
 
-#content #content-right h3 {
+#content-right #right-block h3 {
     background: #336699;
     color: #ffffff;
     height: 30px;
@@ -454,17 +458,28 @@ ul.utils li a {
     -moz-border-radius-topright:4px;
 }
 
-#content #content-right ul {
+#content-right #right-block ul {
     padding: 5px 15px;
 }
 
-#content #content-right ul li {
+#content-right #right-block ul li {
 color: #373737;    
 font: normal 13px Arial;
 }
-#content #content-right ul li.tip {
+#content-right #right-block ul li.tip {
     background: url(../img/icon/lightbulb.png) 0 0 no-repeat;
     padding-left: 25px;
+}
+
+#content-right #right-block ul li a {
+    background: url(../img/icon/link16.png) 0 0 no-repeat;
+    padding-left: 25px;
+    text-decoration: none;
+    color: #373737;
+}
+
+#content-right #right-block ul li a:hover {
+    text-decoration: underline;
 }
 
 /****************************/
@@ -637,3 +652,40 @@ padding: 0px;
 #tabla th.date {
     min-width: 22%;
 }
+
+
+#tabla.log tr td.icon {
+    padding-left: 33px;
+    padding-right: 10px;
+    width: 45px;
+    font-size: 11px;
+}
+
+#tabla.log tr.info td.icon{
+    background: url(../img/icon/info16.png) 10px 10px no-repeat;
+    color: #336699; 
+}
+#tabla.log tr.error td.icon{
+    background: url(../img/icon/error16.png) 10px 10px no-repeat;
+    color: #CE2700; 
+}
+#tabla.log tr.warning td.icon{
+    background: url(../img/icon/warning16.png) 10px 10px no-repeat;
+    color: #c26b15; 
+}
+#tabla.log tr.debug td.icon{
+    background: url(../img/icon/debug16.png) 10px 10px no-repeat;
+    color: #6DA84C; 
+}
+
+#tabla.log tr.warning {
+    background: #FFF4CC;
+}
+
+#tabla.log tr.error {
+    background: #FBD3B1;
+}
+#tabla.log tr.debug {
+    background: #E0F2CB;
+}
+
