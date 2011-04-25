@@ -13,15 +13,15 @@
     {% endif %}
 
     {% if i.tipo == 'ejecutable' %}
-    <li class="{{ i.tipo }}">No se puede ejecutar el programa '{{ i.exe }}'. (<a href="">Ver configuraci&oacute;n</a>)</li>
+    <li class="{{ i.tipo }}">No se puede ejecutar el programa '{{ i.exe }}'. (<a href="{% url config %}">Ver configuraci&oacute;n</a>)</li>
     {% endif %}
 
     {% if i.tipo == 'ruta' %}
-    <li class="{{ i.tipo }}">Permiso denegado sobre el directorio '{{ i.path }}'. (<a href="">Ver configuraci&oacute;n</a>)</li>
+    <li class="{{ i.tipo }}">Permiso denegado sobre el directorio '{{ i.path }}'. (<a href="{% url config %}">Ver configuraci&oacute;n</a>)</li>
     {% endif %}
 
     {% if i.tipo == 'disco' %}
-    <li class="{{ i.tipo }}">El sistema de ficheros que del directorio '{{ i.path }}' está próximo a quedarse sin espacio ({{ i.cap }}). (<a href="">Ver configuraci&oacute;n</a>)</li>
+    <li class="{{ i.tipo }}">El sistema de ficheros que del directorio '{{ i.path }}' está próximo a quedarse sin espacio ({{ i.cap }}). (<a href="{% url config %}">Ver configuraci&oacute;n</a>)</li>
     {% endif %}
 
     {% empty %}

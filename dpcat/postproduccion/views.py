@@ -10,7 +10,7 @@ from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 
 from postproduccion.models import Video, Cola, FicheroEntrada
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, InformeRechazoForm
+from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, InformeRechazoForm, ConfigForm
 from postproduccion.queue import enqueue_copy, enqueue_pil, progress, get_log
 from postproduccion import utils
 from postproduccion import token
@@ -354,3 +354,20 @@ def alerts(request):
     lista = sorted(lista, key=lambda it: it['fecha'])
     return render_to_response("postproduccion/alertas.html", { 'lista' : lista })
 
+"""
+Edita los ajustes de configuración de la aplicación.
+"""
+@permission_required('postproduccion.video_manager')
+def config_settings(request):
+    if request.method == 'POST':
+        form = ConfigForm(request.POST)
+        if form.is_valid():
+            for i in form.base_fields.keys():
+                config.set_option(i.upper(), form.cleaned_data[i])
+            return HttpResponseRedirect(reverse('postproduccion.views.index'))
+    else:
+        initial_data = dict()
+        for i in ConfigForm.base_fields.keys():
+            initial_data[i] = config.get_option(i.upper())
+        form = ConfigForm(initial_data)
+    return render_to_response("postproduccion/config.html", { 'form' : form }, context_instance=RequestContext(request))
