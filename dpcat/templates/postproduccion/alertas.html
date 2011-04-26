@@ -24,6 +24,10 @@
     <li class="{{ i.tipo }}">El sistema de ficheros que del directorio '{{ i.path }}' está próximo a quedarse sin espacio ({{ i.cap }}). (<a href="{% url config %}">Ver configuraci&oacute;n</a>)</li>
     {% endif %}
 
+    {% if i.tipo == 'cron' %}
+    <li class="{{ i.cron }}">Las tareas programadas están desactivadas, no se codificar&aacute; ning&uacute;n v&iacute;deo hasta que se activen. (<a href="{% url status %}">Ver estado</a>)</li>
+    {% endif %}
+
     {% empty %}
     <li>Actualmente no existe ninguna alerta</li>
 {% endfor %}

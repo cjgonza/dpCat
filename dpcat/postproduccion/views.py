@@ -15,6 +15,7 @@ from postproduccion.queue import enqueue_copy, enqueue_pil, progress, get_log
 from postproduccion import utils
 from postproduccion import token
 from postproduccion import log
+from postproduccion import crontab
 from configuracion import config
 
 import os
@@ -350,6 +351,9 @@ def alerts(request):
             cap = utils.df(i)[3]
             if int(cap.rstrip('%')) > 90:
                 lista.append({ 'tipo' : 'disco', 'path' : i, 'cap' : cap, 'fecha' : datetime.datetime.min })
+    # Comprueba las tareas programadas
+    if not crontab.status():
+        lista.append({ 'tipo' : 'cron', 'fecha' : datetime.datetime.min })
     # Ordena los elementos cronológicamente
     lista = sorted(lista, key=lambda it: it['fecha'])
     return render_to_response("postproduccion/alertas.html", { 'lista' : lista })
@@ -371,3 +375,54 @@ def config_settings(request):
             initial_data[i] = config.get_option(i.upper())
         form = ConfigForm(initial_data)
     return render_to_response("postproduccion/config.html", { 'form' : form }, context_instance=RequestContext(request))
+
+"""
+Muestra el estado de la aplicación con la configuración actual.
+"""
+@permission_required('postproduccion.video_manager')
+def status(request):
+    # Programas externos
+    ffmpegver = utils.ffmpeg_version()
+    meltver = utils.melt_version()
+    exes = {
+        'FFMPEG'  : {
+            'path'    : config.get_option('FFMPEG_PATH'),
+            'status'  : True if ffmpegver else False,
+            'version' : ffmpegver,
+        },
+        'MELT'    : {
+            'path'    : config.get_option('MELT_PATH'),
+            'status'  : True if meltver else False,
+            'version' : meltver,
+        },
+        'crontab' : {
+            'path'    : config.get_option('CRONTAB_PATH'),
+            'status'  : utils.is_exec(config.get_option('CRONTAB_PATH')),
+            'version' : 'N/A',
+        },
+    }
+    
+    # Directorios
+    dirs = dict()
+    for i in [('library', 'VIDEO_LIBRARY_PATH'), ('input', 'VIDEO_INPUT_PATH'), ('previews', 'PREVIEWS_PATH')]:
+        data = { 'path' : config.get_option(i[1]) }
+        if utils.check_dir(data['path']):
+            df = utils.df(data['path'])
+            data['info'] = {
+                'total' : df[0],
+                'used'  : df[1],
+                'left'  : df[2],
+                'perc'  : df[3],
+                'mount' : df[4]
+            }
+        dirs[i[0]] = data
+
+    # Tareas Programadas
+    if request.method == 'POST':
+        if request.POST['status'] == '1':
+            crontab.stop()
+        else:
+            crontab.start()
+    cron = crontab.status()
+
+    return render_to_response("postproduccion/status.html", { 'exes' : exes, 'dirs' : dirs, 'cron' : cron }, context_instance=RequestContext(request))

@@ -23,4 +23,5 @@ urlpatterns = patterns('postproduccion.views',
     url(r'^oldlog/$', 'showlog', { 'old' : True }, name = "oldlog"),
     url(r'^alertas/$', 'alerts', name = "alertas"),
     url(r'^config/$', 'config_settings', name = "config"),
+    url(r'^status/$', 'status', name = "status"),
 )

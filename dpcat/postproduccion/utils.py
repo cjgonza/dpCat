@@ -95,7 +95,7 @@ def ffmpeg_version():
     if is_exec(fpath):
         command = "%s -version" % fpath
         data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()[0]
-        return re.search('svn-r([0-9]+)', data, re.I).group(1)
+        return re.search('svn-(r[0-9]+)', data, re.I).group(1)
     
 """
 Devuelve la versión del melt instalado.
