@@ -29,6 +29,7 @@ Muestra la página inicial
 """
 @permission_required('postproduccion.video_manager')
 def index(request):
+    utils.set_default_settings() # Fija la configuración por defecto si no existía configuración previa.
     return render_to_response("postproduccion/section-inicio.html", { }, context_instance=RequestContext(request))
 
 
