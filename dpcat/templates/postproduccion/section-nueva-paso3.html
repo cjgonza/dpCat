@@ -1,13 +1,14 @@
-{% extends "postproduccion/form-nueva-produccion.html" %}
+{% extends "postproduccion/base-2-1.html" %}
 
-{% block numero-paso %}paso3{% endblock %}
+{% block page-title %}Nueva producci&oacute;n, paso 3{% endblock %}
+{% block section-class %}class = "crear paso3" {% endblock %}
+{% block section-title %}<h1>Nueva producci&oacute;n</h1>{% endblock %}
+{% block section-description %} {% endblock %}
 
-{% block contenido-paso %} 
+{% block section-content %} 
 
 <div id="progreso" class="tres"></div>
 <h2>Paso 3: Revisa y valida los datos de la nueva producci&oacute;n</h2>
-
-
     <h3>Datos de la nueva producci&oacute;n:</h3>
 {% if v.plantilla %}
     <p><label>Plantilla:</label><input type="text" value="{{ v.plantilla.nombre }}" readonly disabled="disabled"></p> 
@@ -35,13 +36,18 @@
     {% csrf_token %}
     <input type="submit" value="Terminar y procesar" />
 <div id="volver"><a class="volver" href="{% url postproduccion.views.crear v.id %}">Modificar</a></div>
-
-
-
-
 </form>   
 
 
+{% endblock %}
 
-
+{% block section-widget %}
+    <div id="content-right">
+        <div id="right-block">
+            <h3>Informaci&oacute;n de inter&eacute;s</h3>
+            <ul>
+    <li class="tip">Paso 3 para la creaci&oacute;n de una nueva producci&oacute;n.<br/><br/>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}

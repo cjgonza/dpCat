@@ -29,7 +29,7 @@ Muestra la página inicial
 """
 @permission_required('postproduccion.video_manager')
 def index(request):
-    return render_to_response("postproduccion/inicio.html", { }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-inicio.html", { }, context_instance=RequestContext(request))
 
 
 """
@@ -51,7 +51,7 @@ def crear(request, video_id = None):
     else:
         vform = VideoForm(instance = v) if v else VideoForm()
         iform = InformeCreacionForm(instance = v.informeproduccion) if v else InformeCreacionForm()
-    return render_to_response("postproduccion/crear.html", { 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-nueva-paso1.html", { 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
 
 
 """
@@ -74,7 +74,7 @@ def _fichero_entrada_simple(request, v):
             form = FicheroEntradaForm(instance = fe)
         else:
             form = FicheroEntradaForm()
-    return render_to_response("postproduccion/fichero_entrada.html", { 'v' : v, 'form' : form }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-nueva-paso2-fichero.html", { 'v' : v, 'form' : form }, context_instance=RequestContext(request))
 
 """
 Muestra el formulario para seleccionar los ficheros de entrada.
@@ -101,7 +101,7 @@ def _fichero_entrada_multiple(request, v):
         formset.forms[i].titulo = tipos[i].nombre
         if formset.forms[i].initial:
             formset.forms[i].initial['fichero'] = os.path.join('/', os.path.relpath(formset.forms[i].initial['fichero'], config.get_option('VIDEO_INPUT_PATH')))
-    return render_to_response("postproduccion/ficheros_entrada.html", { 'v' : v, 'formset' : formset }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-nueva-paso2-ficheros.html", { 'v' : v, 'formset' : formset }, context_instance=RequestContext(request))
 
 """
 Llama al método privado adecuado para insertar los ficheros de entrada según
@@ -128,7 +128,7 @@ def resumen_video(request, video_id):
             enqueue_copy(v)
         v.set_status('DEF')
         return HttpResponseRedirect(reverse('postproduccion.views.index'))
-    return render_to_response("postproduccion/resumen_video.html", { 'v' : v }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-nueva-paso3.html", { 'v' : v }, context_instance=RequestContext(request))
 
 """
 Devuelve una lista (html) con el contenido de un directorio para usar con la
@@ -191,14 +191,14 @@ Lista los vídeos que están pendientes de atención por parte del operador.
 @permission_required('postproduccion.video_manager')
 def listar_pendientes(request):
     filtro = Q(status = 'PTO') | Q(status = 'ACE') | Q(status = 'REC')
-    return render_to_response("postproduccion/pendientes.html", { 'list' : listar(filtro) }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-pendientes.html", { 'list' : listar(filtro) }, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados.
 """
 @permission_required('postproduccion.video_manager')
 def listar_en_proceso(request):
-    return render_to_response("postproduccion/enproceso.html", { 'list' : listar() }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-enproceso.html", { 'list' : listar() }, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados que cumplan el filto dado.
@@ -319,7 +319,7 @@ Muestra el registro de eventos de la aplicación.
 @permission_required('postproduccion.video_manager')
 def showlog(request, old = False):
     logdata = log.get_log() if not old else log.get_old_log()
-    return render_to_response("postproduccion/log.html", { 'log' : logdata, 'old' : old }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-log.html", { 'log' : logdata, 'old' : old }, context_instance=RequestContext(request))
 
 """
 Muestra las alertas de la aplicación.
@@ -356,7 +356,7 @@ def alerts(request):
         lista.append({ 'tipo' : 'cron', 'fecha' : datetime.datetime.min })
     # Ordena los elementos cronológicamente
     lista = sorted(lista, key=lambda it: it['fecha'])
-    return render_to_response("postproduccion/alertas.html", { 'lista' : lista })
+    return render_to_response("postproduccion/section-alertas.html", { 'lista' : lista })
 
 """
 Edita los ajustes de configuración de la aplicación.

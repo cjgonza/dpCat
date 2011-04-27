@@ -1,0 +1,15 @@
+{% extends "postproduccion/index.html" %}
+
+{% block contenido %} 
+
+<div id="content" {% block section-class %} {% endblock %} >
+    <div id="content-left">
+        {% block section-description %} {% endblock %}
+        {% block section-content %} {% endblock %}
+    </div>
+ 
+    {% block section-widget %} {% endblock %}    
+
+</div>
+
+{% endblock %}

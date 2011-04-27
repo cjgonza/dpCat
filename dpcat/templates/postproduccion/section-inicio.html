@@ -1,16 +1,15 @@
 
 {% extends "postproduccion/index.html" %}
 
+{% block page-title %}Inicio{% endblock %}
 
-{% block seccion %}
-<h1>Resumen de actividad</h1>
+{% block section-title %}<h1>Resumen de actividad</h1>{% endblock %}
+
+{% block contenido %}
         <div id="content">
-            Soy content, muestro los tipos de mensajes:
             <div class="mensaje rojo">mensaje rojo</div>
             <div class="mensaje verde">mensaje verde</div>
             <div class="mensaje amarillo">mensaje amarillo</div>
             <div class="mensaje">mensaje</div>
         </div>
-
-        {% endblock %}
-
+{% endblock %}

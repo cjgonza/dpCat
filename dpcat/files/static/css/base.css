@@ -342,7 +342,7 @@ ul.utils li a {
     overflow: hidden;
 }
 
-#content.crear p {
+#content p {
     margin: 0px;
     margin-bottom: 20px;
     overflow: hidden;
@@ -456,6 +456,7 @@ ul.utils li a {
     -moz-border-radius-topleft:4px;
     line-height: 30px;
     -moz-border-radius-topright:4px;
+    margin-bottom: 10px;
 }
 
 #content-right #right-block ul {
@@ -688,4 +689,27 @@ padding: 0px;
 #tabla.log tr.debug {
     background: #E0F2CB;
 }
+
+
+ul#lista-alertas {
+}
+
+
+#lista-alertas li {
+    clear: both;
+    margin: 10px 0px;
+    border: solid 1px #ccc;
+    -moz-border-radius: 3px;
+    padding: 3px;
+    background: #F0F0F0;
+}
+#lista-alertas li p.alerta-link {
+    width: 10%;
+    float: left;
+    
+}
+
+#lista-alertas li p.alerta-txt {
+}
+
 

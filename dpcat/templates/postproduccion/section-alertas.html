@@ -1,7 +1,29 @@
-<ul>
+{% extends "postproduccion/base-2-1.html" %}
+
+{% block page-title %}Alertas del sistema{% endblock %}
+{% block section-class %} {% endblock %}
+{% block section-title %}<h1>Alertas del sistema</h1>{% endblock %}
+{% block section-description %}<p>Alertas producidas por el sistema que requieren atenci&oacute;n del usuario.</p>{% endblock %}
+
+{% block section-content %} 
+
+<ul id="lista-alertas">
 {% for i in lista %}
     {% if i.tipo == 'video-incompleto' %}
-    <li class="{{ i.tipo }}">El vídeo #{{ i.v.id }} con título "{{ i.v.titulo }}" no se ha terminado de definir. (<a href="{% url crear i.v.id %}">Editar vídeo</a>)</li>
+    <li class="{{ i.tipo }}">
+    
+    <p class="alerta-link"><a href="{% url crear i.v.id %}">Editar v&iacute;deo</a></p>
+    <p class="alerta-txt">
+    <span class="span-titulo">T&iacute;tulo de la producci&oacute;n:</span>
+    <span class
+    El v&iacute;deo con identificador 
+    
+    
+    
+    "{{ i.v.id }}" y t&iacute;tulo "{{ i.v.titulo }}" no se ha terminado de definir.</p>
+    
+    
+    </li>
     {% endif %}
 
     {% if i.tipo == 'trabajo-fail' %}
@@ -29,6 +51,24 @@
     {% endif %}
 
     {% empty %}
-    <li>Actualmente no existe ninguna alerta</li>
+        <div class="mensaje verde">No existe ninguna alerta en el sistema</div></li>
 {% endfor %}
 </ul>
+
+{% endblock %}
+
+{% block section-widget %}
+    <div id="content-right">
+        <div id="right-block">
+            <h3>Informaci&oacute;n de inter&eacute;s</h3>
+            <ul>
+                <li class="tip">Poner descripci&oacute;n o enlaces sobre esta tabla</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+

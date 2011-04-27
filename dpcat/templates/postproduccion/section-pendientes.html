@@ -1,9 +1,11 @@
-{% extends "postproduccion/base-tablas.html" %}
+{% extends "postproduccion/base-2-1.html" %}
 
+{% block page-title %}Producciones pendientes{% endblock %}
+{% block section-class %} {% endblock %}
+{% block section-title %}<h1>Producciones pendientes</h1>{% endblock %}
+{% block section-description %}<p>Producciones que actualmente estan pendientes</p>{% endblock %}
 
-{% block titulo %}Producciones pendientes{% endblock %}
-{% block descripcion %}<p>Producciones que actualmente estan pendientes</p>{% endblock %}
-{% block tabla %} 
+{% block section-content %} 
 
 <table id="tabla">
   <thead>
@@ -30,16 +32,15 @@
   </tbody>
 </table>
 
-
 {% endblock %}
 
-{% block right-block %}
-<div id="content-right">
-<div id="right-block">
-    <h3>Informaci&oacute;n de inter&eacute;s</h3>
-    <ul>
-        <li class="tip">Poner descripci&oacute;n o enlaces sobre esta tabla</li>
-    </ul>
-</div>
-</div>
+{% block section-widget %}
+    <div id="content-right">
+        <div id="right-block">
+            <h3>Informaci&oacute;n de inter&eacute;s</h3>
+            <ul>
+                <li class="tip">Listado de producciones pendientes que requieren revisi&oacute;n por parte del operador</li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}

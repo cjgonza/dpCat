@@ -1,0 +1,51 @@
+{% extends "postproduccion/base-2-1.html" %}
+
+{% block page-title %}Nueva producci&oacute;n, paso 2{% endblock %}
+{% block section-class %}class = "crear paso2" {% endblock %}
+{% block section-title %}<h1>Nueva producci&oacute;n</h1>{% endblock %}
+{% block section-description %} {% endblock %}
+
+{% block section-content %} 
+
+    <script src="/static/js/jquery.js" type="text/javascript"></script>
+    <script src="/static/js/jqueryFileTree/jqueryFileTree.js" type="text/javascript"></script>
+    <link href="/static/js/jqueryFileTree/jqueryFileTree.css" rel="stylesheet" type="text/css" media="screen" />
+    <script>
+        $(document).ready( function() {
+            $('#fileTree').fileTree({ script: '/postproduccion/dirlist/', multiFolder: false }, function(file) {
+                $('#id_fichero')[0].value = file;
+            });
+        });
+    </script>
+
+    <div id="progreso" class="dos"></div>
+    <h2>Paso 2: Selecciona el contenido de la producci&oacute;n</h2>
+    <form method="post" action="">
+        {% csrf_token %}
+        <h3>Selecciona el fichero de entrada</h3>
+        <div id="fileTree" class="navegador"></div>
+        {{ form.as_p }}
+        <hr/>
+        <input type="submit" value="Siguiente" />
+        <div id="volver"><a class="volver" href="{% url postproduccion.views.crear v.id %}">Anterior</a></div>
+        <input type="reset" value="Restaurar formulario" />
+    </form>
+
+{% endblock %}
+
+{% block section-widget %}
+    <div id="content-right">
+        <div id="right-block">
+            <h3>Informaci&oacute;n de inter&eacute;s</h3>
+            <ul>
+    <li class="tip">Paso 2 para la creaci&oacute;n de una nueva producci&oacute;n.<br/><br/>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+

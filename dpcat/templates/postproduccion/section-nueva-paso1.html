@@ -1,0 +1,34 @@
+{% extends "postproduccion/base-2-1.html" %}
+
+{% block page-title %}Nueva producci&oacute;n, paso 1{% endblock %}
+{% block section-class %}class = "crear paso1" {% endblock %}
+{% block section-title %}<h1>Nueva producci&oacute;n</h1>{% endblock %}
+{% block section-description %} {% endblock %}
+
+{% block section-content %} 
+        <div id="progreso" class="uno"></div>
+        <h2>Paso 1: Incluye los datos b&aacute;sicos de la producci&oacute;n</h2>
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ vform.as_p }}
+            {{ iform.as_p }}
+            <hr/>
+            <input type="submit" value="Siguiente" />
+            <input type="reset" value="Restaurar formulario" />
+
+        </form>
+{% endblock %}
+
+{% block section-widget %}
+    <div id="content-right">
+        <div id="right-block">
+            <h3>Informaci&oacute;n de inter&eacute;s</h3>
+            <ul>
+    <li class="tip">Paso 1 para la creaci&oacute;n de una nueva producci&oacute;n.<br/><br/>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+
+

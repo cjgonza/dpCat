@@ -1,19 +1,17 @@
-{% extends "postproduccion/base-tablas.html" %}
+{% extends "postproduccion/base-2-1.html" %}
 
-{% block titulo %}Registro del sistema{% endblock %}
-{% block descripcion %}
-
-{% if old %}
-<p>Informaci&oacute;n y registro antiguo de las acciones realizadas por el sistema. </p>
-{% else %}
-
-<p>Informaci&oacute;n y registro actual de las acciones realizadas por el sistema. </p>
-{% endif %}
-
-
+{% block page-title %}Registro del sistema{% endblock %}
+{% block section-class %} {% endblock %}
+{% block section-title %}<h1>Registro del sistema</h1>{% endblock %}
+{% block section-description %}
+    {% if old %}
+        <p>Informaci&oacute;n y registro antiguo de las acciones realizadas por el sistema. </p>
+    {% else %}
+        <p>Informaci&oacute;n y registro actual de las acciones realizadas por el sistema. </p>
+    {% endif %}
 {% endblock %}
 
-{% block tabla %} 
+{% block section-content %} 
 
 <table id="tabla" class="log">
   <thead>
@@ -36,10 +34,10 @@
   </tbody>
 </table>
 
-
 {% endblock %}
 
-{% block right-block %}
+{% block section-widget %}
+
 <div id="content-right">
 <div id="right-block">
 
@@ -65,4 +63,6 @@
     </ul>
 </div>
 </div>
+
 {% endblock %}
+
