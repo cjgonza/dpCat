@@ -11,23 +11,25 @@
 {% for i in lista %}
     {% if i.tipo == 'video-incompleto' %}
     <li class="{{ i.tipo }}">
-    
-    <p class="alerta-link"><a href="{% url crear i.v.id %}">Editar v&iacute;deo</a></p>
-    <p class="alerta-txt">
-    <span class="span-titulo">T&iacute;tulo de la producci&oacute;n:</span>
-    <span class
-    El v&iacute;deo con identificador 
-    
-    
-    
-    "{{ i.v.id }}" y t&iacute;tulo "{{ i.v.titulo }}" no se ha terminado de definir.</p>
-    
-    
+        <ul class="item-alerta">
+            <li><span class="item-alerta-title">T&iacute;tulo de la producci&oacute;n:</span>{{ i.v.titulo }} </li>
+            <li><span class="item-alerta-title">Identificador:</span> {{ i.v.id }} </li>
+            <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
+            <span class="item-alerta-content">No se ha terminado de definir.</span></li>
+            <li class="item-alerta-links"><a class="edit-icon" href="{% url crear i.v.id %}">Editar v&iacute;deo</a></li>
+        </ul> 
     </li>
     {% endif %}
 
     {% if i.tipo == 'trabajo-fail' %}
-    <li class="{{ i.tipo }}">La de las operación #{{ i.t.id }} sobre el vídeo con título "{{ i.t.video.titulo }}" ha fallado. (<a href="{% url cola %}">Ver la cola de proceso</a> | <a target="_blank" href="{% url mostrar_log i.t.id %}">Ver el log de la operación</a>)</li>
+    <li class="{{ i.tipo }}">
+         <ul class="item-alerta">
+            <li><span class="item-alerta-title">T&iacute;tulo de la producci&oacute;n:</span>{{ i.t.video.titulo }} </li>
+            <li><span class="item-alerta-title">Identificador:</span> {{ i.t.id }} </li>
+            <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
+            <span class="item-alerta-content">La operaci&oacute;n realizada sobre esta producci&oacute;n ha fallado.</span></li>
+            <li class="item-alerta-links"><a href="{% url cola%}">Cola de procesado</a><a href="{% url mostrar_log i.t.id %}">Registro del sistema de la operaci&oacute;n</li>
+        </ul> 
     {% endif %}
 
     {% if i.tipo == 'token-caducado' %}

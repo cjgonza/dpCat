@@ -472,6 +472,7 @@ font: normal 13px Arial;
     padding-left: 25px;
 }
 
+a.link,
 #content-right #right-block ul li a {
     background: url(../img/icon/link16.png) 0 0 no-repeat;
     padding-left: 25px;
@@ -479,8 +480,14 @@ font: normal 13px Arial;
     color: #373737;
 }
 
+a.link:hover,
 #content-right #right-block ul li a:hover {
     text-decoration: underline;
+}
+
+a.link {
+    margin: 5px 0px;
+    display: block;
 }
 
 /****************************/
@@ -696,20 +703,61 @@ ul#lista-alertas {
 
 
 #lista-alertas li {
-    clear: both;
     margin: 10px 0px;
     border: solid 1px #ccc;
     -moz-border-radius: 3px;
     padding: 3px;
-    background: #F0F0F0;
+    background: #f6f6f6;
+    font-size: 13px;
 }
-#lista-alertas li p.alerta-link {
-    width: 10%;
+
+
+#lista-alertas ul.item-alerta li {
+border: 0px;
+margin: 0px;
+-moz-border-radius: 0px;
+   clear: both;
+   overflow: hidden;
+}
+
+ul.item-alerta span.item-alerta-content {
     float: left;
-    
+    display: block;
+    width: 75%;
+}
+ul.item-alerta span.item-alerta-title {
+    width: 20%;
+    display: block;
+    float: left;
+    color: #373737;
+    font-weight: bold;
 }
 
-#lista-alertas li p.alerta-txt {
+
+#lista-alertas ul.item-alerta li.item-alerta-links {
+    border-top: solid 1px #ccc;
+    margin: 0px;
+    padding: 0px;
+    margin-top: 5px;
+    padding-left: 5px;
+    padding-top: 2px;
+}
+
+#lista-alertas ul.item-alerta li.item-alerta-links a.edit-icon {
+    font-size: 11px;
+    font-family: Arial;
+    color: #336699;
+    text-decoration: none;
+     background: #fff url(../img/icon/links12.png) 3px 50% no-repeat;
+    padding: 2px 5px;
+    padding-left: 20px;
+    -moz-border-radius: 2px;
+    border: solid 1px #ccc;
+    line-height: 25px;
 }
 
 
+#lista-alertas ul.item-alerta li.item-alerta-links a:edit-icon:hover {
+    background-color: #F6F6F6;
+    text-decoration: underline;
+}
