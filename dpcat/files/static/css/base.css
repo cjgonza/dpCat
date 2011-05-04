@@ -348,11 +348,16 @@ ul.utils li a {
     overflow: hidden;
 }
 
-#content.crear hr {
+#content hr {
    border: dotted 1px #336699; 
 }
 
-#content.crear p label {
+#content.status hr {
+    margin: 20px 0px;
+
+}
+
+#content.formulario p label {
     width: 130px;
     text-align: left;
     display: block;
@@ -362,21 +367,24 @@ ul.utils li a {
     color: #336699;
     line-height: 28px;
 }
+#content.formulario.config p label {
+    width: 330px;
+}
 
-#content.crear h3 {
+#content.formulario h3 {
     margin-bottom: 15px;
     padding-bottom: 5px;
     font: bold 12px Arial;
     color: #373737;
     border-bottom: solid 1px #ccc;
 }
-#content.crear.paso3 p label {
+#content.formulario.paso3 p label {
     margin-left: 10px;
 }
 
-#content.crear p textarea,
-#content.crear p select,
-#content.crear p input[type="text"] {
+#content.formulario p textarea,
+#content.formulario p select,
+#content.formulario p input[type="text"] {
     height: 25px;
     padding: 3px 5px;
     width: 300px;
@@ -385,11 +393,11 @@ ul.utils li a {
 }
 
 
-#content.crear p:last-child {
+#content.formulario p:last-child {
     background: red;
 }
-#content.crear input[type="submit"],
-#content.crear input[type="reset"] {
+#content.formulario input[type="submit"],
+#content.formulario input[type="reset"] {
     background: #336699;
     color: #fff;
     border: 0px;
@@ -402,7 +410,7 @@ ul.utils li a {
     cursor: pointer;
 }
 
-#content.crear input[type="reset"] {
+#content.formulario input[type="reset"] {
     background: #bfbfbf;
     background: #ececec;
     color: #bfbfbf;
@@ -414,11 +422,11 @@ ul.utils li a {
     font-size: 11px;
 }
 
-#content.crear p select {
+#content.formulario p select {
     height: 30px;
     width: 312px;
 }
-#content.crear p textarea {
+#content.formulario p textarea {
     height: 150px;
     width: 400px;
 }
@@ -466,6 +474,7 @@ ul.utils li a {
 #content-right #right-block ul li {
 color: #373737;    
 font: normal 13px Arial;
+margin: 10px 0px;
 }
 #content-right #right-block ul li.tip {
     background: url(../img/icon/lightbulb.png) 0 0 no-repeat;
@@ -549,6 +558,11 @@ padding: 0px;
     margin-bottom: 30px;
 }
 
+.status #content-left h2 {
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
 
 /* Selección de archivos */
 .navegador {
@@ -560,28 +574,28 @@ padding: 0px;
     padding: 5px;
 }
 
-#content.crear.paso2 form h3{
+#content.formulario.paso2 form h3{
     color: #336699;
     font: bold 12px Arial;
     height: 25px;
     clear: both;
 }
 
-#content.crear.paso2 form p label {
+#content.formulario.paso2 form p label {
     display: none;
 }
-#content.crear.paso2 form p {
+#content.formulario.paso2 form p {
     margin-top: 5px;
 }
-#content.crear.paso2 form p input[type="text"] {
+#content.formulario.paso2 form p input[type="text"] {
 }
 
-#content.crear.paso2 ul.errorlist {
+#content.formulario.paso2 ul.errorlist {
     margin-left: 0px;
     margin-top: 15px;
 }
 
-#content.crear #volver a {
+#content.formulario #volver a {
     text-decoration: none;
     font: bold 12px Arial;
     background: #c1d1e0;
@@ -591,7 +605,7 @@ padding: 0px;
     display: block;
     line-height: 33px;
 }
-#content.crear #volver {
+#content.formulario #volver {
     float: right;
     height: 33px;
     margin-top: 5px;
@@ -695,6 +709,37 @@ padding: 0px;
 }
 #tabla.log tr.debug {
     background: #E0F2CB;
+}
+
+#tabla td.on,
+#tabla td.ok {
+    background: url(../img/icon/check16.png) 50% 50% no-repeat;
+}
+
+#tabla td.off,
+#tabla td.err {
+    background: url(../img/icon/error16.png) 50% 50% no-repeat;
+}
+
+
+#tabla input[type="submit"].off,
+#tabla input[type="submit"].on {
+    color: #fff;
+    border: 0px;
+    -moz-border-radius: 3px;
+    padding: 5px 30px;
+    font: bold 12px Arial;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+#tabla input[type="submit"].off {
+    background: #6DA84C;
+}
+
+
+#tabla input[type="submit"].on {
+    background: #CE2700;
 }
 
 

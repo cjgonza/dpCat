@@ -1,6 +1,13 @@
+{% extends "postproduccion/base-2-1.html" %}
 
+{% block page-title %}Configuraci&oacute;n{% endblock %}
+{% block section-class %} class = "status" {% endblock %}
+{% block section-title %}<h1>Estado del sistema</h1>{% endblock %}
+{% block section-description %} <p>Personaliza las opciones de configuraci&oacute;n del sistema con las variables del entorno de despliegue.</p>{% endblock %}
+
+{% block section-content %} 
 <h2>Programas externos</h2>
-<table>
+<table id="tabla">
   <thead>
     <th>Programa</th>
     <th>Ruta</th>
@@ -18,9 +25,9 @@
     {% endfor %}
   </tbody>
 </table>
-
+<hr/>
 <h2>Directorios</h2>
-<table>
+<table id="tabla">
   <thead>
     <th>Directorio</th>
     <th>Ruta</th>
@@ -47,8 +54,9 @@
   </tbody>
 </table>
 
+<hr/>
 <h2>Tareas Programadas</h2>
-<table>
+<table id="tabla">
   <thead>
     <th>Tarea</th>
     <th>Estado</th>
@@ -62,9 +70,39 @@
         <form action="" method="POST">
           {% csrf_token %}
           <input type="hidden" name="status" value="{{ cron|yesno:'1,0' }}" />
-          <input type="submit" value="{{ cron|yesno:'Desactivar,Activar' }}" />
+          <input class="{{ cron|yesno:'on,off' }}" type="submit" value="{{ cron|yesno:'Desactivar,Activar' }}" />
         </form>
       </td>
     </tr>
   </tbody>
 </table>
+
+
+{% endblock %}
+
+{% block section-widget %}
+    <div id="content-right">
+        <div id="right-block">
+            <h3 class="links">Detalles de configuraci&oacute;n</h3>
+            <ul>
+                <li><a href="{% url config %}">Configuraci&oacute;n del sistema</a></li> 
+                <li><a href="{% url status %}">Ver el estado del sistema</a></li> 
+            </ul>
+        </div>
+
+        <div id="right-block">
+            <h3>Informaci&oacute;n de inter&eacute;s</h3>
+            <ul>
+    <li class="tip">Falta personalizar este mensaje</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+

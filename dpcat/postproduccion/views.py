@@ -375,7 +375,7 @@ def config_settings(request):
         for i in ConfigForm.base_fields.keys():
             initial_data[i] = config.get_option(i.upper())
         form = ConfigForm(initial_data)
-    return render_to_response("postproduccion/config.html", { 'form' : form }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-config.html", { 'form' : form }, context_instance=RequestContext(request))
 
 """
 Muestra el estado de la aplicación con la configuración actual.
@@ -426,4 +426,4 @@ def status(request):
             crontab.start()
     cron = crontab.status()
 
-    return render_to_response("postproduccion/status.html", { 'exes' : exes, 'dirs' : dirs, 'cron' : cron }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-status.html", { 'exes' : exes, 'dirs' : dirs, 'cron' : cron }, context_instance=RequestContext(request))

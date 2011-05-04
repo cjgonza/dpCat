@@ -1,0 +1,41 @@
+{% extends "postproduccion/base-2-1.html" %}
+
+{% block page-title %}Configuraci&oacute;n{% endblock %}
+{% block section-class %} class = "formulario config" {% endblock %}
+{% block section-title %}<h1>Configuraci&oacute;n del sistema</h1>{% endblock %}
+{% block section-description %} <p>Personaliza las opciones de configuraci&oacute;n del sistema con las variables del entorno de despliegue.</p>{% endblock %}
+
+{% block section-content %} 
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <hr/>
+            <input type="submit" value="Guardar" />
+            <input type="reset" value="Restaurar formulario" />
+
+        </form>
+{% endblock %}
+
+{% block section-widget %}
+    <div id="content-right">
+        <div id="right-block">
+            <h3 class="links">Detalles de configuraci&oacute;n</h3>
+            <ul>
+                <li><a href="{% url config %}">Configuraci&oacute;n del sistema</a></li> 
+                <li><a href="{% url status %}">Ver el estado del sistema</a></li> 
+            </ul>
+        </div>
+
+        <div id="right-block">
+            <h3>Informaci&oacute;n de inter&eacute;s</h3>
+            <ul>
+    <li class="tip">Falta personalizar este mensaje</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
