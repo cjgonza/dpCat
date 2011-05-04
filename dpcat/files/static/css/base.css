@@ -706,18 +706,22 @@ ul#lista-alertas {
     margin: 10px 0px;
     border: solid 1px #ccc;
     -moz-border-radius: 3px;
-    padding: 3px;
+    padding: 0px;
     background: #f6f6f6;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 
+#lista-alertas ul.item-alerta {
+    padding: 3px;
+}
 #lista-alertas ul.item-alerta li {
 border: 0px;
-margin: 0px;
+margin: 3px;
 -moz-border-radius: 0px;
    clear: both;
    overflow: hidden;
+   
 }
 
 ul.item-alerta span.item-alerta-content {
@@ -731,6 +735,7 @@ ul.item-alerta span.item-alerta-title {
     float: left;
     color: #373737;
     font-weight: bold;
+    letter-spacing: 0px;
 }
 
 
@@ -761,3 +766,23 @@ ul.item-alerta span.item-alerta-title {
     background-color: #F6F6F6;
     text-decoration: underline;
 }
+
+#lista-alertas li span.item-tipo {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    color: #fff;
+    font-weight: bold;
+    padding-left: 30px;
+
+}
+
+
+#lista-alertas li span.item-tipo { 
+    background: #FBD3B1 url(../img/icon/warning16.png) 6px 2px no-repeat;
+    border-bottom: 2px solid #C32700;
+    color: #C32700;
+    
+}
+
+
