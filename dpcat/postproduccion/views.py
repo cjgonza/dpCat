@@ -159,7 +159,7 @@ def dirlist(request):
 
 @permission_required('postproduccion.video_manager')
 def cola_base(request):
-    return render_to_response("postproduccion/cola_base.html", context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-cola-base.html", context_instance=RequestContext(request))
 
 @permission_required('postproduccion.video_manager')
 def cola_listado(request):
@@ -169,8 +169,8 @@ def cola_listado(request):
         linea = dict()
         linea['video'] = task.video.titulo
         linea['tipo'] = dict(Cola.QUEUE_TYPE)[task.tipo]
-        linea['comienzo'] = task.comienzo.strftime("%d/%m/%Y %H:%M:%S.%f") if task.comienzo else None
-        linea['fin'] = task.fin.strftime("%d/%m/%Y %H:%M:%S.%f") if task.fin else None
+        linea['comienzo'] = task.comienzo.strftime("%H:%M:%S - %d/%m/%Y") if task.comienzo else None
+        linea['fin'] = task.fin.strftime("%H:%M:%S - %d/%m/%Y") if task.fin else None
         linea['logfile'] = task.logfile.name
         linea['logurl'] = reverse('postproduccion.views.mostrar_log', args=(task.pk,)) if task.logfile.name else None
         linea['id'] = task.pk

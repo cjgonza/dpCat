@@ -161,7 +161,9 @@ body.login {
     background-repeat: no-repeat;
     background-color: #d8e1e9;
     background-image: url(../img/azul_16.png);
+    overflow: hidden;
 }
+
 
 .rojo {
     color: #CE2700;
@@ -185,8 +187,24 @@ body.login {
 
 }
 
+.rojo a.cerrar-rojo,
+.amarillo a.cerrar-amarillo,
+.azul a.cerrar-azul,
+.verde a.cerrar-verde {
+    cursor: pointer;
+    display: block;
+    width: 80px;
+    font: normal 11px Arial;
+    color: #373737;
+    margin-top: 5px;
+}
 
-
+.rojo a.cerrar-rojo:hover,
+.amarillo a.cerrar-amarillo:hover,
+.azul a.cerrar-azul:hover,
+.verde a.cerrar-verde:hover {
+    text-decoration: underline;
+}
 
 /* index */
 
@@ -831,3 +849,48 @@ ul.item-alerta span.item-alerta-title {
 }
 
 
+
+
+/* Progress bar container */
+.progressbar{
+border:1px solid #373737;
+width:100%;
+height:20px;
+position:relative;
+color: #373737;
+-moz-border-radius: 3px;
+}
+/* color bar */
+.progressbar div.progress{
+position:absolute;
+width:0;
+height:100%;
+overflow:hidden;
+background-color:#369;
+}
+/* text on bar */
+.progressbar div.progress .text{
+position:absolute;
+text-align:center;
+color: #fff;
+}
+/* text off bar */
+.progressbar div.text{
+position:absolute;
+width:100%;
+height:100%;
+text-align:center;
+}
+
+
+a.log-icon {
+    background: url(../img/icon/archives12.png) 0 50% no-repeat;
+    padding-left: 16px;
+    font: normal 11px Arial;
+    color: #336699;
+    text-decoration: none;
+}
+
+a.log-icon:hover {
+    text-decoration: underline;
+}
