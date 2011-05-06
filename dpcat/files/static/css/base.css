@@ -375,6 +375,7 @@ ul.utils li a {
 
 }
 
+.info-basica label,
 #content.formulario p label {
     width: 130px;
     text-align: left;
@@ -570,10 +571,20 @@ padding: 0px;
 #progreso.tres { background: url(../img/barra-progreso-new.png) 0 -64px no-repeat; }
 
 
+
+
+.info-basica h2,
 #content-left h2 {
     font: normal 20px Arial;
     color: #e98b59;
     margin-bottom: 30px;
+}
+
+.info-basica h2 {
+    margin-bottom: 10px;
+    padding: 5px;
+    padding-top: 0px;
+    border-bottom: dotted 1px #336699;
 }
 
 .status #content-left h2 {
@@ -893,4 +904,76 @@ a.log-icon {
 
 a.log-icon:hover {
     text-decoration: underline;
+}
+
+
+
+
+.informe-video .info-prevideo {
+    width: 480px;
+    height: 300px;
+    border: solid 1px #dddddd;
+    padding: 6px;
+    -moz-border-radius: 3px;
+    float: left;
+}
+
+
+.informe-video .info-prevideo #container {
+    margin-bottom: 6px;
+}
+.informe-video .info-prevideo ul li {
+    float: left;
+    margin: 0px 10px;
+}
+.informe-video .info-prevideo ul {
+
+    padding-top: 7px;
+    border-top: solid 1px #ddd;
+}
+.informe-video .info-prevideo a:hover {
+    text-decoration: underline;
+}
+.informe-video .info-prevideo a {
+    font: normal 11px Arial;
+    color:#373737;
+    text-decoration: none;
+}
+
+a.chain {
+    background: url(../img/icon/chain12.png) 0 50% no-repeat;
+    padding-left: 16px;
+}
+a.email {
+    background: url(../img/icon/email12.png) 0 50% no-repeat;
+    padding-left: 16px;
+}
+
+.informe-video .info-basica {
+    margin-left: 500px;
+    padding: 10px;
+}
+
+.info-basica ul {
+    margin: 0px 10px;
+}
+
+.info-basica li a:hover {
+    text-decoration: underline;
+}
+.info-basica li a {
+    text-decoration: none;
+    color: #373737;
+}
+.info-basica li {
+    overflow: hidden;
+    line-height: 28px;
+}
+.info-basica label {
+    width: 170px;
+}
+
+.info-video {
+    overflow: hidden;
+    margin-bottom: 15px;
 }

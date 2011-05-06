@@ -1,0 +1,69 @@
+{% extends "postproduccion/base-1.html" %}
+
+{% block page-title %}Informe de producci&oacute;n{% endblock %}
+{% block page-script %} <script type="text/javascript" src="/static/jwplayer/jwplayer.js"></script>{% endblock %}
+{% block section-class %} class="informe-video"{% endblock %}
+{% block section-title %}<h1>Informe de producci&oacute;n</h1>{% endblock %}
+{% block section-description %}
+
+<div class="info-video">
+<div class="info-prevideo">
+    <div id="container">Cargando video ...</div>
+
+    <script type="text/javascript">
+        jwplayer("container").setup({
+            flashplayer: "/static/jwplayer/player.swf",
+            file: "{% url stream_video v.id %}",
+            height: 270,
+            width: 480
+        });
+    </script>
+
+    <ul>
+        <li><a class="chain" href="{% url stream_video v.id %}">Descargar video</a></li>
+    </ul>
+</div>
+
+<div class="info-basica">
+    <h2>{{ v.titulo }}</h2>
+    <ul>
+        <li><label>Autor:</label> {{ v.autor }}</li>
+        <li><label>Correo electr&oacute;nico:</label><a class="email" href="mailto:{{ v.email }}">{{ v.email }}</a></li>
+        <li><label>Fecha de grabaci&oacute;n:</label> {{ v.informeproduccion.fecha_grabacion }}</li>
+        <li><label>Operador de producci&oacute;n:</label> {{ v.informeproduccion.operador }} </li>
+    </ul>
+</div>
+</div>
+
+
+<div id="info-menu">
+<ul id="nav">
+<li class="current"><a href="">Informaci&oacute;n</a></li>
+<li><a href="">Metadata</a></li>
+<li><a href="">Token</a></li>
+</ul>
+</div>
+{% endblock %}
+
+{% block section-content %} {% endblock %}
+
+{% block section-widget %}
+    <div id="content-right">
+        <div id="right-block">
+            <h3>Informaci&oacute;n de inter&eacute;s</h3>
+            <ul>
+                <li class="tip">Poner descripci&oacute;n o enlaces sobre esta tabla</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
