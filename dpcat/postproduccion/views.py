@@ -225,7 +225,6 @@ Vista para que el usuario verifique un vídeo y lo apruebe o rechace.
 def aprobacion_video(request, tk_str):
     v = token.is_valid_token(tk_str)
     if not v: raise Http404
-    preview_url = reverse('postproduccion.views.stream_preview', args=(tk_str,))
 
     if request.method == 'POST':
         if request.POST['aprobado'] == 'true':
@@ -237,7 +236,7 @@ def aprobacion_video(request, tk_str):
         v.informeproduccion.save()
         return HttpResponseRedirect(redirect)
 
-    return render_to_response("postproduccion/aprobacion_video.html", { 'v' : v, 'preview_url' : preview_url }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/aprobacion_video.html", { 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
 Vista para que el usuario rellene los metadatos de un vídeo.
@@ -245,7 +244,6 @@ Vista para que el usuario rellene los metadatos de un vídeo.
 def definir_metadatos_user(request, tk_str):
     v = token.is_valid_token(tk_str)
     if not v: raise Http404
-    preview_url = reverse('postproduccion.views.stream_preview', args=(tk_str,))
 
     if request.method == 'POST':
         form = MetadataForm(request.POST, instance = v.metadata) if  hasattr(v, 'metadata') else MetadataForm(request.POST)
@@ -259,7 +257,7 @@ def definir_metadatos_user(request, tk_str):
             return HttpResponse("Datos enviados al operador para su aprobación")
     else:
         form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
-    return render_to_response("postproduccion/definir_metadatos.html", { 'form' : form, 'v' : v, 'url' : preview_url }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/definir_metadatos_user.html", { 'form' : form, 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
 Vista para que el operador rellene los metadatos de un vídeo.
@@ -267,7 +265,6 @@ Vista para que el operador rellene los metadatos de un vídeo.
 @permission_required('postproduccion.video_manager')
 def definir_metadatos_oper(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
-    video_url = reverse('postproduccion.views.stream_video', args = (video_id,))
 
     if request.method == 'POST':
         form = MetadataForm(request.POST)
@@ -280,7 +277,7 @@ def definir_metadatos_oper(request, video_id):
             return HttpResponse("Puta madre, todo salvado")
     else:
         form = MetadataForm()
-    return render_to_response("postproduccion/definir_metadatos.html", { 'form' : form, 'v' : v, 'url' : video_url }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/definir_metadatos_oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
 
 """
 Solicita al usuario una razón por la cual el vídeo ha sido rechazado

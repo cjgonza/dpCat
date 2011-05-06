@@ -4,7 +4,7 @@
 <script type="text/javascript">
     jwplayer("container").setup({
     flashplayer: "/static/jwplayer/player.swf",
-    file: "{{ url }}",
+    file: "{% url stream_video v.id %}",
     height: 270,
     width: 480
 });
