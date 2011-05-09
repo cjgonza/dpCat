@@ -2,7 +2,7 @@
 from django import forms
 from django.forms import ModelForm, CharField, Textarea, widgets, Form
 from django.forms.models import BaseInlineFormSet
-from postproduccion.models import Video, FicheroEntrada, Metadata, InformeProduccion
+from postproduccion.models import Video, FicheroEntrada, Metadata, InformeProduccion, IncidenciaProduccion
 
 class VideoForm(ModelForm):
     class Meta:
@@ -13,11 +13,11 @@ class InformeCreacionForm(ModelForm):
         model = InformeProduccion
         fields = ('observacion', 'aprobacion')
 
-class InformeRechazoForm(ModelForm):
+class IncidenciaProduccionForm(ModelForm):
     comentario = CharField(required = True, widget = Textarea())
 
     class Meta:
-        model = InformeProduccion
+        model = IncidenciaProduccion
         fields = ('comentario',)
 
 class FicheroEntradaForm(ModelForm):

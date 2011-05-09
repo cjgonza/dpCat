@@ -10,7 +10,7 @@ from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 
 from postproduccion.models import Video, Cola, FicheroEntrada
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, InformeRechazoForm, ConfigForm
+from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, ConfigForm, IncidenciaProduccionForm
 from postproduccion.queue import enqueue_copy, enqueue_pil, progress, get_log
 from postproduccion import utils
 from postproduccion import token
@@ -226,17 +226,29 @@ def aprobacion_video(request, tk_str):
     v = token.is_valid_token(tk_str)
     if not v: raise Http404
 
-    if request.method == 'POST':
-        if request.POST['aprobado'] == 'true':
-            v.informeproduccion.aprobado = True
-            redirect = reverse('postproduccion.views.definir_metadatos_user', args=(tk_str,))
-        else:
-            v.informeproduccion.aprobado = False
-            redirect = reverse('postproduccion.views.rechazar_video', args=(tk_str,))
-        v.informeproduccion.save()
-        return HttpResponseRedirect(redirect)
+    if v.informeproduccion.aprobado:
+        return HttpResponseRedirect(reverse('postproduccion.views.definir_metadatos_user', args=(tk_str,)))
 
-    return render_to_response("postproduccion/aprobacion_video.html", { 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
+    if request.method == 'POST':
+        form = IncidenciaProduccionForm(request.POST)
+        if form.is_valid():
+            inpro = form.save(commit = False)
+            inpro.informe = v.informeproduccion
+            inpro.emisor = 'U'
+            if 'aprobado' in request.POST:
+                inpro.aceptado = True
+                v.informeproduccion.aprobado = True
+                redirect = reverse('postproduccion.views.definir_metadatos_user', args=(tk_str,))
+            else:
+                inpro.aceptado = False
+                redirect = reverse('postproduccion.views.rechazar_video', args=(tk_str,))
+            v.informeproduccion.save()
+            inpro.save()
+        return HttpResponseRedirect(redirect)
+    else:
+        form = IncidenciaProduccionForm()
+
+    return render_to_response("postproduccion/aprobacion_video.html", { 'v' : v, 'form' : form, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
 Vista para que el usuario rellene los metadatos de un vídeo.
@@ -285,18 +297,10 @@ Solicita al usuario una razón por la cual el vídeo ha sido rechazado
 def rechazar_video(request, tk_str):
     v = token.is_valid_token(tk_str)
     if not v: raise Http404
-
-    if request.method == 'POST':
-        form = InformeRechazoForm(request.POST, instance = v.informeproduccion)
-        if form.is_valid():
-            form.save()
-            token.token_attended(v)
-            v.status = 'REC'
-            v.save()
-            return HttpResponse("Enviada notificación al operador para que atienda la incidencia")
-    else:
-        form = InformeRechazoForm()
-    return render_to_response("postproduccion/rechazar_video.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
+    token.token_attended(v)
+    v.status = 'REC'
+    v.save()
+    return render_to_response("postproduccion/rechazar_video.html", { 'v' : v })
 
 @permission_required('postproduccion.video_library')
 def stream_video(request, video_id):

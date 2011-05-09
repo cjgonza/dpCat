@@ -1,5 +1,5 @@
 #encoding: utf-8
-from postproduccion.models import Cola
+from postproduccion.models import Cola, HistoricoCodificacion
 from postproduccion.video import create_pil, create_preview, copy_video
 from settings import MEDIA_ROOT
 from configuracion import config
@@ -143,6 +143,16 @@ Elimina de la lista los trabajos completados.
 """
 def removeCompleted():
     Cola.objects.filter(status='HEC').delete()
+
+"""
+Elimina los trabajos asociados a un vídeo.
+"""
+def removeVideoTasks(v):
+    tasks = Cola.objects.filter(video=v).order_by('pk')
+    for t in tasks:
+        hist = HistoricoCodificacion(informe = v.informeproduccion, tipo = t.tipo, fecha = t.comienzo, status = (t.status == 'HEC'))
+        hist.save()
+    tasks.delete()   
 
 """
 Devuelve el número de puestos libres para iniciar el proceso de codificación.

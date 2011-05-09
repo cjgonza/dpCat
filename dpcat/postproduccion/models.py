@@ -76,9 +76,32 @@ class InformeProduccion(models.Model):
     observacion = models.TextField(null = True, blank = True)
     fecha_grabacion = models.DateTimeField(auto_now_add = True)
     aprobacion = models.BooleanField(default = True)
-    aprobado = models.NullBooleanField()
-    comentario = models.TextField(null = True, blank = True)
+    aprobado = models.BooleanField(default = False)
 
+class IncidenciaProduccion(models.Model):
+    WHO = (
+        ('O', u'Operador'),
+        ('U', u'Usuario'),
+    )
+
+    
+    informe = models.ForeignKey(InformeProduccion, editable = False)
+    emisor = models.CharField(max_length = 1, choices = WHO, editable = False)
+    comentario = models.TextField()
+    fecha =  models.DateTimeField(auto_now_add = True)
+    aceptado = models.BooleanField()
+
+class HistoricoCodificacion(models.Model):
+    TASK_TYPE = (
+        ('COP', u'Copia'),
+        ('PIL', u'Píldora'),
+        ('PRE', u'Previsualización')
+    )
+
+    informe = models.ForeignKey(InformeProduccion, editable = False)
+    tipo = models.CharField(max_length = 3, choices = TASK_TYPE)
+    fecha = models.DateTimeField()
+    status = models.BooleanField()
 
 class FicheroEntrada(models.Model):
     video = models.ForeignKey(Video, editable = False)
