@@ -4,11 +4,35 @@
 {% block section-content %} 
 
 
-<div>
+<div id="content-left">
 <form method="post" action="">
 {% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Enviar" />
 </form>
 </div>
+
+<div id="content-right">
+<div id="right-block">
+
+    <h3 class="links">Tipo de metadata</h3>
+    <ul>
+        <li><a href="{% url definir_metadatos_oper v.id %}">Metadata principal</a></li> 
+        <li><a href="{% url definir_metadatos_oper v.id %}">Metadata t&eacute;cnica</a></li> 
+    </ul>
+
+</div>
+
+
+
+    <div id="right-block">
+        <h3>Informaci&oacute;n de inter&eacute;s</h3>
+        <ul>
+            <li class="tip">Poner descripci&oacute;n o enlaces sobre esta tabla</li>
+        </ul>
+    </div>
+</div>
+
+
+
 {% endblock %}

@@ -469,21 +469,21 @@ ul.utils li a {
 #content-right #right-block {
     border: solid 1px #E9E9E9;
     -moz-border-radius: 4px;
-    padding-bottom: 20px;
+    padding-bottom: 5px;
     margin-bottom: 15px;
 }
 
 #content-right #right-block h3 {
-    background: #336699;
     color: #ffffff;
-    height: 30px;
+    height: 22px;
     padding: 4px 8px;
     font: bold 13px Arial;
-    text-shadow: 0px 1px 0px #111;
+    text-shadow: 0px 1px 0px #373737;
     -moz-border-radius-topleft:4px;
-    line-height: 30px;
+    line-height: 22px;
     -moz-border-radius-topright:4px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    background: #336799 url(../img/title-bg.png) 0 0 repeat-x;
 }
 
 #content-right #right-block ul {
@@ -1040,3 +1040,33 @@ a.ticket {
 a.historico {
     background: url(../img/icon/historico16.png) 10px 45% no-repeat;
 }
+
+ul#tab-menu li.li-right {
+    float: right;
+}
+
+ul#tab-menu li.li-right.borrar {
+    border: solid 1px #CE2700;
+    border-bottom: 0px;
+    margin-top: 10px;
+}
+ul#tab-menu li.li-right.borrar a  {
+    background: #CE2700 url(../img/icon/error16.png) 10px 50% no-repeat;
+    color: #fff;
+    border-top: solid 1px #CE2700;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-size: 11px;
+    line-height: 15px;
+}
+
+ul#tab-menu li.li-right.validar {
+    border: solid 1px #6DA84C;
+    border-bottom: 0px;
+}
+ul#tab-menu li.li-right.validar a  {
+    background: #6DA84C url(../img/icon/check16.png) 10px 50% no-repeat;
+    color: #fff;
+    border-top: solid 1px #6DA84C;
+}
+

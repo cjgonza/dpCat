@@ -42,6 +42,8 @@
         <li {% block current-resumen %} {% endblock %}> <a class="resumen" href="{% url estado_video v.id %}">Resumen de producci&oacute;n</a></li>
         <li {% block current-metadata %}{% endblock %}><a class="meta" href="{% url definir_metadatos_oper v.id %}">Metadata</a></li>
         <li {% block current-ticket %} {% endblock %}><a class="ticket" href="">Gesti&oacute;n de ticket</a></li>
+        <li class="li-right validar"><a class="validar"href="">Validar producci&oacute;n</a></li>
+        <li class="li-right borrar"><a class="borrar" href="">Borrar producci&oacute;n</a></li>
     </ul>
 </div>
 
@@ -50,14 +52,3 @@
 {% endblock %}
 
 {% block section-content %} {% endblock %}
-
-{% block section-widget %}
-<div id="content-right">
-    <div id="right-block">
-        <h3>Informaci&oacute;n de inter&eacute;s</h3>
-        <ul>
-            <li class="tip">Poner descripci&oacute;n o enlaces sobre esta tabla</li>
-        </ul>
-    </div>
-</div>
-{% endblock %}
