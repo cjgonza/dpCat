@@ -977,3 +977,62 @@ a.email {
     overflow: hidden;
     margin-bottom: 15px;
 }
+
+
+#info-menu {
+    border-bottom: solid 1px #D6E0EB;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    min-height: 33px;
+}
+
+ul#tab-menu {
+    margin-left: 10px;
+}
+
+ul#tab-menu li {
+    float: left;
+    border: solid 1px #D6E0EB;
+    -moz-border-radius-topleft:3px;
+    -moz-border-radius-topright:3px;
+    margin-right: 10px;
+    margin-bottom: -1px;
+    background: #f1f4f8 url(../img/title-bg.png) 0 20px repeat-x;
+}
+
+ul#tab-menu li.current {
+    background: #fff;
+    border-bottom: solid 1px #fff;
+}
+
+ul#tab-menu li a {
+    height: 17px;
+    display: block;
+    border-top: solid 1px #fff;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 7px 18px;
+    padding-left: 35px;
+    text-decoration: none;
+    color: #336699; 
+}
+
+ul#tab-menu li a:hover {
+    text-decoration: underline;
+}
+
+a.resumen {
+    background: url(../img/icon/estado16.png) 10px 45% no-repeat;
+}
+
+a.meta {
+    background: url(../img/icon/metadata16.png) 10px 45% no-repeat;
+}
+
+a.ticket {
+    background: url(../img/icon/ticket16.png) 10px 45% no-repeat;
+}
+
+a.historico {
+    background: url(../img/icon/historico16.png) 10px 45% no-repeat;
+}

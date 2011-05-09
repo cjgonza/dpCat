@@ -1,11 +1,14 @@
 {% extends "postproduccion/section-info-produccion.html" %}
 
+{% block current-metadata %} class="current" {% endblock %}
 {% block section-content %} 
 
+
+<div>
 <form method="post" action="">
 {% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Enviar" />
 </form>
-
+</div>
 {% endblock %}

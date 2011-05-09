@@ -1,3 +1,12 @@
+{% extends "postproduccion/section-info-produccion.html" %}
+
+{% block current-resumen %} class="current" {% endblock %}
+{% block section-content %} 
+
+
+
+
+
 <h2>Estado actual</h2>
 {{ v.get_status_display }}
 
@@ -27,3 +36,7 @@
         {% endfor %}
     </tbody>
 </table>
+
+
+
+{% endblock %}
