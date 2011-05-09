@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from postproduccion.models import Video, Cola, FicheroEntrada
 from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, ConfigForm, IncidenciaProduccionForm
-from postproduccion.queue import enqueue_copy, enqueue_pil, progress, get_log
+from postproduccion import queue 
 from postproduccion import utils
 from postproduccion import token
 from postproduccion import log
@@ -124,9 +124,9 @@ def resumen_video(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
     if request.method == 'POST':
         if v.plantilla:
-            enqueue_pil(v)
+            queue.enqueue_pil(v)
         else:
-            enqueue_copy(v)
+            queue.enqueue_copy(v)
         v.set_status('DEF')
         return HttpResponseRedirect(reverse('postproduccion.views.index'))
     return render_to_response("postproduccion/section-nueva-paso3.html", { 'v' : v }, context_instance=RequestContext(request))
@@ -174,7 +174,7 @@ def cola_listado(request):
         linea['logfile'] = task.logfile.name
         linea['logurl'] = reverse('postproduccion.views.mostrar_log', args=(task.pk,)) if task.logfile.name else None
         linea['id'] = task.pk
-        linea['status'] = progress(task) if task.status == 'PRO' else dict(Cola.QUEUE_STATUS)[task.status]
+        linea['status'] = queue.progress(task) if task.status == 'PRO' else dict(Cola.QUEUE_STATUS)[task.status]
         data.append(linea)
     return HttpResponse(json.dumps(data))
 
@@ -184,7 +184,7 @@ Muestra el fichero de log para una tarea.
 @permission_required('postproduccion.video_manager')
 def mostrar_log(request, task_id):
     task = get_object_or_404(Cola, pk=task_id)
-    return HttpResponse(get_log(task), mimetype='text/plain')
+    return HttpResponse(queue.get_log(task), mimetype='text/plain')
 
 """
 Lista los vídeos que están pendientes de atención por parte del operador.
@@ -272,26 +272,6 @@ def definir_metadatos_user(request, tk_str):
     return render_to_response("postproduccion/definir_metadatos_user.html", { 'form' : form, 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
-Vista para que el operador rellene los metadatos de un vídeo.
-"""
-@permission_required('postproduccion.video_manager')
-def definir_metadatos_oper(request, video_id):
-    v = get_object_or_404(Video, pk=video_id)
-
-    if request.method == 'POST':
-        form = MetadataForm(request.POST)
-        if form.is_valid():
-            m = form.save(commit = False)
-            m.video = v
-            m.save()
-            v.status = 'LIS'
-            v.save()
-            return HttpResponse("Puta madre, todo salvado")
-    else:
-        form = MetadataForm()
-    return render_to_response("postproduccion/definir_metadatos_oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
-
-"""
 Solicita al usuario una razón por la cual el vídeo ha sido rechazado
 """
 def rechazar_video(request, tk_str):
@@ -301,6 +281,43 @@ def rechazar_video(request, tk_str):
     v.status = 'REC'
     v.save()
     return render_to_response("postproduccion/rechazar_video.html", { 'v' : v })
+
+#######
+# Vistas para mostrar la información de una producción.
+#######
+
+"""
+Vista para que el operador rellene los metadatos de un vídeo.
+"""
+@permission_required('postproduccion.video_manager')
+def definir_metadatos_oper(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+
+    if request.method == 'POST':
+        form = MetadataForm(request.POST, instance = v.metadata) if  hasattr(v, 'metadata') else MetadataForm(request.POST)
+        if form.is_valid():
+            m = form.save(commit = False)
+            m.video = v
+            m.save()
+            v.status = 'LIS'
+            v.save()
+            queue.removeVideoTasks(v)
+            return HttpResponse("Puta madre, todo salvado")
+    else:
+        form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
+    return render_to_response("postproduccion/definir_metadatos_oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
+
+
+"""
+Vista que muestra el estado e información de una producción.
+"""
+@permission_required('postproduccion.video_manager')
+def estado_video(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    return  render_to_response("postproduccion/estado_video.html", { 'v' : v })
+
+
+#######
 
 @permission_required('postproduccion.video_library')
 def stream_video(request, video_id):

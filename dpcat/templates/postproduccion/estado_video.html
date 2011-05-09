@@ -1,0 +1,29 @@
+<h2>Estado actual</h2>
+{{ v.get_status_display }}
+
+<h2>Histórico de incidencias</h2>
+<table>
+    <thead>
+        <th>Emisor</th><th>Fecha</th><th>Aceptado</th><th>Comentario</th>
+    </thead>
+    <tbody>
+        {% for inci in v.informeproduccion.incidenciaproduccion_set.all %}
+        <tr><td>{{ inci.get_emisor_display }}</td><td>{{ inci.fecha }}</td><td>{{ inci.aceptado }}</td><td>{{ inci.comentario }}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<h2>Histórico de codificaci&oacute;n</h2>
+<table>
+    <thead>
+        <th>Tipo</th><th>Fecha</th><th>Estado</th>
+    </thead>
+    <tbody>
+        {% for hist in v.informeproduccion.historicocodificacion_set.all %}
+        <tr><td>{{ hist.get_tipo_display }}</td><td>{{ hist.fecha }}</td><td>{{ hist.status }}</td>
+        {% empty %}
+        <tr><td colspan="3">El hist&oacute;rico de codificaci&oacute;n no estar&aacute; disponible hasta que se termine la producci&oacute;n.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
