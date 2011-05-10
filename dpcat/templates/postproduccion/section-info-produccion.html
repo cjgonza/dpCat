@@ -42,7 +42,12 @@
         <li {% block current-resumen %} {% endblock %}> <a class="resumen" href="{% url estado_video v.id %}">Resumen de producci&oacute;n</a></li>
         <li {% block current-metadata %}{% endblock %}><a class="meta" href="{% url definir_metadatos_oper v.id %}">Metadata</a></li>
         <li {% block current-ticket %} {% endblock %}><a class="ticket" href="">Gesti&oacute;n de ticket</a></li>
-        <li class="li-right validar"><a class="validar"href="">Validar producci&oacute;n</a></li>
+        {% if v.status == 'LIS' %}
+        <li class="li-right publicar"><a class="publicar"href="">Publicar producci&oacute;n</a></li>
+        {% endif %}
+        {% if v.status == 'ACE' or v.status == 'PTO' %}
+        <li class="li-right validar"><a class="validar"href="{% url validar_produccion v.id %}">Validar producci&oacute;n</a></li>
+        {% endif %}
         <li class="li-right borrar"><a class="borrar" href="">Borrar producci&oacute;n</a></li>
     </ul>
 </div>

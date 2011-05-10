@@ -299,10 +299,6 @@ def definir_metadatos_oper(request, video_id):
             m = form.save(commit = False)
             m.video = v
             m.save()
-            v.status = 'LIS'
-            v.save()
-            queue.removeVideoTasks(v)
-            return HttpResponse("Puta madre, todo salvado")
     else:
         form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
     return render_to_response("postproduccion/definir_metadatos_oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
@@ -315,6 +311,20 @@ Vista que muestra el estado e información de una producción.
 def estado_video(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
     return  render_to_response("postproduccion/estado_video.html", { 'v' : v })
+
+"""
+Valida una producción y la pasa a la videoteca.
+"""
+@permission_required('postproduccion.video_manager')
+def validar_produccion(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    if hasattr(v, 'metadata'):
+        v.status = 'LIS'
+        v.save()
+        queue.removeVideoTasks(v)
+        return HttpResponseRedirect(reverse('estado_video', args=(v.id,)))
+    else:
+        return HttpResponse("faltan los metadatos")
 
 
 #######
