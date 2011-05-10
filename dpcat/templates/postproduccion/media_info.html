@@ -1,0 +1,48 @@
+{% extends "postproduccion/section-info-produccion.html" %}
+
+{% block current-resumen %} class="current" {% endblock %}
+{% block section-content %} 
+
+
+<div id="content-left">
+<h2>Media Info</h2>
+
+<div>audio_bitrate: {{ v.tecdata.audio_bitrate }}</div>
+<div>audio_channels: {{ v.tecdata.audio_channels }}</div>
+<div>audio_codec: {{ v.tecdata.audio_codec }}</div>
+<div>audio_rate: {{ v.tecdata.audio_rate }}</div>
+<div>bitrate: {{ v.tecdata.bitrate }}</div>
+<div>duration: {{ v.tecdata.duration }}</div>
+<div>format: {{ v.tecdata.format }}</div>
+<div>size: {{ v.tecdata.size }}</div>
+<div>video_bitrate: {{ v.tecdata.video_bitrate }}</div>
+<div>video_codec: {{ v.tecdata.video_codec }}</div>
+<div>video_color: {{ v.tecdata.video_color }}</div>
+<div>video_height: {{ v.tecdata.video_height }}</div>
+<div>video_rate: {{ v.tecdata.video_rate }}</div>
+<div>video_wh_ratio: {{ v.tecdata.video_wh_ratio }}</div>
+<div>video_width: {{ v.tecdata.video_width }}</div>
+
+</div>
+
+<div id="content-right">
+<div id="right-block">
+    <h3 class="links">Tipo de metadata</h3>
+    <ul>
+        <li><a href="{% url definir_metadatos_oper v.id %}">Metadata principal</a></li> 
+        <li><a href="{% url media_info v.id %}">Metadata t&eacute;cnica</a></li> 
+    </ul>
+</div>
+
+    <div id="right-block">
+        <h3>Informaci&oacute;n de inter&eacute;s</h3>
+        <ul>
+            <li class="tip">Poner descripci&oacute;n o enlaces sobre esta tabla</li>
+        </ul>
+    </div>
+</div>
+
+
+
+{% endblock %}
+

@@ -310,7 +310,17 @@ Vista que muestra el estado e información de una producción.
 @permission_required('postproduccion.video_manager')
 def estado_video(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
-    return  render_to_response("postproduccion/estado_video.html", { 'v' : v })
+    return render_to_response("postproduccion/estado_video.html", { 'v' : v })
+
+"""
+Muestra la información técnica del vídeo
+"""
+@permission_required('postproduccion.video_manager')
+def media_info(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    return render_to_response("postproduccion/media_info.html", { 'v' : v })
+
+
 
 """
 Valida una producción y la pasa a la videoteca.
