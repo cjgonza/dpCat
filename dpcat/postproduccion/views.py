@@ -334,6 +334,7 @@ def validar_produccion(request, video_id):
         v.status = 'LIS'
         v.save()
         queue.removeVideoTasks(v)
+        messages.success(request, "Producción validada")
     else:
         messages.error(request, "Metadatos no definidos, no se puede validar")
     return redirect('estado_video', v.id)
