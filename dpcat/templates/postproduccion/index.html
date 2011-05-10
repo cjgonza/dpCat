@@ -34,6 +34,12 @@
     <div id="inner-content">
         {% block section-title %} {% endblock %}
 
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mensaje {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
         {% block contenido %} {% endblock %}
 
     </div>
