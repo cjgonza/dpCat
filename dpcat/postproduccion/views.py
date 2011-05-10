@@ -1,13 +1,14 @@
 # Create your views here.
 # -*- encoding: utf-8 -*-
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render_to_response, get_object_or_404
+from django.http import HttpResponse, Http404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 
 from postproduccion.models import Video, Cola, FicheroEntrada
 from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, ConfigForm, IncidenciaProduccionForm
@@ -48,7 +49,7 @@ def crear(request, video_id = None):
             i.video = v
             i.operador = request.user
             i.save()
-            return HttpResponseRedirect(reverse('postproduccion.views.fichero_entrada', args=(v.id,)))
+            return redirect('postproduccion.views.fichero_entrada', v.id)
     else:
         vform = VideoForm(instance = v) if v else VideoForm()
         iform = InformeCreacionForm(instance = v.informeproduccion) if v else InformeCreacionForm()
@@ -67,7 +68,7 @@ def _fichero_entrada_simple(request, v):
             fe.video = v
             fe.fichero = os.path.normpath(config.get_option('VIDEO_INPUT_PATH') + fe.fichero)
             fe.save()
-            return HttpResponseRedirect(reverse('postproduccion.views.resumen_video', args=(v.id,)))
+            return redirect('postproduccion.views.resumen_video', v.id)
     else:
         if  v.ficheroentrada_set.count():
             fe = v.ficheroentrada_set.all()[0]
@@ -94,7 +95,7 @@ def _fichero_entrada_multiple(request, v):
                 instances[i].video = v
                 instances[i].tipo = tipos[i]
                 instances[i].save()
-            return HttpResponseRedirect(reverse('postproduccion.views.resumen_video', args=(v.id,)))
+            return redirect('postproduccion.views.resumen_video', v.id)
     else:
         formset = FicheroEntradaFormSet(instance = v)
     
@@ -128,7 +129,7 @@ def resumen_video(request, video_id):
         else:
             queue.enqueue_copy(v)
         v.set_status('DEF')
-        return HttpResponseRedirect(reverse('postproduccion.views.index'))
+        return redirect('postproduccion.views.index')
     return render_to_response("postproduccion/section-nueva-paso3.html", { 'v' : v }, context_instance=RequestContext(request))
 
 """
@@ -227,7 +228,7 @@ def aprobacion_video(request, tk_str):
     if not v: raise Http404
 
     if v.informeproduccion.aprobado:
-        return HttpResponseRedirect(reverse('postproduccion.views.definir_metadatos_user', args=(tk_str,)))
+        return redirect('postproduccion.views.definir_metadatos_user', tk_str)
 
     if request.method == 'POST':
         form = IncidenciaProduccionForm(request.POST)
@@ -238,13 +239,13 @@ def aprobacion_video(request, tk_str):
             if 'aprobado' in request.POST:
                 inpro.aceptado = True
                 v.informeproduccion.aprobado = True
-                redirect = reverse('postproduccion.views.definir_metadatos_user', args=(tk_str,))
+                next_view = 'postproduccion.views.definir_metadatos_user'
             else:
                 inpro.aceptado = False
-                redirect = reverse('postproduccion.views.rechazar_video', args=(tk_str,))
+                next_view = 'postproduccion.views.rechazar_video'
             v.informeproduccion.save()
             inpro.save()
-        return HttpResponseRedirect(redirect)
+        return redirect(next_view, tk_str)
     else:
         form = IncidenciaProduccionForm()
 
@@ -299,6 +300,7 @@ def definir_metadatos_oper(request, video_id):
             m = form.save(commit = False)
             m.video = v
             m.save()
+            messages.success(request, 'Metadata actualizada')
     else:
         form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
     return render_to_response("postproduccion/definir_metadatos_oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
@@ -310,7 +312,7 @@ Vista que muestra el estado e información de una producción.
 @permission_required('postproduccion.video_manager')
 def estado_video(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
-    return render_to_response("postproduccion/estado_video.html", { 'v' : v })
+    return render_to_response("postproduccion/estado_video.html", { 'v' : v }, context_instance=RequestContext(request))
 
 """
 Muestra la información técnica del vídeo
@@ -318,7 +320,7 @@ Muestra la información técnica del vídeo
 @permission_required('postproduccion.video_manager')
 def media_info(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
-    return render_to_response("postproduccion/media_info.html", { 'v' : v })
+    return render_to_response("postproduccion/media_info.html", { 'v' : v }, context_instance=RequestContext(request))
 
 
 
@@ -332,9 +334,9 @@ def validar_produccion(request, video_id):
         v.status = 'LIS'
         v.save()
         queue.removeVideoTasks(v)
-        return HttpResponseRedirect(reverse('estado_video', args=(v.id,)))
     else:
-        return HttpResponse("faltan los metadatos")
+        messages.error(request, "Metadatos no definidos, no se puede validar")
+    return redirect('estado_video', v.id)
 
 
 #######
@@ -407,7 +409,7 @@ def config_settings(request):
         if form.is_valid():
             for i in form.base_fields.keys():
                 config.set_option(i.upper(), form.cleaned_data[i])
-            return HttpResponseRedirect(reverse('postproduccion.views.index'))
+            return redirect('postproduccion.views.index')
     else:
         initial_data = dict()
         for i in ConfigForm.base_fields.keys():
