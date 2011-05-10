@@ -7,6 +7,7 @@
 {% block section-description %}
 
 <div class="info-video">
+    <h2>{{ v.titulo }}</h2>
 <div class="info-prevideo">
     <div id="container">Cargando video ...</div>
 
@@ -25,8 +26,21 @@
 </div>
 
 <div class="info-basica">
-    <h2>{{ v.titulo }}</h2>
+    <h2>Acciones disponibles sobre la producci&oacute;n</h2>
+    <ul class="acciones">
+        {% if v.status == 'LIS' %}
+        <li class="publicar"><a class="publicar"href="">Publicar producci&oacute;n</a></li>
+        {% endif %}
+        {% if v.status == 'ACE' or v.status == 'PTO' %}
+        <li class="validar"><a class="validar"href="{% url validar_produccion v.id %}">Validar producci&oacute;n</a></li>
+        {% endif %}
+        <li class="borrar"><a class="borrar" href="">Borrar</a></li>
+    </ul>
+
+
+    <h2>Datos b&aacute;sicos de la producci&oacute;n</h2>
     <ul>
+        <li><label>T&iacute;tulo:</label> {{ v.titulo }}</li>
         <li><label>Autor:</label> {{ v.autor }}</li>
         <li><label>Correo electr&oacute;nico:</label><a class="email" href="mailto:{{ v.email }}">{{ v.email }}</a></li>
         <li><label>Fecha de grabaci&oacute;n:</label> {{ v.informeproduccion.fecha_grabacion }}</li>
@@ -42,13 +56,6 @@
         <li {% block current-resumen %} {% endblock %}> <a class="resumen" href="{% url estado_video v.id %}">Resumen de producci&oacute;n</a></li>
         <li {% block current-metadata %}{% endblock %}><a class="meta" href="{% url definir_metadatos_oper v.id %}">Metadata</a></li>
         <li {% block current-ticket %} {% endblock %}><a class="ticket" href="">Gesti&oacute;n de ticket</a></li>
-        {% if v.status == 'LIS' %}
-        <li class="li-right publicar"><a class="publicar"href="">Publicar producci&oacute;n</a></li>
-        {% endif %}
-        {% if v.status == 'ACE' or v.status == 'PTO' %}
-        <li class="li-right validar"><a class="validar"href="{% url validar_produccion v.id %}">Validar producci&oacute;n</a></li>
-        {% endif %}
-        <li class="li-right borrar"><a class="borrar" href="">Borrar producci&oacute;n</a></li>
     </ul>
 </div>
 

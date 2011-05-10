@@ -573,18 +573,29 @@ padding: 0px;
 
 
 
-.info-basica h2,
+.info-video h2,
 #content-left h2 {
     font: normal 20px Arial;
     color: #e98b59;
     margin-bottom: 10px;
 }
 
-.info-basica h2 {
+.info-video h2 {
     margin-bottom: 10px;
     padding: 5px;
     padding-top: 0px;
+    font-size: 25px;
+    color: #373737;
+}
+
+.info-basica h2 {
+    font-size: 15px;
+    margin: 0px;
+    padding: 0px;
+    font: bold 14px Arial;
+    padding-bottom: 5px;
     border-bottom: dotted 1px #336699;
+    margin-bottom: 5px;
 }
 
 .status #content-left h2 {
@@ -960,6 +971,8 @@ a.email {
 
 .info-basica ul {
     margin: 0px 10px;
+    margin-left: 20px;
+    margin-bottom: 20px;
 }
 
 .info-basica li a:hover {
@@ -1041,32 +1054,58 @@ a.historico {
     background: url(../img/icon/historico16.png) 10px 45% no-repeat;
 }
 
-ul#tab-menu li.li-right {
-    float: right;
-}
 
-ul#tab-menu li.li-right.borrar {
-    border: solid 1px #CE2700;
-    border-bottom: 0px;
-    margin-top: 10px;
+ul.acciones {
+    overflow: hidden;
+    margin: 10px 0px 0px 10px;
+    padding: 0px;
+    margin-bottom: 30px;
 }
-ul#tab-menu li.li-right.borrar a  {
-    background: #CE2700 url(../img/icon/error16.png) 10px 50% no-repeat;
-    color: #fff;
-    border-top: solid 1px #CE2700;
-    padding-top: 2px;
-    padding-bottom: 2px;
+ul.acciones li {
+    float: left;
+    margin-right: 20px;
+}
+ul.acciones li a {
+    padding: 5px 15px;
     font-size: 11px;
-    line-height: 15px;
+    font-weight: bold;
+    padding-left: 30px;
+    -moz-border-radius: 4px;
 }
 
-ul#tab-menu li.li-right.validar {
-    border: solid 1px #6DA84C;
-    border-bottom: 0px;
+ul.acciones li.borrar {
+line-height: 23px;
+margin-top: 2px;
 }
-ul#tab-menu li.li-right.validar a  {
-    background: #6DA84C url(../img/icon/check16.png) 10px 50% no-repeat;
+ul.acciones li.borrar a  {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border: solid 1px #CE2700;
+    color: #CE2700;
+    background: #FFF url(../img/icon/error16.png) 5px 50% no-repeat;
+    line-height: 20px;
+}
+
+ul.acciones li.borrar a:hover {
+    background: #CE2700 url(../img/icon/error16.png) 5px 50% no-repeat;
     color: #fff;
-    border-top: solid 1px #6DA84C;
+    text-decoration: none;
 }
+
+ul.acciones li.validar a  {
+    font-size: 13px;
+    color: #fff;
+    border: solid 1px #6DA84C;
+    background: #6DA84C url(../img/icon/check16.png) 5px 50% no-repeat;
+    line-height: 28px;
+}
+
+ul.acciones li.publicar a  {
+    font-size: 13px;
+    color: #fff;
+    border: solid 1px #336699;
+    background: #336799 url(../img/icon/publicar16.png) 5px 50% no-repeat;
+    line-height: 28px;
+}
+
 
