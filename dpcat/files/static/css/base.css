@@ -719,6 +719,15 @@ padding: 0px;
     min-width: 22%;
 }
 
+#tabla th.meta-param {
+    min-width: 30%;
+}
+
+#tabla td.section {
+    font-weight: bold;
+    background: #efefef;
+
+}
 
 #tabla.log tr td.icon {
     padding-left: 33px;
