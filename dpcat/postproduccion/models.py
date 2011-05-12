@@ -3,6 +3,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from postproduccion import utils
 
+import os
+import signal
+
 # Create your models here.
 
 class PlantillaFDV(models.Model):   # (Fondo-Disapositiva-Video)
@@ -56,8 +59,12 @@ class Video(models.Model):
         return self.titulo
 
     def delete(self, *args, **kwargs):
+        for task in self.cola_set.all():
+            task.delete()
         if self.fichero:
             utils.remove_file_path(self.fichero)
+        if hasattr(self, 'previsualizacion'):
+            self.previsualizacion.delete()
         super(Video, self).delete(*args, **kwargs)
 
     def set_status(self, st):
@@ -216,6 +223,12 @@ class Cola(models.Model):
     def set_status(self, st):
         self.status = st
         self.save()
+
+    def delete(self, *args, **kwargs):
+        if self.status == 'PRO' and self.pid:
+            os.kill(self.pid, signal.SIGTERM)
+            while Cola.objects.get(pk=self.id).status == 'PRO': pass
+        super(Cola, self).delete(*args, **kwargs)
 
     class Meta:
         verbose_name = u'tarea'

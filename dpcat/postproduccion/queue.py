@@ -166,6 +166,7 @@ Cancela la ejecución de una tarea.
 def cancel_task(task):
     if task.status == 'PRO' and task.pid:
         os.kill(task.pid, signal.SIGTERM)
+        while Cola.objects.get(pk=task.id).status == 'PRO': pass
 
 """
 Devuelve el contenido del log de una tarea.
