@@ -96,7 +96,7 @@ class IncidenciaProduccion(models.Model):
     emisor = models.CharField(max_length = 1, choices = WHO, editable = False)
     comentario = models.TextField()
     fecha =  models.DateTimeField(auto_now_add = True)
-    aceptado = models.BooleanField()
+    aceptado = models.NullBooleanField()
 
 class HistoricoCodificacion(models.Model):
     TASK_TYPE = (

@@ -63,7 +63,7 @@
     <ul id="tab-menu">
         <li {% block current-resumen %} {% endblock %}> <a class="resumen" href="{% url estado_video v.id %}">Resumen de producci&oacute;n</a></li>
         <li {% block current-metadata %}{% endblock %}><a class="meta" href="{% url definir_metadatos_oper v.id %}">Metadata</a></li>
-        <li {% block current-ticket %} {% endblock %}><a class="ticket" href="">Gesti&oacute;n de ticket</a></li>
+        <li {% block current-ticket %} {% endblock %}><a class="ticket" href="{% url gestion_tickets v.id %}">Gesti&oacute;n de ticket</a></li>
     </ul>
 </div>
 

@@ -1,0 +1,58 @@
+{% extends "postproduccion/section-info-produccion.html" %}
+
+{% block current-ticket %} class="current" {% endblock %}
+{% block section-content %} 
+
+<div id="content-left">
+
+    <h2>Histórico de incidencias</h2>
+    <table id="tabla">
+        <thead>
+            <th>Emisor</th><th>Fecha</th><th>Aceptado</th><th>Comentario</th>
+        </thead>
+        <tbody>
+            {% for inci in v.informeproduccion.incidenciaproduccion_set.all %}
+            <tr><td>{{ inci.get_emisor_display }}</td><td>{{ inci.fecha }}</td><td>{{ inci.aceptado }}</td><td>{{ inci.comentario }}</td></tr>
+
+            {% empty %}
+            <tr><td colspan="4"><div class="mensaje verde">El hist&oacute;rico de incidencias esta vac&iacute;o.</div></td></tr>
+
+
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Env&iacute;o de ticket</h2>
+    <form method="post" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Enviar" />
+    </form>
+
+</div>
+
+<div id="content-right">
+    <div id="right-block">
+        <h3>Ticket actual</h3>
+        {% if token %}
+        <ul>
+            <li>Creado: {{ token.create_date }}</li>
+            <li>Expiraci&oacute;n: <span{% if not token.valid %} class="expirado"{% endif %}>{{ token.expiration_date }}</span></li>
+        </ul>
+        {% else %}
+        <ul>
+            <li>No hay ticket emitido</li>
+        </ul>
+        {% endif %}
+    </div>
+    <div id="right-block">
+        <h3>Informaci&oacute;n de inter&eacute;s</h3>
+        <ul>
+            <li class="tip">Poner descripci&oacute;n o enlaces sobre esta tabla</li>
+        </ul>
+    </div>
+</div>
+
+
+
+{% endblock %}

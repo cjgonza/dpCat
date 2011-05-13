@@ -129,7 +129,8 @@ def resumen_video(request, video_id):
         else:
             queue.enqueue_copy(v)
         v.set_status('DEF')
-        return redirect('postproduccion.views.index')
+        messages.success(request, "Producción creada y encolada para su procesado")
+        return redirect('postproduccion.views.estado_video', v.id)
     return render_to_response("postproduccion/section-nueva-paso3.html", { 'v' : v }, context_instance=RequestContext(request))
 
 """
@@ -322,7 +323,32 @@ def media_info(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
     return render_to_response("postproduccion/media_info.html", { 'v' : v }, context_instance=RequestContext(request))
 
+"""
+Gestión de tickets de usuario.
+"""
+@permission_required('postproduccion.video_manager')
+def gestion_tickets(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    tk = token.get_token_data(v)
 
+    if request.method == 'POST':
+        form = IncidenciaProduccionForm(request.POST)
+        if form.is_valid():
+            inpro = form.save(commit = False)
+            inpro.informe = v.informeproduccion
+            inpro.emisor = 'O'
+            inpro.save()
+            v.informeproduccion.aprobado = False
+            v.informeproduccion.save()
+            v.status = 'PTU'
+            v.save()
+            token.send_custom_mail_to_user(v, inpro.comentario)
+            messages.success(request, "Ticket generado y enviado al usuario")
+            return redirect('gestion_tickets', v.id)
+    else:
+        form = IncidenciaProduccionForm()
+
+    return render_to_response("postproduccion/gestion_tickets.html", { 'v' : v, 'form' : form, 'token' : tk }, context_instance=RequestContext(request))
 
 """
 Valida una producción y la pasa a la videoteca.

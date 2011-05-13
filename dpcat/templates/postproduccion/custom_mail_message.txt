@@ -1,0 +1,9 @@
+Estimado/a {{ nombre }}, respecto a la grabación realizada a fecha {{ fecha }}, con título "{{ titulo }}" y número de referencia #{{ vid }} le informamos que:
+
+"{{ texto }}"
+
+Por favor, acceda a la siguiente dirección para notificar su conformidad con el resultado e introducir la información requerida para su clasificación.
+
+{{ url }}
+
+dpCat.
