@@ -432,6 +432,9 @@ ul.utils li a {
     cursor: pointer;
 }
 
+
+
+
 #content.formulario input[type="reset"] {
     background: #bfbfbf;
     background: #ececec;
@@ -516,6 +519,9 @@ a.link:hover,
     text-decoration: underline;
 }
 
+#tabla a.link {
+    margin: 0px;
+}
 a.link {
     margin: 5px 0px;
     display: block;
@@ -617,9 +623,13 @@ padding: 0px;
     padding: 5px;
 }
 
+#content #tabla form {
+    margin-top: 0px;
+}
 #content form {
     margin-top: 20px;
 }
+
 #content.formulario.paso2 form h3{
     color: #336699;
     font: bold 12px Arial;
@@ -1121,3 +1131,14 @@ ul.acciones li.publicar a  {
 }
 
 
+
+#no-disponible {
+    height: 270px;
+    width: 480px;
+    background: #fff url(../img/icon/warning48.png) 50% 90px no-repeat;
+}
+
+#no-disponible p {
+    padding-top: 150px;
+    text-align: center;
+}
