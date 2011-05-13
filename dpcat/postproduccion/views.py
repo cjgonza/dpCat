@@ -419,7 +419,7 @@ def config_settings(request):
         if form.is_valid():
             for i in form.base_fields.keys():
                 config.set_option(i.upper(), form.cleaned_data[i])
-            return redirect('postproduccion.views.index')
+            messages.success(request, 'Configuración guardada')
     else:
         initial_data = dict()
         for i in ConfigForm.base_fields.keys():
@@ -472,8 +472,10 @@ def status(request):
     if request.method == 'POST':
         if request.POST['status'] == '1':
             crontab.stop()
+            messages.warning(request, 'Tareas programadas desactivadas')
         else:
             crontab.start()
+            messages.success(request, 'Tareas programadas activadas')
     cron = crontab.status()
 
     return render_to_response("postproduccion/section-status.html", { 'exes' : exes, 'dirs' : dirs, 'cron' : cron }, context_instance=RequestContext(request))
