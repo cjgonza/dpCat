@@ -36,7 +36,7 @@
 
         {% if messages %}
             {% for message in messages %}
-                <div class="mensaje {{ message.tags }}">{{ message }}</div>
+                <div class="mensaje {{ message.tags }}">{{ message }}<a class="cerrar">Cerrar mensaje</a></div>
             {% endfor %}
         {% endif %}
 

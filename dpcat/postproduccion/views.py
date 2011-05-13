@@ -339,6 +339,15 @@ def validar_produccion(request, video_id):
         messages.error(request, "Metadatos no definidos, no se puede validar")
     return redirect('estado_video', v.id)
 
+"""
+Borra una producción.
+"""
+@permission_required('postproduccion.video_manager')
+def borrar_produccion(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    v.delete()
+    messages.success(request, 'Producción eliminanada')
+    return redirect('postproduccion.views.index')
 
 #######
 

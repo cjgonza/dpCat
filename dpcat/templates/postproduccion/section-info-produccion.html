@@ -34,7 +34,7 @@
         {% if v.status == 'ACE' or v.status == 'PTO' %}
         <li class="validar"><a class="validar"href="{% url validar_produccion v.id %}">Validar producci&oacute;n</a></li>
         {% endif %}
-        <li class="borrar"><a class="borrar" href="">Borrar</a></li>
+        <li class="borrar"><a class="borrar" href="{% url borrar v.id %}" onclick="return confirm('¡Atención! La producción se borrará permanentemente ¿está seguro?')">Borrar</a></li>
     </ul>
 
 
