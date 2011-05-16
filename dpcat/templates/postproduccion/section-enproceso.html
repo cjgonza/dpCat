@@ -11,18 +11,18 @@
   <thead>
     <th class="id">ID</th>
     <th class="status">Estado</th>
-    <th class="title">T&iacute;tulo</th>
     <th class="oper">Operador</th>
     <th class="date">Fecha</th>
+    <th class="title">T&iacute;tulo</th>
   </thead>
   <tbody>
     {% for video in list %}
     <tr class="{{ video.tipo }} {%cycle 'odd' 'even' %}">
-        <td class="id"><a href="{% url estado_video video.id%}" class="link">{{ video.id }}</a></td>
+        <td class="id">{{ video.id }}</td>
         <td class="status">{{ video.status }}</td>
-        <td class="title">{{ video.titulo }}</td>
         <td class="oper">{{ video.operador }}</td>
         <td class="date">{{ video.fecha }}</td>
+        <td class="title"><a href="{% url estado_video video.id %}">{{ video.titulo }}</a></td>
     </tr>
     {% empty %}
     <tr>

@@ -6,15 +6,14 @@
 {% block section-description %}<p>Listado de producciones que est&aacute;n actualmente en la cola de procesado del sistema.</p>{% endblock %}
 
 {% block section-content %} 
-<table id="tabla">
+<table id="tabla" class="cola">
     <thead>
-        <th>Tarea</th>
+        <th class="id">ID</th>
+        <th class="status">Estado</th>
+        <th class="type">Tipo</th>
+        <th class="date">Fecha</th>
         <th>T&iacute;tulo</th>
-        <th>Tipo</th>
-        <th>Inicio</th>
-        <th>Fin</th>
-        <th>Log</th>
-        <th>Estado</th>
+        <th class="log">Log</th>
     </thead>
     <tbody>
     </tbody>
@@ -40,21 +39,48 @@
     <script type="text/javascript">
         function creaLinea(data) {
             str = '';
-            keys = ['id', 'video', 'tipo', 'comienzo', 'fin'];
-            for (var i in keys)
-                if (data[keys[i]]) {
-                    str += '<td>' + data[keys[i]] + '</td>';
-                } else {
-                    str += '<td>&nbsp;</td>';
-                }
-            if (data['logurl']) {
-                str += '<td><a class="log-icon" href="' + data['logurl'] +'" target="_blank">' + data['logfile'] +'</a></td>';
+
+            if (data['id']) {
+                str += '<td class="id">' + data['id'] + '</td>';
             } else {
                 str += '<td>&nbsp;</td>';
             }
-            str += '<td><div id="status' + data['id'] + '">' + data['status'] + '</div></td>';
+
+            str += '<td class="' + data['status'] + '"></td>';
+
+            if (data['tipo']) {
+                str += '<td>' + data['tipo'] + '</td>';
+            } else {
+                str += '<td>&nbsp;</td>';
+            }
+    
+            if (data['comienzo'] || data['fin']) {
+                str += '<td class="date"><ul>';
+                if (data['comienzo']) {
+                    str += '<li>'+data['comienzo']+' - Inicio</li>';
+                }
+                if (data['fin']) {                    
+                   str += '<li>'+data['fin']+' - Fin</li>';
+                }
+                str +='</ul></td>';
+            } else {
+                str += '<td class="date">&nbsp;</td>';
+            }
+
+            if (data['video']) {
+                str += '<td>' + data['video'] + '</td>';
+            } else {
+                str += '<td>&nbsp;</td>';
+            }
+
+            if (data['logurl']) {
+                str += '<td class="log"><a class="chain" href="' + data['logurl'] +'" target="_blank">' + data['logfile'] +'</a></td>';
+            } else {
+                str += '<td class="log">&nbsp;</td>';
+            }
             return str
         }
+
         function creaTabla(data) {
             str = '<tbody>';
             for (var i = 0; i < data.length; i++)
@@ -62,6 +88,7 @@
             str += '</tbody>';
             return str;
         }
+
         function mostrarProgreso(data) {
             for (var i = 0; i < data.length; i++) {
                 st = $('#status' + data[i]['id']);
@@ -73,13 +100,15 @@
                 }
             }
         }
+
         function refrescar() {
             $.getJSON('/postproduccion/cola_listado/', function(data) { 
                 $(creaTabla(data)).replaceAll("tbody"); 
                 mostrarProgreso(data);
             });
-            setTimeout("refrescar();", 1000);
+            //setTimeout("refrescar();", 1000);
         }
+
         $(document).ready( function() {
             refrescar();
         });
