@@ -220,7 +220,7 @@ a.cerrar:hover {
 /****************************/
 #main-header {
     height: 120px;
-    background: url(../img/login_bg.jpg) 0 0 no-repeat;
+    background: url(../img/login_bg.jpg) 0 50% no-repeat;
 }
 
 #inner-menu-content,
@@ -231,10 +231,9 @@ a.cerrar:hover {
 }
 
 #inner-menu-content {
-    padding: 0px 20px;
+padding: 0px;
 }
 #inner-menu {
-    border-top: solid 2px #2b5782;
     padding: 0px;
 }
 
@@ -248,59 +247,74 @@ a.cerrar:hover {
     margin-right: 30px;
 }
 
-#inner-menu li a {
-    color: #fff;
-    text-decoration: none;
-    display: block;
-    font: bold 13px Arial;
-    line-height: 38px;
-    text-shadow: #000 0px 0px 20px;
-}
 
 #inner-menu ul li a:hover {
-    text-shadow: #fff 0px 0px 20px;
+    text-decoration: underline;
 }
 
 #inner-menu ul.utils {
     float: right;
-    margin: 6px 0px;
+}
+
+#inner-menu ul li {
+    margin-right: 10px;
+    background: #fff url(../img/title-bg.png) 0 -4px repeat-x;
+    -moz-border-radius: 4px;
+    padding-right: 8px;
+    border: solid 1px #336699;
+}
+#inner-menu ul li a {
+    text-decoration: none;
+    display: block;
+    font: bold 13px Arial;
+    line-height: 26px;
+    font-size: 11px;
+    color: #336699; 
+    text-shadow: 0 1px 0 #fff;
 }
 
 #inner-menu ul.utils li {
-    margin-right: 10px;
-}
-#inner-menu ul.utils li a {
-    line-height: 26px;
-    font-size: 11px;
-    border-left: solid 2px #2B5782;
-    
+    background-color: #2B84D8;
+    background-position: 0 0;
 }
 
+#inner-menu ul.utils li a {
+    color: #fff;
+    text-shadow: 0 1px 0 #373737;
+}
 
 #inner-menu ul.utils li a.icon-logout:hover,
 #inner-menu ul.utils li a:hover {
-    text-shadow: none;
+    text-decoration: underline;
+}
+#inner-menu ul li a.nuevaproduccion {
+    background:url(../img/icon/showreel16.png) 8px 50% no-repeat;
+    padding-left: 30px;
+}
+
+#inner-menu ul li a.monitorizacion {
+    background:url(../img/icon/order16.png) 8px 50% no-repeat;
+    padding-left: 30px;
+}
+
+#inner-menu ul li a.videoteca {
+    background:url(../img/icon/videoteca16.png) 8px 50% no-repeat;
+    padding-left: 30px;
+}
+
+#inner-menu ul li a.home {
+    background:url(../img/icon/home16.png) 8px 50% no-repeat;
+    padding-left: 30px;
 }
 #inner-menu ul.utils li a.icon-config {
     background:url(../img/icon/config.png) 8px 50% no-repeat;
-padding-left: 30px;
+    padding-left: 30px;
 }
 
 #inner-menu ul.utils li a.icon-logout {
     background:url(../img/icon/logout.png) 8px 50% no-repeat;
 padding-left: 30px;
 }
-/*
-ul.utils li a {
-    padding: 4px 8px;
-    text-decoration: none;
-    color: #336699;
-    -moz-border-radius: 3px;
-    border: solid 1px #063A6C;
-    font-size: 11px;
-}
-*/
-
 
 #logo {
     float: left;
@@ -322,7 +336,7 @@ ul.utils li a {
     color: #fff;
     font: bold 45px Arial;
     text-decoration: none;
-    text-shadow: 2px 2px 7px #111;
+    text-shadow: 1px 1px 2px #111;
     margin: 0px;
     padding: 0px;
 }
@@ -336,7 +350,8 @@ ul.utils li a {
 /* main-content y derivados */
 /****************************/
 #main-content {
-    background: url(../img/bg-content.png) 0 0 repeat-x;
+/*    background: url(../img/bg-content.png) 0 0 repeat-x;*/
+border-top: solid 2px #336699;
     margin: 0px;
     padding: 0px;
     
@@ -473,7 +488,9 @@ ul.utils li a {
 }
 
 #content-right #right-block {
+    background: #F4F4F4;
     border: solid 1px #E9E9E9;
+    border-color: #cccccc #dddddd #cccccc;
     -moz-border-radius: 4px;
     padding-bottom: 5px;
     margin-bottom: 15px;
@@ -484,12 +501,14 @@ ul.utils li a {
     height: 22px;
     padding: 4px 8px;
     font: bold 13px Arial;
+    background: #2B84D8 url(../img/title-bg.png) 0 0 repeat-x;
     text-shadow: 0px 1px 0px #373737;
     -moz-border-radius-topleft:4px;
     line-height: 22px;
     -moz-border-radius-topright:4px;
     margin-bottom: 5px;
-    background: #336799 url(../img/title-bg.png) 0 0 repeat-x;
+
+
 }
 
 #content-right #right-block ul {
@@ -519,13 +538,6 @@ a.link:hover,
     text-decoration: underline;
 }
 
-#tabla a.link {
-    margin: 0px;
-}
-a.link {
-    margin: 5px 0px;
-    display: block;
-}
 
 /****************************/
 /* main-footer y derivados */
@@ -687,7 +699,7 @@ padding: 0px;
     color: #373737;
     text-shadow: 1px 1px 0px #fff;
     border-bottom: solid 2px #373737;
-    background: #d9d9d9 url(../img/title-bg.png) 0 0 no-repeat;
+    background: #eeeeee url(../img/title-bg.png) 0 0 repeat-x;
     padding-left: 10px;
 }
 
@@ -701,11 +713,9 @@ padding: 0px;
 
 
 #tabla tbody tr td:last-child {
-    border-right: solid 1px #dedede; 
 }
 #tabla tbody tr td{
     padding: 10px;
-    border-left: solid 1px #dedede; 
     border-bottom: solid 1px #dedede;
     border-collapse: collapse;
 }
@@ -713,24 +723,80 @@ padding: 0px;
     min-width: 100%;
 }
 
-#tabla th.id {
-    min-width: 7%;
+#tabla tbody tr:hover {
+    background: #F4F4F4;
+    
 }
 
-#tabla th.status {
-    min-width: 13%;
+#tabla.cola th.type {
+    width: 100px;
 }
-#tabla th.title {
-    min-width: 45%;
+#tabla.cola th.status {
+    width: 50px;
+}
+#tabla.cola th.log {
+    width: 135px;
+}
+#tabla.cola th.date {
+    width: 160px;
+}
+#tabla th.date {
+    width: 120px;
+}
+#tabla tbody td.date {
+    color: #666666;
 }
 
 #tabla th.oper {
-    min-width: 10%;
+    width: 75px;
 }
 
-#tabla th.date {
-    min-width: 22%;
+#tabla tbody td.id,
+#tabla tbody td.oper {
+    text-align: center;
 }
+#tabla tbody td.oper {
+    font-weight: bold;
+}
+#tabla tbody td {
+    font-size: 11px;
+}
+
+#tabla th.status {
+    width: 125px;
+}
+
+#tabla th.id {
+    width: 35px;
+}
+
+#tabla tbody td.title {
+    font-size: 12px;
+}
+#tabla a {
+    color: #05396B;
+    text-decoration: none;
+    background: url(../img/icon/links12.png) 0 2px no-repeat;
+    padding-left: 20px;
+}
+
+#tabla td.Hecho {
+    background: url(../img/icon/check16.png) 50% 10px no-repeat;
+}
+#tabla td.Error {
+    background: url(../img/icon/error16.png) 50% 10px no-repeat;
+}
+#tabla td.Procesando {
+    background: url(../img/icon/time16.png) 50% 10px no-repeat;
+}
+#tabla td.Pendiente {
+    background: url(../img/icon/pendiente16.png) 50% 10px no-repeat;
+}
+
+#tabla tbody td ul li{
+    padding-bottom: 2px;
+}
+
 
 #tabla th.meta-param {
     min-width: 30%;
@@ -977,6 +1043,7 @@ a.log-icon:hover {
     text-decoration: none;
 }
 
+#tabla.cola td.log a.chain,
 a.chain {
     background: url(../img/icon/chain12.png) 0 50% no-repeat;
     padding-left: 16px;
@@ -1142,3 +1209,6 @@ ul.acciones li.publicar a  {
     padding-top: 150px;
     text-align: center;
 }
+
+
+
