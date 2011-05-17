@@ -790,12 +790,6 @@ padding: 0px;
     background: url(../img/icon/pendiente16.png) 50% 10px no-repeat;
 }
 
-#tabla td.Hecho div,
-#tabla td.Error div,
-#tabla td.Pendiente div {
-	text-indent: -999px;
-}
-
 #tabla tbody td ul li{
     padding-bottom: 2px;
 }

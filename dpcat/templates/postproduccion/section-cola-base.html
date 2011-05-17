@@ -46,7 +46,7 @@
                 str += '<td>&nbsp;</td>';
             }
 
-            str += '<td class="' + data['status'] + '"><div id="status'+data['id']+'">'+data['status']+'</div></td>';
+            str += '<td class="' + data['status'] + '"><div id="status'+data['id']+'">'+data['progress']+'</div></td>';
 
             if (data['tipo']) {
                 str += '<td>' + data['tipo'] + '</td>';
@@ -92,7 +92,7 @@
         function mostrarProgreso(data) {
             for (var i = 0; i < data.length; i++) {
                 st = $('#status' + data[i]['id']);
-                if (!isNaN(st[0].innerHTML)) {
+                if (st[0].innerHTML.length) {
                     value = st[0].innerHTML;
                     st[0].innerHTML = "";
                     st.addClass("progressbar");
