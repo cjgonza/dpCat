@@ -47,7 +47,8 @@ def get_token_data(v):
         return {
             'create_date' : v.token.instante,
             'expiration_date' : v.token.instante + timedelta(days = int(config.get_option('TOKEN_VALID_DAYS'))),
-            'valid' : True if is_valid_token(v.token.token) else False
+            'valid' : True if is_valid_token(v.token.token) else False,
+            'url' : get_token_url(v),
         }
     else:
         return False
@@ -66,11 +67,18 @@ def token_attended(v):
     return Video.objects.get(id = v.id)
 
 """
+Devuelve la url del ticket de usuario correspondiente al vídeo dado.
+"""
+def get_token_url(v):
+    return urljoin(config.get_option('SITE_URL'), reverse('postproduccion.views.aprobacion_video', args=(v.token.token,))) 
+
+
+"""
 Genera el mensaje de correo con las indicaciones para usar el token.
 """
 def generate_mail_message(v):
     (nombre, titulo, vid, fecha) = (v.autor, v.titulo, v.id, v.informeproduccion.fecha_grabacion)
-    url = urljoin(config.get_option('SITE_URL'), reverse('postproduccion.views.aprobacion_video', args=(v.token.token,))) 
+    url = get_token_url(v)
     return render_to_response('postproduccion/mail_message.txt', { 
         'nombre' : nombre,
         'titulo' : titulo,
@@ -92,7 +100,7 @@ Genera el mensaje de correo personalizado con las indicaciones para usar el toke
 """
 def generate_custom_mail_message(v, texto):
     (nombre, titulo, vid, fecha) = (v.autor, v.titulo, v.id, v.informeproduccion.fecha_grabacion)
-    url = urljoin(config.get_option('SITE_URL'), reverse('postproduccion.views.aprobacion_video', args=(v.token.token,))) 
+    url = get_token_url(v)
     return render_to_response('postproduccion/custom_mail_message.txt', { 
         'nombre' : nombre,
         'titulo' : titulo,

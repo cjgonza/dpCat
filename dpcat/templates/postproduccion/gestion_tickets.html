@@ -38,6 +38,7 @@
         <ul>
             <li>Creado: {{ token.create_date }}</li>
             <li>Expiraci&oacute;n: <span{% if not token.valid %} class="expirado"{% endif %}>{{ token.expiration_date }}</span></li>
+            {% if token.valid %}<li><textarea>{{ token.url }}</textarea></li>{% endif %}
         </ul>
         {% else %}
         <ul>
