@@ -46,7 +46,7 @@
                 str += '<td>&nbsp;</td>';
             }
 
-            str += '<td class="' + data['status'] + '"></td>';
+            str += '<td class="' + data['status'] + '"><div id="status'+data['id']+'">'+data['status']+'</div></td>';
 
             if (data['tipo']) {
                 str += '<td>' + data['tipo'] + '</td>';

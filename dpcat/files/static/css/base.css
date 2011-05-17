@@ -726,6 +726,7 @@ padding: 0px;
     
 }
 
+
 #tabla.cola th.type {
     width: 100px;
 }
@@ -785,10 +786,16 @@ padding: 0px;
     background: url(../img/icon/error16.png) 50% 10px no-repeat;
 }
 #tabla td.Procesando {
-    background: url(../img/icon/time16.png) 50% 10px no-repeat;
+/*    background: url(../img/icon/time16.png) 50% 10px no-repeat;*/
 }
 #tabla td.Pendiente {
     background: url(../img/icon/pendiente16.png) 50% 10px no-repeat;
+}
+
+#tabla td.Hecho div,
+#tabla td.Error div,
+#tabla td.Pendiente div {
+	text-indent: -999px;
 }
 
 #tabla tbody td ul li{
