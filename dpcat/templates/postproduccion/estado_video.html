@@ -6,7 +6,7 @@
 
 <div id="content-left">
 <h2>Estado actual</h2>
-<div class="mensaje amarillo">{{ v.get_status_display }}</div>
+<div class="mensaje info">{{ v.get_status_display }}</div>
 
 <h2>Histórico de incidencias</h2>
 <table id="tabla">
@@ -35,7 +35,7 @@
         {% for hist in v.informeproduccion.historicocodificacion_set.all %}
         <tr><td>{{ hist.get_tipo_display }}</td><td>{{ hist.fecha }}</td><td>{{ hist.status }}</td>
         {% empty %}
-        <tr><td colspan="3"><div class="mensaje amarillo">El hist&oacute;rico de codificaci&oacute;n no estar&aacute; disponible hasta que se termine la producci&oacute;n.</div></td></tr>
+        <tr><td colspan="3"><div class="mensaje warning">El hist&oacute;rico de codificaci&oacute;n no estar&aacute; disponible hasta que se termine la producci&oacute;n.</div></td></tr>
         {% endfor %}
     </tbody>
 </table>
