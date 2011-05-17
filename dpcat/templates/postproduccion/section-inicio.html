@@ -7,9 +7,53 @@
 
 {% block contenido %}
         <div id="content">
-            <div class="mensaje verde">Mensaje verde<a class="cerrar">Cerrar mensaje</a></div>
-            <div class="mensaje rojo">Mensaje rojo<a class="cerrar">Cerrar mensaje</a></div>
-            <div class="mensaje amarillo">mensaje amarillo<a class="cerrar">Cerrar mensaje</a></div>
-            <div class="mensaje azul">mensaje<a class="cerrar">Cerrar mensaje</a></div>
+
+
+<div>
+<p>Hay que definir que va en cada cuadrado (y el número de ellos), una vez decidido es posible que se cambien los colores de los headers.</p>
+<div class="column">
+    <div class="portlet">
+        <div class="portlet-header">Cuadro 1</div>
+        <div class="portlet-content">lorem ipsum a saco paco</div>
+    </div>
+    <div class="portlet">
+        <div class="portlet-header">Cuadro 2</div>
+        <div class="portlet-content">lorem ipsum a saco paco</div>
+    </div>
+</div>
+
+<div class="column">
+    <div class="portlet">
+        <div class="portlet-header">Cuadro 3</div>
+        <div class="portlet-content">lorem ipsum a saco paco</div>
+    </div>
+    <div class="portlet">
+        <div class="portlet-header">Cuadro 4</div>
+        <div class="portlet-content">lorem ipsum a saco paco</div>
+    </div>
+    <div class="portlet">
+        <div class="portlet-header">Cuadro 5</div>
+        <div class="portlet-content">lorem ipsum a saco paco</div>
+    </div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div style="clear:both"></div>
+
+<hr/>
+<p>Estos mensajes son de prueba, alg&uacute;n d&iacute;a se borrar&aacute;n...</p>
+            <div class="mensaje success"><a class="cerrar" title="Cerrar notificaci&oacute;n"></a>Mensaje success</div>
+            <div class="mensaje error"><a class="cerrar" title="Cerrar notificaci&oacute;n"></a>Mensaje error</div>
+            <div class="mensaje warning"><a class="cerrar" title="Cerrar notificaci&oacute;n"></a>Mensaje warning</div>
+            <div class="mensaje info"><a class="cerrar" title="Cerrar notificaci&oacute;n"></a>Mensaje info</div>
         </div>
 {% endblock %}

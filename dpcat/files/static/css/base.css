@@ -9,9 +9,10 @@ body.login {
     background: url(../img/login_bg.jpg) 0 0 no-repeat;
 }
 
+
+
 /* tamaño global */
 #inner-content,
-#inner-menu,
 #inner-header {
     max-width: 1260px;
     min-width: 940px;
@@ -156,53 +157,52 @@ body.login {
     border: solid 1px #adc2d6;
     -moz-border-radius: 3px;
     margin: 20px auto;
-    color: #2e74b2;
     padding: 10px;
     padding-left: 30px;
     background-position: 7px 9px;
     background-repeat: no-repeat;
-    background-color: #d8e1e9;
-    background-image: url(../img/azul_16.png);
     overflow: hidden;
+    position: relative; 
+    color: #666452;
 }
 
-.log .info {
-    background: #fff;
-    color: #373737;
+
+.info {
+    border-color: #A2B4EE;
+    background-color: #d5e6f7;
+    background-image: url(../img/icon/estado16.png);
 }
 
-.error,
-.rojo {
-    color: #CE2700;
-    border-color: #f5c69a;
-    background-color: #FBD3B1;
-    background-image: url(../img/rojo_16.png);   
+.error {
+    border-color: #DF8F8F;
+    background-color: #FFCECE;
+    background-image: url(../img/icon/error16.png);   
 }
 
-.success,
-.verde {
-    color: #6da84c;
-    border-color: #ccebac;
-    background-color: #e0f2cb;
-    background-image: url(../img/verde_16.png);
+.success {
+    border-color: #9ADF8F;
+    background-color: #D5FFCE;
+    background-image: url(../img/icon/check16.png);
 }
 
-.warning,
-.amarillo {
-    color: #ec9300;
-    border-color: #f8e3ac;
-    background-color: #fff4cc;
-    background-image: url(../img/amarillo_16.png);
+.warning {
+    border-color: #E6DB55;
+    background-color: #FFFBCC;
+    background-image: url(../img/icon/warning16.png);
 
 }
 
 a.cerrar {
-    cursor: pointer;
+    color: #990000;
+    font-size: 9px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    background: url(../img/icon/cerrar10.png) 0 0 no-repeat;
     display: block;
-    width: 80px;
-    font: normal 11px Arial;
-    color: #373737;
-    margin-top: 5px;
+    cursor: pointer;
 }
 
 a.cerrar:hover {
@@ -348,8 +348,7 @@ padding-left: 30px;
 /* main-content y derivados */
 /****************************/
 #main-content {
-/*    background: url(../img/bg-content.png) 0 0 repeat-x;*/
-border-top: solid 2px #336699;
+    border-top: solid 2px #336699;
     margin: 0px;
     padding: 0px;
     
@@ -362,11 +361,12 @@ border-top: solid 2px #336699;
     line-height: 24px;
     margin: 0px;
     padding: 0px;
-    color: #336699;
+    color: #2B84D8;
     font-size: 22px;
     font-weight: normal;
     margin-bottom: 10px;
     padding-left: 10px;
+    text-shadow: 1px 1px 0px #dfdfdf;
 }
 
 #inner-content #content {
@@ -433,7 +433,6 @@ border-top: solid 2px #336699;
 }
 #content.formulario input[type="submit"],
 #content.formulario input[type="reset"] {
-    background: #336699;
     color: #fff;
     border: 0px;
     -moz-border-radius: 3px;
@@ -443,21 +442,20 @@ border-top: solid 2px #336699;
     margin-top: 5px;
     float: right;
     cursor: pointer;
+    background: #2b84d8 url("../img/title-bg.png") 0 0 repeat-x;
+    border: solid 1px #336699;
 }
 
-
-
-
 #content.formulario input[type="reset"] {
-    background: #bfbfbf;
-    background: #ececec;
-    color: #bfbfbf;
     color: #949494;
     margin-right: 20px;
     margin-top: 9px;
     padding: 4px 10px;
     float: left;
     font-size: 11px;
+    background: #ececec url("../img/title-bg.png") 0 0 repeat-x;
+
+    border: solid 1px #cccccc;
 }
 
 #content.formulario p select {
@@ -1217,3 +1215,65 @@ ul.acciones li.publicar a  {
 
 
 
+
+
+
+/* INICIO */
+
+.column {
+    width: 170px;
+    width: 50%;
+    float: left;
+    padding-bottom: 100px;    
+}
+
+.portlet { 
+/*    background: #F4F4F4; */
+    border: solid 1px #E9E9E9;
+    border-color: #cccccc #dddddd #cccccc;
+    -moz-border-radius: 4px;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    margin: 0px 8px 15px;
+    background: #fff; 
+}
+
+.portlet-header { 
+    color: #373737;
+    height: 22px;
+    padding: 4px 8px;
+    font: bold 13px Arial;
+    background: #ccc url(../img/title-bg.png) 0 0 repeat-x;
+    text-shadow: 0px 1px 0px #fcfcfc;
+    -moz-border-radius-topleft:4px;
+    line-height: 22px;
+    -moz-border-radius-topright:4px;
+    margin-bottom: 5px;
+    cursor: move;
+}
+
+.portlet-header .ui-icon {
+    float: right;
+    background: url(../img/icon/minus16.png) 0 0 no-repeat;
+    display: block;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+}
+.portlet-header .ui-icon.ui-icon-plusthick {
+    background: url(../img/icon/plus16.png) 0 0 no-repeat;
+}
+
+.portlet-content {
+    padding: 6px 10px;
+}
+
+.ui-sortable-placeholder {
+    border: 2px dashed #ccc;
+    visibility: visible !important;
+    height: 50px !important;
+}
+
+.ui-sortable-placeholder * {
+    visibility: hidden;
+}
