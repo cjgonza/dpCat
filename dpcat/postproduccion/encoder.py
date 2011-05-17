@@ -6,60 +6,17 @@ import os
 import re
 
 """
-Llama al ffmpeg y para obtener la información completa del fichero y
-devuelve la información procesada en un hash.
+Llama al mediainfo y para obtener la información completa del fichero y
+devuelve una lista con los datos en XML y los datos en texto plano.
 """
 def get_file_info(filename):
-    command = "%s -i %s -acodec copy -vcodec copy -f null /dev/null" % (config.get_option('FFMPEG_PATH'), filename)
-    data = subprocess.Popen(shlex.split(str(command)), stderr=subprocess.PIPE).communicate()[1]
+    command = "%s --Output=XML %s" % (config.get_option('MEDIAINFO_PATH'), filename)
+    xml_data = subprocess.Popen(shlex.split(str(command)), stdout=subprocess.PIPE).communicate()[0]
 
-    info = dict()
-
-    info['size'] = os.stat(filename).st_size
-
-    # Comprueba el mensaje final de la codificación
-    m = re.search('video:([0-9]+)kB audio:([0-9]+)kB global headers:[0-9]+kB muxing overhead', data)
-    if m:
-        (video_size, audio_size) = m.group(1, 2) 
-    else:
-        return False
-
-    # Comprueba el último mensaje de actualización de la codificación
-    m = re.search('(frame=([^=]*) fps=[^=]* q=[^=]* L)?size=[^=]*kB time=([^=]*) bitrate=[^=]*kbits/s[^=]*$', data)
-    if m:
-        frame_count = float(m.group(2)) if m.group(2) else 0;
-        info['duration'] = float(m.group(3))
-        info['bitrate'] = int(info['size'] * 8 / 1024 / info['duration'])
-    else:
-        return False
-
-    info['video_rate'] = float(frame_count) / float(info['duration']) if frame_count > 0 else None
-    info['video_bitrate'] = float(video_size) / float(info['duration']) if video_size > 0 else None
-    info['audio_bitrate'] = float(audio_size) / float(info['duration']) if audio_size > 0 else None
-
-    m = re.search('Input #0, ([^ ]+), from', data)
-    info['format'] = m.group(1) if m else "N/A"
-
-    # Obtiene la información del vídeo
-    m = re.search('Video: ([^ ]+), ([^ ]+), ([0-9]+)x([0-9]+)( \[PAR ([0-9]+):([0-9]+) DAR ([0-9]+):([0-9]+)\])?', data)
-    if m:
-        (info['video_codec'], info['video_color'], info['video_width'], info['video_height']) = m.group(1, 2, 3, 4)
-
-        if m.group(5):
-            (par1, par2, dar1, dar2) = m.group(6, 7, 8, 9)
-            if int(dar1) > 0 and int(dar2) > 0 and int(par1) > 0 and int(par2) > 0:
-                info['video_wh_ratio'] = (float(dar1) / float(dar2)) / (float(par1) / float(par2))
-
-        # No hay información sobre la relación de aspecto, asumimos píxeles cuadrados.
-        if 'video_wh_ratio' not in info:
-            info['video_wh_ratio'] = float(info['video_width']) / float(info['video_height'])
-
-    # Obtiene la información del audio
-    m = re.search('Audio: ([^ ]+), ([0-9]+) Hz, ([^\n,]*)', data)
-    if m:
-        (info['audio_codec'], info['audio_rate'], info['audio_channels']) = m.group(1, 2, 3)
-     
-    return info
+    command = "%s %s" % (config.get_option('MEDIAINFO_PATH'), filename)
+    txt_data = subprocess.Popen(shlex.split(str(command)), stdout=subprocess.PIPE).communicate()[0]
+    
+    return [xml_data, txt_data]
 
 """
 Devuelve los parámetros preestablecidos para el codec x264

@@ -25,6 +25,7 @@ def set_default_settings():
         [ 'MELT_PATH' ,         which('melt') ], 
         [ 'FFMPEG_PATH',        which('ffmpeg') ],
         [ 'CRONTAB_PATH',       which('crontab') ],
+        [ 'MEDIAINFO_PATH',     which('mediainfo') ],
         [ 'MAX_PREVIEW_WIDTH',  400 ],
         [ 'MAX_PREVIEW_HEIGHT', 300 ],
         [ 'VIDEO_LIBRARY_PATH', '/home/adminudv/videos/videoteca/' ],
@@ -106,7 +107,17 @@ def melt_version():
         command = "%s -version" % fpath
         data = subprocess.Popen(shlex.split(str(command)), stderr = subprocess.PIPE).communicate()[1]
         return re.search('mlt melt ([\.0-9]+)', data, re.I).group(1)
-   
+    
+"""
+Devuelve la versión del mediainfo instalado.
+"""
+def mediainfo_version():
+    fpath = config.get_option('MEDIAINFO_PATH')
+    if is_exec(fpath):
+        command = "%s --Version" % fpath
+        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()[0]
+        return re.search('(v[0-9\.]+)$', data).group(1)
+
 """
 Devuelve la información de uso del sistema de ficheros en el que se encuentra la ruta dada.
 """

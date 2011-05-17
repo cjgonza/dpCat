@@ -5,9 +5,12 @@ from postproduccion.models import TecData, Previsualizacion
 from configuracion import config
 from postproduccion import utils
 
+from xml.dom.minidom import parseString
 import os
 import tempfile
 import shutil
+import string
+
 
 """
 Renderiza el fichero de configuración del MELT para la codificación de una píldora
@@ -45,15 +48,45 @@ def generate_tecdata(v):
         t = TecData(video = v)
         t.save()
 
-    for (key, value) in get_file_info(v.fichero).items():
-        setattr(t, key, value)
-    
+    [t.xml_data, t.txt_data] = get_file_info(v.fichero)
     t.save()
 
+"""
+"""
+def get_tec_data(xmlstring):
+    dom = parseString(xmlstring)
+    unparse_width = dom.getElementsByTagName('Width')[0].firstChild.data
+    unparse_height = dom.getElementsByTagName('Height')[0].firstChild.data
+    unparse_ratio = dom.getElementsByTagName('Display_aspect_ratio')[0].firstChild.data
+
+    width = int(str(unparse_width).translate(None, string.letters +  string.whitespace))
+    height = int(str(unparse_height).translate(None, string.letters +  string.whitespace))
+
+    if ':' in unparse_ratio:
+        [rw, rh] = unparse_ratio.split(':')
+        ratio = float(rw)  / float(rh)
+    else:
+        ratio = float(unparse_ratio)
+
+    return [width, height, ratio]
+
+"""
+"""
+def parse_mediainfo(mediadata):
+    mediainfo = list()
+    for section in mediadata.split('\n\n'):
+        if len(section) > 1:
+            lines = section.split('\n')
+            titulo = lines[0]
+            sect = { 'section' : lines[0], 'attr' : list() }
+            for attr in lines[1:]:
+                sect['attr'].append({ 'key' : attr[:33].strip(), 'value' : attr[34:].strip() })
+            mediainfo.append(sect)
+    return mediainfo
+
+
 def calculate_preview_size(v):
-    width = float(v.tecdata.video_width)
-    height = float(v.tecdata.video_height)
-    ratio = float(v.tecdata.video_wh_ratio)
+    [width, height, ratio] = get_tec_data(v.tecdata.xml_data)
     max_width = float(config.get_option('MAX_PREVIEW_WIDTH'))
     max_height = float(config.get_option('MAX_PREVIEW_HEIGHT'))
 

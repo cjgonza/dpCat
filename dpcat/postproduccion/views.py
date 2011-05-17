@@ -17,6 +17,7 @@ from postproduccion import utils
 from postproduccion import token
 from postproduccion import log
 from postproduccion import crontab
+from postproduccion import video
 from configuracion import config
 
 import os
@@ -321,7 +322,8 @@ Muestra la información técnica del vídeo
 @permission_required('postproduccion.video_manager')
 def media_info(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
-    return render_to_response("postproduccion/media_info.html", { 'v' : v }, context_instance=RequestContext(request))
+    info = video.parse_mediainfo(v.tecdata.txt_data)
+    return render_to_response("postproduccion/media_info.html", { 'v' : v, 'info' : info }, context_instance=RequestContext(request))
 
 """
 Gestión de tickets de usuario.
@@ -461,6 +463,7 @@ def status(request):
     # Programas externos
     ffmpegver = utils.ffmpeg_version()
     meltver = utils.melt_version()
+    mediainfover = utils.mediainfo_version()
     exes = {
         'FFMPEG'  : {
             'path'    : config.get_option('FFMPEG_PATH'),
@@ -476,6 +479,11 @@ def status(request):
             'path'    : config.get_option('CRONTAB_PATH'),
             'status'  : utils.is_exec(config.get_option('CRONTAB_PATH')),
             'version' : 'N/A',
+        },
+        'mediainfo'    : {
+            'path'    : config.get_option('MEDIAINFO_PATH'),
+            'status'  : True if mediainfover else False,
+            'version' : mediainfover,
         },
     }
     

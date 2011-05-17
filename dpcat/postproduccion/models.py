@@ -121,21 +121,8 @@ class FicheroEntrada(models.Model):
         return self.video.titulo
 
 class TecData(models.Model):
-    audio_bitrate = models.FloatField(null = True)
-    audio_channels = models.CharField(max_length = 20, null = True)
-    audio_codec = models.CharField(max_length = 10, null = True)
-    audio_rate = models.PositiveIntegerField(null = True)
-    bitrate = models.PositiveIntegerField(null = True)
-    duration = models.FloatField(null = True)
-    format = models.CharField(max_length = 30, null = True)
-    size = models.PositiveIntegerField(null = True)
-    video_bitrate = models.FloatField(null = True)
-    video_codec = models.CharField(max_length = 10, null = True)
-    video_color = models.CharField(max_length = 10, null = True)
-    video_height = models.PositiveIntegerField(null = True)
-    video_rate = models.FloatField(null = True)
-    video_wh_ratio = models.FloatField(null = True)
-    video_width = models.PositiveIntegerField(null = True)
+    xml_data = models.TextField(null = True)
+    txt_data = models.TextField(null = True)
 
     video = models.OneToOneField(Video)
 
