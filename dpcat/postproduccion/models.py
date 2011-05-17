@@ -203,7 +203,7 @@ class Cola(models.Model):
 
     QUEUE_TYPE = (
         ('COP', u'Copia'),
-        ('PIL', u'Píldora'),
+        ('PIL', u'Producción'),
         ('PRE', u'Previsualización')
     )
 
