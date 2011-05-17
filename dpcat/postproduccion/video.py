@@ -1,6 +1,6 @@
 #encoding: utf-8
 from django.shortcuts import render_to_response
-from postproduccion.encoder import get_file_info, encode_mixed_video, encode_preview
+from postproduccion.encoder import get_file_info, encode_mixed_video, encode_preview, get_video_duration
 from postproduccion.models import TecData, Previsualizacion
 from configuracion import config
 from postproduccion import utils
@@ -31,7 +31,7 @@ def get_fdv_template(v):
             i.tipo.alto,
             i.tipo.mix
         )
-        duracion.append(float(get_file_info(i.fichero)['duration']))
+        duracion.append(get_video_duration(i.fichero))
         
         videos.append(fe)
     data['videos'] = videos
@@ -49,6 +49,7 @@ def generate_tecdata(v):
         t.save()
 
     [t.xml_data, t.txt_data] = get_file_info(v.fichero)
+    t.duration = get_video_duration(v.fichero)
     t.save()
 
 """

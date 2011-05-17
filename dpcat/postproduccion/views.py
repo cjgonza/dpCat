@@ -420,6 +420,8 @@ def alerts(request):
         lista.append({ 'tipo' : 'ejecutable', 'exe' : 'ffmpeg', 'fecha' : datetime.datetime.min })
     if not utils.melt_version():
         lista.append({ 'tipo' : 'ejecutable', 'exe' : 'melt', 'fecha' : datetime.datetime.min })
+    if not utils.mediainfo_version():
+        lista.append({ 'tipo' : 'ejecutable', 'exe' : 'mediainfo', 'fecha' : datetime.datetime.min })
     if not utils.is_exec(config.get_option('CRONTAB_PATH')):
         lista.append({ 'tipo' : 'ejecutable', 'exe' : 'crontab', 'fecha' : datetime.datetime.min })
     # Comprueba las rutas a los directorios.

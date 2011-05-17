@@ -36,6 +36,7 @@ class MetadataForm(ModelForm):
 
 class ConfigForm(Form):
     max_encoding_tasks = forms.IntegerField(label = u'Nº máximo de codificaciones simultaneas')
+    mediainfo_path = forms.CharField(label = u'Ruta del \'mediainfo\'')
     melt_path = forms.CharField(label = u'Ruta del \'melt\'')
     ffmpeg_path = forms.CharField(label = u'Ruta del \'ffmpeg\'')
     crontab_path = forms.CharField(label = u'Ruta del \'crontab\'')

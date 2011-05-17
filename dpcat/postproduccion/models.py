@@ -121,6 +121,7 @@ class FicheroEntrada(models.Model):
         return self.video.titulo
 
 class TecData(models.Model):
+    duration = models.FloatField(null = True)
     xml_data = models.TextField(null = True)
     txt_data = models.TextField(null = True)
 
