@@ -67,8 +67,8 @@
                 str += '<td class="date">&nbsp;</td>';
             }
 
-            if (data['video']) {
-                str += '<td>' + data['video'] + '</td>';
+            if (data['v-titulo']) {
+                str += '<td><a class="link" href="' + data['v-url'] + '">' + data['v-titulo'] + '</a></td>';
             } else {
                 str += '<td>&nbsp;</td>';
             }

@@ -170,14 +170,14 @@ def cola_listado(request):
     data = list()
     for task in Cola.objects.order_by('pk'):
         linea = dict()
-        linea['video'] = task.video.titulo
+        linea['v-titulo'] = task.video.titulo
+        linea['v-url'] = reverse('estado_video', args=(task.video.id,))
         linea['tipo'] = dict(Cola.QUEUE_TYPE)[task.tipo]
         linea['comienzo'] = task.comienzo.strftime("%H:%M:%S - %d/%m/%Y") if task.comienzo else None
         linea['fin'] = task.fin.strftime("%H:%M:%S - %d/%m/%Y") if task.fin else None
         linea['logfile'] = task.logfile.name
         linea['logurl'] = reverse('postproduccion.views.mostrar_log', args=(task.pk,)) if task.logfile.name else None
         linea['id'] = task.pk
-        #linea['status'] = queue.progress(task) if task.status == 'PRO' else dict(Cola.QUEUE_STATUS)[task.status]
         linea['status'] = task.get_status_display()
         linea['progress'] = queue.progress(task) if task.status == 'PRO' else ''
         data.append(linea)
