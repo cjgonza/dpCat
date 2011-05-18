@@ -431,6 +431,12 @@ padding-left: 30px;
 #content.formulario p:last-child {
     background: red;
 }
+#content.formulario input[type="submit"] {
+    text-shadow: 0px 1px 0px #373737;
+}
+#content.formulario input[type="reset"] {
+    text-shadow: 0px 1px 0px #fff;
+}
 #content.formulario input[type="submit"],
 #content.formulario input[type="reset"] {
     color: #fff;
@@ -446,6 +452,8 @@ padding-left: 30px;
     border: solid 1px #336699;
 }
 
+
+
 #content.formulario input[type="reset"] {
     color: #949494;
     margin-right: 20px;
@@ -457,7 +465,9 @@ padding-left: 30px;
 
     border: solid 1px #cccccc;
 }
-
+#content.formulario input:hover {
+    background-image: none;
+}
 #content.formulario p select {
     height: 30px;
     width: 312px;
@@ -483,6 +493,10 @@ padding-left: 30px;
     width: 27.5%;
 }
 
+#content-right .portlet {
+
+    background: #F4F4F4;
+}
 #content-right #right-block {
     background: #F4F4F4;
     border: solid 1px #E9E9E9;
@@ -507,15 +521,22 @@ padding-left: 30px;
 
 }
 
+#content-right .portlet-content ul {
+    padding: 0px;
+}
 #content-right #right-block ul {
     padding: 5px 15px;
 }
 
+#content-right .portlet-content ul li,
 #content-right #right-block ul li {
 color: #373737;    
 font: normal 13px Arial;
 margin: 10px 0px;
 }
+
+
+#content-right .portlet-content ul li.tip,
 #content-right #right-block ul li.tip {
     background: url(../img/icon/lightbulb.png) 0 0 no-repeat;
     padding-left: 25px;
@@ -662,12 +683,18 @@ padding: 0px;
 #content.formulario #volver a {
     text-decoration: none;
     font: bold 12px Arial;
-    background: #c1d1e0;
+    background: #c1d1e0 url("../img/title-bg.png") 0 0 repeat-x;
     color: #336699;
     padding: 0px 10px;
     -moz-border-radius: 3px;
     display: block;
     line-height: 33px;
+    border: solid 1px #99b2cc;
+    text-shadow: 0px 1px 0px #ddd;
+}
+
+#content.formulario #volver a:hover {
+    background-image: none;
 }
 #content.formulario #volver {
     float: right;
@@ -1215,10 +1242,13 @@ ul.acciones li.publicar a  {
 /* INICIO */
 
 .column {
-    width: 170px;
     width: 50%;
     float: left;
     padding-bottom: 100px;    
+}
+
+#content-right .column {
+    width: 100%;
 }
 
 .portlet { 
@@ -1230,6 +1260,12 @@ ul.acciones li.publicar a  {
     margin-bottom: 15px;
     margin: 0px 8px 15px;
     background: #fff; 
+}
+
+
+#content-right .portlet {
+    margin: 0px;
+    margin-bottom: 20px;
 }
 
 .portlet-header { 
@@ -1244,6 +1280,20 @@ ul.acciones li.publicar a  {
     -moz-border-radius-topright:4px;
     margin-bottom: 5px;
     cursor: move;
+}
+
+#content-right .portlet-header {
+    color: #ffffff;
+    height: 22px;
+    padding: 4px 8px;
+    font: bold 13px Arial;
+    background: #2B84D8 url(../img/title-bg.png) 0 0 repeat-x;
+    text-shadow: 0px 1px 0px #373737;
+    -moz-border-radius-topleft:4px;
+    line-height: 22px;
+    -moz-border-radius-topright:4px;
+    margin-bottom: 5px;
+
 }
 
 .portlet-header .ui-icon {
