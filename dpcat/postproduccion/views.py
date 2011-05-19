@@ -324,7 +324,7 @@ Muestra la información técnica del vídeo
 @permission_required('postproduccion.video_manager')
 def media_info(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
-    info = video.parse_mediainfo(v.tecdata.txt_data)
+    info = video.parse_mediainfo(v.tecdata.txt_data) if hasattr(v, 'tecdata') else None
     return render_to_response("postproduccion/media_info.html", { 'v' : v, 'info' : info }, context_instance=RequestContext(request))
 
 """

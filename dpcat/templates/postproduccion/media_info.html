@@ -16,6 +16,8 @@
             {% for at in s.attr %}
             <tr><td>{{ at.key }}</td><td>{{ at.value }}</td></tr>
             {% endfor %}
+            {% empty %}
+            <tr><td colspan="2"><div class="mensaje warning">La metadata t&eacute;cnica no estar&aacute; disponible hasta que se procese el v&iacute;deo.</div></td></tr>
             {% endfor %}
         </tbody>
     </table>
