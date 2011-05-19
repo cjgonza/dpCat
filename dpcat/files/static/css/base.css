@@ -151,7 +151,7 @@ body.login {
     float: left;
 }
 
-.info,
+div.info,
 .mensaje {
     font: normal 12px Arial;
     border: solid 1px #adc2d6;
@@ -167,7 +167,7 @@ body.login {
 }
 
 
-.info {
+div.info {
     border-color: #A2B4EE;
     background-color: #d5e6f7;
     background-image: url(../img/icon/estado16.png);
