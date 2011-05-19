@@ -17,22 +17,32 @@
 {% endblock %}
 
 {% block section-widget %}
-    <div id="content-right">
-        <div id="right-block">
-            <h3 class="links">Detalles de configuraci&oacute;n</h3>
-            <ul>
-                <li><a href="{% url config %}">Configuraci&oacute;n del sistema</a></li> 
-                <li><a href="{% url status %}">Ver el estado del sistema</a></li> 
-            </ul>
-        </div>
 
-        <div id="right-block">
-            <h3>Informaci&oacute;n de inter&eacute;s</h3>
-            <ul>
+    <div id="content-right">
+        <div class="column">
+            <div class="portlet">
+                <div class="portlet-header">Detalles de configuraci&oacute;n</div>
+                <div class="portlet-content">
+                    <ul> 
+                <li><a class="link" href="{% url config %}">Configuraci&oacute;n del sistema</a></li> 
+                <li><a class="link" href="{% url status %}">Ver el estado del sistema</a></li> 
+                    </ul>
+                </div>
+            </div>
+            <div class="portlet">
+                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+                <div class="portlet-content">
+                    <ul> 
     <li class="tip">Falta personalizar este mensaje</li>
-            </ul>
-        </div>
+                    </ul>
+                </div>
+            </div>
+
+        </div>     
     </div>
+
+
+
 {% endblock %}
 
 

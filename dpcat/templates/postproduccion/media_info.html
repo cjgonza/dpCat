@@ -24,21 +24,30 @@
 
 </div>
 
-<div id="content-right">
-    <div id="right-block">
-        <h3 class="links">Tipo de metadata</h3>
-        <ul>
-            <li><a href="{% url definir_metadatos_oper v.id %}">Metadata principal</a></li> 
-            <li><a href="{% url media_info v.id %}">Metadata t&eacute;cnica</a></li> 
-        </ul>
+    <div id="content-right">
+        <div class="column">
+            <div class="portlet">
+                <div class="portlet-header">Tipo de metadata</div>
+                <div class="portlet-content">
+                    <ul> 
+            <li><a class="link" href="{% url definir_metadatos_oper v.id %}">Metadata principal</a></li> 
+            <li><a class="link" href="{% url media_info v.id %}">Metadata t&eacute;cnica</a></li> 
+                    </ul>
+                </div>
+            </div>
+            <div class="portlet">
+                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+                <div class="portlet-content">
+                    <ul> 
+            <li class="tip">Poner descripci&oacute;n o enlaces sobre esta tabla</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>     
     </div>
 
-    <div id="right-block">
-        <h3>Informaci&oacute;n de inter&eacute;s</h3>
-        <ul>
-            <li class="tip">Poner descripci&oacute;n o enlaces sobre esta tabla</li>
-        </ul>
-    </div>
-</div>
+
+
 
 {% endblock %}

@@ -37,32 +37,36 @@
 {% endblock %}
 
 {% block section-widget %}
-
-<div id="content-right">
-<div id="right-block">
-
-{% if old %}
-    <h3 class="links">Registro actual</h3>
-    <ul>
-        <li><a href="{% url log %}">Acceder al registro actual del sistema.</a></li> 
-    </ul>
-
-{% else %}
-    <h3 class="links">Registro antiguo</h3>
-    <ul>
-        <li><a href="{% url oldlog %}">Acceder al registro antiguo del sistema.</a></li> 
-    </ul>
-
-{% endif %}
-</div>
-
-<div id="right-block">
-    <h3>Informaci&oacute;n de inter&eacute;s</h3>
-    <ul>
-        <li class="tip">La longitud de los mensajes de registro del sistema es configurable por el administrador.<br/><br/>Existen dos versiones del fichero de registro, una actual y una m&aacute;s antigua, accesibles desde el bloque superior.</li>
-    </ul>
-</div>
-</div>
+    <div id="content-right">
+        <div class="column">
+            <div class="portlet">
+                {% if old %}
+                <div class="portlet-header">Registro actual</div>
+                <div class="portlet-content">
+                    <ul>
+                        <li><a class="link" href="{% url log %}">Acceder al registro actual del sistema.</a></li> 
+                    </ul>
+                </div>
+                {% else %}
+                <div class="portlet-header">Registro antiguo</div>
+                <div class="portlet-content">
+                    <ul>
+                        <li><a class="link" href="{% url oldlog %}">Acceder al registro antiguo del sistema.</a></li> 
+                    </ul>
+                </div>
+                {% endif %}
+               
+            </div>          
+            <div class="portlet">
+                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+                <div class="portlet-content">
+                    <ul> 
+                        <li class="tip">La longitud de los mensajes de registro del sistema es configurable por el administrador.<br/><br/>Existen dos versiones del fichero de registro, una actual y una m&aacute;s antigua, accesibles desde el bloque superior.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>     
+    </div>
 
 {% endblock %}
 
