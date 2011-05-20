@@ -5,6 +5,34 @@
 
 <div id="content-left">
 
+<h2>Informaci&oacute;n sobre el ticket</h2>
+<div class="info-ticket">
+        {% if token %}
+
+        <table id="tabla">
+        <thead>
+        <th>Fecha de creaci&oacute;n</th>
+        <th>Fecha de caducidad</th>
+        </thead>
+        <tbody>
+        <tr>
+        <td>{{ token.create_date }}</td>
+            <td {% if token.valid %} class="valido" {% else %} class="expirado"{% endif %}><span>{{ token.expiration_date }}</span></td>
+        </tr>
+        {% if token.valid %}<tr><td colspan="2"><a target="_blank" href="{{ token.url }}">Enlace a este ticket</a><textarea>{{ token.url }}</textarea></td></tr>{% endif %}
+        </tbody>
+        </table>
+        <ul>
+         </ul>
+        {% else %}
+        <ul>
+            <li><div class="mensaje info">No hay ticket emitido</div></li>
+        </ul>
+        {% endif %}
+</div>
+
+
+
     <h2>Histórico de incidencias</h2>
     <table id="tabla">
         <thead>
@@ -20,26 +48,12 @@
         </tbody>
     </table>
 
-<h2>Informaci&oacute;n sobre el ticket</h2>
-<div class="info-ticket">
-        {% if token %}
-        <ul>
-            <li>Creado: {{ token.create_date }}</li>
-            <li>Expiraci&oacute;n: <span{% if not token.valid %} class="expirado"{% endif %}>{{ token.expiration_date }}</span></li>
-            {% if token.valid %}<li>Enlace a este ticket:<textarea>{{ token.url }}</textarea></li>{% endif %}
-        </ul>
-        {% else %}
-        <ul>
-            <li><div class="mensaje info">No hay ticket emitido</div></li>
-        </ul>
-        {% endif %}
-</div>
 
-    <h2>Env&iacute;o de ticket</h2>
+    <h2>Generar ticket</h2>
     <form method="post" action="">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Enviar" {% if token and token.valid %}onclick="return confirm('¡Atención! Ya hay ticket en curso, si continúa se anulará y se generará otro. ¿está seguro?')"{% endif %}/>
+    <input type="submit" value="Generar ticket" {% if token and token.valid %}onclick="return confirm('¡Atención! Ya hay ticket en curso, si continúa se anulará y se generará otro. ¿está seguro?')"{% endif %}/>
     </form>
 
 </div>

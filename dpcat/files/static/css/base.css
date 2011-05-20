@@ -1359,19 +1359,26 @@ ul.acciones li.publicar a  {
 }
 
 
-.info-ticket {
-    margin-bottom: 30px;
-    border: solid 1px #ccc;
-    -moz-border-radius: 4px;
-    padding: 10px;
-}
 
 
-.info-ticket li {
-    margin-bottom: 10px;
+.info-ticket ul {
+    margin: 0px 10px;
 }
 .info-ticket textarea {
     width: 99%;
     height: 50px;
     margin-top: 5px;
+}
+
+.info-ticket td.expirado {
+    background: #FFCECE url(../img/icon/error16.png) 5px 50% no-repeat;
+}
+
+.info-ticket td.valido {
+    background: #d5ffce url(../img/icon/check16.png) 5px 50% no-repeat;
+}
+
+.info-ticket td.expirado span,
+.info-ticket td.valido span {
+    margin-left: 20px;
 }
