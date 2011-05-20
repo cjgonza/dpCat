@@ -5,12 +5,13 @@
 {% block section-title %}<h1>Cola de proceso de producciones</h1>{% endblock %}
 {% block section-description %}<p>Listado de producciones que est&aacute;n actualmente en la cola de procesado del sistema.</p>{% endblock %}
 
-{% block section-content %} 
+{% block section-content %}
+<div id="progressbar"></div>
+<div id="progressbartext"></div>
 <table id="tabla" class="cola">
     <thead>
         <th class="id">ID</th>
-        <th class="status">Estado</th>
-        <th class="type">Tipo</th>
+        <th class="type">Informaci&oacute;n</th>
         <th class="date">Fecha</th>
         <th>T&iacute;tulo</th>
         <th class="log">Log</th>
@@ -18,9 +19,6 @@
     <tbody>
     </tbody>
 </table>
-
-
-
 {% endblock %}
 
 {% block section-widget %}
@@ -39,25 +37,16 @@
 {% endblock %}
 
 {% block page-script %}
-    <script src="/static/js/jqueryprogressbar.js" type="text/javascript"></script>
     <script type="text/javascript">
         function creaLinea(data) {
-            str = '';
-
-            if (data['id']) {
-                str += '<td class="id">' + data['id'] + '</td>';
-            } else {
-                str += '<td>&nbsp;</td>';
+            str = '<td class="id">'+data['id']+'</td>';
+            str += '<td><ul><li>Tipo: '+data['tipo']+'</li>';
+            str += '<li>Estado: '+data['status']+'<br/>';
+            if (data['progress']) {
+                str += '<div id="progressbar'+data['id']+'"></div>';
+                str += '<div id="progressbartext">'+data['progress']+' %</div>';
             }
-
-            str += '<td class="' + data['status'] + '"><div id="status'+data['id']+'">'+data['progress']+'</div></td>';
-
-            if (data['tipo']) {
-                str += '<td>' + data['tipo'] + '</td>';
-            } else {
-                str += '<td>&nbsp;</td>';
-            }
-    
+            str += '</li></td>';
             if (data['comienzo'] || data['fin']) {
                 str += '<td class="date"><ul>';
                 if (data['comienzo']) {
@@ -71,18 +60,14 @@
                 str += '<td class="date">&nbsp;</td>';
             }
 
-            if (data['v-titulo']) {
-                str += '<td><a class="link" href="' + data['v-url'] + '">' + data['v-titulo'] + '</a></td>';
-            } else {
-                str += '<td>&nbsp;</td>';
-            }
+            str += '<td><a class="link" href="' + data['v-url'] + '">' + data['v-titulo'] + '</a></td>';
 
             if (data['logurl']) {
                 str += '<td class="log"><a class="chain" href="' + data['logurl'] +'" target="_blank">' + data['logfile'] +'</a></td>';
             } else {
                 str += '<td class="log">&nbsp;</td>';
             }
-            return str
+            return str;
         }
 
         function creaTabla(data) {
@@ -95,27 +80,27 @@
 
         function mostrarProgreso(data) {
             for (var i = 0; i < data.length; i++) {
-                st = $('#status' + data[i]['id']);
-                if (st[0].innerHTML.length) {
-                    value = st[0].innerHTML;
-                    st[0].innerHTML = "";
-                    st.addClass("progressbar");
-                    st.reportprogress(value);
+                if (data[i]['progress'] >= 0) {
+                    $('#progressbar' + data[i]['id']).progressbar ({
+                        value: data[i]['progress'] 
+                    })
                 }
             }
         }
 
         function refrescar() {
-            $.getJSON('/postproduccion/cola_listado/', function(data) { 
+            $.getJSON('/postproduccion/cola_listado/', function(data) {
                 $(creaTabla(data)).replaceAll("tbody"); 
                 mostrarProgreso(data);
             });
+            
             setTimeout("refrescar();", 1000);
         }
 
         $(document).ready( function() {
             refrescar();
         });
+
     </script>
 
 {% endblock %}

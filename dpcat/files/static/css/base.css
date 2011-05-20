@@ -747,10 +747,10 @@ padding: 0px;
 
 
 #tabla.cola th.type {
-    width: 100px;
+    width: 180px;
 }
 #tabla.cola th.status {
-    width: 50px;
+    width: 100px;
 }
 #tabla.cola th.log {
     width: 135px;
@@ -1314,4 +1314,31 @@ ul.acciones li.publicar a  {
 
 .ui-sortable-placeholder * {
     visibility: hidden;
+}
+
+.ui-progressbar {
+    float: left;
+    width: 135px;
+    height: 11px;
+    text-align: left;
+    -moz-border-radius: 2px;
+    margin-bottom: 5px;
+    border: solid 1px #373737;
+}
+
+.ui-progressbar .ui-progressbar-value {
+    height: 100%;
+    -moz-border-radius: 2px;
+    margin-bottom: 5px;
+}
+
+.ui-progressbar-value {
+    background: url(../img/progressbar-bgani.png) 50% 50% repeat-x;
+}
+
+#progressbartext {
+   margin-left: 4px;
+   float: left;
+   font: normal 10px Arial;
+   color: #444444;
 }
