@@ -385,6 +385,7 @@ padding-left: 30px;
 
 }
 
+#content.informe-video p label,
 .info-basica label,
 #content.formulario p label {
     width: 130px;
@@ -411,6 +412,7 @@ padding-left: 30px;
     margin-left: 10px;
 }
 
+#content.informe-video p textarea,
 #content.formulario p textarea,
 #content.formulario p select,
 #content.formulario p input[type="text"] {
@@ -431,6 +433,8 @@ padding-left: 30px;
 #content.formulario input[type="reset"] {
     text-shadow: 0px 1px 0px #fff;
 }
+
+#content.informe-video input[type="submit"],
 #content.formulario input[type="submit"],
 #content.formulario input[type="reset"] {
     color: #fff;
@@ -446,6 +450,10 @@ padding-left: 30px;
     border: solid 1px #336699;
 }
 
+#content.informe-video input[type="submit"] {
+    float: left;
+    margin-left: 130px;
+}
 
 
 #content.formulario input[type="reset"] {
@@ -466,9 +474,16 @@ padding-left: 30px;
     height: 30px;
     width: 312px;
 }
+
+#content.informe-video p textarea,
 #content.formulario p textarea {
     height: 150px;
     width: 400px;
+}
+
+
+#content.informe-video p textarea {
+    width: 450px;
 }
 
 #content-left {
@@ -1341,4 +1356,22 @@ ul.acciones li.publicar a  {
    float: left;
    font: normal 10px Arial;
    color: #444444;
+}
+
+
+.info-ticket {
+    margin-bottom: 30px;
+    border: solid 1px #ccc;
+    -moz-border-radius: 4px;
+    padding: 10px;
+}
+
+
+.info-ticket li {
+    margin-bottom: 10px;
+}
+.info-ticket textarea {
+    width: 99%;
+    height: 50px;
+    margin-top: 5px;
 }
