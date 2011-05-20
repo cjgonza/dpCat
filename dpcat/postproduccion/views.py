@@ -442,7 +442,10 @@ def alerts(request):
         lista.append({ 'tipo' : 'cron', 'fecha' : datetime.datetime.min })
     # Ordena los elementos cronológicamente
     lista = sorted(lista, key=lambda it: it['fecha'])
-    return render_to_response("postproduccion/section-alertas.html", { 'lista' : lista })
+    if request.is_ajax():
+        return render_to_response("postproduccion/ajax/content-alertas.html", { 'lista' : lista[:5] })
+    else:
+        return render_to_response("postproduccion/section-alertas.html", { 'lista' : lista })
 
 """
 Edita los ajustes de configuración de la aplicación.

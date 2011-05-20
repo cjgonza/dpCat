@@ -1,0 +1,95 @@
+<ul id="lista-alertas">
+{% for i in lista %}
+    {% if i.tipo == 'video-incompleto' %}
+    <li class="{{ i.tipo }}">
+        <span class="item-tipo">Producci&oacute;n incompleta</span>
+        <ul class="item-alerta">
+            <li><span class="item-alerta-title">T&iacute;tulo de la producci&oacute;n:</span>{{ i.v.titulo }} </li>
+            <li><span class="item-alerta-title">Identificador:</span> {{ i.v.id }} </li>
+            <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
+            <span class="item-alerta-content">No se ha terminado de definir.</span></li>
+            <li class="item-alerta-links"><a class="edit-icon" href="{% url crear i.v.id %}">Editar v&iacute;deo</a></li>
+        </ul> 
+    </li>
+    {% endif %}
+
+    {% if i.tipo == 'trabajo-fail' %}
+    <li class="{{ i.tipo }}">
+        <span class="item-tipo">Un proceso ha fallado</span>
+         <ul class="item-alerta">
+            <li><span class="item-alerta-title">T&iacute;tulo de la producci&oacute;n:</span>{{ i.t.video.titulo }} </li>
+            <li><span class="item-alerta-title">Identificador:</span> {{ i.t.id }} </li>
+            <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
+            <span class="item-alerta-content">La operaci&oacute;n realizada sobre esta producci&oacute;n ha fallado.</span></li>
+            <li class="item-alerta-links"><a href="{% url cola%}">Cola de procesado</a><a href="{% url mostrar_log i.t.id %}">Registro del sistema de la operaci&oacute;n</li>
+        </ul> 
+   </li>
+    {% endif %}
+
+    {% if i.tipo == 'token-caducado' %}
+
+    <li class="{{ i.tipo }}">
+        <span class="item-tipo">Ticket caducado</span>
+         <ul class="item-alerta">
+            <li><span class="item-alerta-title">T&iacute;tulo de la producci&oacute;n:</span>{{ i.t.video.titulo }} </li>
+            <li><span class="item-alerta-title">Identificador:</span> {{ i.t.video.id }} </li>
+            <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
+            <span class="item-alerta-content">El ticket enviado al autor del video ha caducado sin ser atentido.</span></li>
+            <li class="item-alerta-links"><a class="edit-icon" href="">Editar v&iacute;deo</a></li>
+        </ul> 
+   </li>
+
+    {% endif %}
+
+    {% if i.tipo == 'ejecutable' %}
+    <li class="{{ i.tipo }}">
+        <span class="item-tipo">Error al ejecutar la aplicaci&oacute;n: {{ i.exe }} </span>
+         <ul class="item-alerta">
+            <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
+            <span class="item-alerta-content">Se ha producido un error al intentar ejecutar la aplicaci&oacute;n: {{ i.exe }}, es necesario revisar la configuraci&oacute;n del sistema.</span></li>
+            <li class="item-alerta-links"><a class="edit-icon" href="{% url config %}">Acceder a la configuraci&oacute;n del sistema</a></li>
+        </ul> 
+   </li>
+    {% endif %}
+
+    {% if i.tipo == 'ruta' %}
+    <li class="{{ i.tipo }}">
+        <span class="item-tipo">Permiso denegado sobre el directorio: {{ i.path }}</span>
+         <ul class="item-alerta">
+            <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
+            <span class="item-alerta-content">Ha sido imposible acceder o crear el directorio en la ruta: {{ i.path }}, es necesario revisar la configuraci&oacute;n del sistema.</span></li>
+            <li class="item-alerta-links"><a class="edit-icon" href="{% url config %}">Acceder a la configuraci&oacute;n del sistema</a></li>
+        </ul> 
+   </li>
+
+    {% endif %}
+
+    {% if i.tipo == 'disco' %}
+
+    <li class="{{ i.tipo }}">
+        <span class="item-tipo">Espacio en disco pr&oacute;ximo a agotarse</span>
+         <ul class="item-alerta">
+            <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
+            <span class="item-alerta-content">El sistema de fichero en el que se encuentra el directorio: {{ i.path }} est&aacute; pr&oacute;ximo a quedarse sin espacio ({{ i.cap }}), es neceario revisar la configuración sistema.</span></li>
+            <li class="item-alerta-links"><a class="edit-icon" href="{% url status %}">Acceder a la configuraci&oacute;n del sistema</a></li>
+        </ul> 
+   </li>
+    {% endif %}
+
+    {% if i.tipo == 'cron' %}
+
+    <li class="{{ i.tipo }}">
+        <span class="item-tipo">Gestor de tareas programas del sistema (CRON) esta desactivado</span>
+         <ul class="item-alerta">
+            <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
+            <span class="item-alerta-content">Las tareas programas est&aacute;n desactivadas, no se codificar&aacute; ning&uacute;n video hasta que se active el gestor de tareas programas del sistema (CRON). Revise la configuraci&oacute;n del sistema.</span></li>
+            <li class="item-alerta-links"><a class="edit-icon" href="{% url status %}">Acceder a la configuraci&oacute;n del sistema</a></li>
+        </ul> 
+   </li>
+
+    {% endif %}
+
+    {% empty %}
+        <div class="mensaje info">No existe ninguna alerta en el sistema</div></li>
+{% endfor %}
+</ul>

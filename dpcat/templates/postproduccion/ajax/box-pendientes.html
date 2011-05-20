@@ -1,12 +1,12 @@
 <div class="portlet">
     <div class="portlet-header">Pendientes del operador</div>
-    <div class="portlet-content" id="box-pendientes"></div>
+    <div class="portlet-content" id="box-pendientes">&iexcl;&iexcl;&iexcl;Aqu&iacute; hay que poner un gif animado de un reloj!!!</div>
 </div>
 
 <script>
 function ajax_pendientes() {
     $.get("{% url pendientes %}", function(data) {
-        $("#box-pendientes").replaceWith(data);
+        $("#box-pendientes").html(data);
     });
     //setTimeout("ajax_pendientes();", 300000); // 5 minutos.
 }

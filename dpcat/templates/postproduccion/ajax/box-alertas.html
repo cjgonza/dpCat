@@ -1,0 +1,18 @@
+<div class="portlet">
+    <div class="portlet-header">Alertas</div>
+    <div class="portlet-content" id="box-alertas">&iexcl;&iexcl;&iexcl;Aqu&iacute; hay que poner un gif animado de un reloj!!!</div>
+</div>
+
+<script>
+function ajax_alertas() {
+    $.get("{% url alertas %}", function(data) {
+        $("#box-alertas").html(data);
+    });
+    //setTimeout("ajax_alertas();", 300000); // 5 minutos.
+}
+
+$(document).ready(function() {
+    ajax_alertas();
+});
+</script>
+
