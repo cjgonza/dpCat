@@ -1,0 +1,17 @@
+<div class="portlet">
+    <div class="portlet-header">Pendientes del operador</div>
+    <div class="portlet-content" id="box-pendientes"></div>
+</div>
+
+<script>
+function ajax_pendientes() {
+    $.get("{% url pendientes %}", function(data) {
+        $("#box-pendientes").replaceWith(data);
+    });
+    //setTimeout("ajax_pendientes();", 300000); // 5 minutos.
+}
+
+$(document).ready(function() {
+    ajax_pendientes();
+});
+</script>

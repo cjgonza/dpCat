@@ -197,7 +197,10 @@ Lista los vídeos que están pendientes de atención por parte del operador.
 @permission_required('postproduccion.video_manager')
 def listar_pendientes(request):
     filtro = Q(status = 'PTO') | Q(status = 'ACE') | Q(status = 'REC')
-    return render_to_response("postproduccion/section-pendientes.html", { 'list' : listar(filtro) }, context_instance=RequestContext(request))
+    if request.is_ajax():
+        return render_to_response("postproduccion/ajax/content-pendientes.html", { 'list' : listar(filtro)[:5] }, context_instance=RequestContext(request))
+    else:
+        return render_to_response("postproduccion/section-pendientes.html", { 'list' : listar(filtro) }, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados.
