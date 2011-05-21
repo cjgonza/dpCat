@@ -21,7 +21,7 @@
             <li><span class="item-alerta-title">Identificador:</span> {{ i.t.id }} </li>
             <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
             <span class="item-alerta-content">La operaci&oacute;n realizada sobre esta producci&oacute;n ha fallado.</span></li>
-            <li class="item-alerta-links"><a href="{% url cola%}">Cola de procesado</a><a href="{% url mostrar_log i.t.id %}">Registro del sistema de la operaci&oacute;n</li>
+            <li class="item-alerta-links"><a href="{% url cola%}">Cola de procesado</a><a href="{% url mostrar_log i.t.id %}">Registro del sistema de la operaci&oacute;n</a></li>
         </ul> 
    </li>
     {% endif %}

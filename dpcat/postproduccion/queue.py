@@ -165,7 +165,11 @@ Cancela la ejecución de una tarea.
 """
 def cancel_task(task):
     if task.status == 'PRO' and task.pid:
-        os.kill(task.pid, signal.SIGTERM)
+        try:
+            os.kill(task.pid, signal.SIGTERM)
+        except:
+            task.status = 'ERR'
+            task.save()
         while Cola.objects.get(pk=task.id).status == 'PRO': pass
 
 """

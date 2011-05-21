@@ -41,10 +41,10 @@
         function creaLinea(data) {
             str = '<td class="id">'+data['id']+'</td>';
             str += '<td><ul><li>Tipo: '+data['tipo']+'</li>';
-            str += '<li>Estado: '+data['status']+'<br/>';
+            str += '<li>Estado: <span>'+data['status']+'</span><br/>';
             if (data['progress']) {
                 str += '<div id="progressbar'+data['id']+'"></div>';
-                str += '<div id="progressbartext">'+data['progress']+' %</div>';
+                str += '<div class="progressbartext">'+data['progress']+' %</div>';
             }
             str += '</li></td>';
             if (data['comienzo'] || data['fin']) {
@@ -70,12 +70,45 @@
             return str;
         }
 
-        function creaTabla(data) {
-            str = '<tbody>';
-            for (var i = 0; i < data.length; i++)
-                str += '<tr>' + creaLinea(data[i]) + '</tr>';
-            str += '</tbody>';
-            return str;
+        function actualizaTabla(data) {
+            var cont = 0;
+            var filas = $("tbody").children();
+            for (var i = 0; i < filas.length; i++) {
+                // Borra la tarea si ya no está en la cola.
+                if (cont >= data.length) {
+                    $(filas[i]).remove();
+                    continue;
+                } else
+                    if (filas[i].firstChild.textContent != data[cont]['id']) {
+                        $(filas[i]).remove();
+                        continue;
+                    }
+                // Actualiza el estado.
+                if ($(filas[i]).find('span').html() != data[cont]['status'])
+                    $(filas[i]).find('span').html(data[cont]['status']);
+                // Actualiza la barra de progreso.
+                if (!data[cont]['progress'] && $(filas[i]).find('div').length)
+                    $(filas[i]).find('div').remove();
+                if (data[cont]['progress'] && !$(filas[i]).find('div').length) {
+                    $($(filas[i]).find('li')[1]).append('<div id="progressbar'+data[cont]['id']+'"></div>');
+                    $($(filas[i]).find('li')[1]).append('<div class="progressbartext">'+data[cont]['progress']+' %</div>');
+                }
+                if (data[cont]['progress'] && $(filas[i]).find('div').length)
+                    $(filas[i]).find('div.progressbartext').html(data[cont]['progress']+' %</div>');
+                // Actualiza las fechas de inicio y fin.
+                if (data[cont]['comienzo'] && !$(filas[i]).find('td.date').find('li').length)
+                    $(filas[i]).find('td.date').html('<ul><li>' + data[cont]['comienzo'] + ' - Inicio</li></ul>');
+                if (data[cont]['fin'] && $(filas[i]).find('td.date').find('li').length < 2)
+                    $(filas[i]).find('td.date').find('ul').append('<li>' + data[cont]['fin'] + ' - Fin</li>');
+                // Actualiza el fichero de log.
+                if (data[cont]['logurl'] && !$(filas[i]).find('a.chain').length)
+                    $(filas[i]).find('td.log').html('<a class="chain" href="' + data[cont]['logurl'] +'" target="_blank">' + data[cont]['logfile'] +'</a></td>');
+            cont++;
+            }
+            // Crea los nuevos elementos insertados al final de la cola.
+            for (;cont < data.length; cont++) {
+                $("tbody").append('<tr>' + creaLinea(data[cont]) + '</tr>');
+            }
         }
 
         function mostrarProgreso(data) {
@@ -90,7 +123,7 @@
 
         function refrescar() {
             $.getJSON('/postproduccion/cola_listado/', function(data) {
-                $(creaTabla(data)).replaceAll("tbody"); 
+                actualizaTabla(data);
                 mostrarProgreso(data);
             });
             

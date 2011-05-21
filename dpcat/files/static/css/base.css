@@ -1351,7 +1351,7 @@ ul.acciones li.publicar a  {
     background: url(../img/progressbar-bgani.png) 50% 50% repeat-x;
 }
 
-#progressbartext {
+.progressbartext {
    margin-left: 4px;
    float: left;
    font: normal 10px Arial;

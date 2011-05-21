@@ -214,7 +214,11 @@ class Cola(models.Model):
 
     def delete(self, *args, **kwargs):
         if self.status == 'PRO' and self.pid:
-            os.kill(self.pid, signal.SIGTERM)
+            try:
+                os.kill(self.pid, signal.SIGTERM)
+            except:
+                self.status = 'ERR'
+                self.save()
             while Cola.objects.get(pk=self.id).status == 'PRO': pass
         super(Cola, self).delete(*args, **kwargs)
 
