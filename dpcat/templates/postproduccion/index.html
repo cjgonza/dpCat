@@ -15,7 +15,7 @@
         <ul>
             <li><a class="home" href="{% url index %}">Inicio</a></li>
             <li><a class="videoteca" href="#">Videoteca</a></li>
-            <li><a class="monitorizacion" href="#">Centro de monitorizaci&oacute;n</a></li>
+            <li><a class="monitorizacion" href="{% url monitorizacion %}">Centro de monitorizaci&oacute;n</a></li>
             <li><a class="nuevaproduccion" href="{% url crear %}">Nueva producci&oacute;n</a></li>
         </ul>
         <ul class="utils">
@@ -53,6 +53,7 @@
 
 <pre>
     Usuario actual: {{ user }}
+    <a href="{% url monitorizacion %}">Centro de monitorizaci&oacute;n</a>
     <a href="{% url enproceso %}">X - Producciones en proceso</a>
     <a href="{% url pendientes %}">X - Pendientes del operador</a>
     <a href="{% url alertas %}">X - Alertas</a>
