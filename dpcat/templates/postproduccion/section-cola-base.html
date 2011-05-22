@@ -39,21 +39,21 @@
 {% block page-script %}
     <script type="text/javascript">
         function creaLinea(data) {
-            str = '<td class="id">'+data['id']+'</td>';
-            str += '<td><ul><li>Tipo: '+data['tipo']+'</li>';
-            str += '<li>Estado: <span>'+data['status']+'</span><br/>';
+            str = '<td class="id">' + data['id'] + '</td>';
+            str += '<td><ul><li>Tipo: ' + data['tipo'] + '</li>';
+            str += '<li>Estado: <span>' + data['status'] + '</span><br/>';
             if (data['progress']) {
-                str += '<div id="progressbar'+data['id']+'"></div>';
-                str += '<div class="progressbartext">'+data['progress']+' %</div>';
+                str += '<div id="progressbar' + data['id'] + '"></div>';
+                str += '<div class="progressbartext">' + data['progress'] + ' %</div>';
             }
             str += '</li></td>';
             if (data['comienzo'] || data['fin']) {
                 str += '<td class="date"><ul>';
                 if (data['comienzo']) {
-                    str += '<li>'+data['comienzo']+' - Inicio</li>';
+                    str += '<li>' + data['comienzo'] + ' - Inicio</li>';
                 }
                 if (data['fin']) {                    
-                   str += '<li>'+data['fin']+' - Fin</li>';
+                   str += '<li>' + data['fin'] + ' - Fin</li>';
                 }
                 str +='</ul></td>';
             } else {
@@ -87,14 +87,16 @@
                 if ($(filas[i]).find('span').html() != data[cont]['status'])
                     $(filas[i]).find('span').html(data[cont]['status']);
                 // Actualiza la barra de progreso.
-                if (!data[cont]['progress'] && $(filas[i]).find('div').length)
+                if (data[cont]['progress']) {
+                    if ($(filas[i]).find('div').length)
+                        $(filas[i]).find('div.progressbartext').html(data[cont]['progress']+' %</div>');
+                    else {
+                        $($(filas[i]).find('li')[1]).append('<div id="progressbar' + data[cont]['id'] + '"></div>');
+                        $($(filas[i]).find('li')[1]).append('<div class="progressbartext">' + data[cont]['progress'] + ' %</div>');
+                    }
+                    $('#progressbar' + data[cont]['id']).progressbar({value : data[cont]['progress']});
+                } else
                     $(filas[i]).find('div').remove();
-                if (data[cont]['progress'] && !$(filas[i]).find('div').length) {
-                    $($(filas[i]).find('li')[1]).append('<div id="progressbar'+data[cont]['id']+'"></div>');
-                    $($(filas[i]).find('li')[1]).append('<div class="progressbartext">'+data[cont]['progress']+' %</div>');
-                }
-                if (data[cont]['progress'] && $(filas[i]).find('div').length)
-                    $(filas[i]).find('div.progressbartext').html(data[cont]['progress']+' %</div>');
                 // Actualiza las fechas de inicio y fin.
                 if (data[cont]['comienzo'] && !$(filas[i]).find('td.date').find('li').length)
                     $(filas[i]).find('td.date').html('<ul><li>' + data[cont]['comienzo'] + ' - Inicio</li></ul>');
@@ -108,26 +110,15 @@
             // Crea los nuevos elementos insertados al final de la cola.
             for (;cont < data.length; cont++) {
                 $("tbody").append('<tr>' + creaLinea(data[cont]) + '</tr>');
-            }
-        }
-
-        function mostrarProgreso(data) {
-            for (var i = 0; i < data.length; i++) {
-                if (data[i]['progress'] >= 0) {
-                    $('#progressbar' + data[i]['id']).progressbar ({
-                        value: data[i]['progress'] 
-                    })
-                }
+                $('#progressbar' + data[cont]['id']).progressbar({value : data[cont]['progress']});
             }
         }
 
         function refrescar() {
             $.getJSON('/postproduccion/cola_listado/', function(data) {
                 actualizaTabla(data);
-                mostrarProgreso(data);
-            });
+            }).complete(function() { setTimeout("refrescar();", 1000); });
             
-            setTimeout("refrescar();", 1000);
         }
 
         $(document).ready( function() {
