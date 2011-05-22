@@ -6,6 +6,12 @@ $(document).ready(function() {
     $(".cerrar").click(function () {
         $(this.parentNode).animate({ opacity: 0, height: 0 }, "slow").hide("slow");
     });
+
+    $(".alerta-header").click(function () {
+        $(this).find(".icon").toggleClass("minus").toggleClass("plus");
+        $(this).parents(".alerta:first").find(".alerta-content").toggle();
+    });
+
 });
 
 
