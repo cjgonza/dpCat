@@ -450,9 +450,9 @@ def alerts(request):
     # Ordena los elementos cronológicamente
     lista = sorted(lista, key=lambda it: it['fecha'])
     if request.is_ajax():
-        return render_to_response("postproduccion/ajax/content-alertas.html", { 'lista' : lista[:5] })
+        return render_to_response("postproduccion/ajax/content-alertas.html", { 'lista' : lista[:5] }, context_instance=RequestContext(request))
     else:
-        return render_to_response("postproduccion/section-alertas.html", { 'lista' : lista })
+        return render_to_response("postproduccion/section-alertas.html", { 'lista' : lista }, context_instance=RequestContext(request))
 
 """
 Edita los ajustes de configuración de la aplicación.
