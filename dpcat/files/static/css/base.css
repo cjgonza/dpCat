@@ -1465,3 +1465,11 @@ ul.portlet-bottom-link li a.link-section:hover {
 .info-ticket td.valido span {
     margin-left: 20px;
 }
+
+span.ajax-loader {
+    background: url("../img/ajax-loader.gif") 50% 0 no-repeat;
+    height: 32px;
+    width: 32px;
+    margin: 5px auto;
+    display: block;
+}
