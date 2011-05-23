@@ -1,19 +1,58 @@
-<script type="text/javascript" src="/static/jwplayer/jwplayer.js"></script>
+{% extends "postproduccion/index-public.html" %}
 
-<div id="container">Loading the player ...</div>
-<script type="text/javascript">
-    jwplayer("container").setup({
-    flashplayer: "/static/jwplayer/player.swf",
-    file: "{% url stream_preview token %}",
-    height: 270,
-    width: 480
-});
-</script>
+{% block page-title %}Validaci&oacute;n de una producci&oacute;n{% endblock %}
+{% block page-script %} <script type="text/javascript" src="/static/jwplayer/jwplayer.js"></script>{% endblock %}
+{% block section-class %} class="informe-video"{% endblock %}
+{% block section-title %}<h1>Validación de una producci&oacute;n</h1>{% endblock %}
+{% block section-description %}
 
-<h2>{{ v.titulo }}</h2>
-<form method="post" action="">
-{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" name="aprobado" value="Siguiente" />
-<input type="submit" name="rechazado" value="Rechazar" />
-</form>
+<div class="info-video">
+    <h2>{{ v.titulo }}</h2>
+    <div class="info-prevideo">
+        <div id="container">Cargando video ...</div>
+        <script type="text/javascript">
+            jwplayer("container").setup({
+                flashplayer: "/static/jwplayer/player.swf",
+                file: "{% url stream_preview token %}",
+                height: 270,
+                width: 480
+            });
+        </script>
+    </div>
+
+<div class="info-basica">
+    <h2>Informaci&oacute;n generada durante el proceso de producci&oacute;n</h2>
+    <ul>
+        <li><label>T&iacute;tulo:</label> {{ v.titulo }}</li>
+        <li><label>Autor:</label> {{ v.autor }}</li>
+        <li><label>Correo electr&oacute;nico:</label><a class="email" href="mailto:{{ v.email }}">{{ v.email }}</a></li>
+        <li><label>Fecha de grabaci&oacute;n:</label> {{ v.informeproduccion.fecha_grabacion }}</li>
+        <li><label>Operador de producci&oacute;n:</label> {{ v.informeproduccion.operador }} </li>
+    </ul>
+    <h2>Acciones disponibles</h2>
+    <form method="post" action="" class="form-validacion">
+        <div class="form-validacion-opciones">
+        <span class="rechazar">Rechazar producci&oacute;n</span>
+        <input type="submit" name="aprobado" value="Aceptar e introducir metadata" />
+        </div>
+        <div class="form-validacion-rechaza">
+        <p>Describa el motivo por el cu&aacute;l rechaza la producci&oacute;n:</p>
+            {% csrf_token %}
+            {{ form.as_p }}
+      
+            <span class="rechazar">Cancelar</span>
+            <input type="submit" name="rechazado" value="Confirmar rechazar la producci&oacute;n" />
+        </div>
+    </form>
+
+</div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+{% block section-content %} {% endblock %}
+

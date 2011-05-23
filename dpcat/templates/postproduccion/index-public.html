@@ -1,0 +1,47 @@
+{% extends "postproduccion/base.html" %}
+
+
+{% block body-class %}index{% endblock %}
+
+{% block content %}
+
+
+<div id="page-index">
+
+<div id="main-header">
+     <div id="inner-header">
+        <div id="logo"><a title="Ir a Inicio" href="{% url index %}">dpCat</a></div>
+        <div id="inner-menu-content">
+        <ul class="utils">
+            <li><a class="icon-address" title="Contacto" href="">Informaci&oacute;n de contacto</a></li>
+        </ul>
+        </div>
+    </div>
+</div>
+
+<div id="main-content">
+    <div id="inner-content">
+        {% block section-title %} {% endblock %}
+
+        {% if messages %}
+            {% for message in messages %}
+            <div class="mensaje {{ message.tags }}"><a class="cerrar" title="Cerrar notificaci&oacute;n"></a>{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div id="content" {% block section-class %} {% endblock %} >
+            {% block section-description %} {% endblock %}
+            {% block section-content %} {% endblock %} 
+        </div>
+    </div>
+</div>
+
+<div id="main-footer">
+    <div id="inner-footer">
+    &copy; dpCat - 2011
+    </div>
+</div>
+
+</div>
+
+{% endblock %}

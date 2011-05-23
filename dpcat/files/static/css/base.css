@@ -307,6 +307,11 @@ a.cerrar:hover {
     background:url(../img/icon/home16.png) 8px 50% no-repeat;
     padding-left: 30px;
 }
+#inner-menu-content ul.utils li a.icon-address {
+    background:url(../img/icon/estado16.png) 8px 50% no-repeat;
+    padding-left: 30px;
+}
+
 #inner-menu-content ul.utils li a.icon-config {
     background:url(../img/icon/config.png) 8px 50% no-repeat;
     padding-left: 30px;
@@ -394,6 +399,17 @@ padding-left: 30px;
 
 }
 
+
+#content.informe-video .form-validacion-rechaza p  {
+    margin-bottom: 10px;
+}
+#content.informe-video .form-validacion-rechaza p:first-child {
+    color: #336699;
+    font: bold 12px Arial;
+    margin: 0px;
+    margin-bottom: 5px;
+    padding: 0px;
+}
 #content.informe-video p label,
 .info-basica label,
 #content.formulario p label {
@@ -459,14 +475,65 @@ padding-left: 30px;
     border: solid 1px #336699;
 }
 
+#content.informe-video form.form-validacion {
+    overflow: hidden;
+    margin-top: 10px;
+    margin-left: 10px;
+}
 
-
+#content.informe-video .form-validacion-opciones {
+    overflow: hidden;
+    padding-bottom: 10px;
+}
 
 #content.informe-video input[type="submit"] {
     float: left;
     margin-left: 130px;
 }
 
+#content.informe-video input[type="submit"] {
+    border-color: #9ADF8F;
+    background: #D5FFCE url(../img/icon/check16.png) 5px 50% no-repeat;
+    color: #373737;
+    letter-spacing: 0px;
+    margin-top: 0px;
+    margin-left: 0px;
+    padding: 8px 10px 8px 25px;
+}
+
+#content.informe-video .form-validacion-rechaza input[type="submit"] {
+    border: solid 1px #DF8F8F;
+    background: #FFCECE url(../img/icon/error16.png) 5px 50% no-repeat;   
+}
+
+#content.informe-video .form-validacion-rechaza .rechazar {
+    width: 60px;
+    border: solid 1px #A2B4EE;
+    background: #d5e6f7;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#content.informe-video .rechazar {
+    font: bold 12px Arial;
+    -moz-border-radius: 3px;
+    border: solid 1px #DF8F8F;
+    background: #FFCECE url(../img/icon/error16.png) 5px 50% no-repeat;   
+    margin: 0px;
+    width: 130px;
+    line-height: 33px;
+    padding-left: 25px;
+    padding-right: 10px;
+    display: block;
+    float: left;
+    margin-right: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#content.informe-video .form-validacion-rechaza label {
+    display: none;
+}
 
 #content.formulario input[type="reset"] {
     color: #949494;
@@ -476,12 +543,13 @@ padding-left: 30px;
     float: left;
     font-size: 11px;
     background: #ececec url("../img/title-bg.png") 0 0 repeat-x;
-
     border: solid 1px #cccccc;
 }
+
 #content.formulario input:hover {
     background-image: none;
 }
+
 #content.formulario p select {
     height: 30px;
     width: 312px;
@@ -847,6 +915,10 @@ padding: 0px;
     padding-left: 20px;
 }
 
+#tabla a:hover {
+    text-decoration: underline;
+}
+
 #tabla td.Hecho {
     background: url(../img/icon/check16.png) 50% 10px no-repeat;
 }
@@ -949,6 +1021,12 @@ padding: 0px;
     -moz-border-radius: 3px;
 }
 
+.portlet-content #lista-alertas .alerta {
+    border-left: 0px;
+    border-right: 0px;
+    -moz-border-radius: 0px;
+}
+
 .alerta-header {
     padding: 5px;
    cursor: pointer;
@@ -1009,10 +1087,10 @@ padding: 0px;
 .alerta .alerta-content span.item-alerta-content {
     float: left;
     display: block;
-    width: 75%;
+/*    width: 75%;*/
 }
 .alerta .alerta-content span.item-alerta-title {
-    width: 20%;
+    width: 150px;
     display: block;
     float: left;
     color: #373737;
@@ -1472,4 +1550,8 @@ span.ajax-loader {
     width: 32px;
     margin: 5px auto;
     display: block;
+}
+
+.form-validacion-rechaza {
+    display: none;
 }

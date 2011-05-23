@@ -12,6 +12,12 @@ $(document).ready(function() {
         $(this).parents(".alerta:first").find(".alerta-content").toggle();
     });
 
+    $(".rechazar").click(function () {
+        $(this.parentNode.parentNode).find(".form-validacion-opciones").toggle();
+        $(this.parentNode.parentNode).find(".form-validacion-rechaza").toggle();
+    });
+
+    
 });
 
 
