@@ -71,6 +71,16 @@
         }
 
         function actualizaTabla(data) {
+            // Comprueba si hay elementos en cola o no.
+            if (data.length) {
+                if ($("tbody").find("div.mensaje").length)
+                    $("tbody").empty(); 
+            } else {
+                if (!$("tbody").find("div.mensaje").length)
+                    $("tbody").html('<tr><td colspan="5"><div class="mensaje info">No hay ning&uacute;n trabajo en la cola de procesado.</div></td></tr>');
+                return;
+            }
+
             var cont = 0;
             var filas = $("tbody").children();
             for (var i = 0; i < filas.length; i++) {
