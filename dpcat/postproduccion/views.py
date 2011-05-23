@@ -9,6 +9,7 @@ from django.forms.models import inlineformset_factory
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 from postproduccion.models import Video, Cola, FicheroEntrada
 from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, ConfigForm, IncidenciaProduccionForm
@@ -388,6 +389,27 @@ def borrar_produccion(request, video_id):
     v.delete()
     messages.success(request, 'Producción eliminanada')
     return redirect('postproduccion.views.index')
+
+"""
+Muestra la videoteca.
+"""
+@permission_required('postproduccion.video_manager')
+def videoteca(request):
+    video_list = Video.objects.filter(status = 'LIS')
+    paginator = Paginator(video_list, 4)
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    try:
+        videos = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        videos = paginator.page(paginator.num_pages)
+
+    return render_to_response("postproduccion/section-videoteca.html", { 'videos' : videos }, context_instance=RequestContext(request))
+
 
 #######
 

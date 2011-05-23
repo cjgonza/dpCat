@@ -1,0 +1,67 @@
+{% extends "postproduccion/base-2-1.html" %}
+
+{% block page-title %}Videoteca{% endblock %}
+{% block section-class %} {% endblock %}
+{% block section-title %}<h1>Videoteca</h1>{% endblock %}
+{% block section-description %}<p>Listado de producciones generadas en el sistema.</p>{% endblock %}
+
+{% block section-content %} 
+
+<table id="tabla">
+  <thead>
+    <th class="id">ID</th>
+    <th class="date">Fecha</th>
+    <th class="title">T&iacute;tulo</th>
+    <th class="author">Autor</th>
+  </thead>
+  <tbody>
+    {% for video in videos.object_list %}
+    <tr class="{%cycle 'odd' 'even' %}">
+        <td class="id">{{ video.id }}</td>
+        <td class="date">{{ video.informeproduccion.fecha_grabacion|date:"d/m/Y" }}</td>
+        <td class="title"><a href="{% url estado_video video.id %}">{{ video.titulo }}</a></td>
+        <td class="author">{{ video.autor }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5"><div class="mensaje info">No hay ning&uacute;n elemento que mostrar en esta tabla.</div></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if videos.has_previous %}
+            <a href="?page={{ videos.previous_page_number }}">anterior</a>
+        {% endif %}
+
+        <span class="current">
+            P&aacute;gina {{ videos.number }} de {{ videos.paginator.num_pages }}.
+        </span>
+
+        {% if videos.has_next %}
+            <a href="?page={{ videos.next_page_number }}">siguiente</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}
+
+{% block section-widget %}
+
+    <div id="content-right">
+        <div class="column">
+            <div class="portlet">
+                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+                <div class="portlet-content">
+                    <ul> 
+
+                <li class="tip">Poner descripci&oacute;n o enlaces sobre esta tabla</li>
+                    </ul>
+                </div>
+            </div>
+        </div>     
+    </div>
+
+{% endblock %}
