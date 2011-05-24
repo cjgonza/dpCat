@@ -94,7 +94,7 @@ class IncidenciaProduccion(models.Model):
     
     informe = models.ForeignKey(InformeProduccion, editable = False)
     emisor = models.CharField(max_length = 1, choices = WHO, editable = False)
-    comentario = models.TextField()
+    comentario = models.TextField(null = True)
     fecha =  models.DateTimeField(auto_now_add = True)
     aceptado = models.NullBooleanField()
 
