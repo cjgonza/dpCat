@@ -260,7 +260,7 @@ def aprobacion_video(request, tk_str):
                 next_view = 'postproduccion.views.rechazar_video'
             v.informeproduccion.save()
             inpro.save()
-        return redirect(next_view, tk_str)
+            return redirect(next_view, tk_str)
     else:
         form = IncidenciaProduccionForm()
 
@@ -344,6 +344,7 @@ Gestión de tickets de usuario.
 @permission_required('postproduccion.video_manager')
 def gestion_tickets(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
+    if v.status == 'LIS': raise Http404
     tk = token.get_token_data(v)
 
     if request.method == 'POST':
