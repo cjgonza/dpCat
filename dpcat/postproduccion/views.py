@@ -397,7 +397,26 @@ Muestra la videoteca.
 @permission_required('postproduccion.video_manager')
 def videoteca(request):
     video_list = Video.objects.filter(status = 'LIS')
-    paginator = Paginator(video_list, 4)
+
+    autor = request.GET.get('autor')
+    titulo = request.GET.get('titulo')
+    try:
+        f_ini = datetime.datetime.strptime(request.GET.get('f_ini'), "%d/%m/%y")
+    except (ValueError, TypeError):
+        f_ini = None
+    try:
+        f_fin = datetime.datetime.strptime(request.GET.get('f_fin'), "%d/%m/%y")
+    except (ValueError, TypeError):
+        f_fin = None
+
+    if autor:
+        video_list = video_list.filter(autor__icontains = autor)
+    if titulo:
+        video_list = video_list.filter(titulo__icontains = titulo)
+    ## TODO: Falta filtrar por fecha, que está en el modelo InformeProduccion
+
+    
+    paginator = Paginator(video_list, 2)
 
     try:
         page = int(request.GET.get('page', '1'))
