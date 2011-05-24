@@ -1,13 +1,13 @@
 {% extends "postproduccion/base-2-1.html" %}
 
-{% block page-title %}Registro del sistema{% endblock %}
+{% block page-title %}Centro de monitorizaci&oacute;n{% endblock %}
 {% block section-class %} {% endblock %}
-{% block section-title %}<h1>Registro del sistema</h1>{% endblock %}
+{% block section-title %}<h1>Centro de monitorizaci&oacute;n</h1>{% endblock %}
 {% block section-description %}
     {% if old %}
-        <p>Informaci&oacute;n y registro antiguo de las acciones realizadas por el sistema. </p>
+        <h2>Registro antiguo del sistema</h2>
     {% else %}
-        <p>Informaci&oacute;n y registro actual de las acciones realizadas por el sistema. </p>
+        <h2>Registro actual del sistema</h2>
     {% endif %}
 {% endblock %}
 
@@ -37,8 +37,6 @@
 {% endblock %}
 
 {% block section-widget %}
-    <div id="content-right">
-        <div class="column">
             <div class="portlet">
                 {% if old %}
                 <div class="portlet-header">Registro actual</div>
@@ -65,8 +63,6 @@
                     </ul>
                 </div>
             </div>
-        </div>     
-    </div>
 
 {% endblock %}
 

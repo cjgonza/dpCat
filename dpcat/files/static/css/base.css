@@ -410,6 +410,8 @@ padding-left: 30px;
     margin-bottom: 5px;
     padding: 0px;
 }
+
+.videoteca-buscador-content p label,
 #content.informe-video p label,
 .info-basica label,
 #content.formulario p label {
@@ -422,6 +424,11 @@ padding-left: 30px;
     color: #336699;
     line-height: 28px;
 }
+
+
+
+
+
 #content.formulario.config p label {
     width: 330px;
 }
@@ -437,6 +444,7 @@ padding-left: 30px;
     margin-left: 10px;
 }
 
+.videoteca-buscador-content p input[type="text"],
 #content.informe-video p textarea,
 #content.formulario p textarea,
 #content.formulario p select,
@@ -446,6 +454,38 @@ padding-left: 30px;
     width: 300px;
     border: solid 1px #acacac;
     -moz-border-radius: 3px;
+}
+
+
+
+
+
+.videoteca-buscador-content p.buscador-fechas input[type="text"] {
+    float: none;
+    float: left;
+    width: 150px;
+    margin: 0px 5px;
+}
+
+
+.videoteca-buscador {
+    overflow: hidden;
+}
+#content .videoteca-buscador-content form {
+    margin-top: 0px;
+}
+.videoteca-buscador-content {
+    -moz-border-radius: 4px;
+    border: solid 1px #D6E0EB;
+    overflow: hidden;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.videoteca-buscador-content p.buscador-fechas label {
+    float: none;
+    width: auto;
+    float: left;
 }
 
 
@@ -459,6 +499,7 @@ padding-left: 30px;
     text-shadow: 0px 1px 0px #fff;
 }
 
+.videoteca-buscador-content input[type="submit"],
 #content.informe-video input[type="submit"],
 #content.formulario input[type="submit"],
 #content.formulario input[type="reset"] {
@@ -473,6 +514,10 @@ padding-left: 30px;
     cursor: pointer;
     background: #2b84d8 url("../img/title-bg.png") 0 0 repeat-x;
     border: solid 1px #336699;
+}
+#content .videoteca-buscador-content input[type="submit"] {
+    float: none;
+
 }
 
 #content.informe-video form.form-validacion {
@@ -1555,3 +1600,8 @@ span.ajax-loader {
 .form-validacion-rechaza {
     display: none;
 }
+
+
+
+
+

@@ -17,7 +17,32 @@ $(document).ready(function() {
         $(this.parentNode.parentNode).find(".form-validacion-rechaza").toggle();
     });
 
-    
+    $(".videoteca-buscador-header").click(function () {
+        $(this.parentNode.parentNode).find(".videoteca-buscador-content").toggle();
+    });
+
+   
+
+    $(function() {
+        var dates = $( "#from, #to" ).datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 3,
+            onSelect: function( selectedDate ) {
+                var option = this.id == "from" ? "minDate" : "maxDate",
+                    instance = $( this ).data( "datepicker" ),
+                    date = $.datepicker.parseDate(
+                        instance.settings.dateFormat ||
+                        $.datepicker._defaults.dateFormat,
+                        selectedDate, instance.settings );
+                dates.not( this ).datepicker( "option", option, date );
+           }
+        });
+    });
+
+
+
+
 });
 
 

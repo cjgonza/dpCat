@@ -15,7 +15,7 @@
         <ul>
             <li><a class="home" href="{% url index %}">Inicio</a></li>
             <li><a class="videoteca" href="{% url videoteca %}">Videoteca</a></li>
-            <li><a class="monitorizacion" href="{% url monitorizacion %}">Centro de monitorizaci&oacute;n</a></li>
+            <li><a class="monitorizacion" href="{% url enproceso %}">Centro de monitorizaci&oacute;n</a></li>
             <li><a class="nuevaproduccion" href="{% url crear %}">Nueva producci&oacute;n</a></li>
         </ul>
         <ul class="utils">
@@ -49,18 +49,6 @@
     &copy; dpCat - 2011
     </div>
 </div>
-
-
-
-
-<pre>
-    <a href="{% url enproceso %}">X - Producciones en proceso</a>
-    <a href="{% url pendientes %}">X - Pendientes del operador</a>
-    <a href="{% url alertas %}">X - Alertas</a>
-    <a href="{% url cola %}">X - Cola</a>
-    <a href="{% url log %}">X - Log</a>
-    <a href="{% url oldlog %}">X - Log anterior</a>
-</pre>
 
 </div>
 
