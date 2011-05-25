@@ -401,11 +401,11 @@ def videoteca(request):
     autor = request.GET.get('autor')
     titulo = request.GET.get('titulo')
     try:
-        f_ini = datetime.datetime.strptime(request.GET.get('f_ini'), "%d/%m/%y")
+        f_ini = datetime.datetime.strptime(request.GET.get('f_ini'), "%d/%m/%Y")
     except (ValueError, TypeError):
         f_ini = None
     try:
-        f_fin = datetime.datetime.strptime(request.GET.get('f_fin'), "%d/%m/%y")
+        f_fin = datetime.datetime.strptime(request.GET.get('f_fin'), "%d/%m/%Y")
     except (ValueError, TypeError):
         f_fin = None
 
@@ -413,10 +413,14 @@ def videoteca(request):
         video_list = video_list.filter(autor__icontains = autor)
     if titulo:
         video_list = video_list.filter(titulo__icontains = titulo)
-    ## TODO: Falta filtrar por fecha, que está en el modelo InformeProduccion
+    video_list = video_list.filter(informeproduccion__fecha_grabacion__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
 
-    
-    paginator = Paginator(video_list, 2)
+    try:
+        nresults = int(request.GET.get('nresults', 25))
+    except ValueError:
+        nresults = 25
+
+    paginator = Paginator(video_list, nresults)
 
     try:
         page = int(request.GET.get('page', '1'))
