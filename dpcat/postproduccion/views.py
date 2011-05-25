@@ -161,13 +161,6 @@ def dirlist(request):
     r.append('</ul>')
     return HttpResponse(''.join(r))
 
-"""
-Muestra la página del centro de monitorización.
-"""
-@permission_required('postproduccion.video_manager')
-def centro_monitorizacion(request):
-    return render_to_response("postproduccion/section-centro-monitorizacion.html", { }, context_instance=RequestContext(request))
-
 @permission_required('postproduccion.video_manager')
 def cola_base(request):
     return render_to_response("postproduccion/section-cola-base.html", context_instance=RequestContext(request))
