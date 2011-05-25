@@ -25,8 +25,9 @@ $(document).ready(function() {
 
     $(function() {
         var dates = $( "#from, #to" ).datepicker({
-            defaultDate: "+1w",
+            maxDate: "+1d",
             changeMonth: true,
+            changeYear: true,
             numberOfMonths: 3,
             onSelect: function( selectedDate ) {
                 var option = this.id == "from" ? "minDate" : "maxDate",
