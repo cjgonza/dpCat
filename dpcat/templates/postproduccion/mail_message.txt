@@ -2,4 +2,5 @@ Estimado/a {{ nombre }}, le informamos que la grabación realizada a fecha {{ fe
 
 {{ url }}
 
-Atentamenta, la Unidad para la Docencia Virtual.
+
+dpCat

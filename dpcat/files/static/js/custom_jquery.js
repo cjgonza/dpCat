@@ -65,5 +65,5 @@ $(function() {
         $( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
     });
 
-    $( ".column" ).disableSelection();
+    $( ".portlet-header" ).disableSelection();
 });
