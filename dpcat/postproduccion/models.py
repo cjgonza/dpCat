@@ -83,7 +83,6 @@ class InformeProduccion(models.Model):
     observacion = models.TextField(null = True, blank = True)
     fecha_grabacion = models.DateTimeField(auto_now_add = True)
     aprobacion = models.BooleanField(default = True)
-    aprobado = models.BooleanField(default = False)
 
 class IncidenciaProduccion(models.Model):
     WHO = (

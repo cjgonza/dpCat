@@ -20,32 +20,20 @@
         </script>
     </div>
 
-<div class="info-basica">
-    <h2>Informaci&oacute;n generada durante el proceso de producci&oacute;n</h2>
-    <ul>
-        <li><label>T&iacute;tulo:</label> {{ v.titulo }}</li>
-        <li><label>Autor:</label> {{ v.autor }}</li>
-        <li><label>Correo electr&oacute;nico:</label><a class="email" href="mailto:{{ v.email }}">{{ v.email }}</a></li>
-        <li><label>Fecha de grabaci&oacute;n:</label> {{ v.informeproduccion.fecha_grabacion }}</li>
-        <li><label>Operador de producci&oacute;n:</label> {{ v.informeproduccion.operador }} </li>
-    </ul>
-    <h2>Acciones disponibles</h2>
-    <form method="post" action="" class="form-validacion">
-        <div class="form-validacion-opciones">
-        <span class="rechazar">Rechazar producci&oacute;n</span>
-        <input type="submit" name="aprobado" value="Aceptar e introducir metadata" />
-        </div>
-        <div class="form-validacion-rechaza">
-        <p>Describa el motivo por el cu&aacute;l rechaza la producci&oacute;n:</p>
-            {% csrf_token %}
-            {{ form.as_p }}
-      
-            <span class="rechazar">Cancelar</span>
-            <input type="submit" name="rechazado" value="Confirmar rechazar la producci&oacute;n" />
-        </div>
-    </form>
+    <div class="info-basica">
+        <h2>Informaci&oacute;n generada durante el proceso de producci&oacute;n</h2>
+        <ul>
+            <li><label>T&iacute;tulo:</label> {{ v.titulo }}</li>
+            <li><label>Autor:</label> {{ v.autor }}</li>
+            <li><label>Correo electr&oacute;nico:</label><a class="email" href="mailto:{{ v.email }}">{{ v.email }}</a></li>
+            <li><label>Fecha de grabaci&oacute;n:</label> {{ v.informeproduccion.fecha_grabacion }}</li>
+            <li><label>Operador de producci&oacute;n:</label> {{ v.informeproduccion.operador }} </li>
+        </ul>
+        <h2>Acciones disponibles</h2>
+        <a href="{% url definir_metadatos_user token %}" class="aprobar">Aceptar e introducir metadata</a>
+        <a href="{% url rechazar_video token %}" class="rechazar">Rechazar producci&oacute;n</a>
 
-</div>
+    </div>
 </div>
 
 

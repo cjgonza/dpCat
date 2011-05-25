@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
-from postproduccion.models import Video, Cola, FicheroEntrada
+from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion
 from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, ConfigForm, IncidenciaProduccionForm
 from postproduccion import queue 
 from postproduccion import utils
@@ -234,30 +234,7 @@ Vista para que el usuario verifique un vídeo y lo apruebe o rechace.
 def aprobacion_video(request, tk_str):
     v = token.is_valid_token(tk_str)
     if not v: raise Http404
-
-    if v.informeproduccion.aprobado:
-        return redirect('postproduccion.views.definir_metadatos_user', tk_str)
-
-    if request.method == 'POST':
-        form = IncidenciaProduccionForm(request.POST)
-        if form.is_valid():
-            inpro = form.save(commit = False)
-            inpro.informe = v.informeproduccion
-            inpro.emisor = 'U'
-            if 'aprobado' in request.POST:
-                inpro.aceptado = True
-                v.informeproduccion.aprobado = True
-                next_view = 'postproduccion.views.definir_metadatos_user'
-            else:
-                inpro.aceptado = False
-                next_view = 'postproduccion.views.rechazar_video'
-            v.informeproduccion.save()
-            inpro.save()
-            return redirect(next_view, tk_str)
-    else:
-        form = IncidenciaProduccionForm()
-
-    return render_to_response("postproduccion/aprobacion_video.html", { 'v' : v, 'form' : form, 'token' : tk_str }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/aprobacion_video.html", { 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
 Vista para que el usuario rellene los metadatos de un vídeo.
@@ -272,10 +249,12 @@ def definir_metadatos_user(request, tk_str):
             m = form.save(commit = False)
             m.video = v
             m.save()
+            inpro = IncidenciaProduccion(informe = v.informeproduccion, emisor = 'U', aceptado = True)
+            inpro.save()
             token.token_attended(v)
             v.status = 'ACE'
             v.save()
-            return HttpResponse("Datos enviados al operador para su aprobación")
+            return render_to_response("postproduccion/resumen_aprobacion_video.html", { 'v' : v, 'aprobado' : True }, context_instance=RequestContext(request))
     else:
         form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
     return render_to_response("postproduccion/definir_metadatos_user.html", { 'form' : form, 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
@@ -286,10 +265,23 @@ Solicita al usuario una razón por la cual el vídeo ha sido rechazado
 def rechazar_video(request, tk_str):
     v = token.is_valid_token(tk_str)
     if not v: raise Http404
-    token.token_attended(v)
-    v.status = 'REC'
-    v.save()
-    return render_to_response("postproduccion/rechazar_video.html", { 'v' : v })
+
+    if request.method == 'POST':
+        form = IncidenciaProduccionForm(request.POST)
+        if form.is_valid():
+            inpro = form.save(commit = False)
+            inpro.informe = v.informeproduccion
+            inpro.emisor = 'U'
+            inpro.aceptado = False
+            inpro.save()
+            token.token_attended(v)
+            v.status = 'REC'
+            v.save()
+            return render_to_response("postproduccion/resumen_aprobacion_video.html", { 'v' : v, 'aprobado' : False }, context_instance=RequestContext(request))
+    else:
+        form = IncidenciaProduccionForm()
+    return render_to_response("postproduccion/rechazar_video.html", { 'v' : v, 'form' : form, 'token' : tk_str }, context_instance=RequestContext(request))
+
 
 #######
 # Vistas para mostrar la información de una producción.
@@ -347,8 +339,6 @@ def gestion_tickets(request, video_id):
             inpro.informe = v.informeproduccion
             inpro.emisor = 'O'
             inpro.save()
-            v.informeproduccion.aprobado = False
-            v.informeproduccion.save()
             v.status = 'PTU'
             v.save()
             token.send_custom_mail_to_user(v, inpro.comentario)
