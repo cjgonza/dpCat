@@ -25,7 +25,7 @@ $(document).ready(function() {
 
     $(function() {
         var dates = $( "#from, #to" ).datepicker({
-            maxDate: "+1d",
+            maxDate: "+0d",
             changeMonth: true,
             changeYear: true,
             numberOfMonths: 3,

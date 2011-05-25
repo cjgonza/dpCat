@@ -10,21 +10,6 @@
  
     <div id="content-right">
         <div class="column">
-
-            <div class="portlet">
-                <div class="portlet-header">Opciones de monitorizaci&oacute;n</div>
-                <div class="portlet-content">
-                    <ul> 
-                        <li><a class="link" href="{% url enproceso %}">Producciones en proceso</a></li>
-                        <li><a class="link" href="{% url pendientes %}">Producciones pendientes del operador</a></li>
-                        <li><a class="link" href="{% url alertas %}">Alertas del sistema</a></li>
-                        <li><a class="link" href="{% url cola %}">Cola de procesamiento</a></li>
-                        <li><a class="link" href="{% url log %}">Registro (log) del sistema</a></li>
-                    </ul>
-                </div>
-            </div>
-
-
             {% block section-widget %} {% endblock %}    
         </div>
     </div>
