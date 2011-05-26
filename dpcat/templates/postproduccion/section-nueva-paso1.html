@@ -15,6 +15,7 @@
             <hr/>
             <input type="submit" value="Siguiente" />
             <input type="reset" value="Restaurar formulario" />
+            {% if vform.initial.id %}<a href="{% url borrar vform.initial.id %}">Descartar producci&oacute;n</a>{% endif %}
 
         </form>
 {% endblock %}

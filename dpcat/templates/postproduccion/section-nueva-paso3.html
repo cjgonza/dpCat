@@ -36,6 +36,7 @@
     {% csrf_token %}
     <input type="submit" value="Terminar y procesar" />
 <div id="volver"><a class="volver" href="{% url postproduccion.views.crear v.id %}">Modificar</a></div>
+<a href="{% url borrar v.id %}">Descartar producci&oacute;n</a>
 </form>   
 
 

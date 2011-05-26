@@ -30,6 +30,7 @@
         <input type="submit" value="Siguiente" />
         <div id="volver"><a class="volver" href="{% url postproduccion.views.crear v.id %}">Anterior</a></div>
         <input type="reset" value="Restaurar formulario" />
+        <a href="{% url borrar v.id %}">Descartar producci&oacute;n</a>
     </form>
 
 {% endblock %}
