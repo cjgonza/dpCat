@@ -17,12 +17,6 @@ $(document).ready(function() {
         $(this.parentNode.parentNode).find(".form-validacion-rechaza").toggle();
     });
 
-    $(".videoteca-buscador-header").click(function () {
-        $(this.parentNode.parentNode).find(".videoteca-buscador-content").toggle();
-    });
-
-   
-
     $(function() {
         var dates = $( "#from, #to" ).datepicker({
             maxDate: "+0d",
@@ -40,9 +34,6 @@ $(document).ready(function() {
            }
         });
     });
-
-
-
 
 });
 

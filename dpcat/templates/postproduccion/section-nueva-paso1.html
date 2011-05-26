@@ -6,18 +6,22 @@
 {% block section-description %} {% endblock %}
 
 {% block section-content %} 
+<div class="form-nueva">
         <div id="progreso" class="uno"></div>
         <h2>Paso 1: Incluye los datos b&aacute;sicos de la producci&oacute;n</h2>
-        <form method="post" action="">
+        <form method="post" action="" class="form-nueva">
+        <ul>
             {% csrf_token %}
-            {{ vform.as_p }}
-            {{ iform.as_p }}
+            {{ vform.as_ul }}
+            {{ iform.as_ul }}
+            </ul>
             <hr/>
             <input type="submit" value="Siguiente" />
             <input type="reset" value="Restaurar formulario" />
             {% if vform.initial.id %}<a href="{% url borrar vform.initial.id %}">Descartar producci&oacute;n</a>{% endif %}
 
         </form>
+        </div>
 {% endblock %}
 
 {% block section-widget %}

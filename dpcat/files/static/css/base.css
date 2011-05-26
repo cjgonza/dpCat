@@ -635,27 +635,6 @@ a.link:hover {
     padding: 10px;
 }
 
-ul.errorlist {
-margin: 0px;
-padding: 0px;
-    background: #D63921;
-    margin-left: 130px; 
-    color: #fff;
-    font: bold 12px Arial;
-    width: 250px;
-    margin-bottom: 10px;
-    background: url(../img/errorlist-left.png) 0 0 no-repeat;
-    height: 34px;
-    line-height: 28px;
-    padding-left: 22px;
-}
-
-ul.errorlist li {
-margin: 0px;
-padding: 0px;
-    background: url(../img/errorlist-right.png) 100% 0 no-repeat;
-    padding-left: 5px;
-}
 
 
 
@@ -1360,7 +1339,6 @@ ul.acciones li.publicar a  {
 .column {
     width: 50%;
     float: left;
-    padding-bottom: 100px;    
 }
 
 #content-right .column {
@@ -1420,7 +1398,7 @@ ul.portlet-bottom-link {
 }
 
 ul.portlet-bottom-link li {
-margin-right: 8px;
+    margin-right: 10px;
 }
 ul.portlet-bottom-link li a.link-section {
     border: solid 1px #95c1eb;
@@ -1618,3 +1596,76 @@ a.reset {
 #content form.form-buscador li:last-child {
     margin-bottom: 0px;
 }
+
+
+.form-nueva {
+    width: 630px;
+    margin: 0 auto;
+}
+
+#box-pendientes .mensaje,
+#box-alertas .mensaje{
+    margin: 10px;
+}
+
+form.form-nueva ul {
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+
+form.form-nueva ul li {
+    margin-bottom: 20px;
+}
+form.form-nueva ul li label {
+    color: #336699;
+    font: bold 13px Arial;
+    text-align: left;
+    display: block;
+    margin-bottom: 3px;
+}
+
+
+form.form-nueva ul li select,
+form.form-nueva ul li textarea,
+form.form-nueva ul li input[type="text"] {
+    border: solid 1px #acacac;
+    -moz-border-radius: 3px;
+    height: 20px;
+    padding: 3px 5px;
+    width: 615px; 
+}
+
+form.form-nueva ul li textarea {
+    height: 150px;    
+}
+
+form.form-nueva ul li select {
+    height: 28px;
+    width: 627px;
+}
+
+
+
+
+
+
+
+form.form-nueva ul li ul.errorlist {
+    color: #666452;
+    border: solid 1px #DF8F8F;
+    background: #FFCECE url(../img/icon/error16.png) 5px 50% no-repeat;
+    padding: 8px;
+    padding-left: 30px;
+    -moz-border-radius: 3px;
+    margin-bottom: 5px;
+    width: 587px;
+
+}
+
+form.form-nueva ul li ul.errorlist li{
+    margin: 0px;
+    padding: 0px;
+}
+
