@@ -82,6 +82,7 @@ class InformeProduccion(models.Model):
     operador = models.ForeignKey(User, editable = False)
     observacion = models.TextField(null = True, blank = True)
     fecha_grabacion = models.DateTimeField(auto_now_add = True)
+    fecha_validacion = models.DateTimeField(null = True)
     aprobacion = models.BooleanField(default = True)
 
 class IncidenciaProduccion(models.Model):

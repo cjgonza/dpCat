@@ -52,6 +52,7 @@
         <li><label>Autor:</label> {{ v.autor }}</li>
         <li><label>Correo electr&oacute;nico:</label><a class="email" href="mailto:{{ v.email }}">{{ v.email }}</a></li>
         <li><label>Fecha de grabaci&oacute;n:</label> {{ v.informeproduccion.fecha_grabacion }}</li>
+        {% if v.informeproduccion.fecha_validacion %}<li><label>Fecha de validaci&oacute;n:</label> {{ v.informeproduccion.fecha_validacion }}</li>{% endif %}
         <li><label>Operador de producci&oacute;n:</label> {{ v.informeproduccion.operador }} </li>
     </ul>
 </div>

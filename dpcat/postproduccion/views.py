@@ -356,6 +356,8 @@ Valida una producción y la pasa a la videoteca.
 def validar_produccion(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
     if hasattr(v, 'metadata'):
+        v.informeproduccion.fecha_validacion = datetime.datetime.now()
+        v.informeproduccion.save()
         v.status = 'LIS'
         v.save()
         queue.removeVideoTasks(v)
@@ -396,7 +398,7 @@ def videoteca(request):
         video_list = video_list.filter(autor__icontains = autor)
     if titulo:
         video_list = video_list.filter(titulo__icontains = titulo)
-    video_list = video_list.filter(informeproduccion__fecha_grabacion__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
+    video_list = video_list.filter(informeproduccion__fecha_validacion__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
 
     try:
         nresults = int(request.GET.get('nresults', 25))

@@ -19,7 +19,7 @@
     {% for video in videos.object_list %}
     <tr class="{%cycle 'odd' 'even' %}">
         <td class="id">{{ video.id }}</td>
-        <td class="date">{{ video.informeproduccion.fecha_grabacion|date:"d/m/Y" }}</td>
+        <td class="date">{{ video.informeproduccion.fecha_validacion|date:"d/m/Y" }}</td>
         <td class="title"><a href="{% url estado_video video.id %}">{{ video.titulo }}</a></td>
         <td class="author">{{ video.autor }}</td>
     </tr>
