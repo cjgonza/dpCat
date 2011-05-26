@@ -1,0 +1,18 @@
+<div class="portlet">
+    <div class="portlet-header">&Uacute;ltimas producciones incluidas en la videoteca</div>
+    <div class="portlet-content" id="box-ultimas">
+        <span class="ajax-loader"></span>
+   </div> 
+</div>
+
+<script>
+function ajax_ultimas() {
+    $.get("{% url ultimas %}", function(data) {
+        $("#box-ultimas").html(data);
+    }).complete(function() { setTimeout("ajax_ultimas();", 300000); });
+}
+
+$(document).ready(function() {
+    ajax_ultimas();
+});
+</script>

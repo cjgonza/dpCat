@@ -229,6 +229,19 @@ def listar(filtro = None):
     return data
 
 """
+Lista las útlimas producciones incluidas en la videoteca.
+"""
+@permission_required('postproduccion.video_manager')
+def ultimas_producciones(request):
+    videolist = Video.objects.filter(status = 'LIS').order_by('informeproduccion__fecha_validacion')
+    print videolist
+    return render_to_response("postproduccion/ajax/content-ultimas.html", { 'videos' : videolist[:5] }, context_instance=RequestContext(request))
+
+#######
+# Vistas públicas para que el usuario acepte una producción.
+#######
+
+"""
 Vista para que el usuario verifique un vídeo y lo apruebe o rechace.
 """
 def aprobacion_video(request, tk_str):

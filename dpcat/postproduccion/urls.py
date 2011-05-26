@@ -30,4 +30,5 @@ urlpatterns = patterns('postproduccion.views',
     url(r'^config/$', 'config_settings', name = "config"),
     url(r'^status/$', 'status', name = "status"),
     url(r'^videoteca/$', 'videoteca', name = "videoteca"),
+    url(r'^ultimas/$', 'ultimas_producciones', name = "ultimas"),
 )

@@ -13,8 +13,7 @@ function ajax_alertas() {
             $(this).find(".icon").toggleClass("minus").toggleClass("plus");
             $(this).parents(".alerta:first").find(".alerta-content").toggle();
         });
-    });
-    //setTimeout("ajax_alertas();", 300000); // 5 minutos.
+    }).complete(function() { setTimeout("ajax_alertas();", 300000); });
 }
 
 $(document).ready(function() {
