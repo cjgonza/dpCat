@@ -1604,6 +1604,7 @@ a.reset {
 }
 
 #box-pendientes .mensaje,
+#box-ultimas .mensaje,
 #box-alertas .mensaje{
     margin: 10px;
 }

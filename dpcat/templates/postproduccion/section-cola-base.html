@@ -6,19 +6,7 @@
 {% block section-description %}<h2>Cola de procesamiento</h2>{% endblock %}
 
 {% block section-content %}
-<div id="progressbar"></div>
-<div id="progressbartext"></div>
-<table id="tabla" class="cola">
-    <thead>
-        <th class="id">ID</th>
-        <th class="type">Informaci&oacute;n</th>
-        <th class="date">Fecha</th>
-        <th>T&iacute;tulo</th>
-        <th class="log">Log</th>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div id="contenedor"><span class="ajax-loader"></span></div>
 {% endblock %}
 
 {% block section-widget %}
@@ -34,6 +22,13 @@
 
 {% block page-script %}
     <script type="text/javascript">
+        function tablaBase() {
+            str = '<table id="tabla" class="cola">';
+            str += '<thead><th class="id">ID</th><th class="type">Informaci&oacute;n</th><th class="date">Fecha</th><th>T&iacute;tulo</th><th class="log">Log</th> </thead>';
+            str += '<tbody></tbody>';
+            str += '</table>';
+            return str;
+        }
         function creaLinea(data) {
             str = '<td class="id">' + data['id'] + '</td>';
             str += '<td><ul><li>Tipo: ' + data['tipo'] + '</li>';
@@ -67,14 +62,12 @@
         }
 
         function actualizaTabla(data) {
-            // Comprueba si hay elementos en cola o no.
             if (data.length) {
-                if ($("tbody").find("div.mensaje").length)
-                    $("tbody").empty(); 
+                if (!$("#tabla").length)
+                    $("#contenedor").html(tablaBase());
             } else {
-                if (!$("tbody").find("div.mensaje").length)
-                    $("tbody").html('<tr><td colspan="5"><div class="mensaje info">No hay ning&uacute;n trabajo en la cola de procesado.</div></td></tr>');
-                return;
+                if (!$("#contenedor").find(".mensaje").length)
+                    $("#contenedor").html('<div class="mensaje info">No hay ning&uacute;n trabajo en la cola de procesado.</div>');
             }
 
             var cont = 0;

@@ -1,3 +1,4 @@
+{% if list %}
 <table id="tabla">
   <thead>
     <th class="id">ID</th>
@@ -13,13 +14,12 @@
         <td class="title"><a href="{% url estado_video video.id %}">{{ video.titulo }}</a></td>
         <td class="author">{{ video.autor }}</td>
     </tr>
-    {% empty %}
-    <tr>
-        <td colspan="5"><div class="mensaje info">No hay ning&uacute;n elemento que mostrar en esta tabla.</div></td>
-    </tr>
     {% endfor %}
   </tbody>
 </table>
+{% else %}
+    <div class="mensaje info">No hay ning&uacute;n elemento que mostrar.</div></td>
+{% endif %}
 <ul class="portlet-bottom-link">
     <li><a class="link-section" href="{% url videoteca %}">Acceso a la videoteca</a></li>
 </ul>
