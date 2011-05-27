@@ -8,6 +8,7 @@
 {% block section-content %} 
 {% load append_to_get %}
 
+{% if videos.object_list %}
 <table id="tabla">
   <thead>
     <th class="id">ID</th>
@@ -22,10 +23,6 @@
         <td class="date">{{ video.informeproduccion.fecha_validacion|date:"G:i:s - d/m/Y" }}</td>
         <td class="title"><a href="{% url estado_video video.id %}">{{ video.titulo }}</a></td>
         <td class="author">{{ video.autor }}</td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="5"><div class="mensaje info">No hay ning&uacute;n elemento que mostrar en esta tabla.</div></td>
     </tr>
     {% endfor %}
   </tbody>
@@ -46,6 +43,9 @@
         {% endif %}
     </span>
 </div>
+{% else %}
+    <div class="mensaje info">No hay producciones en la videoteca que casen con los criterios de filtrado.</div>
+{% endif %}
 
 {% endblock %}
 
