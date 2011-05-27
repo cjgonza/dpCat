@@ -23,7 +23,7 @@
         <td class="status">{{ video.status }}</td>
         <td class="oper">{{ video.operador }}</td>
         <td class="date">{{ video.fecha }}</td>
-        <td class="title"><a href="{% url estado_video video.id %}">{{ video.titulo }}</a></td>
+        <td class="title"><a href="{% url crear video.id %}">{{ video.titulo }}</a></td>
     </tr>
     {% endfor %}
   </tbody>

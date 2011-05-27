@@ -7,6 +7,7 @@
 
 {% block section-content %} 
 
+<div class="formulario-nueva">
 <div id="progreso" class="tres"></div>
 <h2>Paso 3: Revisa y valida los datos de la nueva producci&oacute;n</h2>
     <h3>Datos de la nueva producci&oacute;n:</h3>
@@ -36,19 +37,28 @@
     {% csrf_token %}
     <input type="submit" value="Terminar y procesar" />
 <div id="volver"><a class="volver" href="{% url postproduccion.views.crear v.id %}">Modificar</a></div>
-<a href="{% url borrar v.id %}">Descartar producci&oacute;n</a>
 </form>   
-
+</div>
 
 {% endblock %}
 
 {% block section-widget %}
-            <div class="portlet">
-                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-                <div class="portlet-content">
-                    <ul>
-                        <li class="tip">Paso 3 para la creaci&oacute;n de una nueva producci&oacute;n.<br/><br/>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
-                    </ul>
-                </div>
-            </div>
+    <div class="portlet">
+        <div class="portlet-header">Acciones</div>
+        <div class="portlet-content">
+            <ul> 
+                <li><a class="eliminar" href="{% url borrar v.id %}">Descartar producci&oacute;n</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="portlet">
+        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+        <div class="portlet-content">
+            <ul> 
+                <li class="tip">Paso 3 para la creaci&oacute;n de una nueva producci&oacute;n.<br/><br/>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
+            </ul>
+        </div>
+    </div>
+
+
 {% endblock %}

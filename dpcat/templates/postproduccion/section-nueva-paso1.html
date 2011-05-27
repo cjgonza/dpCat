@@ -6,34 +6,42 @@
 {% block section-description %} {% endblock %}
 
 {% block section-content %} 
-<div class="form-nueva">
+    <div class="formulario-nueva">
         <div id="progreso" class="uno"></div>
         <h2>Paso 1: Incluye los datos b&aacute;sicos de la producci&oacute;n</h2>
         <form method="post" action="" class="form-nueva">
-        <ul>
-            {% csrf_token %}
-            {{ vform.as_ul }}
-            {{ iform.as_ul }}
+            <ul>
+                {% csrf_token %}
+                {{ vform.as_ul }}
+                {{ iform.as_ul }}
             </ul>
             <hr/>
-            <input type="submit" value="Siguiente" />
+            <input type="submit" value="Siguiente paso" />
             <input type="reset" value="Restaurar formulario" />
-            {% if vform.initial.id %}<a href="{% url borrar vform.initial.id %}">Descartar producci&oacute;n</a>{% endif %}
-
         </form>
-        </div>
+    </div>
 {% endblock %}
 
 {% block section-widget %}
-            <div class="portlet">
-                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-                <div class="portlet-content">
-                    <ul>
-                        <li class="tip">Paso 1 para la creaci&oacute;n de una nueva producci&oacute;n.<br/><br/>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
-                    </ul>
-                </div>
-            </div>
+
+    {% if vform.initial.id %}
+    <div class="portlet">
+        <div class="portlet-header">Acciones</div>
+        <div class="portlet-content">
+            <ul>
+<li><a class="eliminar" href="{% url borrar vform.initial.id %}">Descartar producci&oacute;n</a></li>
+</ul>
+</div>
+</div>
+    {% endif %}
+
+
+    <div class="portlet">
+        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+        <div class="portlet-content">
+            <ul>
+                <li class="tip">Paso 1 para la creaci&oacute;n de una nueva producci&oacute;n.<br/><br/>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
-
-
-

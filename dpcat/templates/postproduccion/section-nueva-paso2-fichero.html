@@ -18,33 +18,39 @@
 {% endblock %}
 
 {% block section-content %} 
-
+<div class="formulario-nueva">
     <div id="progreso" class="dos"></div>
     <h2>Paso 2: Selecciona el contenido de la producci&oacute;n</h2>
-    <form method="post" action="">
+    <form method="post" action="" class="form-nueva">
         {% csrf_token %}
         <h3>Selecciona el fichero de entrada</h3>
         <div id="fileTree" class="navegador"></div>
         {{ form.as_p }}
         <hr/>
-        <input type="submit" value="Siguiente" />
+        <input type="submit" value="Siguiente paso" />
         <div id="volver"><a class="volver" href="{% url postproduccion.views.crear v.id %}">Anterior</a></div>
         <input type="reset" value="Restaurar formulario" />
-        <a href="{% url borrar v.id %}">Descartar producci&oacute;n</a>
     </form>
-
+</div>
 {% endblock %}
 
 {% block section-widget %}
-            <div class="portlet">
-                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-                <div class="portlet-content">
-                    <ul> 
-                        <li class="tip">Paso 2 para la creaci&oacute;n de una nueva producci&oacute;n.<br/><br/>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
-                    </ul>
-                </div>
-            </div>
-
+    <div class="portlet">
+        <div class="portlet-header">Acciones</div>
+        <div class="portlet-content">
+            <ul> 
+                <li><a class="eliminar" href="{% url borrar v.id %}">Descartar producci&oacute;n</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="portlet">
+        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+        <div class="portlet-content">
+            <ul> 
+                <li class="tip">Paso 2 para la creaci&oacute;n de una nueva producci&oacute;n.<br/><br/>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
 
 
