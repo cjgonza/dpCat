@@ -2,38 +2,57 @@
 
 {% block page-title %}Nueva producci&oacute;n, paso 3{% endblock %}
 {% block section-class %}class = "formulario paso3" {% endblock %}
-{% block section-title %}<h1>Nueva producci&oacute;n</h1>{% endblock %}
+{% block section-title %}<h1>Nueva producci&oacute;n, paso 3: Revisar y validar la nueva producci&oacute;n</h1>{% endblock %}
 {% block section-description %} {% endblock %}
 
 {% block section-content %} 
-
 <div class="formulario-nueva">
-<div id="progreso" class="tres"></div>
-<h2>Paso 3: Revisa y valida los datos de la nueva producci&oacute;n</h2>
+
+<form method="post" action="" class="form-nueva">
     <h3>Datos de la nueva producci&oacute;n:</h3>
+
+    <ul>
 {% if v.plantilla %}
-    <p><label>Plantilla:</label><input type="text" value="{{ v.plantilla.nombre }}" readonly disabled="disabled"></p> 
+    <li>
+        <label>Plantilla:</label>
+        <input type="text" value="{{ v.plantilla.nombre }}" readonly disabled="disabled">
+    </li>
 {% endif %}
-    <p><label>T&iacute;tulo:</label><input type="text" value="{{ v.titulo }}" readonly disabled="disabled"></p>
-    <p><label>Autor:</label><input type="text" value="{{ v.autor }}" readonly disabled="disabled"></p>
-    <p><label>Email:</label><input type="text" value="{{ v.email }}" readonly disabled="disabled"></p>
-    <p><label>Observaci&oacute;n</label><textarea cols="40" rows="10" readonly disabled="disabled">{{ v.informeproduccion.observacion }}</textarea></p>
-    <p><label>Requiere aprobaci&oacute;n</label><input type="checkbox" {{ v.informeproduccion.aprobacion|yesno:"checked," }} disabled="disabled"></p>
+    <li>
+        <label>T&iacute;tulo:</label>
+        <input type="text" value="{{ v.titulo }}" readonly disabled="disabled">
+    </li>
+    <li>
+        <label>Autor:</label>
+        <input type="text" value="{{ v.autor }}" readonly disabled="disabled">
+    </li>
+    <li>
+        <label>Email:</label>
+        <input type="text" value="{{ v.email }}" readonly disabled="disabled">
+    </li>
+    <li>
+        <label>Observaci&oacute;n</label>
+        <textarea cols="40" rows="10" readonly disabled="disabled">{{ v.informeproduccion.observacion }}</textarea>
+    </li>
+    <li>
+        <label>Requiere aprobaci&oacute;n</label>
+        <input type="checkbox" {{ v.informeproduccion.aprobacion|yesno:"checked," }} disabled="disabled">
+    </li>
     <h3>Fichero(s) de entrada:</h3>
-<p>
-{% for f in v.ficheroentrada_set.all %}
-{% if v.plantilla %}
-  <label>{{ f.tipo.nombre }}</label>
-    {% else %}
-    <label>Entrada</label>
-    {% endif %}
-    <input type="text" value="{{ f.fichero }}" readonly disabled="disabled"><br/><br/>
-    {% endfor %}
-</span></p>
+    <li>
+        {% for f in v.ficheroentrada_set.all %}
+            {% if v.plantilla %}
+                <label>{{ f.tipo.nombre }}</label>
+            {% else %}
+                <label>Entrada</label>
+            {% endif %}
+            <input type="text" value="{{ f.fichero }}" readonly disabled="disabled"><br/><br/>
+        {% endfor %}
+    </li>
+
 </ul>
 
 <hr/>
-<form method="post" action="">
     {% csrf_token %}
     <input type="submit" value="Terminar y procesar" />
 <div id="volver"><a class="volver" href="{% url postproduccion.views.crear v.id %}">Modificar</a></div>
@@ -43,22 +62,25 @@
 {% endblock %}
 
 {% block section-widget %}
+<div id="progreso" class="tres"></div>
     <div class="portlet">
-        <div class="portlet-header">Acciones</div>
+        <div class="portlet-header">Paso 3 de 3</div>
         <div class="portlet-content">
             <ul> 
-                <li><a class="eliminar" href="{% url borrar v.id %}">Descartar producci&oacute;n</a></li>
+                <li class="tip">Paso 3 para la creaci&oacute;n de una nueva producci&oacute;n.</li>
+                <li>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
             </ul>
         </div>
     </div>
+    <div id="dialog-confirm" title="¿Eliminar producci&oacute;n?">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>La producci&oacute;n ser&aacute; eliminada de forma permanente y no podr&aacute; ser recuperada.</p>
+    </div>
     <div class="portlet">
-        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+        <div class="portlet-header">Acciones disponibles</div>
         <div class="portlet-content">
-            <ul> 
-                <li class="tip">Paso 3 para la creaci&oacute;n de una nueva producci&oacute;n.<br/><br/>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
+            <ul>
+                <li><a class="eliminar" href="{% url borrar v.id %}">Eliminar producci&oacute;n</a></li>
             </ul>
         </div>
     </div>
-
-
 {% endblock %}

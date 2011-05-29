@@ -2,7 +2,7 @@
 
 {% block page-title %}Nueva producci&oacute;n, paso 2{% endblock %}
 {% block section-class %}class = "formulario paso2" {% endblock %}
-{% block section-title %}<h1>Nueva producci&oacute;n</h1>{% endblock %}
+{% block section-title %}<h1>Nueva producci&oacute;n, paso 2: Selecciona el contenido de la producci&oacute;n</h1>{% endblock %}
 {% block section-description %} {% endblock %}
 
 {% block page-script %}
@@ -19,11 +19,9 @@
 
 {% block section-content %} 
 <div class="formulario-nueva">
-    <div id="progreso" class="dos"></div>
-    <h2>Paso 2: Selecciona el contenido de la producci&oacute;n</h2>
     <form method="post" action="" class="form-nueva">
         {% csrf_token %}
-        <h3>Selecciona el fichero de entrada</h3>
+        <label>Selecciona el fichero de entrada</label>
         <div id="fileTree" class="navegador"></div>
         {{ form.as_p }}
         <hr/>
@@ -35,19 +33,24 @@
 {% endblock %}
 
 {% block section-widget %}
+    <div id="progreso" class="dos"></div>
     <div class="portlet">
-        <div class="portlet-header">Acciones</div>
+        <div class="portlet-header">Paso 2 de 3</div>
         <div class="portlet-content">
             <ul> 
-                <li><a class="eliminar" href="{% url borrar v.id %}">Descartar producci&oacute;n</a></li>
+                <li class="tip">Paso 2 para la creaci&oacute;n de una nueva producci&oacute;n.</li>
+                <li>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
             </ul>
         </div>
     </div>
-    <div class="portlet">
-        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+    <div id="dialog-confirm" title="¿Eliminar producci&oacute;n?">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>La producci&oacute;n ser&aacute; eliminada de forma permanente y no podr&aacute; ser recuperada.</p>
+    </div>
+     <div class="portlet">
+        <div class="portlet-header">Acciones disponibles</div>
         <div class="portlet-content">
             <ul> 
-                <li class="tip">Paso 2 para la creaci&oacute;n de una nueva producci&oacute;n.<br/><br/>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
+                <li><a class="eliminar" href="{% url borrar v.id %}">Eliminar producci&oacute;n</a></li>
             </ul>
         </div>
     </div>

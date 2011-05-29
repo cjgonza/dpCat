@@ -2,13 +2,11 @@
 
 {% block page-title %}Nueva producci&oacute;n, paso 1{% endblock %}
 {% block section-class %}class = "formulario paso1" {% endblock %}
-{% block section-title %}<h1>Nueva producci&oacute;n</h1>{% endblock %}
+{% block section-title %}<h1>Nueva producci&oacute;n, paso 1: Informaci&oacute;n b&aacute;sica</h1>{% endblock %}
 {% block section-description %} {% endblock %}
 
 {% block section-content %} 
     <div class="formulario-nueva">
-        <div id="progreso" class="uno"></div>
-        <h2>Paso 1: Incluye los datos b&aacute;sicos de la producci&oacute;n</h2>
         <form method="post" action="" class="form-nueva">
             <ul>
                 {% csrf_token %}
@@ -23,25 +21,28 @@
 {% endblock %}
 
 {% block section-widget %}
-
-    {% if vform.initial.id %}
+    <div id="progreso" class="uno"></div>
     <div class="portlet">
-        <div class="portlet-header">Acciones</div>
+        <div class="portlet-header">Paso 1 de 3</div>
         <div class="portlet-content">
             <ul>
-<li><a class="eliminar" href="{% url borrar vform.initial.id %}">Descartar producci&oacute;n</a></li>
-</ul>
-</div>
-</div>
-    {% endif %}
-
-
-    <div class="portlet">
-        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-        <div class="portlet-content">
-            <ul>
-                <li class="tip">Paso 1 para la creaci&oacute;n de una nueva producci&oacute;n.<br/><br/>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
+                <li class="tip">Paso 1 para la creaci&oacute;n de una nueva producci&oacute;n.</li>
+                <li>Complete los campos del formulario de la manera m&aacute;s precisa posible.</li>
             </ul>
         </div>
     </div>
+    {% if vform.initial.id %}
+    <div id="dialog-confirm" title="¿Eliminar producci&oacute;n?">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>La producci&oacute;n ser&aacute; eliminada de forma permanente y no podr&aacute; ser recuperada.</p>
+    </div>
+   
+    <div class="portlet">
+        <div class="portlet-header">Acciones disponibles</div>
+        <div class="portlet-content">
+            <ul>
+            <li><a class="eliminar" href="{% url borrar vform.initial.id %}">Eliminar producci&oacute;n</a></li>
+            </ul>
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}

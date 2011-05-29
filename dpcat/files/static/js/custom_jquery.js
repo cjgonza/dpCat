@@ -35,6 +35,32 @@ $(document).ready(function() {
         });
     });
 
+
+
+     $( "#dialog-confirm" ).dialog({
+            autoOpen: false,
+            modal: true
+        });
+
+    $(".eliminar").click(function (e) {
+        e.preventDefault();
+        var urlEliminar = $(this).attr("href");
+        $( "#dialog-confirm" ).dialog({
+            autoOpen: false,
+            resizable: false,
+            height:140,
+            modal: true,
+            buttons: {
+                "Eliminar": function() {
+                   window.location.href = urlEliminar;
+                },
+                "Cancelar": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+        $( "#dialog-confirm" ).dialog("open");
+    });
 });
 
 

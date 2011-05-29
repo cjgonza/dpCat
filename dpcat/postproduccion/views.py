@@ -385,7 +385,7 @@ Borra una producción.
 def borrar_produccion(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
     v.delete()
-    messages.success(request, 'Producción eliminanada')
+    messages.success(request, 'Producción eliminada con éxito.')
     return redirect('postproduccion.views.index')
 
 """

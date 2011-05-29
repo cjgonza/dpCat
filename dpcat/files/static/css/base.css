@@ -176,14 +176,12 @@ div.info {
 .eliminar {
     border: solid 1px #DF8F8F;
     background: #FFcece url(../img/icon/error16.png) 5px 50% no-repeat;
-    padding: 10px;
+    padding: 5px;
     font: normal 13px Arial;
     text-decoration: none;
     color: #DF8F8F;
     padding-left: 28px;
     -moz-border-radius: 3px;
-    width: 185px;
-    margin: 0 auto;
     display: block;
 }
 
@@ -461,10 +459,12 @@ padding-left: 30px;
 
 
 #content.formulario.paso3 h3 {
-margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 10px;
     border-bottom: dotted 1px #ccc;
     padding-bottom: 5px;
+    color: #2B84D8;
+    text-shadow: 0 1px 0 #dfdfdf;
 }
 
 #content.informe-video p textarea,
@@ -478,9 +478,6 @@ margin-top: 20px;
     -moz-border-radius: 3px;
 }
 
-#content.formulario p:last-child {
-    background: red;
-}
 #content.formulario input[type="submit"] {
     text-shadow: 0px 1px 0px #373737;
 }
@@ -575,7 +572,8 @@ margin-top: 20px;
     border: solid 1px #cccccc;
 }
 
-#content.formulario input:hover {
+#content.formulario input[type="submit"]:hover,
+#content.formulario input[type="reset"]:hover {
     background-image: none;
 }
 
@@ -727,7 +725,7 @@ a.link:hover {
     margin-top: 0px;
 }
 #content form {
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 #content.formulario.paso2 form h3{
@@ -1366,6 +1364,7 @@ ul.acciones li.publicar a  {
 .column {
     width: 50%;
     float: left;
+    min-height: 80px;
 }
 
 #content-right .column {
@@ -1418,8 +1417,8 @@ ul.acciones li.publicar a  {
 }
 
 ul.portlet-bottom-link {
-    margin-top: 8px;
-    margin-bottom: 4px;
+    margin-top: 4px;
+    margin-bottom: 0px;
     text-align: right;
     overflow: hidden;
 }
@@ -1428,23 +1427,16 @@ ul.portlet-bottom-link li {
     margin-right: 10px;
 }
 ul.portlet-bottom-link li a.link-section {
-    border: solid 1px #95c1eb;
-    font: normal 10px Arial;
+    font: normal 11px Arial;
     color: #2b84d8;
     text-decoration: none;
-    padding: 2px 5px;
     margin-top: 5px;
-    -moz-border-radius: 6px;
-    line-height: 20px;
     height: 20px;
-    background: url("../img/icon/more12.png") 5px 50% no-repeat;
-    padding-left: 20px;
 }
 
 
 ul.portlet-bottom-link li a.link-section:hover {
-    background-color: #2B84D8;
-    color: #fff;
+text-decoration: underline;
 }
 
 
@@ -1651,8 +1643,9 @@ form.form-nueva ul.jqueryFileTree li {
     margin: 0px;
 }
 
-form.form-nueva ul li label {
+form.form-nueva label {
     color: #336699;
+    color: #555555;
     font: bold 13px Arial;
     text-align: left;
     display: block;
@@ -1660,14 +1653,22 @@ form.form-nueva ul li label {
 }
 
 
-form.form-nueva ul li select,
-form.form-nueva ul li textarea,
-form.form-nueva ul li input[type="text"] {
-    border: solid 1px #acacac;
+form.form-nueva select,
+form.form-nueva textarea,
+form.form-nueva input[type="text"] {
     -moz-border-radius: 3px;
     height: 20px;
     padding: 3px 5px;
     width: 615px; 
+    border: solid 1px #d5d5d5;
+    background: #fff url("../img/bg-form.gif") left top repeat-x;
+    padding: 6px;
+}
+.paso3 form.form-nueva select,
+.paso3 form.form-nueva textarea,
+.paso3 form.form-nueva input[type="text"] {
+    background: #efefef;
+
 }
 
 form.form-nueva ul li textarea {
@@ -1685,7 +1686,7 @@ form.form-nueva ul li select {
 
 
 
-form.form-nueva ul li ul.errorlist {
+form.form-nueva ul.errorlist {
     color: #666452;
     border: solid 1px #DF8F8F;
     background: #FFCECE url(../img/icon/error16.png) 5px 50% no-repeat;
@@ -1697,7 +1698,7 @@ form.form-nueva ul li ul.errorlist {
 
 }
 
-form.form-nueva ul li ul.errorlist li{
+form.form-nueva ul.errorlist li{
     margin: 0px;
     padding: 0px;
 }
