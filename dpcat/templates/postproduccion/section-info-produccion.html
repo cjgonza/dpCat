@@ -1,64 +1,10 @@
-{% extends "postproduccion/base-1.html" %}
+{% extends "postproduccion/base-2-1.html" %}
 
 {% block page-title %}Informe de producci&oacute;n{% endblock %}
 {% block page-script %} <script type="text/javascript" src="/static/jwplayer/jwplayer.js"></script>{% endblock %}
 {% block section-class %} class="informe-video"{% endblock %}
-{% block section-title %}<h1>Informe de producci&oacute;n</h1>{% endblock %}
+{% block section-title %}<h1>Informe de la producci&oacute;n: {{v.titulo}}</h1>{% endblock %}
 {% block section-description %}
-
-<div class="info-video">
-    <h2>{{ v.titulo }}</h2>
-    <div class="info-prevideo">
-{% if v.status != "INC" and v.status != "DEF" and v.status != "PRV" %}
-        <div id="container">Cargando video ...</div>
-
-        <script type="text/javascript">
-            jwplayer("container").setup({
-                flashplayer: "/static/jwplayer/player.swf",
-                file: "{% url stream_video v.id %}",
-                height: 270,
-                width: 480
-            });
-        </script>
-        <ul>
-            <li><a class="chain" href="{% url stream_video v.id %}">Descargar video</a></li>
-        </ul>        
-
-        {% else %}
-        <div id="no-disponible"><p>Previsualizaci&oacute;n no disponible, revise el listado de producciones en proceso</div>
-        <ul>
-            <li><a class="chain" href="{% url enproceso %}">Listado de producciones en proceso</a></li>
-        </ul>        
-
-{% endif %}
-    </div>
-
-<div class="info-basica">
-    <h2>Acciones disponibles</h2>
-    <ul class="acciones">
-        {% if v.status == 'LIS' %}
-        <li class="publicar"><a class="publicar"href="">Publicar producci&oacute;n</a></li>
-        {% endif %}
-        {% if v.status == 'ACE' or v.status == 'PTO' %}
-        <li class="validar"><a class="validar"href="{% url validar_produccion v.id %}">Validar producci&oacute;n</a></li>
-        {% endif %}
-        <li class="borrar"><a class="borrar" href="{% url borrar v.id %}" onclick="return confirm('¡Atención! La producción se borrará permanentemente ¿está seguro?')">Borrar</a></li>
-    </ul>
-
-
-    <h2>Informaci&oacute;n generada durante el proceso de producci&oacute;n</h2>
-    <ul>
-        <li><label>T&iacute;tulo:</label> {{ v.titulo }}</li>
-        <li><label>Autor:</label> {{ v.autor }}</li>
-        <li><label>Correo electr&oacute;nico:</label><a class="email" href="mailto:{{ v.email }}">{{ v.email }}</a></li>
-        <li><label>Fecha de grabaci&oacute;n:</label> {{ v.informeproduccion.fecha_grabacion }}</li>
-        {% if v.informeproduccion.fecha_validacion %}<li><label>Fecha de validaci&oacute;n:</label> {{ v.informeproduccion.fecha_validacion }}</li>{% endif %}
-        <li><label>Operador de producci&oacute;n:</label> {{ v.informeproduccion.operador }} </li>
-    </ul>
-</div>
-</div>
-
-
 
 <div id="info-menu">
     <ul id="tab-menu">
@@ -67,9 +13,37 @@
         {% if v.status != 'LIS' %}<li {% block current-ticket %} {% endblock %}><a class="ticket" href="{% url gestion_tickets v.id %}">Gesti&oacute;n de ticket</a></li>{% endif %}
     </ul>
 </div>
-
-
-
 {% endblock %}
 
-{% block section-content %} {% endblock %}
+{% block section-widget %}
+     <div class="portlet">
+        <div class="portlet-header">Estado actual de la producci&oacute;n</div>
+        <div class="portlet-content">
+            <ul><li>{{ v.get_status_display }}</li></ul>
+        </div>
+     </div>
+
+     <div class="portlet">
+        <div class="portlet-header">Acciones disponibles</div>
+        <div class="portlet-content">
+            <ul>
+                {% if v.status == 'LIS' %}
+                    <li class="publicar"><a class="publicar"href="">Publicar producci&oacute;n</a></li>
+                {% endif %}
+                {% if v.status == 'ACE' or v.status == 'PTO' %}
+                    <li class="validar"><a class="validar"href="{% url validar_produccion v.id %}">Validar producci&oacute;n</a></li>
+                {% endif %}
+                <li><a class="eliminar" href="{% url borrar v.id %}">Eliminar producci&oacute;n</a></li>
+
+                {% if v.status != "INC" and v.status != "DEF" and v.status != "PRV" %}
+                    <li><a class="chain" href="{% url stream_video v.id %}">Descargar video</a></li>
+
+                {% endif %}
+
+
+            </ul>
+        </div>
+    </div>
+
+    {% block section-widget2 %}{% endblock %}
+{% endblock %}

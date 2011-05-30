@@ -4,60 +4,91 @@
 {% block section-content %} 
 
 
-<div id="content-left">
-<h2>Estado actual</h2>
-<div class="mensaje info">{{ v.get_status_display }}</div>
+    <div class="info-prevideo">
+{% if v.status != "INC" and v.status != "DEF" and v.status != "PRV" %}
+        <div id="container">Cargando video ...</div>
 
-<h2>Histórico de incidencias</h2>
-<table id="tabla">
-    <thead>
-        <th>Emisor</th><th>Fecha</th><th>Aceptado</th><th>Comentario</th>
-    </thead>
-    <tbody>
-        {% for inci in v.informeproduccion.incidenciaproduccion_set.all %}
-        <tr><td>{{ inci.get_emisor_display }}</td><td>{{ inci.fecha }}</td><td>{{ inci.aceptado }}</td><td>{{ inci.comentario }}</td></tr>
-
-        {% empty %}
-        <tr><td colspan="4"><div class="mensaje info">El hist&oacute;rico de incidencias esta vac&iacute;o.</div></td></tr>
-
-
-        {% endfor %}
-    </tbody>
-</table>
-
-
-<h2>Histórico de codificaci&oacute;n</h2>
-<table id="tabla">
-    <thead>
-        <th>Tipo</th><th>Fecha</th><th>Estado</th>
-    </thead>
-    <tbody>
-        {% for hist in v.informeproduccion.historicocodificacion_set.all %}
-        <tr><td>{{ hist.get_tipo_display }}</td><td>{{ hist.fecha }}</td><td>{{ hist.status }}</td>
-        {% empty %}
-        <tr><td colspan="3"><div class="mensaje warning">El hist&oacute;rico de codificaci&oacute;n no estar&aacute; disponible hasta que se termine la producci&oacute;n.</div></td></tr>
-        {% endfor %}
-    </tbody>
-</table>
-</div>
-
-
-    <div id="content-right">
-        <div class="column">
-            <div class="portlet">
-                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-                <div class="portlet-content">
-                    <ul> 
-    <li class="tip">Falta personalizar este mensaje</li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>     
+        <script type="text/javascript">
+            jwplayer("container").setup({
+                flashplayer: "/static/jwplayer/player.swf",
+                file: "{% url stream_video v.id %}",
+                height: 270,
+                width: 480
+            });
+        </script>
+        {% else %}
+        <div id="no-disponible"><p>Previsualizaci&oacute;n no disponible, revise el <a href="{% url enproceso %}">listado de producciones en proceso</a></div>
+        {% endif %}
     </div>
 
+<h2>Informaci&oacute;n b&aacute;sica de la producci&oacute;n</h2>
+<table id="tabla">
+    <thead>
+        <th class="autor">Autor</th>
+        <th class="email">Email</th>
+        <th class="date">Fecha</th>
+        <th class="oper">Operador</th>
+        <th class="title">T&iacute;tulo</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="autor">{{ v.autor }}</td>
+            <td class="email"><a href="mailto:{{v.email}}">{{ v.email }}</a></td>
+            <td class="date">
+                <ul>
+                    <li>{{ v.informeproduccion.fecha_grabacion }} - Grabaci&oacute;n</li>
+                    {% if v.informeproduccion.fecha_validacion %} 
+                    <li>{{ v.informeproduccion.fecha_validacion }} - Validaci&oacute;n</li>
+                    {% endif%}
+                </ul>
+            </td>
+            <td class="oper">{{ v.informeproduccion.operador }}</td>
+            <td class="titulo">{{ v.titulo }}</td>
+        </tr>
+    </tbody>
+</table>
 
+<h2>Histórico de incidencias</h2>
+{% if v.informeproduccion.incidenciaproduccion_set.all %}
+    <table id="tabla">
+        <thead>
+            <th>Emisor</th><th>Fecha</th><th>Aceptado</th><th>Comentario</th>
+        </thead>
+        <tbody>
+            {% for inci in v.informeproduccion.incidenciaproduccion_set.all %}
+                <tr><td>{{ inci.get_emisor_display }}</td><td>{{ inci.fecha }}</td><td>{{ inci.aceptado }}</td><td>{{ inci.comentario }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+        <div class="mensaje info">El hist&oacute;rico de incidencias esta vac&iacute;o.</div>
+{% endif%}
 
+<h2>Histórico de codificaci&oacute;n</h2>
+{% if v.informeproduccion.historicocodificacion_set.all %}
+    <table id="tabla">
+        <thead>
+            <th>Tipo</th><th>Fecha</th><th>Estado</th>
+        </thead>
+        <tbody>
+            {% for hist in v.informeproduccion.historicocodificacion_set.all %}
+                <tr><td>{{ hist.get_tipo_display }}</td><td>{{ hist.fecha }}</td><td>{{ hist.status }}</td>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+        <div class="mensaje warning">El hist&oacute;rico de codificaci&oacute;n no estar&aacute; disponible hasta que la producci&oacute;n haya sido validada.</div>
+{% endif %}
 
+{% endblock %}
 
+{% block section-widget2 %}
+    <div class="portlet">
+        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+        <div class="portlet-content">
+            <ul> 
+                <li class="tip">Falta personalizar este mensaje</li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}

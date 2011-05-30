@@ -208,7 +208,10 @@ Lista los vídeos que están siendo procesados.
 """
 @permission_required('postproduccion.video_manager')
 def listar_en_proceso(request):
-    return render_to_response("postproduccion/section-enproceso.html", { 'list' : listar() }, context_instance=RequestContext(request))
+    if request.is_ajax(): 
+        return render_to_response("postproduccion/ajax/content-enproceso.html", { 'list' : listar()[:10] }, context_instance=RequestContext(request))
+    else:
+        return render_to_response("postproduccion/section-enproceso.html", { 'list' : listar() }, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados que cumplan el filto dado.

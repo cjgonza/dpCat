@@ -19,10 +19,7 @@
             <li><a class="nuevaproduccion" href="{% url crear %}">Nueva producci&oacute;n</a></li>
         </ul>
         <ul class="utils">
-
-            <li>Hola, {{ user }}</li>
-            <li><a class="icon-config" title="Configuraci&oacute;n del sistema" href="{% url config %}">Configuraci&oacute;n</a></li>
-            <li><a class="icon-logout" title="Cerrar sesi&oacute;n en dpCat" href="{% url django.contrib.auth.views.logout %}">Cerrar sesi&oacute;n</a></li>
+            <li>Hola, {{ user }} | <a title="Configuraci&oacute;n del sistema" href="{% url config %}">Configuraci&oacute;n</a> | <a title="Cerrar sesi&oacute;n en dpCat" href="{% url django.contrib.auth.views.logout %}">Cerrar sesi&oacute;n</a></li>
         </ul>
         </div>
     </div>

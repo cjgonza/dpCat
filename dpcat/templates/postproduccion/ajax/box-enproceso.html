@@ -1,0 +1,18 @@
+<div class="portlet">
+    <div class="portlet-header">Producciones en proceso (Centro de monitorizaci&oacute;n)</div>
+    <div class="portlet-content" id="box-enproceso">
+        <span class="ajax-loader"></span>
+   </div> 
+</div>
+
+<script>
+function ajax_enproceso() {
+    $.get("{% url enproceso %}", function(data) {
+        $("#box-enproceso").html(data);
+    }).complete(function() { setTimeout("ajax_enproceso();", 300000); });
+}
+
+$(document).ready(function() {
+    ajax_enproceso();
+});
+</script>

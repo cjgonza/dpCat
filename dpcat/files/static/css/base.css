@@ -236,19 +236,19 @@ a.cerrar:hover {
 #inner-menu-content,
 #inner-header {
     overflow: hidden;
-    padding: 10px 20px;
+    padding: 0px 20px;
 
 }
 
 #inner-menu-content {
     padding: 0px;
-    margin-top: 11px;
-
 }
 
 #inner-menu-content ul {
     margin: 0px;
     padding: 0px;
+    margin-top: 21px;
+    float: left;
 }
 
 #inner-menu-content li {
@@ -262,6 +262,7 @@ a.cerrar:hover {
 
 #inner-menu-content ul.utils {
     float: right;
+    margin-top: 22px;
 }
 
 #inner-menu-content ul li {
@@ -272,7 +273,6 @@ a.cerrar:hover {
 }
 #inner-menu-content ul li a {
     text-decoration: none;
-    display: block;
     font: bold 11px Arial;
     line-height: 26px;
     color: #336699; 
@@ -284,8 +284,11 @@ a.cerrar:hover {
 }
 
 #inner-menu-content ul.utils li {
-    background-color: #2B84D8;
-    background-position: 0 0;
+background: none;
+border: none;
+margin: 0px;
+
+    float: none;
 }
 #inner-menu-content ul.utils li:first-child {
     font: bold 11px Arial;
@@ -298,9 +301,14 @@ a.cerrar:hover {
 
 }
 
+#inner-menu-content ul.utils li a:last-child {
+text-decoration: underline;
+}
 #inner-menu-content ul.utils li a {
+    font-size: 10px;
     color: #fff;
     text-shadow: 0 1px 0 #373737;
+    padding: 0px;
 }
 
 #inner-menu-content ul.utils li a.icon-logout:hover,
@@ -338,7 +346,7 @@ a.cerrar:hover {
 
 #inner-menu-content ul.utils li a.icon-logout {
     background:url(../img/icon/logout.png) 8px 50% no-repeat;
-padding-left: 30px;
+padding-left: 20px;
 }
 
 #logo {
@@ -347,6 +355,7 @@ padding-left: 30px;
     margin: 0px;
     padding: 0px;
     padding-left: 10px;
+    margin-top: 10px;
 }
 
 /* Logo en caso de tener imagen.
@@ -596,7 +605,6 @@ padding-left: 30px;
 #content-left {
     float: left;
     overflow: hidden;
-    margin-left: 10px;
     width: 70%;
 }
 
@@ -679,30 +687,11 @@ a.link:hover {
 
 
 
-.info-video h2,
 #content-left h2 {
     font: normal 20px Arial;
     color: #e98b59;
     margin-bottom: 10px;
     text-shadow: 0px 1px 0px #f5e0d6;
-}
-
-.info-video h2 {
-    margin-bottom: 10px;
-    padding: 5px;
-    padding-top: 0px;
-    font-size: 25px;
-    color: #373737;
-}
-
-.info-basica h2 {
-    font-size: 15px;
-    margin: 0px;
-    padding: 0px;
-    font: bold 14px Arial;
-    padding-bottom: 5px;
-    border-bottom: dotted 1px #336699;
-    margin-bottom: 5px;
 }
 
 .status #content-left h2 {
@@ -862,6 +851,13 @@ a.link:hover {
 
 #tabla th.oper {
     width: 75px;
+}
+
+#tabla th.autor {
+    width: 120px;
+}
+#tabla th.email {
+    width: 100px;
 }
 
 #tabla tbody td.id,
@@ -1157,11 +1153,12 @@ a.log-icon:hover {
 
 .informe-video .info-prevideo {
     width: 480px;
-    height: 300px;
+    height: 270px;
     border: solid 1px #dddddd;
     padding: 6px;
     -moz-border-radius: 3px;
-    float: left;
+    margin: 0 auto;
+    margin-bottom: 15px;
 }
 
 
@@ -1222,16 +1219,9 @@ a.email {
     width: 170px;
 }
 
-.info-video {
-    overflow: hidden;
-    margin-bottom: 15px;
-}
-
-
 #info-menu {
     border-bottom: solid 1px #D6E0EB;
     margin-bottom: 20px;
-    margin-top: 20px;
     min-height: 33px;
 }
 
@@ -1428,10 +1418,12 @@ ul.portlet-bottom-link li {
 }
 ul.portlet-bottom-link li a.link-section {
     font: normal 11px Arial;
-    color: #2b84d8;
+    color: #336699;
     text-decoration: none;
     margin-top: 5px;
     height: 20px;
+    background: url(../img/icon/link-arrow.png) 0 50% no-repeat;
+    padding-left: 12px;
 }
 
 
@@ -1464,6 +1456,7 @@ text-decoration: underline;
     height: 100%;
     -moz-border-radius: 2px;
     margin-bottom: 5px;
+    margin: 0px;
 }
 
 .ui-progressbar-value {
