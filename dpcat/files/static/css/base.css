@@ -168,11 +168,16 @@ div.info {
     background-image: url(../img/icon/estado16.png);
 }
 
+.rechazar:hover,
 .eliminar:hover {
     color: #fff;
-    background: #ff9999 url(../img/icon/error16.png) 5px 50% no-repeat;
+    background-color: #df8f8f;
 }
-
+.aprobar,
+.rechazar,
+.validar,
+.publicar,
+.descargar,
 .eliminar {
     border: solid 1px #DF8F8F;
     background: #FFcece url(../img/icon/error16.png) 5px 50% no-repeat;
@@ -183,6 +188,34 @@ div.info {
     padding-left: 28px;
     -moz-border-radius: 3px;
     display: block;
+}
+
+
+.publicar {
+    border-color: #A2B4EE;
+    background-color: #d5e6f7;
+    background-image: url(../img/icon/publicar16.png);
+}
+.publicar:hover {
+    background-color: #A2B4EE;
+}
+.descargar {
+    border-color: #ccc;
+    background-color: #dfdfdf;
+    background-image: url(../img/icon/chain16.png);
+}
+.descargar:hover {
+    background-color: #ccc;
+}
+.aprobar,
+.validar {
+    border-color: #9ADF8F;
+    background-color: #D5FFCE;
+    background-image: url(../img/icon/check16.png);
+}
+.aprobar:hover,
+.validar:hover {
+    background-color: #9adf8f;
 }
 
 
@@ -203,6 +236,16 @@ div.info {
     border-color: #E6DB55;
     background-color: #FFFBCC;
     background-image: url(../img/icon/warning16.png);
+}
+
+li.estado {
+    border: solid 1px #E6DB55;
+    background-color: #FFFBCC;
+    padding: 5px;
+    text-align: center;
+    border-left: 0px;
+    border-right: 0px;
+
 }
 
 a.cerrar {
@@ -487,6 +530,11 @@ padding-left: 20px;
     -moz-border-radius: 3px;
 }
 
+
+#content.informe-video input[type="submit"]:hover {
+    background-image: none;
+}
+#content.informe-video input[type="submit"],
 #content.formulario input[type="submit"] {
     text-shadow: 0px 1px 0px #373737;
 }
@@ -521,11 +569,11 @@ padding-left: 20px;
     padding-bottom: 10px;
 }
 
+/*
 #content.informe-video input[type="submit"] {
     float: left;
     margin-left: 130px;
 }
-
 #content.informe-video input[type="submit"] {
     border-color: #9ADF8F;
     background: #D5FFCE url(../img/icon/check16.png) 5px 50% no-repeat;
@@ -535,7 +583,6 @@ padding-left: 20px;
     margin-left: 0px;
     padding: 8px 10px 8px 25px;
 }
-
 #content.informe-video .form-validacion-rechaza input[type="submit"] {
     border: solid 1px #DF8F8F;
     background: #FFCECE url(../img/icon/error16.png) 5px 50% no-repeat;   
@@ -565,11 +612,11 @@ padding-left: 20px;
     text-align: center;
     cursor: pointer;
 }
-
 #content.informe-video .form-validacion-rechaza label {
     display: none;
 }
 
+*/
 #content.formulario input[type="reset"] {
     color: #949494;
     margin-right: 20px;
@@ -715,6 +762,8 @@ a.link:hover {
 }
 #content form {
     margin-top: 5px;
+    overflow: hidden;
+    margin-bottom: 10px;
 }
 
 #content.formulario.paso2 form h3{
@@ -1193,6 +1242,11 @@ a.email {
     padding-left: 16px;
 }
 
+
+#tabla a.email {
+    background: none;
+    padding: 0px;
+}
 .informe-video .info-basica {
     margin-left: 500px;
     padding: 10px;

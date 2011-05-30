@@ -3,9 +3,8 @@
 {% block current-metadata %} class="current" {% endblock %}
 {% block section-content %} 
 
-<div id="content-left">
     <h2>Metadata t&eacute;cnica</h2>
-
+{% if info %}
     <table id="tabla">
         <thead>
             <th class="meta-param">Par&aacute;metros</th><th>valor</th>
@@ -16,16 +15,15 @@
             {% for at in s.attr %}
             <tr><td>{{ at.key }}</td><td>{{ at.value }}</td></tr>
             {% endfor %}
-            {% empty %}
-            <tr><td colspan="2"><div class="mensaje warning">La metadata t&eacute;cnica no estar&aacute; disponible hasta que se procese el v&iacute;deo.</div></td></tr>
             {% endfor %}
         </tbody>
     </table>
+{% else %}
+    <div class="mensaje warning">La metadata t&eacute;cnica no estar&aacute; disponible hasta que se procese el v&iacute;deo.</div>
+{% endif%}
+{% endblock %}
 
-</div>
-
-    <div id="content-right">
-        <div class="column">
+{% block section-widget2 %} 
             <div class="portlet">
                 <div class="portlet-header">Tipo de metadata</div>
                 <div class="portlet-content">
@@ -43,11 +41,5 @@
                     </ul>
                 </div>
             </div>
-
-        </div>     
-    </div>
-
-
-
 
 {% endblock %}

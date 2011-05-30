@@ -3,11 +3,9 @@
 {% block current-resumen %} class="current" {% endblock %}
 {% block section-content %} 
 
-
-    <div class="info-prevideo">
+<div class="info-prevideo">
 {% if v.status != "INC" and v.status != "DEF" and v.status != "PRV" %}
-        <div id="container">Cargando video ...</div>
-
+    <div id="container">Cargando video ...</div>
         <script type="text/javascript">
             jwplayer("container").setup({
                 flashplayer: "/static/jwplayer/player.swf",
@@ -16,24 +14,22 @@
                 width: 480
             });
         </script>
-        {% else %}
-        <div id="no-disponible"><p>Previsualizaci&oacute;n no disponible, revise el <a href="{% url enproceso %}">listado de producciones en proceso</a></div>
-        {% endif %}
-    </div>
+{% else %}
+    <div id="no-disponible"><p>Previsualizaci&oacute;n no disponible, revise el <a href="{% url enproceso %}">listado de producciones en proceso</a></div>
+{% endif %}
+</div>
 
 <h2>Informaci&oacute;n b&aacute;sica de la producci&oacute;n</h2>
 <table id="tabla">
     <thead>
         <th class="autor">Autor</th>
-        <th class="email">Email</th>
         <th class="date">Fecha</th>
         <th class="oper">Operador</th>
         <th class="title">T&iacute;tulo</th>
     </thead>
     <tbody>
         <tr>
-            <td class="autor">{{ v.autor }}</td>
-            <td class="email"><a href="mailto:{{v.email}}">{{ v.email }}</a></td>
+            <td class="autor">{{ v.autor }}<br/>(<a class="email" href="mailto:{{v.email}}">{{ v.email }}</a>)</td>
             <td class="date">
                 <ul>
                     <li>{{ v.informeproduccion.fecha_grabacion }} - Grabaci&oacute;n</li>

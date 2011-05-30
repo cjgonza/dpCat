@@ -1,18 +1,79 @@
-<script type="text/javascript" src="/static/jwplayer/jwplayer.js"></script>
+{% extends "postproduccion/base-2-1-public.html" %}
 
-<div id="container">Loading the player ...</div>
-<script type="text/javascript">
-    jwplayer("container").setup({
-    flashplayer: "/static/jwplayer/player.swf",
-    file: "{% url stream_preview token %}",
-    height: 270,
-    width: 480
-});
-</script>
+{% block page-title %}Validaci&oacute;n de una producci&oacute;n{% endblock %}
+{% block page-script %} <script type="text/javascript" src="/static/jwplayer/jwplayer.js"></script>{% endblock %}
+{% block section-class %} class="informe-video"{% endblock %}
+{% block section-title %}<h1>Validación de una producci&oacute;n</h1>{% endblock %}
 
-<h2>{{ v.titulo }}</h2>
-<form method="post" action="">
-{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Rechazar" />
-</form>
+{% block section-content %}
+<div class="info-prevideo">
+    <div id="container">Cargando video ...</div>
+        <script type="text/javascript">
+            jwplayer("container").setup({
+                flashplayer: "/static/jwplayer/player.swf",
+                file: "{% url stream_preview token %}",
+                height: 270,
+                width: 480
+            });
+        </script>
+</div>
+
+<h2>Rechazar producci&oacute;n</h2>
+<div class="formulario-nueva">
+    <form method="post" action="" class="form-nueva">
+        <ul>
+            {% csrf_token %}
+            {{ form.as_ul }}
+        </ul>
+        <hr/>
+        <input type="submit" value="Rechazar producci&oacute;n" />
+    </form>
+</div>
+
+<h2>Informaci&oacute;n b&aacute;sica de la producci&oacute;n</h2>
+<table id="tabla">
+    <thead>
+        <th class="autor">Autor</th>
+        <th class="date">Fecha</th>
+        <th class="oper">Operador</th>
+        <th class="title">T&iacute;tulo</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="autor">{{ v.autor }}<br/>(<a class="email" href="mailto:{{v.email}}">{{ v.email }}</a>)</td>
+            <td class="date">
+                <ul>
+                    <li>{{ v.informeproduccion.fecha_grabacion }} - Grabaci&oacute;n</li>
+                </ul>
+            </td>
+            <td class="oper">{{ v.informeproduccion.operador }}</td>
+            <td class="titulo">{{ v.titulo }}</td>
+        </tr>
+    </tbody>
+</table>
+
+
+{% endblock %}
+
+{% block section-widget %}
+        <div class="portlet">
+            <div class="portlet-header">Acciones disponibles</div>
+            <div class="portlet-content">
+                <ul> 
+                    <li><a href="{% url definir_metadatos_user token %}" class="aprobar">Aceptar e introducir metadata</a></li>
+                    <li>
+                        <a href="{% url rechazar_video token %}" class="rechazar">Rechazar producci&oacute;n</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="portlet">
+            <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+            <div class="portlet-content">
+                <ul> 
+                    <li class="tip">Contenido de la informaci&oacute;n de inter&eacute;s.</li>
+                </ul>
+            </div>
+        </div>
+{% endblock %}
+
