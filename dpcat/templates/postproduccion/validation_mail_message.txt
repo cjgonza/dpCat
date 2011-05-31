@@ -1,0 +1,7 @@
+Estimado/a {{ nombre }},
+
+Le informamos que la grabación realizada a fecha {{ fecha }}, con título "{{ titulo }}" y número de referencia #{{ vid }} ha sido validada con éxito por el operador {{ operador }}.
+
+
+Atentamente,
+El equipo de dpCat
