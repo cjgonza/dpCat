@@ -249,7 +249,7 @@ Vista para que el usuario verifique un vídeo y lo apruebe o rechace.
 def aprobacion_video(request, tk_str):
     v = token.is_valid_token(tk_str)
     if not v: raise Http404
-    return render_to_response("postproduccion/aprobacion_video.html", { 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-inicio-aprobacion.html", { 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
 Vista para que el usuario rellene los metadatos de un vídeo.
@@ -269,10 +269,10 @@ def definir_metadatos_user(request, tk_str):
             token.token_attended(v)
             v.status = 'ACE'
             v.save()
-            return render_to_response("postproduccion/resumen_aprobacion_video.html", { 'v' : v, 'aprobado' : True }, context_instance=RequestContext(request))
+            return render_to_response("postproduccion/section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : True }, context_instance=RequestContext(request))
     else:
         form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
-    return render_to_response("postproduccion/definir_metadatos_user.html", { 'form' : form, 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-metadatos-user.html", { 'form' : form, 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
 Solicita al usuario una razón por la cual el vídeo ha sido rechazado
@@ -292,10 +292,10 @@ def rechazar_video(request, tk_str):
             token.token_attended(v)
             v.status = 'REC'
             v.save()
-            return render_to_response("postproduccion/resumen_aprobacion_video.html", { 'v' : v, 'aprobado' : False }, context_instance=RequestContext(request))
+            return render_to_response("postproduccion/section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : False }, context_instance=RequestContext(request))
     else:
         form = IncidenciaProduccionForm()
-    return render_to_response("postproduccion/rechazar_video.html", { 'v' : v, 'form' : form, 'token' : tk_str }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-rechazar-produccion.html", { 'v' : v, 'form' : form, 'token' : tk_str }, context_instance=RequestContext(request))
 
 
 #######
@@ -318,7 +318,7 @@ def definir_metadatos_oper(request, video_id):
             messages.success(request, 'Metadata actualizada')
     else:
         form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
-    return render_to_response("postproduccion/definir_metadatos_oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-metadatos-oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
 
 
 """
@@ -327,7 +327,7 @@ Vista que muestra el estado e información de una producción.
 @permission_required('postproduccion.video_manager')
 def estado_video(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
-    return render_to_response("postproduccion/estado_video.html", { 'v' : v }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-resumen-produccion.html", { 'v' : v }, context_instance=RequestContext(request))
 
 """
 Muestra la información técnica del vídeo
@@ -336,7 +336,7 @@ Muestra la información técnica del vídeo
 def media_info(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
     info = video.parse_mediainfo(v.tecdata.txt_data) if hasattr(v, 'tecdata') else None
-    return render_to_response("postproduccion/media_info.html", { 'v' : v, 'info' : info }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-metadata-tecnica.html", { 'v' : v, 'info' : info }, context_instance=RequestContext(request))
 
 """
 Gestión de tickets de usuario.
@@ -362,7 +362,7 @@ def gestion_tickets(request, video_id):
     else:
         form = IncidenciaProduccionForm()
 
-    return render_to_response("postproduccion/gestion_tickets.html", { 'v' : v, 'form' : form, 'token' : tk }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-gestion-tickets.html", { 'v' : v, 'form' : form, 'token' : tk }, context_instance=RequestContext(request))
 
 """
 Valida una producción y la pasa a la videoteca.

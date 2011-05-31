@@ -35,7 +35,8 @@
                 {% endif %}
                 {% if v.status == 'ACE' or v.status == 'PTO' %}
                      <div id="dialog-validar" title="¿validar producci&oacute;n?">
-                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>El proceso de validaci&oacute;n de una producci&oacute;n implica que esta pase de manera definitiva a la videoteca, por favor, revise que todo los datos de la metadata son correctos antes de continuar.</p>
+                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+                      Revise todos los datos de la producción antes de continuar, este proceso es irreversible.</p>
                     </div>
                     <li><a class="validar"href="{% url validar_produccion v.id %}">Validar producci&oacute;n</a></li>
                 {% endif %}

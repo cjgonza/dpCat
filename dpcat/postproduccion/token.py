@@ -79,7 +79,7 @@ Genera el mensaje de correo con las indicaciones para usar el token.
 def generate_mail_message(v):
     (nombre, titulo, vid, fecha) = (v.autor, v.titulo, v.id, v.informeproduccion.fecha_grabacion)
     url = get_token_url(v)
-    return render_to_string('postproduccion/mail_message.txt', { 
+    return render_to_string('postproduccion/mail-validar-message.txt', { 
         'nombre' : nombre,
         'titulo' : titulo,
         'vid'    : vid,
@@ -101,7 +101,7 @@ Genera el mensaje de correo personalizado con las indicaciones para usar el toke
 def generate_custom_mail_message(v, texto, operador):
     (nombre, titulo, vid, fecha) = (v.autor, v.titulo, v.id, v.informeproduccion.fecha_grabacion)
     url = get_token_url(v)
-    return render_to_string('postproduccion/custom_mail_message.txt', {
+    return render_to_string('postproduccion/mail-custom-message.txt', {
         'nombre'   : nombre,
         'titulo'   : titulo,
         'vid'      : vid,
@@ -124,7 +124,7 @@ Genera el mensaje de correo para avisar al usuario de que su producción ya ha s
 """
 def generate_validation_mail_message(v, operador):
     (nombre, titulo, vid, fecha) = (v.autor, v.titulo, v.id, v.informeproduccion.fecha_grabacion)
-    return render_to_string('postproduccion/validation_mail_message.txt', { 
+    return render_to_string('postproduccion/mail-validada-message.txt', { 
         'nombre'   : nombre,
         'titulo'   : titulo,
         'vid'      : vid,

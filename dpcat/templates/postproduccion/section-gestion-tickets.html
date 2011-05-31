@@ -1,0 +1,75 @@
+{% extends "postproduccion/section-info-produccion.html" %}
+
+{% block current-ticket %} class="current" {% endblock %}
+{% block section-content %} 
+
+<h2>Informaci&oacute;n sobre el ticket</h2>
+<div class="info-ticket">
+{% if token %}
+<table id="tabla">
+    <thead>
+        <th>Fecha de creaci&oacute;n</th><th>Fecha de caducidad</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ token.create_date }}</td>
+            <td {% if token.valid %} class="valido" {% else %} class="expirado"{% endif %}><span>{{ token.expiration_date }}</span></td>
+        </tr>
+        {% if token.valid %}
+            <tr>
+                <td colspan="2"><a target="_blank" href="{{ token.url }}">Enlace a este ticket</a><textarea>{{ token.url }}</textarea></td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% else %}
+    <div class="mensaje info">No hay ticket emitido</div>
+{% endif %}
+</div>
+
+<h2>Histórico de incidencias</h2>
+{% if v.informeproduccion.incidenciaproduccion_set.all %}    
+    <table id="tabla">
+        <thead>
+            <th>Emisor</th><th>Fecha</th><th>Aceptado</th><th>Comentario</th>
+        </thead>
+        <tbody>
+            {% for inci in v.informeproduccion.incidenciaproduccion_set.all %}
+                <tr><td>{{ inci.get_emisor_display }}</td><td>{{ inci.fecha|date:"G:i:s - d/m/Y" }}</td><td>{{ inci.aceptado }}</td><td>{{ inci.comentario }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="mensaje info">El hist&oacute;rico de incidencias esta vac&iacute;o.</div>
+{% endif%}
+
+<h2>Generar ticket</h2>
+<div class="formulario-nueva">
+    <form method="post" action="" class="form-nueva" id="formgenerarticket" name="formgenerarticket">
+        <ul>
+            {% csrf_token %}
+            {{ form.as_ul }}
+        </ul>
+        <hr/>
+        {% if token and token.valid %}
+        <div id="dialog-generarticket" title="¿Eliminar producci&oacute;n?">
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>¡Atenci&oacute;n! Ya hay un ticket en curso, si contin&uacute;a se anular&aacute; y se generar&aacute; otro. ¿Está seguro de querer continuar?</p>
+        </div>
+        <input {% if token and token.valid %}class="generarticket"{% endif %} value="generar ticket" type="submit"/>
+    {% else %}
+        <input value="generar ticket" type="submit"/>
+    {% endif %}
+    </form>
+</div>
+{% endblock %}
+
+{% block section-widget2 %} 
+    <div class="portlet">
+        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+        <div class="portlet-content">
+            <ul> 
+                <li class="tip">Poner descripci&oacute;n o enlaces sobre esta tabla</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

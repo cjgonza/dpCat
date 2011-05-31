@@ -35,7 +35,7 @@ $(document).ready(function() {
         });
     });
 
-// Mensajes tipo dialog
+// Dialog eliminar producción
     $( "#dialog-eliminar" ).dialog({
         autoOpen: false,
         modal: true
@@ -47,7 +47,7 @@ $(document).ready(function() {
         $( "#dialog-eliminar" ).dialog({
             autoOpen: false,
             resizable: false,
-            height:140,
+            height:160,
             modal: true,
             buttons: {
                 "Eliminar": function() {
@@ -61,6 +61,7 @@ $(document).ready(function() {
         $( "#dialog-eliminar" ).dialog("open");
     });
 
+// Dialog validación de producción
     $( "#dialog-validar" ).dialog({
         autoOpen: false,
         modal: true
@@ -72,7 +73,7 @@ $(document).ready(function() {
         $( "#dialog-validar" ).dialog({
             autoOpen: false,
             resizable: false,
-            height:140,
+            height:160,
             modal: true,
             buttons: {
                 "Validar": function() {
@@ -86,7 +87,7 @@ $(document).ready(function() {
         $( "#dialog-validar" ).dialog("open");
     });
 
-
+// Dialog publicación de producción
     $( "#dialog-publicar" ).dialog({
         autoOpen: false,
         modal: true
@@ -94,7 +95,6 @@ $(document).ready(function() {
 
     $(".publicar").click(function (e) {
         e.preventDefault();
-        var urlEliminar = $(this).attr("href");
         $( "#dialog-publicar" ).dialog({
             autoOpen: false,
             resizable: false,
@@ -109,8 +109,26 @@ $(document).ready(function() {
         $( "#dialog-publicar" ).dialog("open");
     });
 
+// Dialog generación de ticket
+    $('#dialog-generarticket').dialog({
+        autoOpen: false,
+        height: 160,
+        modal: true,
+        resizable: false,
+        buttons: {
+            "Generar ticket": function() {
+                document.formgenerarticket.submit();
+            },
+            "Cancelar": function() {
+                $(this).dialog("close");
+            }
+        }
+    });
 
-
+    $("input.generarticket").click(function(e) {
+        e.preventDefault();
+        $("#dialog-generarticket").dialog("open");
+    });
 
 });
 

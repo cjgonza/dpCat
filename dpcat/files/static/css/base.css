@@ -161,6 +161,12 @@ div.info,
     color: #666452;
 }
 
+.mensaje a:hover{
+    text-decoration: none;
+}
+.mensaje a{
+    color: #666452;
+}
 
 div.info {
     border-color: #A2B4EE;
