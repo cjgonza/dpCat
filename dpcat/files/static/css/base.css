@@ -888,6 +888,10 @@ a.link:hover {
 #tabla.cola th.log {
     width: 135px;
 }
+
+#tabla.infobasica th.date {
+    width: 180px;
+}
 #tabla.cola th.date {
     width: 160px;
 }

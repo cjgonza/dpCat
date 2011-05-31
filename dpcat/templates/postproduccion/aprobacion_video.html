@@ -11,7 +11,7 @@
         <script type="text/javascript">
             jwplayer("container").setup({
                 flashplayer: "/static/jwplayer/player.swf",
-                file: "{% url stream_video v.id %}",
+                file: "{% url stream_preview token %}",
                 height: 270,
                 width: 480
             });
@@ -19,7 +19,7 @@
 </div>
 
 <h2>Informaci&oacute;n b&aacute;sica de la producci&oacute;n</h2>
-<table id="tabla">
+<table id="tabla" class="infobasica">
     <thead>
         <th class="autor">Autor</th>
         <th class="date">Fecha</th>
@@ -31,7 +31,7 @@
             <td class="autor">{{ v.autor }}<br/>(<a class="email" href="mailto:{{v.email}}">{{ v.email }}</a>)</td>
             <td class="date">
                 <ul>
-                    <li>{{ v.informeproduccion.fecha_grabacion }} - Grabaci&oacute;n</li>
+                    <li>{{ v.informeproduccion.fecha_grabacion|date:"G:i:s - d/m/Y" }} - Grabaci&oacute;n</li>
                 </ul>
             </td>
             <td class="oper">{{ v.informeproduccion.operador }}</td>

@@ -3,17 +3,24 @@
 {% block page-title %}Configuraci&oacute;n{% endblock %}
 {% block section-class %} class = "formulario config" {% endblock %}
 {% block section-title %}<h1>Configuraci&oacute;n del sistema</h1>{% endblock %}
-{% block section-description %} <p>Personaliza las opciones de configuraci&oacute;n del sistema con las variables del entorno de despliegue.</p>{% endblock %}
+{% block section-description %}{% endblock %}
 
 {% block section-content %} 
-        <form method="post" action="">
+
+    <div class="formulario-nueva">
+        <form method="post" action="" class="form-nueva">
+        <ul>
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form.as_ul }}
+            </ul>
             <hr/>
             <input type="submit" value="Guardar" />
             <input type="reset" value="Restaurar formulario" />
 
         </form>
+    </div>
+
+
 {% endblock %}
 
 {% block section-widget %}

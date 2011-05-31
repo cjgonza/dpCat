@@ -1,6 +1,11 @@
-Estimado/a {{ nombre }}, le informamos que la grabación realizada a fecha {{ fecha }}, con título "{{ titulo }}" y número de referencia #{{ vid }} ya ha sido procesada. Por favor, acceda a la siguiente dirección para notificar su conformidad con el resultado e introducir la información requerida para su clasificación.
+Estimado/a {{ nombre }},
+
+Le informamos que la grabación realizada a fecha {{ fecha }}, con título "{{ titulo }}" y número de referencia #{{ vid }} ha sido procesada con éxito.
+
+Por favor, acceda a la siguiente dirección para notificar su conformidad con el resultado e introducir la información requerida para su clasificación.
 
 {{ url }}
 
 
-dpCat
+Atentamente,
+El equipo de dpCat

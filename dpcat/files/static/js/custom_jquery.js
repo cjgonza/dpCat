@@ -35,17 +35,16 @@ $(document).ready(function() {
         });
     });
 
-
-
-     $( "#dialog-confirm" ).dialog({
-            autoOpen: false,
-            modal: true
-        });
+// Mensajes tipo dialog
+    $( "#dialog-eliminar" ).dialog({
+        autoOpen: false,
+        modal: true
+    });
 
     $(".eliminar").click(function (e) {
         e.preventDefault();
         var urlEliminar = $(this).attr("href");
-        $( "#dialog-confirm" ).dialog({
+        $( "#dialog-eliminar" ).dialog({
             autoOpen: false,
             resizable: false,
             height:140,
@@ -59,8 +58,60 @@ $(document).ready(function() {
                 }
             }
         });
-        $( "#dialog-confirm" ).dialog("open");
+        $( "#dialog-eliminar" ).dialog("open");
     });
+
+    $( "#dialog-validar" ).dialog({
+        autoOpen: false,
+        modal: true
+    });
+
+    $(".validar").click(function (e) {
+        e.preventDefault();
+        var urlValidar = $(this).attr("href");
+        $( "#dialog-validar" ).dialog({
+            autoOpen: false,
+            resizable: false,
+            height:140,
+            modal: true,
+            buttons: {
+                "Validar": function() {
+                   window.location.href = urlValidar;
+                },
+                "Cancelar": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+        $( "#dialog-validar" ).dialog("open");
+    });
+
+
+    $( "#dialog-publicar" ).dialog({
+        autoOpen: false,
+        modal: true
+    });
+
+    $(".publicar").click(function (e) {
+        e.preventDefault();
+        var urlEliminar = $(this).attr("href");
+        $( "#dialog-publicar" ).dialog({
+            autoOpen: false,
+            resizable: false,
+            height:160,
+            modal: true,
+            buttons: {
+                "Cerrar": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+        $( "#dialog-publicar" ).dialog("open");
+    });
+
+
+
+
 });
 
 

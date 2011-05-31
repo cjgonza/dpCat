@@ -1,4 +1,6 @@
-Estimado/a {{ nombre }}, respecto a la grabación realizada a fecha {{ fecha }}, con título "{{ titulo }}" y número de referencia #{{ vid }} le informamos que:
+Estimado/a {{ nombre }},
+
+Le informamos que la grabación realizada a fecha {{ fecha }}, con título "{{ titulo }}" y número de referencia #{{ vid }} ha recibido un comentario por parte del técnico operador {{ operador }} que dice lo siguiente:
 
 "{{ texto }}"
 
@@ -6,4 +8,6 @@ Por favor, acceda a la siguiente dirección para notificar su conformidad con el
 
 {{ url }}
 
-dpCat.
+
+Atentamente,
+El equipo de dpCat
