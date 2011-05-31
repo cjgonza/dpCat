@@ -132,7 +132,7 @@ def resumen_video(request, video_id):
             queue.enqueue_copy(v)
         v.set_status('DEF')
         messages.success(request, "Producción creada y encolada para su procesado")
-        return redirect('postproduccion.views.estado_video', v.id)
+        return redirect('index')
     return render_to_response("postproduccion/section-nueva-paso3.html", { 'v' : v }, context_instance=RequestContext(request))
 
 """
