@@ -356,7 +356,7 @@ def gestion_tickets(request, video_id):
             inpro.save()
             v.status = 'PTU'
             v.save()
-            token.send_custom_mail_to_user(v, inpro.comentario)
+            token.send_custom_mail_to_user(v, inpro.comentario, request.user.first_name)
             messages.success(request, "Ticket generado y enviado al usuario")
             return redirect('gestion_tickets', v.id)
     else:
@@ -375,6 +375,8 @@ def validar_produccion(request, video_id):
         v.informeproduccion.save()
         v.status = 'LIS'
         v.save()
+        if v.informeproduccion.aprobacion:
+            token.send_validation_mail_to_user(v, request.user.first_name)
         queue.removeVideoTasks(v)
         messages.success(request, "Producción validada")
     else:
