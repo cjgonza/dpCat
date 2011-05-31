@@ -51,8 +51,8 @@ class Video(models.Model):
     plantilla = models.ForeignKey(PlantillaFDV, null = True, blank = True)
 
  
-    titulo = models.CharField(max_length = 30)
-    autor = models.CharField(max_length = 30)
+    titulo = models.CharField(max_length = 255)
+    autor = models.CharField(max_length = 255)
     email = models.EmailField()
 
     def __unicode__(self):
