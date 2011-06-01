@@ -1760,3 +1760,18 @@ form.form-nueva ul.errorlist li{
     padding: 0px;
 }
 
+
+.info-interes li {
+    text-shadow: 1px 1px 0px #eee;
+}
+
+.pagination a,
+.pagination {
+    color: #373737;
+    font: normal 11px Arial;
+    text-decoration: none;
+}
+
+.pagination a:hover {
+    text-decoration: underline;
+}
