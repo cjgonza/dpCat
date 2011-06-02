@@ -941,11 +941,17 @@ a.link:hover {
 #tabla tbody td.title {
     font-size: 12px;
 }
-#tabla a {
+#tabla a,
+#tabla td.title a {
     color: #05396B;
     text-decoration: none;
-    background: url(../img/icon/links12.png) 0 2px no-repeat;
-    padding-left: 20px;
+    background: url(../img/icon/link-estado.png) 0 50% no-repeat;
+    padding-left: 12px;
+    font-size: 11px;
+}
+#tabla a {
+    background-image: url(../img/icon/links12.png);
+    padding-left: 17px;
 }
 
 #tabla a:hover {
