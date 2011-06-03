@@ -40,6 +40,21 @@ def get_fdv_template(v):
     return render_to_response('postproduccion/get_fdv_template.mlt', { 'data' : data })
 
 """
+Devuelve un diccionario con los valores iniciales de la metadata
+"""
+def get_initial_metadata(v):
+    dom = parseString(v.tecdata.xml_data)
+    meta = dict()
+    meta['publisher'] = 'dpCat'
+    meta['date'] = v.informeproduccion.fecha_grabacion
+    meta['modified'] = v.informeproduccion.fecha_grabacion
+    meta['created'] = v.informeproduccion.fecha_grabacion
+    meta['extent'] = dom.getElementsByTagName('Duration')[0].firstChild.data
+    meta['format'] = dom.getElementsByTagName('Format')[0].firstChild.data
+    meta['identifier'] = "DPCAT#%d" % v.id
+    return meta
+
+"""
 """
 def generate_tecdata(v):
     try:

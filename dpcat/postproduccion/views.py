@@ -271,7 +271,7 @@ def definir_metadatos_user(request, tk_str):
             v.save()
             return render_to_response("postproduccion/section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : True }, context_instance=RequestContext(request))
     else:
-        form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
+        form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm(initial = video.get_initial_metadata(v))
     return render_to_response("postproduccion/section-metadatos-user.html", { 'form' : form, 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
@@ -317,7 +317,7 @@ def definir_metadatos_oper(request, video_id):
             m.save()
             messages.success(request, 'Metadata actualizada')
     else:
-        form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
+        form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm(initial = video.get_initial_metadata(v))
     return render_to_response("postproduccion/section-metadatos-oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
 
 
@@ -373,6 +373,8 @@ def validar_produccion(request, video_id):
     if hasattr(v, 'metadata'):
         v.informeproduccion.fecha_validacion = datetime.datetime.now()
         v.informeproduccion.save()
+        v.metadata.valid = v.informeproduccion.fecha_validacion
+        v.metadata.save()
         v.status = 'LIS'
         v.save()
         if v.informeproduccion.aprobacion:

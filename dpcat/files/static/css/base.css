@@ -1685,9 +1685,15 @@ a.reset {
     margin: 0 auto;
 }
 
+/*
 #box-pendientes .mensaje,
+#box-enproceso .mensaje,
 #box-ultimas .mensaje,
 #box-alertas .mensaje{
+    margin: 10px;
+}
+*/
+.portlet-content .mensaje{
     margin: 10px;
 }
 

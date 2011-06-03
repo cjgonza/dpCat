@@ -43,9 +43,9 @@
 <h2>Completar la metadata de producci&oacute;n</h2>
 <div class="formulario-nueva">
     <form method="post" action="" class="form-nueva">
+        {% csrf_token %}
         <ul>
-            {% csrf_token %}
-            {{ form.as_ul }}
+        {{ form.as_ul }}
         </ul>
         <hr/>
         <input type="submit" value="Aprobar producci&oacute;n y enviar metadata" />

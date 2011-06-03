@@ -34,6 +34,11 @@ class MetadataForm(ModelForm):
     class Meta:
         model = Metadata
 
+    def __init__(self, *args, **kwargs):
+        super(MetadataForm, self).__init__(*args, **kwargs)
+        self.fields['created'].widget.attrs['disabled'] = True
+        self.fields['valid'].widget.attrs['disabled'] = True
+
 class ConfigForm(Form):
     max_encoding_tasks = forms.IntegerField(label = u'Nº máximo de codificaciones simultaneas')
     mediainfo_path = forms.CharField(label = u'Ruta del \'mediainfo\'')
