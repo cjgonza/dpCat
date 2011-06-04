@@ -147,128 +147,116 @@ class Metadata(models.Model):
     video = models.OneToOneField(Video, editable = False)
 
     AUDIENCE_KEYS = (
-        ('AA', u'teacher'),
-        ('AB', u'author'),
-        ('AC', u'learner'),
-        ('AD', u'manager'),
+        ('AA', u'Profesor'),
+        ('AB', u'Autor'),
+        ('AC', u'Alumno'),
+        ('AD', u'Otro'),
     )
 
     TYPE_KEYS = (
         ('AA', u'Conferencia'),
-        ('AB', u'documental'),
-        ('AC', u'coloquio'),
-        ('AD', u'curso'),
-        ('AE', u'institucional'),
-        ('AF', u'ficción'),
-        ('AG', u'mesa redonda'),
-        ('AH', u'exposición de trabajos'),
-        ('AI', u'apertura'),
-        ('AJ', u'clausura'),
-        ('AK', u'conferencia inaugural'),
-        ('AL', u'conferencia de clausura'),
-        ('AM', u'preguntas y respuestas'),
-        ('AN', u'conferencia'),
-        ('AO', u'intervención'),
-        ('AP', u'presentación'),
-        ('AQ', u'demostración'),
-        ('AR', u'entrevista'),
-        ('AS', u'video promocional'),
-        ('AT', u'videoconferencia'),
+        ('AB', u'Documental'),
+        ('AC', u'Coloquio'),
+        ('AD', u'Curso'),
+        ('AE', u'Institucional'),
+        ('AF', u'Ficción'),
+        ('AG', u'Mesa redonda'),
+        ('AH', u'Exposición de trabajos'),
+        ('AI', u'Apertura'),
+        ('AJ', u'Clausura'),
+        ('AK', u'Conferencia inaugural'),
+        ('AL', u'Conferencia de clausura'),
+        ('AM', u'Preguntas y respuestas'),
+        ('AN', u'Intervención'),
+        ('AO', u'Presentación'),
+        ('AP', u'Demostración'),
+        ('AQ', u'Entrevista'),
+        ('AR', u'Video promocional'),
+        ('AS', u'Videoconferencia'),
     )
 
     INTERACTIVITY_TYPE_KEYS = (
-        ('AA', u'Active'),
-        ('AB', u'expositive'),
-        ('AC', u'mixed'),
-        ('AD', u'undefined'),
+        ('AA', u'Activa'),
+        ('AB', u'Expositiva'),
+        ('AC', u'Combinada (activa y expositiva)'),
+        ('AD', u'Otra'),
     )
 
     LEARNING_RESOURCE_TYPE_KEYS = (
-        ('AA', u'Exercise'),
-        ('AB', u'index'),
-        ('AC', u'experiment'),
-        ('AD', u'diagram'),
-        ('AE', u'narrative'),
-        ('AF', u'simulation'),
-        ('AG', u'slide'),
-        ('AH', u'problem statement'),
-        ('AI', u'figure'),
-        ('AJ', u'text'),
-        ('AK', u'questionnaire'),
-        ('AL', u'table'),
-        ('AM', u'self assessment'),
-        ('AN', u'graph'),
-        ('AO', u'exam'),
+        ('AA', u'Ejercicio'),
+        ('AB', u'Índice'),
+        ('AC', u'Experimento'),
+        ('AD', u'Diagrama'),
+        ('AE', u'Narración'),
+        ('AF', u'Simulación'),
+        ('AG', u'Presentación'),
+        ('AH', u'Enunciado del problema'),
+        ('AI', u'Figura'),
+        ('AJ', u'Texto'),
+        ('AK', u'Cuestionario'),
+        ('AL', u'Tabla'),
+        ('AM', u'Autoevaluación'),
+        ('AN', u'Gráfico'),
+        ('AO', u'Examen'),
     )
 
     INTERACTIVITY_LEVEL_KEYS = (
-        ('AA', u'very low'),
-        ('AB', u'low'),
-        ('AC', u'medium'),
-        ('AD', u'high'),
-        ('AE', u'very high'),
+        ('AA', u'Muy bajo: Documento, imagen, video, sonido, etc. de carácter expositivo.'),
+        ('AB', u'Bajo: Conjunto de documentos, imágenes, vídeos, sonidos, etc. enlazados.'),
+        ('AC', u'Medio: El contenido dispone de elementos interactivos'),
+        ('AD', u'Alto: Cuestionario, consulta, encuesta, examen, ejercicio, etc.'),
+        ('AE', u'Muy alto: Juego, simulación, etc.'),
     )
 
     SEMANTIC_DENSITY_KEYS = (
-        ('AA', u'very low'),
-        ('AB', u'low'),
-        ('AC', u'medium'),
-        ('AD', u'high'),
-        ('AE', u'very high'),
-    )
-
-    INTENTED_END_USER_ROLE_KEYS = (
-        ('AA', u'Teacher'),
-        ('AB', u'author'),
-        ('AC', u'learner'),
-        ('AD', u'manager'),
+        ('AA', u'Muy bajo: contenido de carácter irrelevante.'),
+        ('AB', u'Bajo: contiene elementos interactivos para el usuario.'),
+        ('AC', u'Medio: contenido audiovisual complejo, etc.'),
+        ('AD', u'Alto: gráficos, tablas, diagramas complejos, etc.'),
+        ('AE', u'Muy alto: presentaciones gráficas complejas o producciones audiovisuales. '),
     )
 
     CONTEXT_KEYS = (
-        ('AA', u'primary education'),
-        ('AB', u'secondary education'),
-        ('AC', u'higher education'),
-        ('AD', u'university first cycle'),
-        ('AE', u'university second cycle'),
-        ('AF', u'university postgraduate'),
-        ('AG', u'technical school first cycle'),
-        ('AH', u'technical school second cycle'),
-        ('AI', u'professional formation'),
-        ('AJ', u'continuous formation'),
-        ('AK', u'vocational training'),
+        ('AA', u'Educación primaria'),
+        ('AB', u'Educación secundaria'),
+        ('AC', u'Educación superior'),
+        ('AD', u'Universitario de primer ciclo'),
+        ('AE', u'Universitario de segundo ciclo'),
+        ('AF', u'Universitario de posgrado'),
+        ('AG', u'Escuela técnica de primer ciclo'),
+        ('AH', u'Escuela técnica de segundo ciclo'),
+        ('AI', u'Formación profesional'),
+        ('AJ', u'Formación continua'),
+        ('AK', u'Formación vocacional'),
     )
 
     DIFICULTY_KEYS = (
-        ('AA', u'Very easy'),
-        ('AB', u'easy'),
-        ('AC', u'medium'),
-        ('AD', u'difficult'),
-        ('AE', u'very difficult'),
+        ('AA', u'Muy fácil: Conocimiento, comprensión, etc.'),
+        ('AB', u'Fácil: Aplicación'),
+        ('AC', u'Dificultad media: Análisis'),
+        ('AD', u'Difícil: Síntesis'),
+        ('AE', u'Muy difícil: Evaluación'),
     )
 
     EDUCATIONAL_LANGUAGE_KEYS = (
-        ('AA', u'expositive'),
-        ('AB', u'semantic'),
-        ('AC', u'lexicon'),
+        ('AA', u'Expositivo'),
+        ('AB', u'Semántico'),
+        ('AC', u'Lexico'),
     )
 
     PURPOSE_KEYS = (
-        ('AA', u'discipline'),
-        ('AB', u'idea'),
-        ('AC', u'prerequisite'),
-        ('AD', u'educational objective'),
-        ('AE', u'accessibility restrictions'),
-        ('AF', u'educational level'),
-        ('AG', u'skill level'),
-        ('AH', u'security level'),
+        ('AA', u'Multidisciplinar'),
+        ('AB', u'Descripción de concepto / idea'),
+        ('AC', u'Requisito educativo'),
+        ('AD', u'Mejora de competencias educativas'),
     )
 
     GUIDELINE_KEYS = (
-        ('AA', u'ciencias de la saud'),
-        ('AB', u'ciencias experimentales'),
-        ('AC', u'ciencias jurídico-sociales'),
-        ('AD', u'ciencias tecnologicas'),
-        ('AE', u'humanidades'),
+        ('AA', u'Ciencias de la salud'),
+        ('AB', u'Ciencias experimentales'),
+        ('AC', u'Ciencias jurídico-sociales'),
+        ('AD', u'Ciencias tecnológicas'),
+        ('AE', u'Humanidades'),
     )
 
     UNESCO_KEYS = (
@@ -278,66 +266,61 @@ class Metadata(models.Model):
         ('AD', u'Ciencias Jurídicas y Derecho'),
         ('AE', u'Ciencias Agronómicas y Veterinarias'),
         ('AF', u'Ciencias de la Tecnología'),
-        ('AG', u'ciencias de la Tierra y el Cosmos'),
+        ('AG', u'Ciencias de la Tierra y el Cosmos'),
         ('AH', u'Ciencias de la Vida'),
         ('AI', u'Ciencias Económicas'),
         ('AJ', u'Ciencias Políticas'),
         ('AK', u'Corporativo'),
         ('AL', u'Demografía'),
-        ('AM', u'ética'),
-        ('AN', u'filosofía'),
-        ('AO', u'física'),
-        ('AP', u'geografía'),
-        ('AQ', u'historia'),
-        ('AR', u'lingüistia'),
-        ('AS', u'lógica'),
-        ('AT', u'matemáticas'),
-        ('AU', u'medicina y patologías humanas'),
-        ('AV', u'noticias'),
-        ('AW', u'pedagogía'),
-        ('AX', u'psicología'),
-        ('AY', u'química'),
-        ('AZ', u'sociología'),
-        ('BA', u'vida universitaria'),
+        ('AM', u'Ética'),
+        ('AN', u'Filosofía'),
+        ('AO', u'Física'),
+        ('AP', u'Geografía'),
+        ('AQ', u'Historia'),
+        ('AR', u'Lingüistia'),
+        ('AS', u'Lógica'),
+        ('AT', u'Matemáticas'),
+        ('AU', u'Medicina y patologías humanas'),
+        ('AV', u'Noticias'),
+        ('AW', u'Pedagogía'),
+        ('AX', u'Psicología'),
+        ('AY', u'Química'),
+        ('AZ', u'Sociología'),
+        ('BA', u'Vida universitaria'),
     )
 
-    title = models.CharField(max_length = 255, verbose_name = u'Título')
-    keyword = models.CharField(max_length = 255, verbose_name = u'Claves / etiquetas')
-    description = models.TextField(verbose_name = u'Descripción')
-    audience = models.CharField(max_length = 2, choices = AUDIENCE_KEYS, verbose_name = u'Audiencia / Público')
-    source = models.CharField(max_length = 255, null = True, blank = True, verbose_name = u'Source / ID')
+    title = models.CharField(max_length = 255, verbose_name = u'Título completo de la producción')
+    creator = models.CharField(max_length = 255, verbose_name = u'Autor/es o creador/es')
+    contributor = models.CharField(max_length = 255, verbose_name = u'Colaborador/es', help_text = u'Aquellas personas, entidades u organizaciones que han participado en la creación de esta producción')
+    keyword = models.CharField(max_length = 255, verbose_name = u'Palabras clave o etiquetas', help_text = u'Pude incluir tantas como quiera siempre y cuando se separen por comas.')
+    description = models.TextField(verbose_name = u'Descripción breve')
+    audience = models.CharField(max_length = 2, choices = AUDIENCE_KEYS, verbose_name = u'Audiencia o público objetivo')
+    typical_age_range = models.CharField(max_length = 255, verbose_name = u'Edad de la audiencia o público objetivo')
+    source = models.CharField(max_length = 255, null = True, blank = True, verbose_name = u'Identificador de obra derivada', help_text = u'Si el contenido es derivado de otra material, indique aquí la referencia al original')
     language = models.CharField(max_length = 255, verbose_name = u'Idioma')
-    relation = models.CharField(max_length = 255, null = True, blank = True, verbose_name = u'Producción relacionada')
-    ispartof = models.CharField(max_length = 255, null = True, blank = True, verbose_name = u'Es parte de')
-    location = models.CharField(max_length = 255, verbose_name = u'Localización')
-    venue = models.CharField(max_length = 255, verbose_name = u'Lugar de celebración')
-    temporal = models.TextField(null = True, blank = True, verbose_name = u'Intervalo de tiempo')
-    creator = models.CharField(max_length = 255, verbose_name = u'Autor o creador')
-    publisher = models.CharField(max_length = 255, verbose_name = u'Editor')
-    contributor = models.CharField(max_length = 255, verbose_name = u'Colaboradores')
-    license = models.CharField(max_length = 255, verbose_name = u'Licencia de uso')
-    rightsholder = models.CharField(max_length = 255, verbose_name = u'Responsable derechos de autor')
+    ispartof = models.CharField(max_length = 255, null = True, blank = True, verbose_name = u'Serie a la que pertenece')
+    location = models.CharField(max_length = 255, verbose_name = u'Localización', help_text = u'Por ejemplo: el nombre de la institución, departamento, edificio, etc.')
+    venue = models.CharField(max_length = 255, verbose_name = u'Lugar de celebración', help_text = u'Por ejemplo: San Cristóbal de La Laguna, Tenerife (España)')
+    temporal = models.TextField(null = True, blank = True, verbose_name = u'Intervalo de tiempo', help_text = u'Si en la producción intervienen diferentes actores, indique aquí el nombre y el momento en el que interviene cada uno de ellos.')
+    license = models.CharField(max_length = 255, verbose_name = u'Licencia de uso', help_text = u'Si el contenido dispone de alguna limitación de uso, incluya aquí una referencia a su licencia.')
+    rightsholder = models.CharField(max_length = 255, verbose_name = u'Persona, entidad u organización responsable de la gestión de los derechos de autor')
     date = models.DateTimeField(verbose_name = u'Fecha de grabación')
-    modified = models.DateTimeField(verbose_name = u'Fecha de modificación')
-    created = models.DateTimeField(verbose_name = u'Fecha de producción')
-    valid = models.DateTimeField(null = True, blank = True, verbose_name = u'Fecha de validación')
-    extent = models.CharField(max_length = 255, verbose_name = u'Duración')
-    type = models.CharField(max_length = 2, choices = TYPE_KEYS, verbose_name = u'Tipo')
-    format = models.CharField(max_length = 255, verbose_name = u'Formato')
-    identifier = models.CharField(max_length = 255, verbose_name = u'Identificador del recurso')
-    interactivity_type = models.CharField(max_length = 2, choices = INTERACTIVITY_TYPE_KEYS)
-    learning_resource_type = models.CharField(max_length = 2, choices = LEARNING_RESOURCE_TYPE_KEYS)
-    interactivity_level = models.CharField(max_length = 2, choices = INTERACTIVITY_LEVEL_KEYS)
-    semantic_density = models.CharField(max_length = 2, choices = SEMANTIC_DENSITY_KEYS)
-    intented_end_user_role = models.CharField(max_length = 2, choices = INTENTED_END_USER_ROLE_KEYS)
-    context = models.CharField(max_length = 2, choices = CONTEXT_KEYS)
-    typical_age_range = models.CharField(max_length = 255)
-    dificulty = models.CharField(max_length = 2, choices = DIFICULTY_KEYS)
-    typical_learning_time = models.CharField(max_length = 255)
-    educational_language = models.CharField(max_length = 2, choices = EDUCATIONAL_LANGUAGE_KEYS)
-    purpose = models.CharField(max_length = 2, choices = PURPOSE_KEYS)
-    guideline = models.CharField(max_length = 2, choices = GUIDELINE_KEYS)
-    unesco = models.CharField(max_length = 2, choices = UNESCO_KEYS)
+    modified = models.DateTimeField(verbose_name = u'Fecha de modificación', help_text = u'Normalmente es la misma que la fecha de grabación')
+    created = models.DateTimeField(verbose_name = u'Fecha de producción', help_text = u'La fecha de producción será incluida de manera automática por el sistema')
+    valid = models.DateTimeField(null = True, blank = True, verbose_name = u'Fecha de validación', help_text = u'La fecha de validación será incluida de manera automática por el sistema.')
+    extent = models.CharField(max_length = 255, verbose_name = u'Duración', help_text = u'Por ejemplo: 6:03 minutos')
+    type = models.CharField(max_length = 2, choices = TYPE_KEYS, verbose_name = u'Tipo de producción')
+    interactivity_type = models.CharField(max_length = 2, choices = INTERACTIVITY_TYPE_KEYS, verbose_name = u'Tipo de interacción con la audiencia o público objetivo')
+    interactivity_level = models.CharField(max_length = 2, choices = INTERACTIVITY_LEVEL_KEYS, verbose_name = u'Nivel de interacción')
+    learning_resource_type = models.CharField(max_length = 2, choices = LEARNING_RESOURCE_TYPE_KEYS, verbose_name = u'Tipo de recurso educativo')
+    semantic_density = models.CharField(max_length = 2, choices = SEMANTIC_DENSITY_KEYS, verbose_name = u'Densidad semántica del contenido')
+    context = models.CharField(max_length = 2, choices = CONTEXT_KEYS, verbose_name = u'Contexto educativo')
+    dificulty = models.CharField(max_length = 2, choices = DIFICULTY_KEYS, verbose_name = u'Dificultad')
+    typical_learning_time = models.CharField(max_length = 255, verbose_name = u'Tiempo estimado para la adquisición de conocimientos', help_text = u'Ejemplo: 2 horas')
+    educational_language = models.CharField(max_length = 2, choices = EDUCATIONAL_LANGUAGE_KEYS, verbose_name = u'Características del lenguaje educativo')
+    purpose = models.CharField(max_length = 2, choices = PURPOSE_KEYS, verbose_name = u'Objetivo del contenido')
+    guideline = models.CharField(max_length = 2, choices = GUIDELINE_KEYS, verbose_name = u'Área de conocimiento')
+    unesco = models.CharField(max_length = 2, choices = UNESCO_KEYS, verbose_name = u'Dominio de conocimiento')
 
     class Meta:
         verbose_name = u'Metadatos'
