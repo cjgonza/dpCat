@@ -1,15 +1,15 @@
+/*
+Estilos dpCAT 2011
+*/
+
 body {
     font: normal 12px Arial;
-    margin: 0px;
-    padding: 0px;
     background: #fff;
 }
 
-body.login {
-    background: url(../img/login_bg.jpg) 0 0 no-repeat;
-}
+body.login { background: url(../img/login_bg.jpg) 0 0 no-repeat; }
 
-/* tamaño global */
+#inner-footer,
 #inner-content,
 #inner-header {
     max-width: 1260px;
@@ -17,133 +17,95 @@ body.login {
     margin: 0 auto;
 }
 
-/* login.html */
 #main-login {
     margin: 0 auto;
-    margin-top: 100px;
-    width: 448px;
+    margin-top: 80px;
+    width: 500px;
 }
 
+#main-login .column .portlet {
+    margin: 0px;
+    padding: 0px;
+}
+#main-login .column ul li:last-child {
+    margin-bottom: 10px;
+}
+#main-login .column ul{
+    padding: 20px;
+    padding-bottom: 0px;
+}
+#main-login .column {
+    float: none;
+    width: 100%;
+}
 #main-login h1 {
     color: #fff;
     font: bold 45px Arial;
     text-shadow: 2px 2px 7px #111;
     margin: 0px;
-    padding: 5px 30px;
-    width: 100%;
-    text-align: left;
-
-}
-#loginbox {
-    background: url(../img/loginbox_bg.png) 0 0 no-repeat;
-    padding: 30px;
-    width: 100%;
-    height: 212px;
-}
-
-#loginbox form {
-    padding: 25px;
-}
-
-#loginbox form ul {
-    list-style: none;
-    margin: 0px auto;
-    padding: 0px;
-    margin-top: 40px;
-}
-
-
-#loginbox form li {
-    overflow: hidden;
-    width: 365px;
-    margin: 0 auto 10px;
-}
-#loginbox form li label {
-    width: 135px;
-    display: block;
-    clear: both;
-    float: left;
-    margin-right: 15px;
-    text-align: left;
-    color: #336699;
-    font: bold 14px Arial; 
-    text-shadow: -1px 1px #ddd;
-    line-height: 28px;
-}
-
-#loginbox form li input {
-    float: left;
-    clear: right;
-    line-height: 25px;
-    border: solid 1px #336699;
-    -moz-border-radius: 2px;
-    padding: 5px;
-    color: #555555;
-    width: 200px;
-}
-
-#loginbox input[type="submit"] {
-    background: #336699;
-    color: #fff;
-    border: 0px;
-    -moz-border-radius: 3px;
-    float: right;
-    margin-right: 19px;
-    padding: 4px 15px;
-    font-size: 12px;
-}
-
-
-/* Footer-box */
-.footer-box {
-    bottom: 0px;
-    position: absolute;
-    padding: 0px;
-    margin: 0px;
-    width: 100%;
-}
-
-.footer-content {
-    border-top: solid 1px #336699;
-    overflow: hidden;
-}
-
-
-.footer-content ul {
-    list-style: none;
-    margin: 0px;
     margin-bottom: 15px;
-    padding: 10px 20px;
-    overflow: hidden;
+    padding: 0px;
+    width: 100%;
+    text-align: left;
 }
 
-.footer-content ul li {
-    float: left;
+#loginbox form.form-nueva {
+    clear: both;
+}
+#loginbox form.form-nueva input[type="submit"] {
+    margin-bottom: 15px;
     margin-right: 20px;
-    color: #4775a3;
+}
+#loginbox form.form-nueva input[type="password"],
+#loginbox form.form-nueva input[type="text"] {
+    width: 444px;
 }
 
-.footer-content ul li a{
+.bottom-links {
+    float: right;
+}
+.bottom-links,
+#loginbox .login-bottom {
+    clear: both;
+    margin: 0px 20px;
+}
+.bottom-links ul,
+#loginbox .login-bottom ul {
+    margin: 0px;
+    padding: 0px;
+    margin-top: 5px;
+}
+.bottom-links ul li:first-child,
+#loginbox .login-bottom ul li:first-child {
+    margin: 0px;
+    padding: 0px;
+}
+
+.bottom-links ul li,
+#loginbox .login-bottom ul li{
+    float: left;
+    margin-left: 10px;
+}
+.bottom-links ul li a,
+#loginbox .login-bottom ul li a {
     text-decoration: none;
+    color: #888;
     font-size: 10px;
-    font-weight: bold;
-    color: #fff;
 }
 
-
-.footer-content ul li a:hover {
+.bottom-links ul li a:hover,
+#loginbox .login-bottom ul li a:hover {
     text-decoration: underline;
 }
 
-.footer-content ul li.name {
-    float: right;
-    color: #033769;
+#loginbox form.form-nueva ul.errorlist {
+    width: 418px;
+    padding: 8px;
+    padding-left: 30px;
 }
 
-#loginbox .mensaje {
-    width: 408px;
-    margin: 0 auto;
-    float: left;
+#loginbox form.form-nueva ul.errorlist li{
+    margin-bottom: 0px;
 }
 
 div.info,
@@ -151,6 +113,8 @@ div.info,
     font: normal 12px Arial;
     border: solid 1px #adc2d6;
     -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
     margin: 20px auto;
     padding: 10px;
     padding-left: 30px;
@@ -161,7 +125,7 @@ div.info,
     color: #666452;
 }
 
-.mensaje a:hover{
+.mensaje a:hover {
     text-decoration: none;
 }
 .mensaje a{
@@ -193,6 +157,8 @@ div.info {
     color: #DF8F8F;
     padding-left: 28px;
     -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
     display: block;
 }
 
@@ -271,9 +237,6 @@ a.cerrar:hover {
     text-decoration: underline;
 }
 
-/* index */
-#page-index { }
-
 /****************************/
 /* main-header y derivados */
 /****************************/
@@ -318,7 +281,12 @@ a.cerrar:hover {
     margin-right: 10px;
     background: #fff url(../img/title-bg.png) 0 -4px repeat-x;
     -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
     border: solid 1px #336699;
+}
+#inner-menu-content ul.utils li a {
+    display: inline;
 }
 #inner-menu-content ul li a {
     text-decoration: none;
@@ -327,6 +295,7 @@ a.cerrar:hover {
     color: #336699; 
     text-shadow: 0 1px 0 #fff;
     padding-right: 8px;
+    display: block;
 }
 #inner-menu-content ul li:hover {
     background-image: none;
@@ -360,43 +329,17 @@ text-decoration: underline;
     padding: 0px;
 }
 
-#inner-menu-content ul.utils li a.icon-logout:hover,
+#inner-menu-content ul li a {
+    padding-left: 30px;
+}
 #inner-menu-content ul.utils li a:hover {
     text-decoration: underline;
 }
-#inner-menu-content ul li a.nuevaproduccion {
-    background:url(../img/icon/showreel16.png) 8px 50% no-repeat;
-    padding-left: 30px;
-}
 
-#inner-menu-content ul li a.monitorizacion {
-    background:url(../img/icon/order16.png) 8px 50% no-repeat;
-    padding-left: 30px;
-}
-
-#inner-menu-content ul li a.videoteca {
-    background:url(../img/icon/videoteca16.png) 8px 50% no-repeat;
-    padding-left: 30px;
-}
-
-#inner-menu-content ul li a.home {
-    background:url(../img/icon/home16.png) 8px 50% no-repeat;
-    padding-left: 30px;
-}
-#inner-menu-content ul.utils li a.icon-address {
-    background:url(../img/icon/estado16.png) 8px 50% no-repeat;
-    padding-left: 30px;
-}
-
-#inner-menu-content ul.utils li a.icon-config {
-    background:url(../img/icon/config.png) 8px 50% no-repeat;
-    padding-left: 30px;
-}
-
-#inner-menu-content ul.utils li a.icon-logout {
-    background:url(../img/icon/logout.png) 8px 50% no-repeat;
-padding-left: 20px;
-}
+#inner-menu-content ul li a.nuevaproduccion { background:url(../img/icon/showreel16.png) 8px 50% no-repeat; }
+#inner-menu-content ul li a.monitorizacion { background:url(../img/icon/order16.png) 8px 50% no-repeat; }
+#inner-menu-content ul li a.videoteca { background:url(../img/icon/videoteca16.png) 8px 50% no-repeat; }
+#inner-menu-content ul li a.home { background:url(../img/icon/home16.png) 8px 50% no-repeat; }
 
 #logo {
     float: left;
@@ -407,14 +350,6 @@ padding-left: 20px;
     margin-top: 10px;
 }
 
-/* Logo en caso de tener imagen.
-#logo a {
-    display: block;
-    height: 70px;
-    width: 250px;
-    text-indent:-9999px;
-}*/
-
 #logo a {
     color: #fff;
     font: bold 40px Arial;
@@ -422,11 +357,6 @@ padding-left: 20px;
     text-shadow: 1px 1px 2px #111;
     margin: 0px;
     padding: 0px;
-}
-
-#menu-header ul li a.icon-logout {
-    background: #fff url(../img/icon/logout.png) 4px 50% no-repeat;
-    padding-left: 25px;
 }
 
 /****************************/
@@ -457,6 +387,8 @@ padding-left: 20px;
 #inner-content #content {
     border: solid 1px #d6e0eb;
     -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
     padding: 15px;
     overflow: hidden;
 }
@@ -534,9 +466,13 @@ padding-left: 20px;
     width: 300px;
     border: solid 1px #acacac;
     -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+
 }
 
 
+#loginbox form.form-nueva input[type="submit"]:hover,
 #content.informe-video input[type="submit"]:hover {
     background-image: none;
 }
@@ -548,12 +484,16 @@ padding-left: 20px;
     text-shadow: 0px 1px 0px #fff;
 }
 
+#loginbox form.form-nueva input[type="submit"],
 #content.informe-video input[type="submit"],
 #content.formulario input[type="submit"],
 #content.formulario input[type="reset"] {
     color: #fff;
     border: 0px;
     -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+   
     padding: 8px 60px;
     font: bold 12px Arial;
     letter-spacing: 1px;
@@ -562,6 +502,7 @@ padding-left: 20px;
     cursor: pointer;
     background: #2b84d8 url("../img/title-bg.png") 0 0 repeat-x;
     border: solid 1px #336699;
+    overflow: hidden;
 }
 
 #content.informe-video form.form-validacion {
@@ -575,54 +516,6 @@ padding-left: 20px;
     padding-bottom: 10px;
 }
 
-/*
-#content.informe-video input[type="submit"] {
-    float: left;
-    margin-left: 130px;
-}
-#content.informe-video input[type="submit"] {
-    border-color: #9ADF8F;
-    background: #D5FFCE url(../img/icon/check16.png) 5px 50% no-repeat;
-    color: #373737;
-    letter-spacing: 0px;
-    margin-top: 0px;
-    margin-left: 0px;
-    padding: 8px 10px 8px 25px;
-}
-#content.informe-video .form-validacion-rechaza input[type="submit"] {
-    border: solid 1px #DF8F8F;
-    background: #FFCECE url(../img/icon/error16.png) 5px 50% no-repeat;   
-}
-
-#content.informe-video .form-validacion-rechaza .rechazar {
-    width: 60px;
-    border: solid 1px #A2B4EE;
-    background: #d5e6f7;
-    padding-left: 5px;
-    padding-right: 5px;
-}
-
-#content.informe-video .rechazar {
-    font: bold 12px Arial;
-    -moz-border-radius: 3px;
-    border: solid 1px #DF8F8F;
-    background: #FFCECE url(../img/icon/error16.png) 5px 50% no-repeat;   
-    margin: 0px;
-    width: 130px;
-    line-height: 33px;
-    padding-left: 25px;
-    padding-right: 10px;
-    display: block;
-    float: left;
-    margin-right: 10px;
-    text-align: center;
-    cursor: pointer;
-}
-#content.informe-video .form-validacion-rechaza label {
-    display: none;
-}
-
-*/
 #content.formulario input[type="reset"] {
     color: #949494;
     margin-right: 20px;
@@ -706,27 +599,6 @@ a.link:hover {
     text-decoration: underline;
 }
 
-
-/****************************/
-/* main-footer y derivados */
-/****************************/
-#main-footer {
-    height: 50px;
-    margin-top: 50px;
-    width: 100%;
-}
-
-#inner-footer {
-    border-top: solid 1px #d6e0eb;
-    color: #aaa;
-    padding: 10px;
-}
-
-
-
-
-
-
 /* Barra de progreso formulario: Nueva producción */
 #progreso {
     height: 32px;
@@ -799,6 +671,8 @@ a.link:hover {
     color: #336699;
     padding: 0px 10px;
     -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
     display: block;
     line-height: 33px;
     border: solid 1px #99b2cc;
@@ -820,6 +694,8 @@ a.link:hover {
 
 .portlet-content #tabla {
     -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius:0px;
     margin: 0px;
 }
 
@@ -829,11 +705,17 @@ a.link:hover {
     line-height: 20px;
     border-bottom: solid 1px #373737;
     -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius:0px;
+
 }
 
 .portlet-content #tabla th:first-child,
 .portlet-content #tabla th:last-child {
     -moz-border-radius: 0px;
+     -webkit-border-radius: 0px;
+    border-radius:0px;
+   
 }
 
 .portlet-content #tabla tbody tr td{
@@ -842,6 +724,11 @@ a.link:hover {
 #tabla {
     -moz-border-radius-topleft: 8px;
     -moz-border-radius-topright: 8px;
+    -webkit-border-top-right-radius: 8px;
+    -webkit-border-top-left-radius: 8px;
+    border-top-left-radius:8px;
+    border-top-right-radius:8px;
+
     border-collapse: separate;
     margin-bottom: 30px;
 }
@@ -861,10 +748,15 @@ a.link:hover {
 
 #tabla thead th:first-child {
     -moz-border-radius-topleft: 8px;
+    -webkit-border-top-left-radius: 8px;
+    border-top-left-radius:8px;
 }
 
 #tabla thead th:last-child {
     -moz-border-radius-topright: 8px;
+    -webkit-border-top-right-radius: 8px;
+    border-top-right-radius:8px;
+   
 }
 
 
@@ -877,6 +769,7 @@ a.link:hover {
 }
 #tabla {
     min-width: 100%;
+    width: 100%;
 }
 
 #tabla tbody tr:hover {
@@ -1037,6 +930,8 @@ a.link:hover {
     color: #fff;
     border: 0px;
     -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
     padding: 5px 30px;
     font: bold 12px Arial;
     letter-spacing: 1px;
@@ -1058,12 +953,16 @@ a.link:hover {
     margin-bottom: 10px;
     border: solid 1px #ccc;
     -moz-border-radius: 3px;
+    -webkit-border-radius: 3xp;
+    border-radius: 3px;
 }
 
 .portlet-content #lista-alertas .alerta {
     border-left: 0px;
     border-right: 0px;
     -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
 }
 
 .alerta-header {
@@ -1154,6 +1053,8 @@ a.link:hover {
     padding: 2px 5px;
     padding-left: 20px;
     -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
     border: solid 1px #ccc;
     line-height: 25px;
     margin-right: 5px;
@@ -1177,6 +1078,9 @@ height:20px;
 position:relative;
 color: #373737;
 -moz-border-radius: 3px;
+-webkit-border-radius: 3px;
+border-radius: 3px;
+
 }
 /* color bar */
 .progressbar div.progress{
@@ -1222,6 +1126,8 @@ a.log-icon:hover {
     border: solid 1px #dddddd;
     padding: 6px;
     -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
     margin: 0 auto;
     margin-bottom: 15px;
 }
@@ -1304,6 +1210,10 @@ ul#tab-menu li {
     border: solid 1px #D6E0EB;
     -moz-border-radius-topleft:3px;
     -moz-border-radius-topright:3px;
+    -webkit-border-top-right-radius: 3px;
+    -webkit-border-top-left-radius: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
     margin-right: 10px;
     margin-bottom: -1px;
     background: #f1f4f8 url(../img/title-bg.png) 0 20px repeat-x;
@@ -1363,6 +1273,8 @@ ul.acciones li a {
     font-weight: bold;
     padding-left: 30px;
     -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
 }
 
 
@@ -1401,8 +1313,6 @@ ul.acciones li.publicar a  {
     line-height: 28px;
 }
 
-
-
 #no-disponible {
     height: 270px;
     width: 480px;
@@ -1413,11 +1323,6 @@ ul.acciones li.publicar a  {
     padding-top: 150px;
     text-align: center;
 }
-
-
-
-
-
 
 /* INICIO */
 
@@ -1434,6 +1339,8 @@ ul.acciones li.publicar a  {
     border: solid 1px #E9E9E9;
     border-color: #cccccc #dddddd #cccccc;
     -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
     padding-bottom: 5px;
     margin-bottom: 15px;
     margin: 0px 8px 15px;
@@ -1455,10 +1362,16 @@ ul.acciones li.publicar a  {
     font: bold 13px Arial;
     background: #2B84D8 url(../img/title-bg.png) 0 0 repeat-x;
     -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
     text-shadow: 0px 1px 0px #373737;
     -moz-border-radius-topleft:4px;
+    -webkit-border-top-left-radius: 4px;
+    border-top-left-radius: 4px;
     line-height: 22px;
     -moz-border-radius-topright:4px;
+    -webkit-border-top-right-radius: 4px;
+    border-top-right-radius:4px;
     cursor: move;
 }
 
@@ -1518,6 +1431,8 @@ text-decoration: underline;
     height: 11px;
     text-align: left;
     -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
     margin-bottom: 5px;
     border: solid 1px #373737;
 }
@@ -1525,6 +1440,8 @@ text-decoration: underline;
 .ui-progressbar .ui-progressbar-value {
     height: 100%;
     -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;  
     margin-bottom: 5px;
     margin: 0px;
 }
@@ -1540,9 +1457,6 @@ text-decoration: underline;
    color: #444444;
 }
 
-
-
-
 .info-ticket ul {
     margin: 0px 10px;
 }
@@ -1552,13 +1466,8 @@ text-decoration: underline;
     margin-top: 5px;
 }
 
-.info-ticket td.expirado {
-    background: #FFCECE url(../img/icon/error16.png) 5px 50% no-repeat;
-}
-
-.info-ticket td.valido {
-    background: #d5ffce url(../img/icon/check16.png) 5px 50% no-repeat;
-}
+.info-ticket td.expirado { background: #FFCECE url(../img/icon/error16.png) 5px 50% no-repeat; }
+.info-ticket td.valido { background: #d5ffce url(../img/icon/check16.png) 5px 50% no-repeat; }
 
 .info-ticket td.expirado span,
 .info-ticket td.valido span {
@@ -1576,10 +1485,6 @@ span.ajax-loader {
 .form-validacion-rechaza {
     display: none;
 }
-
-
-
-
 
 #content form.form-buscador {
     width: 229px;
@@ -1609,6 +1514,9 @@ span.ajax-loader {
 #content form.form-buscador li input[type="text"] {
    border: solid 1px #acacac;
    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+
    height: 20px;
    padding: 3px 5px;
    width: 217px;
@@ -1649,6 +1557,9 @@ span.ajax-loader {
     background: #2B84D8 url("../img/title-bg.png") 0 0 repeat-x;
     border: solid 1px #336699;
     -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+
     color: #fff;
     cursor: pointer;
     float: right;
@@ -1671,6 +1582,9 @@ a.reset {
     font: bold 10px Arial;
     text-decoration: none;
     -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+
     letter-spacing: 1px;
     text-shadow: 0px 1px 0px #fff;
 }
@@ -1685,14 +1599,6 @@ a.reset {
     margin: 0 auto;
 }
 
-/*
-#box-pendientes .mensaje,
-#box-enproceso .mensaje,
-#box-ultimas .mensaje,
-#box-alertas .mensaje{
-    margin: 10px;
-}
-*/
 .portlet-content .mensaje{
     margin: 10px;
 }
@@ -1724,8 +1630,12 @@ form.form-nueva label {
 
 form.form-nueva select,
 form.form-nueva textarea,
+form.form-nueva input[type="password"],
 form.form-nueva input[type="text"] {
     -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+
     height: 20px;
     padding: 3px 5px;
     width: 615px; 
@@ -1749,12 +1659,6 @@ form.form-nueva ul li select {
     width: 627px;
 }
 
-
-
-
-
-
-
 form.form-nueva ul.errorlist {
     color: #666452;
     border: solid 1px #DF8F8F;
@@ -1762,6 +1666,9 @@ form.form-nueva ul.errorlist {
     padding: 8px;
     padding-left: 30px;
     -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+
     margin-bottom: 5px;
     width: 587px;
 

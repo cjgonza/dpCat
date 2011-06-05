@@ -232,7 +232,7 @@ def listar(filtro = None):
     return data
 
 """
-Lista las útlimas producciones incluidas en la videoteca.
+Lista las últimas producciones incluidas en la videoteca.
 """
 @permission_required('postproduccion.video_manager')
 def ultimas_producciones(request):

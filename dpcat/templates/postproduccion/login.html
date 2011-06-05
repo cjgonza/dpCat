@@ -1,48 +1,33 @@
 {% extends "postproduccion/base.html" %}
 
-
 {% block body-class %}login{% endblock %}
-{% block title %} - Prueba del primer titulo {% endblock %}
-
+{% block page-title %}Acceso al sistema{% endblock %}
 
 {% block content %}
-
 <div id="main-login">
-<h1>dpCat</h1>
-<div id="loginbox">
-    {% if form.errors %}
-    <p class="mensaje rojo">Los datos introducidos no coinciden con ning&uacute;n usuario existente.</p>
-    {% endif %}
-
-    <form method="post" action="{% url django.contrib.auth.views.login %}">
-        {% csrf_token %}
-        <ul>
-            <li>
-            {{ form.username.label_tag }} 
-            {{ form.username }}
-            </li>
-            <li>
-            {{ form.password.label_tag }}
-            {{ form.password }}
-            </li>
-        </ul>
-        <input type="submit" value="login" />
-        <input type="hidden" name="next" value="{{ next }}" />
-    </form>
-</div>
-</div>
-<div class="footer-box">
-    <div class="footer-content">
-        <ul>
-           <li><a href="#">Blog</a></li>
-           <li><a href="#">Contacto</a></li>
-           <li><a href="#">&copy; dpCat 2011</a></li>
-        </ul>
+    <h1>dpCat</h1>
+    <div id="loginbox">
+        <div class="column">
+            <div class="portlet">
+                <div class="portlet-header">Acceso al sistema</div>
+                <div class="portlet-content info-interes">
+                    <form method="post" action="{% url django.contrib.auth.views.login %}" class="form-nueva">
+                        <ul>
+                            {% csrf_token %}
+                            {{ form.as_ul }}
+                        </ul>
+                        <input type="submit" value="Acceder" />
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    </form>
+                    <div class="login-bottom">
+                        <ul>
+                            <li><a href="#">Contacto</a></li>
+                            <li><a href="#">dpCat &copy; 2011</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-
-
-
-
 {% endblock %}
