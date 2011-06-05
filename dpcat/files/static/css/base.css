@@ -53,7 +53,6 @@ body.login { background: url(../img/login_bg.jpg) 0 0 no-repeat; }
     clear: both;
 }
 #loginbox form.form-nueva input[type="submit"] {
-    margin-bottom: 15px;
     margin-right: 20px;
 }
 #loginbox form.form-nueva input[type="password"],
@@ -62,39 +61,37 @@ body.login { background: url(../img/login_bg.jpg) 0 0 no-repeat; }
 }
 
 .bottom-links {
-    float: right;
-}
-.bottom-links,
-#loginbox .login-bottom {
     clear: both;
     margin: 0px 20px;
+    float: right;
 }
-.bottom-links ul,
-#loginbox .login-bottom ul {
+
+
+#main-login .bottom-links {
+    float: left;
+}
+#main-login .column .bottom-links ul,
+.bottom-links ul {
     margin: 0px;
     padding: 0px;
     margin-top: 5px;
 }
-.bottom-links ul li:first-child,
-#loginbox .login-bottom ul li:first-child {
+.bottom-links ul li:first-child {
     margin: 0px;
     padding: 0px;
 }
 
-.bottom-links ul li,
-#loginbox .login-bottom ul li{
+.bottom-links ul li {
     float: left;
     margin-left: 10px;
 }
-.bottom-links ul li a,
-#loginbox .login-bottom ul li a {
+.bottom-links ul li a {
     text-decoration: none;
     color: #888;
     font-size: 10px;
 }
 
-.bottom-links ul li a:hover,
-#loginbox .login-bottom ul li a:hover {
+.bottom-links ul li a:hover {
     text-decoration: underline;
 }
 
