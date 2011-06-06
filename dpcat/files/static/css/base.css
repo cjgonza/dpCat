@@ -1609,6 +1609,8 @@ form.form-nueva ul {
 
 form.form-nueva ul li {
     margin-bottom: 20px;
+    font-size: 11px;
+    color: #888;
 }
 
 form.form-nueva ul.jqueryFileTree li {
