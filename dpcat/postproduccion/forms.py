@@ -11,7 +11,7 @@ class VideoForm(ModelForm):
 class InformeCreacionForm(ModelForm):
     class Meta:
         model = InformeProduccion
-        fields = ('observacion', 'aprobacion')
+        fields = ('observacion', 'aprobacion', 'fecha_grabacion')
 
 class IncidenciaProduccionForm(ModelForm):
     comentario = CharField(required = True, widget = Textarea())
@@ -33,11 +33,6 @@ class RequiredBaseInlineFormSet(BaseInlineFormSet):
 class MetadataForm(ModelForm):
     class Meta:
         model = Metadata
-
-    def __init__(self, *args, **kwargs):
-        super(MetadataForm, self).__init__(*args, **kwargs)
-        self.fields['created'].widget.attrs['disabled'] = True
-        self.fields['valid'].widget.attrs['disabled'] = True
 
 class ConfigForm(Form):
     max_encoding_tasks = forms.IntegerField(label = u'Nº máximo de codificaciones simultaneas')

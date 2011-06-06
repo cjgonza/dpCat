@@ -38,6 +38,10 @@
         <label>Requiere aprobaci&oacute;n</label>
         <input type="checkbox" {{ v.informeproduccion.aprobacion|yesno:"checked," }} disabled="disabled">
     </li>
+    <li>
+        <label>Fecha de grabaci&oacute;n:</label>
+        <input type="text" value="{{ v.informeproduccion.fecha_grabacion|date:"G:i:s - d/m/Y" }}" readonly disabled="disabled">
+    </li>
     <h3>Fichero(s) de entrada:</h3>
     <li>
         {% for f in v.ficheroentrada_set.all %}

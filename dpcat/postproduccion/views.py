@@ -54,7 +54,7 @@ def crear(request, video_id = None):
             return redirect('postproduccion.views.fichero_entrada', v.id)
     else:
         vform = VideoForm(instance = v) if v else VideoForm()
-        iform = InformeCreacionForm(instance = v.informeproduccion) if v else InformeCreacionForm()
+        iform = InformeCreacionForm(instance = v.informeproduccion) if v else InformeCreacionForm(initial = { 'fecha_grabacion' : datetime.datetime.now() })
     return render_to_response("postproduccion/section-nueva-paso1.html", { 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
 
 
@@ -225,7 +225,7 @@ def listar(filtro = None):
         linea['id'] = v.pk
         linea['titulo'] = v.titulo
         linea['operador'] = v.informeproduccion.operador.username
-        linea['fecha'] = v.informeproduccion.fecha_grabacion.strftime("%H:%M:%S - %d/%m/%Y")
+        linea['fecha'] = v.informeproduccion.fecha_produccion.strftime("%H:%M:%S - %d/%m/%Y")
         linea['tipo'] = v.status.lower()
         linea['status'] = dict(Video.VIDEO_STATUS)[v.status]
         data.append(linea)
@@ -263,6 +263,8 @@ def definir_metadatos_user(request, tk_str):
         if form.is_valid():
             m = form.save(commit = False)
             m.video = v
+            m.date = v.informeproduccion.fecha_grabacion
+            m.created = v.informeproduccion.fecha_produccion
             m.save()
             inpro = IncidenciaProduccion(informe = v.informeproduccion, emisor = 'U', aceptado = True)
             inpro.save()
@@ -271,7 +273,7 @@ def definir_metadatos_user(request, tk_str):
             v.save()
             return render_to_response("postproduccion/section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : True }, context_instance=RequestContext(request))
     else:
-        form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm(initial = video.get_initial_metadata(v))
+        form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
     return render_to_response("postproduccion/section-metadatos-user.html", { 'form' : form, 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
@@ -314,10 +316,12 @@ def definir_metadatos_oper(request, video_id):
         if form.is_valid():
             m = form.save(commit = False)
             m.video = v
+            m.date = v.informeproduccion.fecha_grabacion
+            m.created = v.informeproduccion.fecha_produccion
             m.save()
             messages.success(request, 'Metadata actualizada')
     else:
-        form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm(initial = video.get_initial_metadata(v))
+        form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
     return render_to_response("postproduccion/section-metadatos-oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
 
 
@@ -470,7 +474,7 @@ def alerts(request):
     lista = list()
     # Añade los vídeos incompletos.
     for i in Video.objects.filter(status='INC'):
-        lista.append({ 'tipo' : 'video-incompleto', 'v' : i, 'fecha' : i.informeproduccion.fecha_grabacion })
+        lista.append({ 'tipo' : 'video-incompleto', 'v' : i, 'fecha' : i.informeproduccion.fecha_produccion })
     # Añade las tareas fallidas.
     for i in Cola.objects.filter(status='ERR'):
         lista.append({ 'tipo' : 'trabajo-fail', 't' : i, 'fecha' : i.comienzo })

@@ -43,7 +43,7 @@
             <td class="autor">{{ v.autor }}<br/>(<a class="email" href="mailto:{{v.email}}">{{ v.email }}</a>)</td>
             <td class="date">
                 <ul>
-                    <li>{{ v.informeproduccion.fecha_grabacion|date:"G:i:s - d/m/Y" }} - Grabaci&oacute;n</li>
+                    <li>{{ v.informeproduccion.fecha_produccion|date:"G:i:s - d/m/Y" }} - Produccci&oacute;n</li>
                 </ul>
             </td>
             <td class="oper">{{ v.informeproduccion.operador }}</td>

@@ -40,21 +40,6 @@ def get_fdv_template(v):
     return render_to_response('postproduccion/get_fdv_template.mlt', { 'data' : data })
 
 """
-Devuelve un diccionario con los valores iniciales de la metadata
-"""
-def get_initial_metadata(v):
-    dom = parseString(v.tecdata.xml_data)
-    meta = dict()
-    meta['publisher'] = 'dpCat'
-    meta['date'] = v.informeproduccion.fecha_grabacion
-    meta['modified'] = v.informeproduccion.fecha_grabacion
-    meta['created'] = v.informeproduccion.fecha_grabacion
-    meta['extent'] = dom.getElementsByTagName('Duration')[0].firstChild.data
-    meta['format'] = dom.getElementsByTagName('Format')[0].firstChild.data
-    meta['identifier'] = "DPCAT#%d" % v.id
-    return meta
-
-"""
 """
 def generate_tecdata(v):
     try:
@@ -146,7 +131,7 @@ def create_pil(video, logfile, pid_notifier = None):
     os.close(handler)
 
     # Genera el nombre del fichero de salida
-    video.fichero = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_grabacion.date(), ".mp4"))
+    video.fichero = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_produccion.date(), ".mp4"))
     video.save()
     utils.ensure_dir(video.fichero)
 
@@ -180,7 +165,7 @@ def copy_video(video, logfile):
 
     # Obtiene los nombres de ficheros origen y destino
     src = video.ficheroentrada_set.all()[0].fichero
-    dst = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_grabacion.date(), os.path.splitext(src)[1]))
+    dst = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_produccion.date(), os.path.splitext(src)[1]))
     video.fichero = dst
     video.save()
 
@@ -211,7 +196,7 @@ def create_preview(video, logfile, pid_notifier = None):
 
     # Obtiene los nombres de ficheros origen y destino
     src = video.fichero
-    dst = os.path.join(config.get_option('PREVIEWS_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_grabacion.date(), ".flv"))
+    dst = os.path.join(config.get_option('PREVIEWS_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_produccion.date(), ".flv"))
 
     # Crea el objecto previsualización
     pv = Previsualizacion(video = video, fichero = dst)
