@@ -343,6 +343,16 @@ def media_info(request, video_id):
     return render_to_response("postproduccion/section-metadata-tecnica.html", { 'v' : v, 'info' : info }, context_instance=RequestContext(request))
 
 """
+Devuelve la información técnica del vídeo en XML para su descarga.
+"""
+@permission_required('postproduccion.video_manager')
+def download_media_info(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    response = HttpResponse(v.tecdata.xml_data, mimetype='text/xml')
+    response['Content-Disposition'] = 'attachment; filename=%d.xml' % v.id
+    return response
+
+"""
 Gestión de tickets de usuario.
 """
 @permission_required('postproduccion.video_manager')
