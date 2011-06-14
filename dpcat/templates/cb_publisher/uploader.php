@@ -6,6 +6,10 @@ $in_bg_cron = true;
 
 include("{{ cb_path}}/includes/config.inc.php");
 
+// Se autentica contra el ClipBucket.
+global $userquery;
+$userquery->login_user("{{ auth.user }}", "{{ auth.pass }}");
+
 // Prepara la información sobre el vídeo a publicar.
 $file_key = time() . RandomString(5);
 $file_src = '{{ v.fichero }}';
@@ -14,12 +18,9 @@ $array = array(
     'description' => '{{ v.metadata.description }}',
     'tags' => '{{ v.metadata.keyword }}',
     'category' => array(1),
-    'file_name' => $file_key
+    'file_name' => $file_key,
+    'userid' => $userquery->userid,
 );
-
-// Se autentica contra el ClipBucket.
-global $userquery;
-$userquery->login_user("{{ auth.user }}", "{{ auth.pass }}");
 
 // Se le envía al ClipBucket los datos del vídeo.
 $upl = new Upload();
