@@ -31,7 +31,7 @@
                      <div id="dialog-publicar" title="¿Publicar producci&oacute;n?">
                         <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>El proceso de publicaci&oacute;n de una producci&oacute;n se encuentra actualmente en proceso de desarrollo.</p>
                     </div> 
-                    <li><a class="publicar"href="">Publicar producci&oacute;n</a></li>
+                    <li><a class="publicar"href="{% url publicar v.id %}">Publicar producci&oacute;n</a></li>
                 {% endif %}
                 {% if v.status == 'ACE' or v.status == 'PTO' %}
                      <div id="dialog-validar" title="¿validar producci&oacute;n?">

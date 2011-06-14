@@ -95,13 +95,17 @@ $(document).ready(function() {
 
     $(".publicar").click(function (e) {
         e.preventDefault();
+        var urlPublicar = $(this).attr("href");
         $( "#dialog-publicar" ).dialog({
             autoOpen: false,
             resizable: false,
             height:160,
             modal: true,
             buttons: {
-                "Cerrar": function() {
+                "Publicar": function() {
+                   window.location.href = urlPublicar;
+                },
+                "Cancelar": function() {
                     $( this ).dialog( "close" );
                 }
             }

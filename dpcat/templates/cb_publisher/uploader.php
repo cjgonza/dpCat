@@ -4,7 +4,7 @@
 // desde el navegador), debe hacerse antes de incluir el ClipBucket.
 $in_bg_cron = true;
 
-include("{{ cb_path}}/includes/config.inc.php");
+include("{{ cb_path }}/includes/config.inc.php");
 
 // Se autentica contra el ClipBucket.
 global $userquery;
@@ -17,7 +17,7 @@ $array = array(
     'title' => '{{ v.metadata.title }}',
     'description' => '{{ v.metadata.description }}',
     'tags' => '{{ v.metadata.keyword }}',
-    'category' => array(1),
+    'category' => array({{ category }}),
     'file_name' => $file_key,
     'userid' => $userquery->userid,
 );

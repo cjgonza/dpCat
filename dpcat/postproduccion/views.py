@@ -615,3 +615,25 @@ def config_plugin(request):
             initial_data[i] = config.get_option("%s_%s" %(plugin_name.upper(), i.upper()))
         form = plugin.ConfigForm(initial = initial_data)
     return render_to_response("postproduccion/section-config.html", { 'form' : form }, context_instance=RequestContext(request))
+
+"""
+Realiza la publicación de la producción.
+"""
+@permission_required('postproduccion.video_manager')
+def publicar(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    # Por ahora asumimos que se usará sólo el clipbucket.
+    plugin_name = utils.list_plugins()[0]
+    plugin = __import__(plugin_name)
+    if request.method == 'POST':
+        form = plugin.PublishingForm(request.POST)
+        if form.is_valid():
+            msg = plugin.publish(v, form.cleaned_data['category'])
+            if msg == None:
+                messages.success(request, u'Producción publicada')
+            else:
+                messages.error(request, u'Error publicando la producción:\n%s' % msg)
+            return redirect('estado_video', v.id)
+    else:
+        form = plugin.PublishingForm()
+    return render_to_response("postproduccion/section-config.html", { 'form' : form }, context_instance=RequestContext(request))
