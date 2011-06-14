@@ -131,6 +131,7 @@ def _get_logfile(fname):
         return
     log = map(_parse_log_line, f.readlines())
     f.close()
+    log.reverse()
     return log
 
 """
