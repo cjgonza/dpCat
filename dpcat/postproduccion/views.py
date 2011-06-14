@@ -594,3 +594,24 @@ def status(request):
     cron = crontab.status()
 
     return render_to_response("postproduccion/section-status.html", { 'exes' : exes, 'dirs' : dirs, 'cron' : cron }, context_instance=RequestContext(request))
+
+"""
+Edita los ajustes de configuración del plugin de publicación.
+"""
+@permission_required('postproduccion.video_manager')
+def config_plugin(request):
+    # Por ahora asumimos que se usará sólo el clipbucket.
+    plugin_name = utils.list_plugins()[0]
+    plugin = __import__(plugin_name)
+    if request.method == 'POST':
+        form = plugin.ConfigForm(request.POST)
+        if form.is_valid():
+            for i in form.base_fields.keys():
+                config.set_option("%s_%s" %(plugin_name.upper(), i.upper()), form.cleaned_data[i])
+            messages.success(request, 'Configuración guardada')
+    else:
+        initial_data = dict()
+        for i in plugin.ConfigForm.base_fields.keys():
+            initial_data[i] = config.get_option("%s_%s" %(plugin_name.upper(), i.upper()))
+        form = plugin.ConfigForm(initial = initial_data)
+    return render_to_response("postproduccion/section-config.html", { 'form' : form }, context_instance=RequestContext(request))

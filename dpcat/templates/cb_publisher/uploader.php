@@ -10,9 +10,9 @@ include("{{ cb_path}}/includes/config.inc.php");
 $file_key = time() . RandomString(5);
 $file_src = '{{ v.fichero }}';
 $array = array(
-    'title' => '{{ v.metadata.titulo }}',
-    'description' => '{{ v.metadata.descripcion }}',
-    'tags' => 'PENDIENTE,ATENCIÓN', # TODO: Extraer los tags de los metadatos cuando estén.
+    'title' => '{{ v.metadata.title }}',
+    'description' => '{{ v.metadata.description }}',
+    'tags' => '{{ v.metadata.keyword }}',
     'category' => array(1),
     'file_name' => $file_key
 );

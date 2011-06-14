@@ -5,7 +5,7 @@ import subprocess
 
 def get_uploader_code(v):
     cb_path = '/var/www/clipbucket'
-    auth = { 'user' : 'admin', 'pass' : 'password' }
+    auth = { 'user' : 'dpcat', 'pass' : 'dpcat1234' }
     return render_to_response('cb_publisher/uploader.php', { 'v' : v, 'cb_path' : cb_path, 'auth' : auth }).content
 
 def execute_upload(v):
