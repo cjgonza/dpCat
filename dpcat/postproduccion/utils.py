@@ -23,19 +23,20 @@ Fija los valores de configuración por defecto
 def set_default_settings():
     defaults = [
         [ 'MAX_ENCODING_TASKS', 5 ],
-        [ 'MELT_PATH' ,         which('melt') ], 
-        [ 'FFMPEG_PATH',        which('ffmpeg') ],
-        [ 'CRONTAB_PATH',       which('crontab') ],
-        [ 'MEDIAINFO_PATH',     which('mediainfo') ],
-        [ 'MAX_PREVIEW_WIDTH',  400 ],
-        [ 'MAX_PREVIEW_HEIGHT', 300 ],
-        [ 'VIDEO_LIBRARY_PATH', '/home/adminudv/videos/videoteca/' ],
-        [ 'VIDEO_INPUT_PATH' ,  '/home/adminudv/videos/' ],
-        [ 'PREVIEWS_PATH' ,     '/home/adminudv/videos/previews/' ],
-        [ 'TOKEN_VALID_DAYS' ,  7 ],
-        [ 'SITE_URL' ,          'http://127.0.0.1:8000' ],
-        [ 'LOG_MAX_LINES',      1000 ],
-        [ 'MAX_NUM_LOGFILES',   6 ],
+        [ 'MELT_PATH' ,          which('melt') ], 
+        [ 'FFMPEG_PATH',         which('ffmpeg') ],
+        [ 'CRONTAB_PATH',        which('crontab') ],
+        [ 'MEDIAINFO_PATH',      which('mediainfo') ],
+        [ 'MAX_PREVIEW_WIDTH',   400 ],
+        [ 'MAX_PREVIEW_HEIGHT',  300 ],
+        [ 'VIDEO_LIBRARY_PATH',  '/home/adminudv/videos/videoteca/' ],
+        [ 'VIDEO_INPUT_PATH' ,   '/home/adminudv/videos/' ],
+        [ 'PREVIEWS_PATH' ,      '/home/adminudv/videos/previews/' ],
+        [ 'TOKEN_VALID_DAYS' ,   7 ],
+        [ 'SITE_URL' ,           'http://127.0.0.1:8000' ],
+        [ 'LOG_MAX_LINES',       1000 ],
+        [ 'MAX_NUM_LOGFILES',    6 ],
+        [ 'PUBLICATION_PLUGINS', '["cb_publisher"]' ],
     ]
 
     for op in defaults:
