@@ -55,18 +55,18 @@
     {% if i.tipo == 'token-caducado' %}
     <div class="{{ i.tipo }}">
         <div class="alerta">
-            <div class="alerta-header"><span class="icon-title">La producci&oacute;n con id {{ i.t.id }}, ha caducado su ticket.</span><span class="icon plus"></span></div>
+            <div class="alerta-header"><span class="icon-title">La producci&oacute;n con id {{ i.t.video.id }}, ha caducado su ticket.</span><span class="icon plus"></span></div>
             <div class="alerta-content">
                 <ul class="item-alerta">
                     <li><span class="item-alerta-title">T&iacute;tulo de la producci&oacute;n:</span>{{ i.t.video.titulo }} </li>
-                    <li><span class="item-alerta-title">Identificador:</span> {{ i.t.id }} </li>
+                    <li><span class="item-alerta-title">Identificador:</span> {{ i.t.video.id }} </li>
                     <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
                     <span class="item-alerta-content">El ticket enviado al autor de la producci&oacute;n ha sido caducado sin ser atentido.</span></li>
                 </ul>           
             </div>
             <div class="alerta-links">
                 <ul>
-                   <li class="item-alerta-links"><a class="edit-icon" href="{% url gestion_tickets i.t.id%}">Gesti&oacute;n de ticket</a></li>
+                   <li class="item-alerta-links"><a class="edit-icon" href="{% url gestion_tickets i.t.video.id%}">Gesti&oacute;n de ticket</a></li>
                 </ul> 
             </div>
         </div>
