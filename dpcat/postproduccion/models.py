@@ -151,7 +151,8 @@ class Metadata(models.Model):
         ('AA', u'Profesor'),
         ('AB', u'Autor'),
         ('AC', u'Alumno'),
-        ('AD', u'Otro'),
+        ('AD', u'Coordinador'),
+        ('AE', u'Otro'),
     )
 
     TYPE_KEYS = (
@@ -314,7 +315,7 @@ class Metadata(models.Model):
     learning_resource_type = models.CharField(max_length = 2, choices = LEARNING_RESOURCE_TYPE_KEYS, verbose_name = u'Tipo de recurso educativo')
     semantic_density = models.CharField(max_length = 2, choices = SEMANTIC_DENSITY_KEYS, verbose_name = u'Densidad semántica del contenido')
     context = models.CharField(max_length = 2, choices = CONTEXT_KEYS, verbose_name = u'Contexto educativo')
-    dificulty = models.CharField(max_length = 2, choices = DIFICULTY_KEYS, verbose_name = u'Dificultad')
+    dificulty = models.CharField(max_length = 2, choices = DIFICULTY_KEYS, verbose_name = u'Nivel de Dificultad')
     typical_learning_time = models.CharField(max_length = 255, verbose_name = u'Tiempo estimado para la adquisición de conocimientos', help_text = u'Ejemplo: 2 horas')
     educational_language = models.CharField(max_length = 2, choices = EDUCATIONAL_LANGUAGE_KEYS, verbose_name = u'Características del lenguaje educativo')
     purpose = models.CharField(max_length = 2, choices = PURPOSE_KEYS, verbose_name = u'Objetivo del contenido')
