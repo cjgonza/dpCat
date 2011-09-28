@@ -25,7 +25,7 @@ def get_video_duration(filename):
     command = "%s -i %s -acodec copy -vcodec copy -f null /dev/null" % (config.get_option('FFMPEG_PATH'), filename)
     data = subprocess.Popen(shlex.split(str(command)), stderr=subprocess.PIPE).communicate()[1]
 
-    return float(re.search(' time=([^=]*) ', data).group(1))
+    return float(re.findall(' time=([^=]*) ', data)[-1])
 
 
 """
