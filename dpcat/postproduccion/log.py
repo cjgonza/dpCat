@@ -106,6 +106,16 @@ def preview_error(v):
     _print_log(ERROR, "Error con la previsualización de '%s'" % v)
 
 #
+# Utilidades extras
+#
+
+"""
+Registra una entrada de depuración
+"""
+def debug(msg):
+    _print_log(DEBUG, msg)
+
+#
 # Manejo del registro
 #
 

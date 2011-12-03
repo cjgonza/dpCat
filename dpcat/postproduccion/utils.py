@@ -126,7 +126,10 @@ def ffmpeg_version():
     if is_exec(fpath):
         command = "%s -version" % fpath
         data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()[0]
-        return re.search('svn-(r[0-9]+)', data, re.I).group(1)
+        try:
+            return re.search('svn-(r[0-9]+)', data, re.I).group(1)
+        except AttributeError:
+            return '-'
     
 """
 Devuelve la versión del melt instalado.
@@ -154,7 +157,7 @@ Devuelve la información de uso del sistema de ficheros en el que se encuentra l
 def df(fpath):
     command = "df %s -Ph" % fpath
     data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE).communicate()[0].strip().splitlines()[1]
-    return re.search('^.* +([0-9,]+[KMGTPEZY]?) +([0-9,]+[KMGTPEZY]?) +([0-9,]+[KMGTPEZY]?) +([0-9,]+%) +(/.*$)', data).group(1, 2, 3, 4, 5)
+    return re.search('^.* +([\.0-9,]+[KMGTPEZY]?) +([\.0-9,]+[KMGTPEZY]?) +([\.0-9,]+[KMGTPEZY]?) +([\.0-9,]+%) +(/.*$)', data).group(1, 2, 3, 4, 5)
 
 """
 Comprueba si el directorio dado existe y es accesible. Si no existe y puede, lo creará y devolverá verdadero.
@@ -170,6 +173,16 @@ def check_dir(fpath):
         return True
     else:
         return False
+
+"""
+Convierte, en caso necesario, una marca temporal en formato HH:MM:SS.ss a segundos.
+"""
+def time_to_seconds(t):
+    try:
+        return float(t)
+    except ValueError:
+        ct = t.split(':')
+        return float(ct[0]) * 3600 + float(ct[1]) * 60 + float(ct[2])
 
 """
 Clase envoltorio que permite iterar sobre un fichero.

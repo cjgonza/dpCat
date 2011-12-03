@@ -1,5 +1,6 @@
 #encoding: utf-8
 from configuracion import config
+from postproduccion import utils
 import subprocess
 import shlex
 import os
@@ -25,8 +26,7 @@ def get_video_duration(filename):
     command = "%s -i %s -acodec copy -vcodec copy -f null /dev/null" % (config.get_option('FFMPEG_PATH'), filename)
     data = subprocess.Popen(shlex.split(str(command)), stderr=subprocess.PIPE).communicate()[1]
 
-    return float(re.findall(' time=([^=]*) ', data)[-1])
-
+    return utils.time_to_seconds(re.findall(' time=([^=]*) ', data)[-1])
 
 """
 Devuelve los parámetros preestablecidos para el codec x264

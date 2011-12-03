@@ -3,7 +3,7 @@ from postproduccion.models import Cola, HistoricoCodificacion
 from postproduccion.video import create_pil, create_preview, copy_video
 from settings import MEDIA_ROOT
 from configuracion import config
-from postproduccion import log, token
+from postproduccion import log, token, utils
 
 import os
 import re
@@ -125,9 +125,9 @@ def progress(task):
         os.lseek(fd, -255, os.SEEK_END)
         data = os.read(fd, 255)
         if task.tipo == 'PIL':
-            pro = int(re.sub('.*percentage: *','',data).split(' ')[0])
+            pro = int(re.findall(' percentage: *([0-9]*)', data)[-1])
         if task.tipo == 'PRE':
-            pro = int(float(re.sub('.*time=','',data).split(' ')[0]) * 100 / task.video.tecdata.duration)
+            pro = int(utils.time_to_seconds(re.findall(' time=([^=]*) ', data)[-1]) * 100 / task.video.tecdata.duration)
     except:
         pro = 0
 
