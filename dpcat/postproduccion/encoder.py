@@ -63,7 +63,7 @@ def x264_presets():
 Realiza el montaje de un video
 """
 def encode_mixed_video(mltfile, outfile, logfile, pid_notifier = None):
-    command = "%s -progress -verbose %s -consumer avformat:/%s deinterlace=1 acodec=libfaac ab=348k ar=48000 pix_fmt=yuv420p f=mp4 vcodec=libx264 minrate=0 b=1000k aspect=@16/9 s=1280x720i %s" % (config.get_option('MELT_PATH'), mltfile, outfile, x264_presets())
+    command = "%s -progress -verbose %s -consumer avformat:/%s deinterlace=1 acodec=libfaac ab=348k ar=48000 pix_fmt=yuv420p f=mp4 vcodec=libx264 minrate=0 b=1000k aspect=@16/9 s=1280x720i r=25 %s" % (config.get_option('MELT_PATH'), mltfile, outfile, x264_presets())
     p = subprocess.Popen(shlex.split(str(command)), stderr=logfile)
 
     if pid_notifier:
@@ -72,7 +72,7 @@ def encode_mixed_video(mltfile, outfile, logfile, pid_notifier = None):
     return os.waitpid(p.pid, 0)[1]
 
 def encode_preview(filename, outfile, size, logfile, pid_notifier = None):
-    command = "%s -y -i %s -f flv -vcodec flv -r 30 -b 512000 -s %sx%s -aspect %s -acodec libmp3lame -ab 128000 -ar 22050 %s" % (config.get_option('FFMPEG_PATH'), filename, size['width'], size['height'], size['ratio'], outfile)
+    command = "%s -y -i %s -f flv -vcodec flv -r 25 -b 512000 -s %sx%s -aspect %s -acodec libmp3lame -ab 128000 -ar 22050 %s" % (config.get_option('FFMPEG_PATH'), filename, size['width'], size['height'], size['ratio'], outfile)
     p = subprocess.Popen(shlex.split(str(command)), stderr=logfile)
 
     if pid_notifier:
