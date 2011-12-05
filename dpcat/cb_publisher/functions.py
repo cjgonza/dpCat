@@ -2,32 +2,41 @@
 from django.shortcuts import render_to_response
 from configuracion import config
 
-import subprocess
+import urllib
+import os
+import shutil
 import json
 
-def get_uploader_code(v, category):
-    cb_path = config.get_option('CB_PUBLISHER_CLIPBUCKET_PATH')
-    auth = { 'user' : config.get_option('CB_PUBLISHER_USERNAME'), 'pass' : config.get_option('CB_PUBLISHER_PASSWORD') }
-    return render_to_response('cb_publisher/uploader.php', { 'v' : v, 'cb_path' : cb_path, 'auth' : auth, 'category' : category }).content
-
 def execute_upload(v, category):
-    php_path = config.get_option('CB_PUBLISHER_PHP_PATH')
+    filename = os.path.join(config.get_option('CB_PUBLISHER_INTERCHANGE_DIR'), os.path.basename(v.fichero))
+    data = {
+        'user' : config.get_option('CB_PUBLISHER_USERNAME'),
+        'pass' : config.get_option('CB_PUBLISHER_PASSWORD'),
+        'file' : filename,
+        'title' : v.metadata.title.encode('utf-8'),
+        'description' : v.metadata.description.encode('utf-8'),
+        'tags' : v.metadata.keyword.encode('utf-8'),
+        'category' : category,
+        'license' : v.metadata.license,
+    }
 
-    p = subprocess.Popen(php_path, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    messages = p.communicate(input=get_uploader_code(v, category))[0]
+    shutil.copy(v.fichero, filename)
 
-    if p.returncode == 0:
+    params = urllib.urlencode(data)
+    f = urllib.urlopen("%s/plugins/dpcat_ull/uploader.php" %  config.get_option('CB_PUBLISHER_CLIPBUCKET_URL'), params)
+    messages = f.read()
+
+    os.remove(filename)
+
+    if not messages:
         return None
     else:
         return messages
 
-def get_categories():
-    cb_path = config.get_option('CB_PUBLISHER_CLIPBUCKET_PATH')
-    phpcode = render_to_response('cb_publisher/get_categories.php', { 'cb_path' : cb_path }).content
 
-    php_path = config.get_option('CB_PUBLISHER_PHP_PATH')
-    p = subprocess.Popen(php_path, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    categorias = json.loads(p.communicate(input=phpcode)[0])
+def get_categories():
+    f = urllib.urlopen("%s/plugins/dpcat_ull/get_categories.php" %  config.get_option('CB_PUBLISHER_CLIPBUCKET_URL'))
+    categorias = json.loads(f.read())
 
     choices = list()
     def get_sub_categories(parent, level):
