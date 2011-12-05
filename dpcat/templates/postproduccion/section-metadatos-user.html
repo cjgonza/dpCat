@@ -48,7 +48,13 @@
         {{ form.as_ul }}
         </ul>
         <hr/>
-        <input type="submit" value="Aprobar producci&oacute;n y enviar metadata" />
+        <ul>
+          <li><input id="accept_terms" type="checkbox">Acepto los t&eacute;rminos de bla bla bla</input></li>
+        </ul>
+        <div id="dialog-terminos" title="T&eacute;rminos no aceptados">
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Debe aceptar los t&eacute;rminos de ULLMedia para que la producci&oacute;n sea validada.</p>
+        </div>
+        <input class="terminos" type="submit" value="Aprobar producci&oacute;n y enviar metadata" />
     </form>
 </div>
 

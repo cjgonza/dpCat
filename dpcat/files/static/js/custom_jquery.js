@@ -134,6 +134,26 @@ $(document).ready(function() {
         $("#dialog-generarticket").dialog("open");
     });
 
+// Dialog generación de ticket
+    $('#dialog-terminos').dialog({
+        autoOpen: false,
+        height: 160,
+        modal: true,
+        resizable: false,
+        buttons: {
+            "Ok": function() {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    $("input.terminos").click(function(e) {
+        if (!$("#accept_terms")[0].checked) {
+            e.preventDefault();
+            $("#dialog-terminos").dialog("open");
+        }
+    });
+
 });
 
 
