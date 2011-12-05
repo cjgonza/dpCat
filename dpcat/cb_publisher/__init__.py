@@ -1,12 +1,11 @@
 from configuracion import config
-from postproduccion.utils import which
 
 defaults = [
     [ 'CB_PUBLISHER_CLIPBUCKET_URL', 'http://192.168.56.101/clipbucket' ],
     [ 'CB_PUBLISHER_USERNAME' ,       'dpcat' ], 
     [ 'CB_PUBLISHER_PASSWORD',        'dpcat1234' ],
-#    [ 'CB_PUBLISHER_PHP_PATH',        which('php') ],
-    [ 'CB_PUBLISHER_INTERCHANGE_DIR', '/tmp' ],
+    [ 'CB_PUBLISHER_LOCAL_DIR', '/tmp' ],
+    [ 'CB_PUBLISHER_REMOTE_DIR', '/tmp' ],
 ]
 
 for op in defaults:

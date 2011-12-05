@@ -8,11 +8,12 @@ import shutil
 import json
 
 def execute_upload(v, category):
-    filename = os.path.join(config.get_option('CB_PUBLISHER_INTERCHANGE_DIR'), os.path.basename(v.fichero))
+    localfile = os.path.join(config.get_option('CB_PUBLISHER_LOCAL_DIR'), os.path.basename(v.fichero))
+    remotefile = os.path.join(config.get_option('CB_PUBLISHER_REMOTE_DIR'), os.path.basename(v.fichero))
     data = {
         'user' : config.get_option('CB_PUBLISHER_USERNAME'),
         'pass' : config.get_option('CB_PUBLISHER_PASSWORD'),
-        'file' : filename,
+        'file' : remotefile,
         'title' : v.metadata.title.encode('utf-8'),
         'description' : v.metadata.description.encode('utf-8'),
         'tags' : v.metadata.keyword.encode('utf-8'),
@@ -20,13 +21,13 @@ def execute_upload(v, category):
         'license' : v.metadata.license,
     }
 
-    shutil.copy(v.fichero, filename)
+    shutil.copy(v.fichero, localfile)
 
     params = urllib.urlencode(data)
     f = urllib.urlopen("%s/plugins/dpcat_ull/uploader.php" %  config.get_option('CB_PUBLISHER_CLIPBUCKET_URL'), params)
     messages = f.read()
 
-    os.remove(filename)
+    os.remove(localfile)
 
     if not messages:
         return None
