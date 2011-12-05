@@ -155,6 +155,13 @@ class Metadata(models.Model):
         ('AE', u'Otro'),
     )
 
+    LICENSE_KEYS = (
+        ('CR', u'Todos los derechos reservados.'),
+        ('MD', u'Creative Commons: Reconocimiento - No Comercial'),
+        ('SA', u'Creative Commons: Reconocimiento - No Comercial - Compartir Igual'),
+        ('ND', u'Creative Commons: Reconocimiento - No Comercial - Sin Obra Derivada'),
+    )
+
     TYPE_KEYS = (
         ('AA', u'Conferencia'),
         ('AB', u'Documental'),
@@ -304,7 +311,7 @@ class Metadata(models.Model):
     location = models.CharField(max_length = 255, verbose_name = u'Localización', help_text = u'Por ejemplo: el nombre de la institución, departamento, edificio, etc.')
     venue = models.CharField(max_length = 255, verbose_name = u'Lugar de celebración', help_text = u'Por ejemplo: San Cristóbal de La Laguna, Tenerife (España)')
     temporal = models.TextField(null = True, blank = True, verbose_name = u'Intervalo de tiempo', help_text = u'Si en la producción intervienen diferentes actores, indique aquí el nombre y el momento en el que interviene cada uno de ellos.')
-    license = models.CharField(max_length = 255, verbose_name = u'Licencia de uso', help_text = u'Si el contenido dispone de alguna limitación de uso, incluya aquí una referencia a su licencia.')
+    license = models.CharField(max_length = 2, choices = LICENSE_KEYS, verbose_name = u'Licencia de uso', help_text = u'Si el contenido dispone de alguna limitación de uso, incluya aquí una referencia a su licencia.')
     rightsholder = models.CharField(max_length = 255, verbose_name = u'Persona, entidad u organización responsable de la gestión de los derechos de autor')
     date = models.DateTimeField(verbose_name = u'Fecha de grabación', editable = False)
     created = models.DateTimeField(verbose_name = u'Fecha de producción', editable = False, help_text = u'La fecha de producción será incluida de manera automática por el sistema')
