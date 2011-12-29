@@ -49,4 +49,5 @@ class ConfigForm(Form):
     site_url = forms.CharField(label = u'URL del sitio')
     log_max_lines = forms.IntegerField(label = u'Nº máximo de líneas del registro de sistema')
     max_num_logfiles = forms.IntegerField(label = u'Nº máximo de ficheros de registro de sistema antiguos')
+    return_email = forms.EmailField(label = u'Dirección del remitente para envíos de correos electrónicos')
     

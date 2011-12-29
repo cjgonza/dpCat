@@ -37,6 +37,7 @@ def set_default_settings():
         [ 'LOG_MAX_LINES',       1000 ],
         [ 'MAX_NUM_LOGFILES',    6 ],
         [ 'PUBLICATION_PLUGINS', '["cb_publisher"]' ],
+        [ 'RETURN_EMAIL',        'noreply@dpcat.es' ],
     ]
 
     for op in defaults:

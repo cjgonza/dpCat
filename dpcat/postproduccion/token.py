@@ -116,7 +116,7 @@ Envía un correo personalizado al usuario para solicitar la aprobación y los me
 """
 def send_custom_mail_to_user(v, texto, operador):
     v = create_token(v)
-    send_mail('dpCat: Comentario del operador', generate_custom_mail_message(v, texto, operador), None, [v.email])
+    send_mail('dpCat: Comentario del operador', generate_custom_mail_message(v, texto, operador), config.get_option('RETURN_EMAIL'), [v.email])
     return v
 
 """
@@ -136,5 +136,5 @@ def generate_validation_mail_message(v, operador):
 Envía un correo para avisar al usuario de que su producción ya ha sido validada.
 """
 def send_validation_mail_to_user(v, operador):
-    send_mail('dpCat: Producción validada', generate_validation_mail_message(v, operador), None, [v.email])
+    send_mail('dpCat: Producción validada', generate_validation_mail_message(v, operador), config.get_option('RETURN_EMAIL'), [v.email])
     return v
