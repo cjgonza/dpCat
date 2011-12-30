@@ -4,4 +4,6 @@ Le informamos que la grabación realizada a fecha {{ fecha }}, con título "{{ t
 
 
 Atentamente,
-El equipo de dpCat
+El equipo de ULLmedia
+Unidad para la Docencia Virtual
+Universidad de La Laguna
