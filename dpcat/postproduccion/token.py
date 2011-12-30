@@ -92,7 +92,7 @@ Envía un correo al usuario para solicitar la aprobación y los metadatos de un 
 """
 def send_mail_to_user(v):
     v = create_token(v)
-    send_mail('dpCat: Vídeo completado', generate_mail_message(v), None, [v.email])
+    send_mail('dpCat: Vídeo completado', generate_mail_message(v), config.get_option('RETURN_EMAIL'), [v.email])
     return v
 
 """
