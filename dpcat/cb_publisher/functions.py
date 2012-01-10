@@ -7,7 +7,18 @@ import os
 import shutil
 import json
 
-def execute_upload(v, category):
+def get_category_id(category_name):
+    f = urllib.urlopen("%s/plugins/dpcat_ull/get_categories.php" %  config.get_option('CB_PUBLISHER_CLIPBUCKET_URL'))
+    categorias = json.loads(f.read())
+
+    # Si hay varias nos quedamos con la última
+    for c in categorias:
+        if c['category_name'] == category_name:
+            category_id = c['category_id']
+
+    return category_id
+
+def execute_upload(v):
     localfile = os.path.join(config.get_option('CB_PUBLISHER_LOCAL_DIR'), os.path.basename(v.fichero))
     remotefile = os.path.join(config.get_option('CB_PUBLISHER_REMOTE_DIR'), os.path.basename(v.fichero))
     data = {
@@ -17,7 +28,7 @@ def execute_upload(v, category):
         'title' : v.metadata.title.encode('utf-8'),
         'description' : v.metadata.description.encode('utf-8'),
         'tags' : v.metadata.keyword.encode('utf-8'),
-        'category' : category,
+        'category' : get_category_id(v.metadata.get_knowledge_areas_display()),
         'license' : v.metadata.license,
     }
 
@@ -33,23 +44,3 @@ def execute_upload(v, category):
         return None
     else:
         return messages
-
-
-def get_categories():
-    f = urllib.urlopen("%s/plugins/dpcat_ull/get_categories.php" %  config.get_option('CB_PUBLISHER_CLIPBUCKET_URL'))
-    categorias = json.loads(f.read())
-
-    choices = list()
-    def get_sub_categories(parent, level):
-        for cat in categorias:
-            if cat['parent_id'] == parent:
-                choices.append((cat['category_id'], "- " * level  + cat['category_name']))
-                get_sub_categories(cat['category_id'], level + 1)
-
-
-    for cat in categorias:
-        if int(cat['parent_id']) is 0:
-            choices.append((cat['category_id'], cat['category_name']))
-            get_sub_categories(cat['category_id'], 1)
-
-    return choices

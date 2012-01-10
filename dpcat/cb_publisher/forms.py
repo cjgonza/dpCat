@@ -8,6 +8,3 @@ class ConfigForm(forms.Form):
     password = forms.CharField(label = u'Contraseña del Clipbucket para subida de vídeos', widget = forms.PasswordInput)
     local_dir = forms.CharField(label = u'Directorio local de intercambio de ficheros (SAMBA, NFS, ...)')
     remote_dir = forms.CharField(label = u'Directorio remoto de intercambio de ficheros (SAMBA, NFS, ...)')
-
-class PublishingForm(forms.Form):
-    category = forms.ChoiceField(choices = get_categories(), label = u'Categoría de publicación')

@@ -625,15 +625,24 @@ def publicar(request, video_id):
     # Por ahora asumimos que se usará sólo el clipbucket.
     plugin_name = utils.list_plugins()[0]
     plugin = __import__(plugin_name)
-    if request.method == 'POST':
-        form = plugin.PublishingForm(request.POST)
-        if form.is_valid():
-            msg = plugin.publish(v, form.cleaned_data['category'])
-            if msg == None:
-                messages.success(request, u'Producción publicada')
-            else:
-                messages.error(request, u'Error publicando la producción:\n%s' % msg)
-            return redirect('estado_video', v.id)
+    if hasattr(plugin, 'PublishingForm'):
+        if request.method == 'POST':
+            form = plugin.PublishingForm(request.POST)
+            if form.is_valid():
+                msg = plugin.publish(v, form.cleaned_data['category'])
+                if msg == None:
+                    messages.success(request, u'Producción publicada')
+                else:
+                    messages.error(request, u'Error publicando la producción:\n%s' % msg)
+                return redirect('estado_video', v.id)
+        else:
+            form = plugin.PublishingForm()
+        return render_to_response("postproduccion/section-config.html", { 'form' : form }, context_instance=RequestContext(request))
     else:
-        form = plugin.PublishingForm()
-    return render_to_response("postproduccion/section-config.html", { 'form' : form }, context_instance=RequestContext(request))
+        msg = plugin.publish(v)
+        if msg == None:
+            messages.success(request, u'Producción publicada')
+        else:
+            messages.error(request, u'Error publicando la producción:\n%s' % msg)
+        return redirect('estado_video', v.id)
+        
