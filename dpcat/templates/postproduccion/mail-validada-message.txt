@@ -5,5 +5,7 @@ Le informamos que la grabación realizada a fecha {{ fecha }}, con título "{{ t
 
 Atentamente,
 El equipo de ULLmedia
-Unidad para la Docencia Virtual
+Unidad para la Docenca Virtual
+ullmedia@ull.edu.es
+TLF. 922845448
 Universidad de La Laguna
