@@ -636,7 +636,7 @@ class Cola(models.Model):
 
 class Token(models.Model):
 
-    token = models.CharField(max_length = 25)
+    token = models.CharField(max_length = 25, unique = True)
     instante = models.DateTimeField(auto_now_add = True)
     video = models.OneToOneField(Video)
 

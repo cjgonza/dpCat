@@ -75,6 +75,7 @@ def del_plugin(plugin_name):
 Genera un token alfanumérico del tamaño dado
 """
 def generate_token(length):
+    random.seed()
     return "".join([random.choice(string.letters + string.digits) for x in range(length)])
 
 """
