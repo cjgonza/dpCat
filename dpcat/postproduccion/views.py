@@ -148,7 +148,7 @@ def dirlist(request):
         basedir = urllib.unquote(config.get_option('VIDEO_INPUT_PATH'))
         reqdir = urllib.unquote(request.POST.get('dir'))
         fulldir = os.path.normpath(basedir + reqdir)
-        for f in os.listdir(fulldir):
+        for f in sorted(os.listdir(fulldir)):
             ff = os.path.join(reqdir, f)
             if os.path.isdir(os.path.join(fulldir, f)):
                 r.append('<li class="directory collapsed"><a href="#" rel="%s/">%s</a></li>' % (ff, f))
