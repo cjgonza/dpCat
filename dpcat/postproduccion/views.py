@@ -142,11 +142,10 @@ llamada AJAX del jqueryFileTree.
 @permission_required('postproduccion.video_manager')
 @csrf_exempt
 def dirlist(request):
-    r=['<ul class="jqueryFileTree" style="display: none;">']
+    r = ['<ul class="jqueryFileTree" style="display: none;">']
     try:
-        r=['<ul class="jqueryFileTree" style="display: none;">']
-        basedir = urllib.unquote(config.get_option('VIDEO_INPUT_PATH'))
-        reqdir = urllib.unquote(request.POST.get('dir'))
+        basedir = urllib.unquote(config.get_option('VIDEO_INPUT_PATH')).encode('utf-8')
+        reqdir = urllib.unquote(request.POST.get('dir')).encode('utf-8')
         fulldir = os.path.normpath(basedir + reqdir)
         for f in sorted(os.listdir(fulldir)):
             ff = os.path.join(reqdir, f)

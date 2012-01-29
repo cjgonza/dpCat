@@ -121,6 +121,13 @@ class FicheroEntrada(models.Model):
             return "%s (%s)" % (self.video.titulo, self.tipo.nombre)
         return self.video.titulo
 
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        try:
+            str(self.fichero)
+        except UnicodeEncodeError:
+            raise ValidationError("La URI del fichero no debe contener tíldes ni caracteres especiales")
+
 class TecData(models.Model):
     duration = models.FloatField(null = True)
     xml_data = models.TextField(null = True)
