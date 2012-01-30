@@ -108,6 +108,12 @@ def remove_file_path(f):
             pass
 
 """
+Comprueba si la ruta dada coresponde a un directorio
+"""
+def is_dir(path):
+    return os.path.isdir(path)
+
+"""
 Comprueba si la ruta dada corresponde a un fichero ejecutable
 """
 def is_exec(fpath):
