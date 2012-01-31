@@ -5,7 +5,7 @@ import gzip
 import os
 from settings import MEDIA_ROOT
 from configuracion import config
-from postproduccion.utils import lock
+from postproduccion.utils import lock, ensure_dir
 
 """
 Constantes con los caracteres que representan el tipo de mensaje.
@@ -19,6 +19,7 @@ DEBUG = 'D'
 Constante con el nombre de fichero del registro.
 """
 LOGFILE = MEDIA_ROOT + '/logs/application.log'
+ensure_dir(LOGFILE)
 
 """
 Escribe un mensaje en el log de la aplicación
