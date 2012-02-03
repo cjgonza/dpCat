@@ -87,14 +87,8 @@ class InformeProduccion(models.Model):
     aprobacion = models.BooleanField(default = True)
 
 class IncidenciaProduccion(models.Model):
-    WHO = (
-        ('O', u'Operador'),
-        ('U', u'Usuario'),
-    )
-
-    
     informe = models.ForeignKey(InformeProduccion, editable = False)
-    emisor = models.CharField(max_length = 1, choices = WHO, editable = False)
+    emisor = models.ForeignKey(User, editable = False, null = True)
     comentario = models.TextField(null = True)
     fecha =  models.DateTimeField(auto_now_add = True)
     aceptado = models.NullBooleanField()

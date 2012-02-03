@@ -265,7 +265,7 @@ def definir_metadatos_user(request, tk_str):
             m.date = v.informeproduccion.fecha_grabacion
             m.created = v.informeproduccion.fecha_produccion
             m.save()
-            inpro = IncidenciaProduccion(informe = v.informeproduccion, emisor = 'U', aceptado = True)
+            inpro = IncidenciaProduccion(informe = v.informeproduccion, aceptado = True)
             inpro.save()
             token.token_attended(v)
             v.status = 'ACE'
@@ -287,7 +287,6 @@ def rechazar_video(request, tk_str):
         if form.is_valid():
             inpro = form.save(commit = False)
             inpro.informe = v.informeproduccion
-            inpro.emisor = 'U'
             inpro.aceptado = False
             inpro.save()
             token.token_attended(v)
@@ -365,7 +364,7 @@ def gestion_tickets(request, video_id):
         if form.is_valid():
             inpro = form.save(commit = False)
             inpro.informe = v.informeproduccion
-            inpro.emisor = 'O'
+            inpro.emisor = request.user
             inpro.save()
             v.status = 'PTU'
             v.save()
