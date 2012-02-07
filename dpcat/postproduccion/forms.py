@@ -1,9 +1,12 @@
 #encoding: utf-8
 from django import forms
-from django.forms import ModelForm, CharField, Textarea, widgets, Form
+from django.forms import ModelForm, CharField, Textarea, widgets, Form, ValidationError
 from django.forms.models import BaseInlineFormSet
 from postproduccion.models import Video, FicheroEntrada, Metadata, InformeProduccion, IncidenciaProduccion
 from postproduccion.utils import is_exec, is_dir
+from postproduccion.encoder import is_video_file
+from configuracion import config
+import os
 
 class VideoForm(ModelForm):
     class Meta:
@@ -24,6 +27,12 @@ class IncidenciaProduccionForm(ModelForm):
 class FicheroEntradaForm(ModelForm):
     class Meta:
         model = FicheroEntrada
+
+    def clean_fichero(self):
+        data = self.cleaned_data['fichero']
+        if not is_video_file(os.path.normpath(config.get_option('VIDEO_INPUT_PATH') + data)):
+            raise ValidationError(u"El fichero no es un formato de vídeo reconocido")
+        return data
 
 class RequiredBaseInlineFormSet(BaseInlineFormSet):
     def _construct_form(self, i, **kwargs):

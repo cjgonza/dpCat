@@ -20,6 +20,15 @@ def get_file_info(filename):
     return [xml_data, txt_data]
 
 """
+Comprueba si el fichero dado contiene pista de vídeo.
+"""
+def is_video_file(filename):
+    command = "'%s' '%s'" % (config.get_option('MEDIAINFO_PATH'), filename)
+    media_data = subprocess.Popen(shlex.split(str(command)), stdout=subprocess.PIPE).communicate()[0]
+
+    return re.search("^Video", media_data, re.M) is not None
+
+"""
 Llama al ffmpeg para obtener la duracion del vídeo en segundos con decimales.
 """
 def get_video_duration(filename):

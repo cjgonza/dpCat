@@ -120,7 +120,7 @@ class FicheroEntrada(models.Model):
         try:
             str(self.fichero)
         except UnicodeEncodeError:
-            raise ValidationError("La URI del fichero no debe contener tíldes ni caracteres especiales")
+            raise ValidationError(u"La URI del fichero no debe contener tíldes ni caracteres especiales")
 
 class TecData(models.Model):
     duration = models.FloatField(null = True)
