@@ -148,6 +148,7 @@ def dirlist(request):
         reqdir = urllib.unquote(request.POST.get('dir')).encode('utf-8')
         fulldir = os.path.normpath(basedir + reqdir)
         for f in sorted(os.listdir(fulldir)):
+            if f.startswith('.'): continue
             ff = os.path.join(reqdir, f)
             if os.path.isdir(os.path.join(fulldir, f)):
                 r.append('<li class="directory collapsed"><a href="#" rel="%s/">%s</a></li>' % (ff, f))
