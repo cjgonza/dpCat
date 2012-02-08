@@ -86,7 +86,7 @@ Muestra el formulario para seleccionar los ficheros de entrada.
 @permission_required('postproduccion.video_manager')
 def _fichero_entrada_multiple(request, v):
     n = v.plantilla.tipovideo_set.count()
-    FicheroEntradaFormSet = inlineformset_factory(Video, FicheroEntrada, formset = RequiredBaseInlineFormSet, extra = n, max_num = n, can_delete = False)
+    FicheroEntradaFormSet = inlineformset_factory(Video, FicheroEntrada, formset = RequiredBaseInlineFormSet, form = FicheroEntradaForm, extra = n, max_num = n, can_delete = False)
     tipos = v.plantilla.tipovideo_set.all().order_by('id')
     if request.method == 'POST':
         formset = FicheroEntradaFormSet(request.POST, instance = v)
