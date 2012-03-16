@@ -87,32 +87,6 @@ $(document).ready(function() {
         $( "#dialog-validar" ).dialog("open");
     });
 
-// Dialog publicación de producción
-    $( "#dialog-publicar" ).dialog({
-        autoOpen: false,
-        modal: true
-    });
-
-    $(".publicar").click(function (e) {
-        e.preventDefault();
-        var urlPublicar = $(this).attr("href");
-        $( "#dialog-publicar" ).dialog({
-            autoOpen: false,
-            resizable: false,
-            height:160,
-            modal: true,
-            buttons: {
-                "Publicar": function() {
-                   window.location.href = urlPublicar;
-                },
-                "Cancelar": function() {
-                    $( this ).dialog( "close" );
-                }
-            }
-        });
-        $( "#dialog-publicar" ).dialog("open");
-    });
-
 // Dialog generación de ticket
     $('#dialog-generarticket').dialog({
         autoOpen: false,

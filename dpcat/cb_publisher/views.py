@@ -52,3 +52,18 @@ def publicar(request, video_id):
         form.fields['license'].initial = v.metadata.license
         form.fields['category'].choices = get_categories()
     return render_to_response("postproduccion/section-config.html", { 'form' : form }, context_instance=RequestContext(request))
+
+"""
+Muestra la cola de publicación.
+"""
+@permission_required('postproduccion.video_manager')
+def cola_publicacion(request):
+    return render_to_response("cb_publisher/section-cola.html", context_instance=RequestContext(request))
+
+"""
+Contenido de la cola de publicación.
+"""
+@permission_required('postproduccion.video_manager')
+def contenido_cola_publicacion(request):
+    return render_to_response("cb_publisher/ajax-cola.html", { 'list' : Publicacion.objects.order_by('id') }, context_instance=RequestContext(request))
+

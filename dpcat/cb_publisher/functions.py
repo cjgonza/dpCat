@@ -30,9 +30,9 @@ def publish(task):
         'user' : config.get_option('CB_PUBLISHER_USERNAME'),
         'pass' : config.get_option('CB_PUBLISHER_PASSWORD'),
         'file' : remotefile,
-        'title' : d['title'],
-        'description' : d['description'],
-        'tags' : d['tags'],
+        'title' : d['title'].encode('utf-8'),
+        'description' : d['description'].encode('utf-8'),
+        'tags' : d['tags'].encode('utf-8'),
         'category' : d['category'],
         'license' : d['license'],
     }
@@ -40,10 +40,11 @@ def publish(task):
     shutil.copy(v.fichero, localfile)
 
     error_text = u"'%s' (%s)\n--\n\n" % (v, datetime.now())
+    raw_data = _remote_action('uploader', data)
     try:
-        ret_data = json.loads(_remote_action('uploader', data))
+        ret_data = json.loads(raw_data)
     except ValueError:
-        error_text += ret_data
+        error_text += raw_data
         ret_data = None
 
     os.remove(localfile)

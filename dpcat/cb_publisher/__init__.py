@@ -1,3 +1,4 @@
+"""
 from configuracion import config
 
 defaults = [
@@ -10,3 +11,4 @@ defaults = [
 
 for op in defaults:
     config.get_option(op[0]) or config.set_option(op[0], op[1])
+"""

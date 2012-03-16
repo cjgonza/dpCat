@@ -2,6 +2,8 @@
 from django.core.management.base import NoArgsCommand
 from postproduccion.models import Cola
 from postproduccion.queue import process_task, available_slots
+from cb_publisher.models import Publicacion
+from cb_publisher.functions import publish
 import threading
 
 class Command(NoArgsCommand):
@@ -20,6 +22,13 @@ class Command(NoArgsCommand):
                     threads.append(th)
                 else:
                     break
+
+            pub_pendings = list(Publicacion.objects.get_pendings())
+            for t in pub_pendings:
+                t.set_status('EXE')
+                th = threading.Thread(target = publish, kwargs = {'task' : t})
+                th.start()
+                threads.append(th)
 
             for th in threads:
                 th.join()

@@ -4,12 +4,22 @@ from django.db import models
 
 from postproduccion.models import Video
 
+class PublicacionManager(models.Manager):
+    """
+    Devuelve la lista de producciones pendientes de ser publicadas.
+    """
+    def get_pendings(self):
+        return super(PublicacionManager, self).get_query_set().filter(status = 'PEN').order_by('id')
+    
+
 class Publicacion(models.Model):
     QUEUE_STATUS = (
         ('PEN', 'Pendiente'),
         ('EXE', u'En ejecución'),
         ('ERR', 'Error'),
     )
+
+    objects = PublicacionManager()
 
     video = models.ForeignKey(Video)
     status = models.CharField(max_length = 3, choices = QUEUE_STATUS, default = 'PEN')
@@ -22,6 +32,10 @@ class Publicacion(models.Model):
 
     def __unicode__(self):
         return self.video.titulo
+
+    def set_status(self, st):
+        self.status = st
+        self.save()
 
 class RegistroPublicacion(models.Model):
     video = models.ForeignKey(Video)
