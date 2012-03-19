@@ -25,6 +25,7 @@ def set_default_settings():
         [ 'MAX_ENCODING_TASKS', 5 ],
         [ 'MELT_PATH' ,          which('melt') ], 
         [ 'FFMPEG_PATH',         which('ffmpeg') ],
+        [ 'MP4BOX_PATH',         which('MP4Box') ],
         [ 'CRONTAB_PATH',        which('crontab') ],
         [ 'MEDIAINFO_PATH',      which('mediainfo') ],
         [ 'MAX_PREVIEW_WIDTH',   400 ],

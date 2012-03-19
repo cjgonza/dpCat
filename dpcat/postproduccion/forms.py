@@ -69,6 +69,7 @@ class ConfigForm(Form):
     mediainfo_path = ExecutableField(label = u'Ruta del \'mediainfo\'')
     melt_path = ExecutableField(label = u'Ruta del \'melt\'')
     ffmpeg_path = ExecutableField(label = u'Ruta del \'ffmpeg\'')
+    mp4box_path = ExecutableField(label = u'Ruta del \'MP4Box\'')
     crontab_path = ExecutableField(label = u'Ruta del \'crontab\'')
     max_preview_width = forms.IntegerField(label = u'Anchura máxima de la previsualización')
     max_preview_height = forms.IntegerField(label = u'Altura máxima de la previsualización')
