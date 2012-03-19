@@ -40,9 +40,12 @@ def publish(task):
     shutil.copy(v.fichero, localfile)
 
     error_text = u"'%s' (%s)\n--\n\n" % (v, datetime.now())
-    raw_data = _remote_action('uploader', data)
     try:
+        raw_data = _remote_action('uploader', data)
         ret_data = json.loads(raw_data)
+    except IOError as (errno, strerror):
+        error_text += "Error conectando al servidor({0}): {1}\n".format(errno, strerror)
+        ret_data = None
     except ValueError:
         error_text += raw_data
         ret_data = None
@@ -72,7 +75,7 @@ def publish(task):
     os.close(handle)
 
     # Si se creó la publicación en el ClipBucket se borra.
-    if ret_data['vid']:
+    if ret_data and ret_data['vid']:
         import time
         time.sleep(10)
         data = {

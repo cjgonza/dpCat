@@ -50,7 +50,11 @@ def publicar(request, video_id):
         form.fields['description'].initial = v.metadata.description
         form.fields['tags'].initial = v.metadata.keyword
         form.fields['license'].initial = v.metadata.license
-        form.fields['category'].choices = get_categories()
+        try:
+            form.fields['category'].choices = get_categories()
+        except IOError:
+            messages.error(request, u'Imposible conectar con el servidor de publicación.')
+            return redirect('estado_video', v.id)
     return render_to_response("postproduccion/section-config.html", { 'form' : form }, context_instance=RequestContext(request))
 
 """
