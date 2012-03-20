@@ -88,3 +88,12 @@ def encode_preview(filename, outfile, size, logfile, pid_notifier = None):
         pid_notifier(p.pid)
 
     return os.waitpid(p.pid, 0)[1]
+
+def make_streamable(filename, logfile, pid_notifier = None):
+    command = "'%s' -inter 0.5 '%s'" % (config.get_option('MP4BOX_PATH'), filename)
+    p = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE)
+
+    if pid_notifier:
+        pid_notifier(p.pid)
+
+    os.write(logfile, p.communicate()[0])

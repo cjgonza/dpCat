@@ -134,11 +134,11 @@ def ffmpeg_version():
     fpath = config.get_option('FFMPEG_PATH')
     if is_exec(fpath):
         command = "%s -version" % fpath
-        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()[0]
+        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()[1]
         try:
             return re.search('svn-(r[0-9]+)', data, re.I).group(1)
         except AttributeError:
-            return '-'
+            return 'N/D' if re.match('ffmpeg version', data) else None
     
 """
 Devuelve la versión del melt instalado.
@@ -148,7 +148,10 @@ def melt_version():
     if is_exec(fpath):
         command = "%s -version" % fpath
         data = subprocess.Popen(shlex.split(str(command)), stderr = subprocess.PIPE).communicate()[1]
-        return re.search('mlt melt ([\.0-9]+)', data, re.I).group(1)
+        try:
+            return re.search('mlt melt ([\.0-9]+)', data, re.I).group(1)
+        except AttributeError:
+            return None
     
 """
 Devuelve la versión del mediainfo instalado.
@@ -158,7 +161,23 @@ def mediainfo_version():
     if is_exec(fpath):
         command = "%s --Version" % fpath
         data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()[0]
-        return re.search('(v[0-9\.]+)$', data).group(1)
+        try:
+            return re.search('(v[0-9\.]+)$', data).group(1)
+        except AttributeError:
+            return None
+
+"""
+Devuelve la versión del MP4Box instalado.
+"""
+def mp4box_version():
+    fpath = config.get_option('MP4BOX_PATH')
+    if is_exec(fpath):
+        command = "%s -version" % fpath
+        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()[0]
+        try:
+            return re.search('version (\S*)', data).group(1)
+        except AttributeError:
+            return None
 
 """
 Devuelve la información de uso del sistema de ficheros en el que se encuentra la ruta dada.

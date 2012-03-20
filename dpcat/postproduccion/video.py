@@ -1,6 +1,6 @@
 #encoding: utf-8
 from django.shortcuts import render_to_response
-from postproduccion.encoder import get_file_info, encode_mixed_video, encode_preview, get_video_duration
+from postproduccion.encoder import get_file_info, encode_mixed_video, encode_preview, get_video_duration, make_streamable
 from postproduccion.models import TecData, Previsualizacion
 from configuracion import config
 from postproduccion import utils
@@ -10,6 +10,7 @@ import os
 import tempfile
 import shutil
 import string
+from StringIO import StringIO
 
 
 """
@@ -144,6 +145,9 @@ def create_pil(video, logfile, pid_notifier = None):
         except:
             pass
         return False
+
+    # Prepara el fichero para hacer HTTP streaming.
+    make_streamable(video.fichero, logfile, pid_notifier)
 
     # Obtiene la información técnica del vídeo generado.
     generate_tecdata(video)

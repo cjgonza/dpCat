@@ -497,6 +497,8 @@ def alerts(request):
         lista.append({ 'tipo' : 'ejecutable', 'exe' : 'melt', 'fecha' : datetime.datetime.min })
     if not utils.mediainfo_version():
         lista.append({ 'tipo' : 'ejecutable', 'exe' : 'mediainfo', 'fecha' : datetime.datetime.min })
+    if not utils.mp4box_version():
+        lista.append({ 'tipo' : 'ejecutable', 'exe' : 'MP4Box', 'fecha' : datetime.datetime.min })
     if not utils.is_exec(config.get_option('CRONTAB_PATH')):
         lista.append({ 'tipo' : 'ejecutable', 'exe' : 'crontab', 'fecha' : datetime.datetime.min })
     # Comprueba las rutas a los directorios.
@@ -544,6 +546,7 @@ def status(request):
     ffmpegver = utils.ffmpeg_version()
     meltver = utils.melt_version()
     mediainfover = utils.mediainfo_version()
+    mp4boxver = utils.mp4box_version()
     exes = {
         'FFMPEG'  : {
             'path'    : config.get_option('FFMPEG_PATH'),
@@ -564,6 +567,11 @@ def status(request):
             'path'    : config.get_option('MEDIAINFO_PATH'),
             'status'  : True if mediainfover else False,
             'version' : mediainfover,
+        },
+        'MP4Box'    : {
+            'path'    : config.get_option('MP4BOX_PATH'),
+            'status'  : True if mp4boxver else False,
+            'version' : mp4boxver,
         },
     }
     
