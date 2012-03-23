@@ -393,6 +393,8 @@ def validar_produccion(request, video_id):
         if v.informeproduccion.aprobacion:
             token.send_validation_mail_to_user(v, request.user.first_name)
         queue.removeVideoTasks(v)
+        if v.informeproduccion.aprobacion:
+            v.previsualizacion.delete()
         messages.success(request, "Producción validada")
     else:
         messages.error(request, "Metadatos no definidos, no se puede validar")
