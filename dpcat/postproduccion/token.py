@@ -103,7 +103,6 @@ Genera el mensaje de correo personalizado con las indicaciones para usar el toke
 def generate_custom_mail_message(v, texto, operador):
     (nombre, titulo, vid, fecha) = (v.autor, v.titulo, v.id, v.informeproduccion.fecha_grabacion)
     url = get_token_url(v)
-    print "Operador ", operador
     return Template(config.get_option('CUSTOM_MAIL_MESSAGE')).render(Context({
         'nombre'   : nombre,
         'titulo'   : titulo,
@@ -127,7 +126,6 @@ Genera el mensaje de correo para avisar al usuario de que su producción ya ha s
 """
 def generate_validation_mail_message(v, operador):
     (nombre, titulo, vid, fecha) = (v.autor, v.titulo, v.id, v.informeproduccion.fecha_grabacion)
-    print "Operador ", operador
     return Template(config.get_option('VALIDATED_MAIL_MESSAGE')).render(Context({
         'nombre'   : nombre,
         'titulo'   : titulo,
