@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 
-from cb_publisher.models import Publicacion
+from cb_publisher.models import Publicacion, RegistroPublicacion
 from cb_publisher.forms import ConfigForm, PublishingForm
 from cb_publisher.functions import get_categories
 from configuracion import config
