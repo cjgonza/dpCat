@@ -29,7 +29,7 @@ def config_plugin(request):
         for i in ConfigForm.base_fields.keys():
             initial_data[i] = config.get_option("CB_PUBLISHER_%s" % i.upper())
         form = ConfigForm(initial = initial_data)
-    return render_to_response("postproduccion/section-config.html", { 'form' : form }, context_instance=RequestContext(request))
+    return render_to_response("cb_publisher/section-config.html", { 'form' : form }, context_instance=RequestContext(request))
 
 """
 Realiza la publicación de la producción.
@@ -55,7 +55,7 @@ def publicar(request, video_id):
         except IOError:
             messages.error(request, u'Imposible conectar con el servidor de publicación.')
             return redirect('estado_video', v.id)
-    return render_to_response("postproduccion/section-config.html", { 'form' : form }, context_instance=RequestContext(request))
+    return render_to_response("cb_publisher/section-publish.html", { 'form' : form }, context_instance=RequestContext(request))
 
 """
 Muestra la cola de publicación.

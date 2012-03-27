@@ -1,8 +1,8 @@
 {% extends "postproduccion/base-2-1.html" %}
 
-{% block page-title %}Configuraci&oacute;n{% endblock %}
+{% block page-title %}Publicar producci&oacute;n: Clipbucket{% endblock %}
 {% block section-class %} class = "formulario config" {% endblock %}
-{% block section-title %}<h1>Configuraci&oacute;n del sistema</h1>{% endblock %}
+{% block section-title %}<h1>Publicar producci&oacute;n: Clipbucket</h1>{% endblock %}
 {% block section-description %}{% endblock %}
 
 {% block section-content %} 
@@ -13,7 +13,7 @@
             {{ form.as_ul }}
             </ul>
             <hr/>
-            <input type="submit" value="Guardar" />
+            <input type="submit" value="Publicar" />
             <input type="reset" value="Restaurar formulario" />
         </form>
     </div>
@@ -22,18 +22,11 @@
 {% block section-widget %}
 
             <div class="portlet">
-                <div class="portlet-header">Detalles de configuraci&oacute;n</div>
+                <div class="portlet-header">Informaci&oacute;n de inter&eacutes;s</div>
                 <div class="portlet-content">
-                    <ul> 
-                <li><a class="link" href="{% url config %}">Configuraci&oacute;n del sistema</a></li> 
-                <li><a class="link" href="{% url status %}">Ver el estado del sistema</a></li> 
-                <li><a class="link" href="{% url config_plugin %}">Configuraci&oacute;n del plugin: Clipbucket</a></li> 
+                    <ul>
+<li class="tip">Par&aacute;metros de publicaci&oacute;n de la producci&oacute;n en el repositorio Clipbucket.</li>
                     </ul>
                 </div>
             </div>
 {% endblock %}
-
-
-
-
-

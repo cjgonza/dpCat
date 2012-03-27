@@ -65,11 +65,12 @@
 <h2>Hist&oacute;rico de publicaci&oacute;n</h2>
     <table id="tabla">
         <thead>
-            <th>Fecha</th><th>Enlace</th>
+            <th>Acciones</th><th>Fecha</th><th>Enlace</th>
         </thead>
         <tbody>
             {% for pub in v.registropublicacion_set.all %}
-                <tr><td>{{ pub.fecha|date:"G:i:s - d/m/Y" }}</td><td><a href="{{ pub.enlace }}" target="_blank">{{ pub.enlace }}</a></td>
+                <tr><td><a href="#">Notificar</a> / <a href="{% url borrar_registro pub.id %}">Borrar</a></td>
+                <td>{{ pub.fecha|date:"G:i:s - d/m/Y" }}</td><td><a class="enlace" href="{{ pub.enlace }}" target="_blank">{{ pub.enlace }}</a></td>
             {% endfor %}
         </tbody>
     </table>

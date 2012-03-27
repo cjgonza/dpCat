@@ -7,7 +7,8 @@ body {
     background: #fff;
 }
 
-body.login { background: url(../img/login_bg.jpg) 0 0 no-repeat; }
+body.login { background: #2375BF; }
+
 
 #inner-footer,
 #inner-content,
@@ -41,7 +42,7 @@ body.login { background: url(../img/login_bg.jpg) 0 0 no-repeat; }
 #main-login h1 {
     color: #fff;
     font: bold 45px Arial;
-    text-shadow: 2px 2px 7px #111;
+    text-shadow: 1px 1px 1px #111;
     margin: 0px;
     margin-bottom: 15px;
     padding: 0px;
@@ -238,8 +239,8 @@ a.cerrar:hover {
 /* main-header y derivados */
 /****************************/
 #main-header {
-    height: 70px;
-    background: url(../img/login_bg.jpg) 0 50% no-repeat;
+    height: 50px;
+    background: #2375BF;
 }
 
 #inner-menu-content,
@@ -256,7 +257,7 @@ a.cerrar:hover {
 #inner-menu-content ul {
     margin: 0px;
     padding: 0px;
-    margin-top: 21px;
+    margin-top: 11px;
     float: left;
 }
 
@@ -271,7 +272,7 @@ a.cerrar:hover {
 
 #inner-menu-content ul.utils {
     float: right;
-    margin-top: 22px;
+    margin-top: 12px;
 }
 
 #inner-menu-content ul li {
@@ -340,18 +341,18 @@ text-decoration: underline;
 
 #logo {
     float: left;
-    width: 150px;
+    width: 120px;
     margin: 0px;
     padding: 0px;
     padding-left: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 #logo a {
     color: #fff;
-    font: bold 40px Arial;
+    font: bold 32px Arial;
     text-decoration: none;
-    text-shadow: 1px 1px 2px #111;
+    text-shadow: 1px 1px 1px #111;
     margin: 0px;
     padding: 0px;
 }
@@ -831,7 +832,12 @@ a.link:hover {
 #tabla tbody td.title {
     font-size: 12px;
 }
-#tabla a,
+
+a {
+    color: #05396b;
+    text-decoration: none;
+}
+#tabla a.enlace,
 #tabla td.title a {
     color: #05396B;
     text-decoration: none;
@@ -839,7 +845,7 @@ a.link:hover {
     padding-left: 12px;
     font-size: 11px;
 }
-#tabla a {
+#tabla a.enlace {
     background-image: url(../img/icon/links12.png);
     padding-left: 17px;
 }
