@@ -71,3 +71,24 @@ Contenido de la cola de publicación.
 def contenido_cola_publicacion(request):
     return render_to_response("cb_publisher/ajax-cola.html", { 'list' : Publicacion.objects.order_by('id') }, context_instance=RequestContext(request))
 
+"""
+Borra el registro dado
+"""
+@permission_required('postproduccion.video_manager')
+def borrar_registro(request, record_id):
+    r = get_object_or_404(RegistroPublicacion, pk = record_id)
+    v = r.video
+    r.delete()
+    messages.success(request, u'Registro de publicación eliminado')
+    return redirect('estado_video', v.id)
+
+"""
+Purga las publicaciones erroneas
+"""
+@permission_required('postproduccion.video_manager')
+def purgar_publicaciones(request):
+    failed = Publicacion.objects.get_failed()
+    cont = failed.count()
+    failed.delete()
+    messages.success(request, u'Publicaciones erroneas purgadas. Nº de elementos borrados: %d' % cont)
+    return redirect('cola_publicacion')

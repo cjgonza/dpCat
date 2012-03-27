@@ -6,11 +6,17 @@ from postproduccion.models import Video
 
 class PublicacionManager(models.Manager):
     """
-    Devuelve la lista de producciones pendientes de ser publicadas.
+    Devuelve la lista de publicaciones pendientes de ser publicadas.
     """
     def get_pendings(self):
         return super(PublicacionManager, self).get_query_set().filter(status = 'PEN').order_by('id')
     
+    """
+    Devuelve la lista de publicaciones erroneas.
+    """
+    def get_failed(self):
+        return super(PublicacionManager, self).get_query_set().filter(status = 'ERR')
+
 
 class Publicacion(models.Model):
     QUEUE_STATUS = (
