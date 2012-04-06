@@ -96,4 +96,6 @@ class ConfigForm(Form):
     custom_mail_subject = forms.CharField(label = u'Asusnto del correo de nuevo ticket por parte del operador')
     custom_mail_message = TemplateField(label = u'Mensaje del correo de nuevo ticket por parte del operador')
     validated_mail_subject = forms.CharField(label = u'Asunto del correo de aviso de validación de una producción')
-    validated_mail_message = TemplateField(label = u'Mensajedel correo de aviso de validación de una producción')
+    validated_mail_message = TemplateField(label = u'Mensaje del correo de aviso de validación de una producción')
+    published_mail_subject = forms.CharField(label = u'Asunto del correo de aviso de publicación de una producción')
+    published_mail_message = TemplateField(label = u'Mensaje del correo de aviso de publicación de una producción')

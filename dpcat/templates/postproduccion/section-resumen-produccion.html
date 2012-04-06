@@ -69,7 +69,7 @@
         </thead>
         <tbody>
             {% for pub in v.registropublicacion_set.all %}
-                <tr><td><a href="#">Notificar</a> / <a href="{% url borrar_registro pub.id %}">Borrar</a></td>
+                <tr><td><a href="{% url notificar_publicacion pub.id %}">Notificar</a> / <a href="{% url borrar_registro pub.id %}">Borrar</a></td>
                 <td>{{ pub.fecha|date:"G:i:s - d/m/Y" }}</td><td><a class="enlace" href="{{ pub.enlace }}" target="_blank">{{ pub.enlace }}</a></td>
             {% endfor %}
         </tbody>

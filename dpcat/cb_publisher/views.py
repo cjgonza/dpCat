@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import permission_required
 
 from cb_publisher.models import Publicacion, RegistroPublicacion
 from cb_publisher.forms import ConfigForm, PublishingForm
-from cb_publisher.functions import get_categories
+from cb_publisher.functions import get_categories, send_published_mail_to_user
 from configuracion import config
 from postproduccion.models import Video
 
@@ -92,3 +92,13 @@ def purgar_publicaciones(request):
     failed.delete()
     messages.success(request, u'Publicaciones erroneas purgadas. Nº de elementos borrados: %d' % cont)
     return redirect('cola_publicacion')
+
+"""
+Envía un correo al autor notificando de que una producción se encuentra publicada.
+"""
+@permission_required('postproduccion.video_manager')
+def notificar_publicacion(request, record_id):
+    r = get_object_or_404(RegistroPublicacion, pk = record_id)
+    send_published_mail_to_user(r)
+    messages.success(request, u'Enviado correo de notificación de publicacion al autor')
+    return redirect('estado_video', r.video.id)
