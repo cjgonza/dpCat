@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, ConfigForm, IncidenciaProduccionForm
+from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm
 from postproduccion import queue 
 from postproduccion import utils
 from postproduccion import token
@@ -525,19 +525,20 @@ def alerts(request):
 Edita los ajustes de configuración de la aplicación.
 """
 @permission_required('postproduccion.video_manager')
-def config_settings(request):
+def config_settings(request, mail = False):
+    ClassForm = ConfigMailForm if mail else ConfigForm
     if request.method == 'POST':
-        form = ConfigForm(request.POST)
+        form = ClassForm(request.POST)
         if form.is_valid():
             for i in form.base_fields.keys():
                 config.set_option(i.upper(), form.cleaned_data[i])
             messages.success(request, 'Configuración guardada')
     else:
         initial_data = dict()
-        for i in ConfigForm.base_fields.keys():
+        for i in ClassForm.base_fields.keys():
             initial_data[i] = config.get_option(i.upper())
-        form = ConfigForm(initial_data)
-    return render_to_response("postproduccion/section-config.html", { 'form' : form }, context_instance=RequestContext(request))
+        form = ClassForm(initial_data)
+    return render_to_response("postproduccion/section-config.html", { 'form' : form, 'mail' : mail }, context_instance=RequestContext(request))
 
 """
 Muestra el estado de la aplicación con la configuración actual.
