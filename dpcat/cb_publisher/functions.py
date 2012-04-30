@@ -2,45 +2,44 @@
 from django.shortcuts import render_to_response
 from configuracion import config
 
-import urllib
-import os
-import shutil
+import subprocess
 import json
 
-def get_category_id(category_name):
-    f = urllib.urlopen("%s/plugins/dpcat_ull/get_categories.php" %  config.get_option('CB_PUBLISHER_CLIPBUCKET_URL'))
-    categorias = json.loads(f.read())
+def get_uploader_code(v, category):
+    cb_path = config.get_option('CB_PUBLISHER_CLIPBUCKET_PATH')
+    auth = { 'user' : config.get_option('CB_PUBLISHER_USERNAME'), 'pass' : config.get_option('CB_PUBLISHER_PASSWORD') }
+    return render_to_response('cb_publisher/uploader.php', { 'v' : v, 'cb_path' : cb_path, 'auth' : auth, 'category' : category }).content
 
-    # Si hay varias nos quedamos con la última
-    for c in categorias:
-        if c['category_name'] == category_name:
-            category_id = c['category_id']
+def execute_upload(v, category):
+    php_path = config.get_option('CB_PUBLISHER_PHP_PATH')
 
-    return category_id
+    p = subprocess.Popen(php_path, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    messages = p.communicate(input=get_uploader_code(v, category))[0]
 
-def execute_upload(v):
-    localfile = os.path.join(config.get_option('CB_PUBLISHER_LOCAL_DIR'), os.path.basename(v.fichero))
-    remotefile = os.path.join(config.get_option('CB_PUBLISHER_REMOTE_DIR'), os.path.basename(v.fichero))
-    data = {
-        'user' : config.get_option('CB_PUBLISHER_USERNAME'),
-        'pass' : config.get_option('CB_PUBLISHER_PASSWORD'),
-        'file' : remotefile,
-        'title' : v.metadata.title.encode('utf-8'),
-        'description' : v.metadata.description.encode('utf-8'),
-        'tags' : v.metadata.keyword.encode('utf-8'),
-        'category' : get_category_id(v.metadata.get_knowledge_areas_display()),
-        'license' : v.metadata.license,
-    }
-
-    shutil.copy(v.fichero, localfile)
-
-    params = urllib.urlencode(data)
-    f = urllib.urlopen("%s/plugins/dpcat_ull/uploader.php" %  config.get_option('CB_PUBLISHER_CLIPBUCKET_URL'), params)
-    messages = f.read()
-
-    os.remove(localfile)
-
-    if not messages:
+    if p.returncode == 0:
         return None
     else:
         return messages
+
+def get_categories():
+    cb_path = config.get_option('CB_PUBLISHER_CLIPBUCKET_PATH')
+    phpcode = render_to_response('cb_publisher/get_categories.php', { 'cb_path' : cb_path }).content
+
+    php_path = config.get_option('CB_PUBLISHER_PHP_PATH')
+    p = subprocess.Popen(php_path, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    categorias = json.loads(p.communicate(input=phpcode)[0])
+
+    choices = list()
+    def get_sub_categories(parent, level):
+        for cat in categorias:
+            if cat['parent_id'] == parent:
+                choices.append((cat['category_id'], "- " * level  + cat['category_name']))
+                get_sub_categories(cat['category_id'], level + 1)
+
+
+    for cat in categorias:
+        if int(cat['parent_id']) is 0:
+            choices.append((cat['category_id'], cat['category_name']))
+            get_sub_categories(cat['category_id'], 1)
+
+    return choices

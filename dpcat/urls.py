@@ -8,6 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^$', 'postproduccion.views.index'),
     (r'^postproduccion/', include('postproduccion.urls')),
+    (r'^cb_publisher/', include('cb_publisher.urls')),
     (r'^admin/', include(admin.site.urls)),
 #    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
 #    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/usr/share/pyshared/django/contrib/admin/media/'}),
