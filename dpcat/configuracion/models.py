@@ -5,7 +5,7 @@ from django.db import models
 
 class Settings(models.Model):
     clave = models.CharField(max_length=30, unique=True)
-    valor = models.CharField(max_length=255)
+    valor = models.TextField()
 
     class Meta:
         verbose_name = u'configuración'

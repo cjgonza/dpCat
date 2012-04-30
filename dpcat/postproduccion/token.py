@@ -1,6 +1,7 @@
 #encoding: utf-8
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
+from django.template import Template, Context
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
 from postproduccion.models import Token, Video
@@ -79,20 +80,21 @@ Genera el mensaje de correo con las indicaciones para usar el token.
 def generate_mail_message(v):
     (nombre, titulo, vid, fecha) = (v.autor, v.titulo, v.id, v.informeproduccion.fecha_grabacion)
     url = get_token_url(v)
-    return render_to_string('postproduccion/mail-validar-message.txt', { 
-        'nombre' : nombre,
-        'titulo' : titulo,
-        'vid'    : vid,
-        'fecha'  : fecha,
-        'url'    : url,
-        })
+    return Template(config.get_option('NOTIFY_MAIL_MESSAGE')).render(Context({
+        'nombre'  : nombre,
+        'titulo'  : titulo,
+        'vid'     : vid,
+        'fecha'   : fecha,
+        'url'     : url,
+        'validez' : config.get_option('TOKEN_VALID_DAYS'),
+        }))
 
 """
 Envía un correo al usuario para solicitar la aprobación y los metadatos de un vídeo.
 """
 def send_mail_to_user(v):
     v = create_token(v)
-    send_mail('ULLmedia: Vídeo completado', generate_mail_message(v), config.get_option('RETURN_EMAIL'), [v.email])
+    send_mail(config.get_option('NOTIFY_MAIL_SUBJECT'), generate_mail_message(v), config.get_option('RETURN_EMAIL'), [v.email])
     return v
 
 """
@@ -101,7 +103,8 @@ Genera el mensaje de correo personalizado con las indicaciones para usar el toke
 def generate_custom_mail_message(v, texto, operador):
     (nombre, titulo, vid, fecha) = (v.autor, v.titulo, v.id, v.informeproduccion.fecha_grabacion)
     url = get_token_url(v)
-    return render_to_string('postproduccion/mail-custom-message.txt', {
+    print "Operador ", operador
+    return Template(config.get_option('CUSTOM_MAIL_MESSAGE')).render(Context({
         'nombre'   : nombre,
         'titulo'   : titulo,
         'vid'      : vid,
@@ -109,14 +112,14 @@ def generate_custom_mail_message(v, texto, operador):
         'texto'    : texto,
         'url'      : url,
         'operador' : operador,
-        })
+        }))
 
 """
 Envía un correo personalizado al usuario para solicitar la aprobación y los metadatos de un vídeo.
 """
 def send_custom_mail_to_user(v, texto, operador):
     v = create_token(v)
-    send_mail('ULLmedia: Comentario del operador', generate_custom_mail_message(v, texto, operador), config.get_option('RETURN_EMAIL'), [v.email])
+    send_mail(config.get_option('CUSTOM_MAIL_SUBJECT'), generate_custom_mail_message(v, texto, operador), config.get_option('RETURN_EMAIL'), [v.email])
     return v
 
 """
@@ -124,17 +127,18 @@ Genera el mensaje de correo para avisar al usuario de que su producción ya ha s
 """
 def generate_validation_mail_message(v, operador):
     (nombre, titulo, vid, fecha) = (v.autor, v.titulo, v.id, v.informeproduccion.fecha_grabacion)
-    return render_to_string('postproduccion/mail-validada-message.txt', { 
+    print "Operador ", operador
+    return Template(config.get_option('VALIDATED_MAIL_MESSAGE')).render(Context({
         'nombre'   : nombre,
         'titulo'   : titulo,
         'vid'      : vid,
         'fecha'    : fecha,
         'operador' : operador,
-        })
+        }))
 
 """
 Envía un correo para avisar al usuario de que su producción ya ha sido validada.
 """
 def send_validation_mail_to_user(v, operador):
-    send_mail('ULLmedia: Producción validada', generate_validation_mail_message(v, operador), config.get_option('RETURN_EMAIL'), [v.email])
+    send_mail(config.get_option('VALIDATED_MAIL_SUBJECT'), generate_validation_mail_message(v, operador), config.get_option('RETURN_EMAIL'), [v.email])
     return v

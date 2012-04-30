@@ -2,6 +2,7 @@
 from django import forms
 from django.forms import ModelForm, CharField, Textarea, widgets, Form, ValidationError
 from django.forms.models import BaseInlineFormSet
+from django.template import Template, TemplateSyntaxError
 from postproduccion.models import Video, FicheroEntrada, Metadata, InformeProduccion, IncidenciaProduccion
 from postproduccion.utils import is_exec, is_dir
 from postproduccion.encoder import is_video_file
@@ -64,6 +65,15 @@ class DirectoryField(ASCIIField):
         if not is_dir(value):
             raise forms.ValidationError("El directorio no existe o no es accesible")
 
+class TemplateField(forms.CharField):
+    widget = Textarea()
+    def validate(self, value):
+        super(TemplateField, self).validate(value)
+        try:
+            Template(value)
+        except:
+            raise forms.ValidationError(u"El mensaje contiene etiquetas inválidas")
+
 class ConfigForm(Form):
     max_encoding_tasks = forms.IntegerField(label = u'Nº máximo de codificaciones simultaneas')
     mediainfo_path = ExecutableField(label = u'Ruta del \'mediainfo\'')
@@ -81,4 +91,9 @@ class ConfigForm(Form):
     log_max_lines = forms.IntegerField(label = u'Nº máximo de líneas del registro de sistema')
     max_num_logfiles = forms.IntegerField(label = u'Nº máximo de ficheros de registro de sistema antiguos')
     return_email = forms.EmailField(label = u'Dirección del remitente para envíos de correos electrónicos')
-    
+    notify_mail_subject = forms.CharField(label = u'Asunto del correo de notificación de producción realizada')
+    notify_mail_message = TemplateField(label = u'Mensaje del correo de notificación de producción realizada')
+    custom_mail_subject = forms.CharField(label = u'Asusnto del correo de nuevo ticket por parte del operador')
+    custom_mail_message = TemplateField(label = u'Mensaje del correo de nuevo ticket por parte del operador')
+    validated_mail_subject = forms.CharField(label = u'Asunto del correo de aviso de validación de una producción')
+    validated_mail_message = TemplateField(label = u'Mensajedel correo de aviso de validación de una producción')
