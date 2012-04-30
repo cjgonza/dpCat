@@ -37,40 +37,11 @@ def set_default_settings():
         [ 'SITE_URL' ,           'http://127.0.0.1:8000' ],
         [ 'LOG_MAX_LINES',       1000 ],
         [ 'MAX_NUM_LOGFILES',    6 ],
-        [ 'PUBLICATION_PLUGINS', '["cb_publisher"]' ],
         [ 'RETURN_EMAIL',        'noreply@dpcat.es' ],
     ]
 
     for op in defaults:
         config.get_option(op[0]) or config.set_option(op[0], op[1])
-
-"""
-Lista los plugins de publicación activos.
-"""
-def list_plugins():
-    try:
-        return json.loads(config.get_option('PUBLICATION_PLUGINS'))
-    except TypeError:
-        return list()
-
-"""
-Añade un nuevo plugin de publicación.
-"""
-def add_plugin(plugin_name):
-    lst = list_plugins()
-    lst.append(plugin_name)
-    config.set_option('PUBLICATION_PLUGINS', json.dumps(lst))
-
-"""
-Elimina un plugin de publicación.
-"""
-def del_plugin(plugin_name):
-    lst = list_plugins()
-    try:
-        lst.remove(plugin_name)
-        config.set_option('PUBLICATION_PLUGINS', json.dumps(lst))
-    except ValueError:
-        pass
 
 """
 Genera un token alfanumérico del tamaño dado
