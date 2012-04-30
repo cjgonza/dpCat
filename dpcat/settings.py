@@ -104,6 +104,7 @@ INSTALLED_APPS = (
     'south',
     'postproduccion',
     'configuracion',
+    'cb_publisher',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

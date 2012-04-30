@@ -1,4 +1,3 @@
-"""
 from configuracion import config
 
 defaults = [
@@ -11,7 +10,3 @@ defaults = [
 
 for op in defaults:
     config.get_option(op[0]) or config.set_option(op[0], op[1])
-
-from cb_publisher.forms import ConfigForm
-from cb_publisher.functions import execute_upload as publish
-"""

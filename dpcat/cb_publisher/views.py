@@ -5,10 +5,13 @@ from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 
+from cb_publisher.models import Publicacion
 from cb_publisher.forms import ConfigForm, PublishingForm
+from cb_publisher.functions import get_categories
 from configuracion import config
 from postproduccion.models import Video
 
+import json
 
 """
 Edita los ajustes de configuración del plugin de publicación.
@@ -35,20 +38,17 @@ Realiza la publicación de la producción.
 def publicar(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
     if request.method == 'POST':
-        """
-        form = plugin.PublishingForm(request.POST)
+        form = PublishingForm(request.POST)
+        form.fields['category'].choices = get_categories()
         if form.is_valid():
-            msg = plugin.publish(v, form.cleaned_data['category'])
-            if msg == None:
-                messages.success(request, u'Producción publicada')
-            else:
-                messages.error(request, u'Error publicando la producción:\n%s' % msg)
+            Publicacion(video = v, data = json.dumps(form.cleaned_data)).save()
+            messages.success(request, u'Producción encolada para su publicación')
             return redirect('estado_video', v.id)
-        """
-        pass
     else:
         form = PublishingForm()
         form.fields['title'].initial = v.metadata.title
         form.fields['description'].initial = v.metadata.description
         form.fields['tags'].initial = v.metadata.keyword
+        form.fields['license'].initial = v.metadata.license
+        form.fields['category'].choices = get_categories()
     return render_to_response("postproduccion/section-config.html", { 'form' : form }, context_instance=RequestContext(request))

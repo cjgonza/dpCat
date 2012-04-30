@@ -2,9 +2,15 @@
 from django.shortcuts import render_to_response
 from configuracion import config
 
+import urllib
 import subprocess
 import json
 
+def _remote_action(action, params = None):
+    f = urllib.urlopen("%s/plugins/dpcat/%s.php" %  (config.get_option('CB_PUBLISHER_CLIPBUCKET_URL'), action))
+    return f.read()
+
+"""
 def get_uploader_code(v, category):
     cb_path = config.get_option('CB_PUBLISHER_CLIPBUCKET_PATH')
     auth = { 'user' : config.get_option('CB_PUBLISHER_USERNAME'), 'pass' : config.get_option('CB_PUBLISHER_PASSWORD') }
@@ -20,14 +26,10 @@ def execute_upload(v, category):
         return None
     else:
         return messages
+"""
 
 def get_categories():
-    cb_path = config.get_option('CB_PUBLISHER_CLIPBUCKET_PATH')
-    phpcode = render_to_response('cb_publisher/get_categories.php', { 'cb_path' : cb_path }).content
-
-    php_path = config.get_option('CB_PUBLISHER_PHP_PATH')
-    p = subprocess.Popen(php_path, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    categorias = json.loads(p.communicate(input=phpcode)[0])
+    categorias = json.loads(_remote_action('get_categories'))
 
     choices = list()
     def get_sub_categories(parent, level):

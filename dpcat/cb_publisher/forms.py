@@ -14,5 +14,5 @@ class PublishingForm(forms.Form):
     title = forms.CharField(max_length = 255, label = u'Título')
     description = forms.CharField(label = u'Descripción', widget = forms.Textarea)
     tags = forms.CharField(max_length = 255, label = u'Etiquetas')
-    license = forms.ChoiceField(label = u'Licencia de uso')
+    license = forms.ChoiceField(choices = Metadata.LICENSE_KEYS, label = u'Licencia de uso')
     category = forms.ChoiceField(label = u'Categoría de publicación')
