@@ -517,7 +517,7 @@ class Metadata(models.Model):
         ('AO', u'Física'),
         ('AP', u'Geografía'),
         ('AQ', u'Historia'),
-        ('AR', u'Lingüistia'),
+        ('AR', u'Lingüistica'),
         ('AS', u'Lógica'),
         ('AT', u'Matemáticas'),
         ('AU', u'Medicina y patologías humanas'),
