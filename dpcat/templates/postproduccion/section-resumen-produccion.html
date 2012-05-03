@@ -68,9 +68,6 @@
             <th>Acciones</th><th>Fecha</th><th>Enlace</th>
         </thead>
         <tbody>
-            {% for pub in v.registropublicacion_set.all %}
-                <tr>
-                    <td>
                         <div id="dialog-notificar" title="¿Notificar publicaci&oacute;n de la producci&oacute;n?">
                             <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Pulse en notificar para enviar un mensaje al autor de la producci&oacute;n que esta ha sido publicada.</p>
                         </div>
@@ -78,6 +75,10 @@
                             <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Pulse en borrar para eliminar la entrada del hist&oacute;rico de publicaci&oacute;n de la producci&oacute;n.</p>
                         </div>
 
+
+            {% for pub in v.registropublicacion_set.all %}
+                <tr>
+                    <td>
                         <a class="notificar" href="{% url notificar_publicacion pub.id %}">Notificar</a> / <a class="borrar-publi" href="{% url borrar_registro pub.id %}">Borrar</a></td>
                 <td>{{ pub.fecha|date:"G:i:s - d/m/Y" }}</td><td><a class="enlace" href="{{ pub.enlace }}" target="_blank">{{ pub.enlace }}</a></td>
             {% endfor %}
