@@ -1619,6 +1619,15 @@ form.form-nueva ul li {
     color: #888;
 }
 
+form.form-nueva ul ul {
+    margin-top: 8px;
+}
+form.form-nueva ul ul li {
+    margin-bottom: 5px;
+    float: left;
+    margin-left: 10px;
+}
+
 form.form-nueva ul.jqueryFileTree li {
     margin: 0px;
 }

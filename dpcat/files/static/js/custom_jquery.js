@@ -87,6 +87,60 @@ $(document).ready(function() {
         $( "#dialog-validar" ).dialog("open");
     });
 
+// Dialog notificar publicación
+    $( "#dialog-notificar" ).dialog({
+        autoOpen: false,
+        modal: true
+    });
+
+    $(".notificar").click(function (e) {
+        e.preventDefault();
+        var urlValidar = $(this).attr("href");
+        $( "#dialog-notificar" ).dialog({
+            autoOpen: false,
+            resizable: false,
+            height:160,
+            modal: true,
+            buttons: {
+                "Notificar": function() {
+                   window.location.href = urlValidar;
+                },
+                "Cancelar": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+        $( "#dialog-notificar" ).dialog("open");
+    });
+
+// Borrar la entrada de publicación del histórico de publicación
+    $( "#dialog-borrar-publi" ).dialog({
+        autoOpen: false,
+        modal: true
+    });
+
+    $(".borrar-publi").click(function (e) {
+        e.preventDefault();
+        var urlValidar = $(this).attr("href");
+        $( "#dialog-borrar-publi" ).dialog({
+            autoOpen: false,
+            resizable: false,
+            height:160,
+            modal: true,
+            buttons: {
+                "Borrar": function() {
+                   window.location.href = urlValidar;
+                },
+                "Cancelar": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+        $( "#dialog-borrar-publi" ).dialog("open");
+    });
+
+
+
 // Dialog generación de ticket
     $('#dialog-generarticket').dialog({
         autoOpen: false,

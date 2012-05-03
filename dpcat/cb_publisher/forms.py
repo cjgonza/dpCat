@@ -17,8 +17,8 @@ class PublishingForm(forms.Form):
     license = forms.ChoiceField(choices = Metadata.LICENSE_KEYS, label = u'Licencia de uso')
     category = forms.TypedChoiceField(label = u'Categoría de publicación', coerce = int)
     collection = forms.TypedChoiceField(
-        label = u'Añadir a colección',
-        choices = ((0, 'No'), (1, u'Añadir a existente'), (2, u'Crear nueva')),
+        label = u'Colección',
+        choices = ((0, 'Sin colección'), (1, u'Añadir a existente'), (2, u'Crear nueva')),
         initial = 0,
         widget = forms.RadioSelect,
         coerce = int,
