@@ -6,8 +6,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 
 from cb_publisher.models import Publicacion, RegistroPublicacion
-from cb_publisher.forms import ConfigForm, PublishingForm
-from cb_publisher.functions import get_categories, send_published_mail_to_user
+from cb_publisher.forms import ConfigForm, PublishingForm, NewCollectionForm, AddToCollectionForm
+from cb_publisher.functions import get_categories, send_published_mail_to_user, get_category_id, get_collection_categories, get_collections
 from configuracion import config
 from postproduccion.models import Video
 
@@ -39,23 +39,42 @@ def publicar(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
     if request.method == 'POST':
         form = PublishingForm(request.POST)
+        new_form = NewCollectionForm(request.POST)
+        add_form = AddToCollectionForm(request.POST)
         form.fields['category'].choices = get_categories()
-        if form.is_valid():
-            Publicacion(video = v, data = json.dumps(form.cleaned_data)).save()
+        new_form.fields['new_collection_category'].choices = get_collection_categories()
+        add_form.fields['add_to_collection'].choices = get_collections()
+        if form.is_valid() \
+            and not (form.cleaned_data['collection'] is 1 and not add_form.is_valid()) \
+            and not (form.cleaned_data['collection'] is 2 and not new_form.is_valid()):
+            if form.cleaned_data['collection'] is 0:
+                pub_data = form.cleaned_data
+            if form.cleaned_data['collection'] is 1:
+                pub_data = dict(form.cleaned_data, **add_form.cleaned_data)
+            if form.cleaned_data['collection'] is 2:
+                pub_data = dict(form.cleaned_data, **new_form.cleaned_data)
+            print pub_data
+            Publicacion(video = v, data = json.dumps(pub_data)).save()
             messages.success(request, u'Producción encolada para su publicación')
             return redirect('estado_video', v.id)
     else:
         form = PublishingForm()
+        new_form = NewCollectionForm()
+        add_form = AddToCollectionForm()
         form.fields['title'].initial = v.metadata.title
         form.fields['description'].initial = v.metadata.description
         form.fields['tags'].initial = v.metadata.keyword
         form.fields['license'].initial = v.metadata.license
         try:
             form.fields['category'].choices = get_categories()
+            form.fields['category'].initial = get_category_id(v.metadata.get_knowledge_areas_display())
+            new_form.fields['new_collection_category'].choices = get_collection_categories()
+            add_form.fields['add_to_collection'].choices = get_collections()
         except IOError:
             messages.error(request, u'Imposible conectar con el servidor de publicación.')
             return redirect('estado_video', v.id)
-    return render_to_response("cb_publisher/section-publish.html", { 'form' : form }, context_instance=RequestContext(request))
+
+    return render_to_response("cb_publisher/section-publish.html", { 'form' : form, 'new_form' : new_form, 'add_form' : add_form }, context_instance=RequestContext(request))
 
 """
 Muestra la cola de publicación.

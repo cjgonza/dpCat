@@ -48,6 +48,26 @@ if ($vid) {
     $upl->add_conversion_queue($base_name);
     set_license_data($vid, $_POST['license']);
     $vlink = video_link($vid);
+
+    // Añadir a una colección.
+    if ($_POST['collection'] == 1)
+        $cbvideo->collection->add_collection_item($vid, $_POST['add_to_collection']);
+    // Crear una nueva colección
+    if ($_POST['collection'] == 2) {
+        global $cbcollection;
+        $params = array(
+            "collection_name" => $_POST['new_collection_name'],
+            "collection_description" => $_POST['new_collection_description'],
+            "collection_tags" => $_POST['new_collection_tags'],
+            "category" => Array($_POST['new_collection_category']),
+            "type" => "videos",
+            "allow_comments" => "no",
+            "broadcast" => "public",
+            "public_upload" => "yes");
+        $cid = $cbcollection->create_collection($params);
+        $cbvideo->collection->add_collection_item($vid, $cid);
+    }
+
     return_and_exit();
 }
 

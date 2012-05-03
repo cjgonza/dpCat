@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from configuracion import config
 from settings import MEDIA_ROOT
 from cb_publisher.models import RegistroPublicacion
+from postproduccion.utils import generate_token
 
 import urllib
 import json
@@ -26,8 +27,9 @@ def publish(task):
     v = task.video
     d = json.loads(task.data)
 
-    localfile = os.path.join(config.get_option('CB_PUBLISHER_LOCAL_DIR'), os.path.basename(v.fichero))
-    remotefile = os.path.join(config.get_option('CB_PUBLISHER_REMOTE_DIR'), os.path.basename(v.fichero))
+    rand_prefix = generate_token(5)
+    localfile = os.path.join(config.get_option('CB_PUBLISHER_LOCAL_DIR'), rand_prefix + os.path.basename(v.fichero))
+    remotefile = os.path.join(config.get_option('CB_PUBLISHER_REMOTE_DIR'), rand_prefix + os.path.basename(v.fichero))
     data = {
         'user' : config.get_option('CB_PUBLISHER_USERNAME'),
         'pass' : config.get_option('CB_PUBLISHER_PASSWORD'),
@@ -37,7 +39,17 @@ def publish(task):
         'tags' : d['tags'].encode('utf-8'),
         'category' : d['category'],
         'license' : d['license'],
+        'collection' : d['collection'],
     }
+
+    # Insertar en una colección.
+    if d['collection'] is 1:
+        data['add_to_collection'] = d['add_to_collection']
+    if d['collection'] is 2:
+        data['new_collection_name'] = d['new_collection_name'].encode('utf-8')
+        data['new_collection_description'] = d['new_collection_description'].encode('utf-8')
+        data['new_collection_tags'] = d['new_collection_tags'].encode('utf-8')
+        data['new_collection_category'] = d['new_collection_category']
 
     shutil.copy(v.fichero, localfile)
 
@@ -73,7 +85,7 @@ def publish(task):
     # Guarda el registro del error.
     (handle, path) = tempfile.mkstemp(suffix = '.pub.log', dir = MEDIA_ROOT + '/' + task.logfile.field.get_directory_name())
     task.logfile = task.logfile.field.get_directory_name() + '/' + os.path.basename(path)
-    os.write(handle, error_text)
+    os.write(handle, error_text.encode('utf-8'))
     os.close(handle)
 
     # Si se creó la publicación en el ClipBucket se borra.
@@ -105,6 +117,36 @@ def get_categories():
         if int(cat['parent_id']) is 0:
             choices.append((cat['category_id'], cat['category_name']))
             get_sub_categories(cat['category_id'], 1)
+
+    return choices
+
+def get_category_id(category_name):
+    categorias = json.loads(_remote_action('get_categories'))
+
+    category_id = None # Se inicializa por si acaso no casa ninguna categoría.
+
+    # Si hay varias nos quedamos con la última
+    for c in categorias:
+        if c['category_name'] == category_name:
+            category_id = c['category_id']
+
+    return category_id
+
+def get_collection_categories():
+    categorias = json.loads(_remote_action('get_collection_categories'))
+
+    choices = list()
+    for cat in categorias:
+        choices.append((cat['category_id'], cat['category_name']))
+
+    return choices
+
+def get_collections():
+    categorias = json.loads(_remote_action('get_collections'))
+
+    choices = list()
+    for cat in categorias:
+        choices.append((cat['collection_id'], cat['collection_name']))
 
     return choices
 

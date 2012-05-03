@@ -15,4 +15,20 @@ class PublishingForm(forms.Form):
     description = forms.CharField(label = u'Descripción', widget = forms.Textarea)
     tags = forms.CharField(max_length = 255, label = u'Etiquetas')
     license = forms.ChoiceField(choices = Metadata.LICENSE_KEYS, label = u'Licencia de uso')
-    category = forms.ChoiceField(label = u'Categoría de publicación')
+    category = forms.TypedChoiceField(label = u'Categoría de publicación', coerce = int)
+    collection = forms.TypedChoiceField(
+        label = u'Añadir a colección',
+        choices = ((0, 'No'), (1, u'Añadir a existente'), (2, u'Crear nueva')),
+        initial = 0,
+        widget = forms.RadioSelect,
+        coerce = int,
+    )
+
+class AddToCollectionForm(forms.Form):
+    add_to_collection = forms.TypedChoiceField(label = u'Colección', coerce = int)
+
+class NewCollectionForm(forms.Form):
+    new_collection_name = forms.CharField(label = 'Nombre de la colección')
+    new_collection_description = forms.CharField(label = u'Descripción de la colección', widget = forms.Textarea)
+    new_collection_tags = forms.CharField(label = u'Etiquetas de la colección')
+    new_collection_category = forms.TypedChoiceField(label = u'Categoría de la colección', coerce = int)
