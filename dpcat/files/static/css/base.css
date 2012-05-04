@@ -1619,10 +1619,10 @@ form.form-nueva ul li {
     color: #888;
 }
 
-form.form-nueva ul ul {
+.formulario.config form.form-nueva ul ul {
     margin-top: 8px;
 }
-form.form-nueva ul ul li {
+.formulario.config form.form-nueva ul ul li {
     margin-bottom: 5px;
     float: left;
     margin-left: 10px;
