@@ -52,8 +52,8 @@ class Video(models.Model):
 
  
     titulo = models.CharField(max_length = 255)
-    autor = models.CharField(max_length = 255)
-    email = models.EmailField()
+    autor = models.CharField(max_length = 255, verbose_name = u'Responsable')
+    email = models.EmailField(verbose_name = u'Email del responsable')
 
     def __unicode__(self):
         return self.titulo
