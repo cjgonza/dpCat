@@ -7,6 +7,7 @@ from postproduccion import utils
 
 from xml.dom.minidom import parseString
 import os
+import stat
 import tempfile
 import shutil
 import string
@@ -178,6 +179,8 @@ def copy_video(video, logfile):
     try:
         shutil.copy(src, dst)
         os.write(logfile, '%s -> %s\n' % (src, dst))
+        os.chmod(dst, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
+        os.write(logfile, 'chmod: 640\n')
     except IOError as error:
         os.write(logfile, error.__str__())
         video.set_status('DEF')
