@@ -53,7 +53,7 @@
         </thead>
         <tbody>
             {% for inci in v.informeproduccion.incidenciaproduccion_set.all|dictsort:"fecha" %}
-                <tr><td>{% if inci.emisor %}{{ inci.emisor }}{% else %}{{ v.autor }}{% endif %}</td><td>{{ inci.fecha|date:"G:i:s - d/m/Y" }}</td><td class="{{ inci.aceptado|yesno:'ok,err' }}">&nbsp;</td><td>{% if inci.comentario %}{{ inci.comentario }}{% else %}-{% endif %}</td></tr>
+                <tr><td>{% if inci.emisor %}{{ inci.emisor }}{% else %}{{ v.autor }}{% endif %}</td><td>{{ inci.fecha|date:"G:i:s - d/m/Y" }}</td><td{% if not inci.emisor %} class="{{ inci.aceptado|yesno:'ok,err' }}"{% endif %}>&nbsp;</td><td>{% if inci.comentario %}{{ inci.comentario }}{% endif %}</td></tr>
             {% endfor %}
         </tbody>
     </table>
