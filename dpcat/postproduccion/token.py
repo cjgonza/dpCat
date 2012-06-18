@@ -86,7 +86,7 @@ def generate_mail_message(v):
         'vid'     : vid,
         'fecha'   : fecha,
         'url'     : url,
-        'validez' : config.get_option('TOKEN_VALID_DAYS'),
+        'validez' : get_token_data(v)['expiration_date'],
         }))
 
 """
@@ -111,6 +111,7 @@ def generate_custom_mail_message(v, texto, operador):
         'texto'    : texto,
         'url'      : url,
         'operador' : operador,
+        'validez'  : get_token_data(v)['expiration_date'],
         }))
 
 """
