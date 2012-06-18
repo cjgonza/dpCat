@@ -793,10 +793,14 @@ a.link:hover {
     width: 160px;
 }
 #tabla th.date {
-    width: 120px;
+    width: 75px;
 }
 #tabla tbody td.date {
     color: #666666;
+}
+
+#tabla th.respon {
+    width: 90px;
 }
 
 #tabla th.oper {

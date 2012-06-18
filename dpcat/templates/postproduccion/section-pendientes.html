@@ -14,6 +14,7 @@
     <th class="status">Estado</th>
     <th class="oper">Operador</th>
     <th class="date">Fecha</th>
+    <th class="respon">Responsable</th>
     <th class="title">T&iacute;tulo</th>
   </thead>
   <tbody>
@@ -23,6 +24,7 @@
         <td class="status">{{ video.status }}</td>
         <td class="oper">{{ video.operador }}</td>
         <td class="date">{{ video.fecha }}</td>
+        <td class="respon">{{ video.responsable }}</td>
         <td class="title"><a href="{% url estado_video video.id %}">{{ video.titulo }}</a></td>
     </tr>
     {% endfor %}

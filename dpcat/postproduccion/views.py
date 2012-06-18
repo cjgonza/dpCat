@@ -225,7 +225,8 @@ def listar(filtro = None):
         linea['id'] = v.pk
         linea['titulo'] = v.titulo
         linea['operador'] = v.informeproduccion.operador.username
-        linea['fecha'] = v.informeproduccion.fecha_produccion.strftime("%H:%M:%S - %d/%m/%Y")
+        linea['fecha'] = v.informeproduccion.fecha_produccion.strftime("%d/%m/%Y")
+        linea['responsable'] = v.autor
         linea['tipo'] = v.status.lower()
         linea['status'] = dict(Video.VIDEO_STATUS)[v.status]
         data.append(linea)
