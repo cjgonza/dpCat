@@ -4,13 +4,13 @@
     <th class="id">ID</th>
     <th class="date">Fecha</th>
     <th class="title">T&iacute;tulo</th>
-    <th class="author">Autor</th>
+    <th class="author">Autor/Responsable</th>
   </thead>
   <tbody>
     {% for video in videos %}
     <tr class="{%cycle 'odd' 'even' %}">
         <td class="id">{{ video.id }}</td>
-        <td class="date">{{ video.informeproduccion.fecha_validacion|date:"G:i:s - d/m/Y" }}</td>
+        <td class="date">{{ video.informeproduccion.fecha_validacion|date:"d/m/Y" }}</td>
         <td class="title"><a href="{% url estado_video video.id %}">{{ video.titulo }}</a></td>
         <td class="author">{{ video.autor }}</td>
     </tr>
