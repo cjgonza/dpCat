@@ -51,11 +51,17 @@ def generate_token(length):
     return "".join([random.choice(string.letters + string.digits) for x in range(length)])
 
 """
+Normaliza una cadena para generar nombres de fichero seguros.
+"""
+def normalize_filename(name):
+    return unicodedata.normalize('NFKD', name).encode('ascii','ignore').translate(None, string.punctuation).replace(' ', '_')
+
+"""
 Genera un nombre de fichero para un nuevo vídeo
 """
 def generate_safe_filename(name, date, extension):
     day = date.strftime("%Y/%m/%d")
-    safename = unicodedata.normalize('NFKD', name).encode('ascii','ignore').translate(None, string.punctuation).replace(' ', '_')
+    safename = normalize_filename(name)
     return "%s_%s_%s%s" % (day, safename, generate_token(8), extension)
 
 """

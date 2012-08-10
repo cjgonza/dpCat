@@ -43,7 +43,7 @@
                     </div>
                 <a class="eliminar" href="{% url borrar v.id %}">Eliminar producci&oacute;n</a></li>
                 {% if v.status != "INC" and v.status != "DEF" and v.status != "PRV" %}
-                    <li><a class="descargar" href="{% url stream_video v.id %}">Descargar video</a></li>
+                    <li><a class="descargar" href="{% url download_video v.id %}">Descargar video</a></li>
                 {% endif %}
             </ul>
         </div>

@@ -464,6 +464,14 @@ def stream_video(request, video_id):
     resp['Content-Length'] = os.path.getsize(v.fichero)
     return resp
 
+@permission_required('postproduccion.video_library')
+def download_video(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    resp = HttpResponse(utils.stream_file(v.fichero), mimetype='video/mp4')
+    resp['Content-Length'] = os.path.getsize(v.fichero)
+    resp['Content-Disposition'] = "attachment;filename=%d_%s.mp4" % (v.id, utils.normalize_filename(v.titulo))
+    return resp
+
 def stream_preview(request, tk_str):
     v = token.is_valid_token(tk_str)
     resp = HttpResponse(utils.stream_file(v.previsualizacion.fichero), mimetype='video/x-flv')
