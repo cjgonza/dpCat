@@ -3,7 +3,7 @@ from django import forms
 from django.forms import ModelForm, CharField, Textarea, widgets, Form, ValidationError
 from django.forms.models import BaseInlineFormSet
 from django.template import Template, TemplateSyntaxError
-from postproduccion.models import Video, FicheroEntrada, Metadata, InformeProduccion, IncidenciaProduccion
+from postproduccion.models import Video, FicheroEntrada, MetadataOA, MetadataGen, InformeProduccion, IncidenciaProduccion
 from postproduccion.utils import is_exec, is_dir
 from postproduccion.encoder import is_video_file
 from configuracion import config
@@ -41,9 +41,13 @@ class RequiredBaseInlineFormSet(BaseInlineFormSet):
         form.empty_permitted = False
         return form
 
-class MetadataForm(ModelForm):
+class MetadataOAForm(ModelForm):
     class Meta:
-        model = Metadata
+        model = MetadataOA
+
+class MetadataGenForm(ModelForm):
+    class Meta:
+        model = MetadataGen
 
 class ASCIIField(forms.CharField):
     def validate(self, value):

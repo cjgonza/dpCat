@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm
+from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm
 from postproduccion import queue 
 from postproduccion import utils
 from postproduccion import token
@@ -259,8 +259,20 @@ def definir_metadatos_user(request, tk_str):
     v = token.is_valid_token(tk_str)
     if not v: raise Http404
 
+    if v.objecto_aprendizaje:
+        MetadataForm = MetadataOAForm
+        metadataField = 'metadataoa'
+    else:
+        MetadataForm = MetadataGenForm
+        metadataField = 'metadatagen'
+
+    initial_data = {
+        'title' : v.titulo,
+        'creator' : v.autor
+    }
+
     if request.method == 'POST':
-        form = MetadataForm(request.POST, instance = v.metadata) if  hasattr(v, 'metadata') else MetadataForm(request.POST)
+        form = MetadataForm(request.POST, instance = getattr(v, metadataField)) if  hasattr(v, metadataField) else MetadataForm(request.POST, initial = initial_data)
         if form.is_valid():
             m = form.save(commit = False)
             m.video = v
@@ -274,7 +286,7 @@ def definir_metadatos_user(request, tk_str):
             v.save()
             return render_to_response("postproduccion/section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : True }, context_instance=RequestContext(request))
     else:
-        form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
+        form = MetadataForm(instance = getattr(v, metadataField)) if hasattr(v, metadataField) else MetadataForm(initial = initial_data)
     return render_to_response("postproduccion/section-metadatos-user.html", { 'form' : form, 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
@@ -311,8 +323,20 @@ Vista para que el operador rellene los metadatos de un vídeo.
 def definir_metadatos_oper(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
 
+    if v.objecto_aprendizaje:
+        MetadataForm = MetadataOAForm
+        metadataField = 'metadataoa'
+    else:
+        MetadataForm = MetadataGenForm
+        metadataField = 'metadatagen'
+
+    initial_data = {
+        'title' : v.titulo,
+        'creator' : v.autor
+    }
+
     if request.method == 'POST':
-        form = MetadataForm(request.POST, instance = v.metadata) if  hasattr(v, 'metadata') else MetadataForm(request.POST)
+        form = MetadataForm(request.POST, instance = getattr(v, metadataField)) if  hasattr(v, metadataField) else MetadataForm(request.POST, initial = initial_data)
         if form.is_valid():
             m = form.save(commit = False)
             m.video = v
@@ -321,7 +345,7 @@ def definir_metadatos_oper(request, video_id):
             m.save()
             messages.success(request, 'Metadata actualizada')
     else:
-        form = MetadataForm(instance = v.metadata) if hasattr(v, 'metadata') else MetadataForm()
+        form = MetadataForm(instance = getattr(v, metadataField)) if hasattr(v, metadataField) else MetadataForm(initial = initial_data)
     return render_to_response("postproduccion/section-metadatos-oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
 
 
