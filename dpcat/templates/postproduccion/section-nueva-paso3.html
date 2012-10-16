@@ -31,6 +31,10 @@
         <input type="text" value="{{ v.email }}" readonly disabled="disabled">
     </li>
     <li>
+        <label>Objeto de aprendizaje</label>
+        <input type="checkbox" {{ v.objecto_aprendizaje|yesno:"checked," }} disabled="disabled">
+    </li>
+    <li>
         <label>Observaci&oacute;n</label>
         <textarea cols="40" rows="10" readonly disabled="disabled">{{ v.informeproduccion.observacion }}</textarea>
     </li>
