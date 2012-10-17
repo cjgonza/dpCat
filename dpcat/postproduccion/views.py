@@ -408,11 +408,12 @@ Valida una producción y la pasa a la videoteca.
 @permission_required('postproduccion.video_manager')
 def validar_produccion(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
-    if hasattr(v, 'metadata'):
+    metadataField = 'metadataoa' if v.objecto_aprendizaje else 'metadatagen'
+    if hasattr(v, metadataField):
         v.informeproduccion.fecha_validacion = datetime.datetime.now()
         v.informeproduccion.save()
-        v.metadata.valid = v.informeproduccion.fecha_validacion
-        v.metadata.save()
+        getattr(v, metadataField).valid = v.informeproduccion.fecha_validacion
+        getattr(v, metadataField).save()
         v.status = 'LIS'
         v.save()
         if v.informeproduccion.aprobacion:

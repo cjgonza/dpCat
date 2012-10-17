@@ -61,13 +61,14 @@ def publicar(request, video_id):
         form = PublishingForm()
         new_form = NewCollectionForm()
         add_form = AddToCollectionForm()
-        form.fields['title'].initial = v.metadata.title
-        form.fields['description'].initial = v.metadata.description
-        form.fields['tags'].initial = v.metadata.keyword
-        form.fields['license'].initial = v.metadata.license
+        metadataField = 'metadataoa' if v.objecto_aprendizaje else 'metadatagen'
+        form.fields['title'].initial = getattr(v, metadataField).title
+        form.fields['description'].initial = getattr(v, metadataField).description
+        form.fields['tags'].initial = getattr(v, metadataField).keyword
+        form.fields['license'].initial = getattr(v, metadataField).license
         try:
             form.fields['category'].choices = get_categories()
-            form.fields['category'].initial = get_category_id(v.metadata.get_knowledge_areas_display())
+            form.fields['category'].initial = get_category_id(getattr(v, metadataField).get_knowledge_areas_display())
             new_form.fields['new_collection_category'].choices = get_collection_categories()
             add_form.fields['add_to_collection'].choices = get_collections()
         except IOError:
