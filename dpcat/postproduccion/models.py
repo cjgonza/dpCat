@@ -544,12 +544,7 @@ class MetadataOA(Metadata):
     )
 
     guideline = models.CharField(max_length = 2, choices = GUIDELINE_KEYS, verbose_name = u'Área de conocimiento UNESCO')
-    #knowledge_areas = models.CharField(max_length = 2, choices = KNOWLEDGE_AREAS_KEYS, verbose_name = u'Clasificación Universidad')
-    #title = models.CharField(max_length = 255, verbose_name = u'Título completo de la producción')
-    #creator = models.CharField(max_length = 255, verbose_name = u'Autor/es o creador/es')
     contributor = models.CharField(max_length = 255, verbose_name = u'Colaborador/es', help_text = u'Aquellas personas, entidades u organizaciones que han participado en la creación de esta producción')
-    #keyword = models.CharField(max_length = 255, verbose_name = u'Palabras clave o etiquetas', help_text = u'Pude incluir tantas como quiera siempre y cuando se separen por comas.')
-    #description = models.TextField(verbose_name = u'Descripción breve')
     audience = models.CharField(max_length = 2, choices = AUDIENCE_KEYS, verbose_name = u'Audiencia o público objetivo')
     typical_age_range = models.CharField(max_length = 255, verbose_name = u'Edad de la audiencia o público objetivo')
     source = models.CharField(max_length = 255, null = True, blank = True, verbose_name = u'Identificador de obra derivada', help_text = u'Si el contenido es derivado de otra material, indique aquí la referencia al original')
@@ -558,7 +553,6 @@ class MetadataOA(Metadata):
     location = models.CharField(max_length = 255, verbose_name = u'Localización', help_text = u'Por ejemplo: el nombre de la institución, departamento, edificio, etc.')
     venue = models.CharField(max_length = 255, verbose_name = u'Lugar de celebración', help_text = u'Por ejemplo: San Cristóbal de La Laguna, Tenerife (España)', default = u'San Cristóbal de La Laguna, Tenerife (España)')
     temporal = models.TextField(null = True, blank = True, verbose_name = u'Intervalo de tiempo', help_text = u'Si en la producción intervienen diferentes actores, indique aquí el nombre y el momento en el que interviene cada uno de ellos.')
-    #license = models.CharField(max_length = 2, choices = LICENSE_KEYS, verbose_name = u'Licencia de uso', help_text = u'Si el contenido dispone de alguna limitación de uso, incluya aquí una referencia a su licencia.')
     rightsholder = models.CharField(max_length = 255, verbose_name = u'Persona, entidad u organización responsable de la gestión de los derechos de autor')
     date = models.DateTimeField(verbose_name = u'Fecha de grabación', editable = False)
     created = models.DateTimeField(verbose_name = u'Fecha de producción', editable = False, help_text = u'La fecha de producción será incluida de manera automática por el sistema')
@@ -583,10 +577,10 @@ class MetadataOA(Metadata):
         return self.video.titulo
 
 class MetadataGen(Metadata):
-    contributor = models.CharField(max_length = 255, verbose_name = u'Colaborador/es', help_text = u'Aquellas personas, entidades u organizaciones que han participado en la creación de esta producción', null = True)
-    language = models.CharField(max_length = 255, verbose_name = u'Idioma', default = u'Español', null = True)
-    location = models.CharField(max_length = 255, verbose_name = u'Localización', help_text = u'Por ejemplo: el nombre de la institución, departamento, edificio, etc.', null = True)
-    venue = models.CharField(max_length = 255, verbose_name = u'Lugar de celebración', help_text = u'Por ejemplo: San Cristóbal de La Laguna, Tenerife (España)', default = u'San Cristóbal de La Laguna, Tenerife (España)', null = True)
+    contributor = models.CharField(max_length = 255, verbose_name = u'Colaborador/es', help_text = u'Aquellas personas, entidades u organizaciones que han participado en la creación de esta producción', null = True, blank = True)
+    language = models.CharField(max_length = 255, verbose_name = u'Idioma', default = u'Español', null = True, blank = True)
+    location = models.CharField(max_length = 255, verbose_name = u'Localización', help_text = u'Por ejemplo: el nombre de la institución, departamento, edificio, etc.', null = True, blank = True)
+    venue = models.CharField(max_length = 255, verbose_name = u'Lugar de celebración', help_text = u'Por ejemplo: San Cristóbal de La Laguna, Tenerife (España)', default = u'San Cristóbal de La Laguna, Tenerife (España)', null = True, blank = True)
 
 ## COLA ##
 
