@@ -807,6 +807,10 @@ a.link:hover {
     width: 75px;
 }
 
+#tabla th.oa {
+    width: 160px;
+}
+
 #tabla th.autor {
     width: 120px;
 }
