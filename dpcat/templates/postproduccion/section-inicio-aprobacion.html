@@ -47,6 +47,10 @@
             <div class="portlet-header">Acciones disponibles</div>
             <div class="portlet-content">
                 <ul> 
+                    <div id="dialog-aprobar" title="Aprobar producci&oacute;n">
+                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+                        Aseg&uacute;rese de haber visualizado el v&iacute;deo por completo, tenga en cuenta que este paso supone la aceptaci&oacute;n <strong>definitiva</strong> de la producci&oacute;n.
+                    </div>
                     <li><a href="{% url definir_metadatos_user token %}" class="aprobar">Aceptar e introducir metadata</a></li>
                     <li>
                         <a href="{% url rechazar_video token %}" class="rechazar">Rechazar producci&oacute;n</a>

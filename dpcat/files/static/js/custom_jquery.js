@@ -182,6 +182,32 @@ $(document).ready(function() {
         }
     });
 
+// Dialog aprobación
+    $( "#dialog-aprobar" ).dialog({
+        autoOpen: false,
+        modal: true
+    });
+
+    $(".aprobar").click(function (e) {
+        e.preventDefault();
+        var urlAprobar = $(this).attr("href");
+        $( "#dialog-aprobar" ).dialog({
+            autoOpen: false,
+            resizable: false,
+            height:160,
+            modal: true,
+            buttons: {
+                "Aprobar": function() {
+                   window.location.href = urlAprobar;
+                },
+                "Cancelar": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+        $( "#dialog-aprobar" ).dialog("open");
+    });
+
 });
 
 
