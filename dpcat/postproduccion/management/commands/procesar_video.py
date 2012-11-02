@@ -24,7 +24,8 @@ class Command(NoArgsCommand):
                     break
 
             pub_pendings = list(Publicacion.objects.get_pendings())
-            for t in pub_pendings:
+            if len(pub_pendings) and not Publicacion.objects.is_processing():
+                t = pub_pendings[0]
                 t.set_status('EXE')
                 th = threading.Thread(target = publish, kwargs = {'task' : t})
                 th.start()
@@ -34,5 +35,5 @@ class Command(NoArgsCommand):
                 th.join()
 
             # Si no hay trabajos esperando o está lleno el cupo de trabajos en proceso, salimos.
-            if not Cola.objects.count_pendings() or not available_slots():
+            if (not Cola.objects.count_pendings() or not available_slots()) and (not Publicacion.objects.count_pendings() or Publicacion.objects.is_processing()):
                 break

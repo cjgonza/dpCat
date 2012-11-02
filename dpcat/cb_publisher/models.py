@@ -6,6 +6,12 @@ from postproduccion.models import Video
 
 class PublicacionManager(models.Manager):
     """
+    Devuelve el número de publicaciones pendientes de ser publicadas.
+    """
+    def count_pendings(self):
+        return super(PublicacionManager, self).get_query_set().filter(status = 'PEN').count()
+
+    """
     Devuelve la lista de publicaciones pendientes de ser publicadas.
     """
     def get_pendings(self):
@@ -16,6 +22,12 @@ class PublicacionManager(models.Manager):
     """
     def get_failed(self):
         return super(PublicacionManager, self).get_query_set().filter(status = 'ERR')
+
+    """
+    Devuelve verdadero si se está procesando alguna publicación.
+    """
+    def is_processing(self):
+        return super(PublicacionManager, self).get_query_set().filter(status = 'EXE').count() is not 0
 
 
 class Publicacion(models.Model):
