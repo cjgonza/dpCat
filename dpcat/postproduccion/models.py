@@ -570,8 +570,8 @@ class MetadataOA(Metadata):
     unesco = models.CharField(max_length = 2, choices = UNESCO_KEYS, verbose_name = u'Dominio de conocimiento')
 
     class Meta:
-        verbose_name = u'Metadatos'
-        verbose_name_plural = u'Metadatos'
+        verbose_name = u'Metadatos de Objeto de Aprendizaje'
+        verbose_name_plural = u'Metadatos de Objetos de Aprendizaje'
 
     def __unicode__(self):
         return self.video.titulo
@@ -581,6 +581,13 @@ class MetadataGen(Metadata):
     language = models.CharField(max_length = 255, verbose_name = u'Idioma', default = u'Español', null = True, blank = True)
     location = models.CharField(max_length = 255, verbose_name = u'Localización', help_text = u'Por ejemplo: el nombre de la institución, departamento, edificio, etc.', null = True, blank = True)
     venue = models.CharField(max_length = 255, verbose_name = u'Lugar de celebración', help_text = u'Por ejemplo: San Cristóbal de La Laguna, Tenerife (España)', default = u'San Cristóbal de La Laguna, Tenerife (España)', null = True, blank = True)
+
+    class Meta:
+        verbose_name = u'Metadatos de Producción Genérica'
+        verbose_name_plural = u'Metadatos de Producciones Genéricas'
+
+    def __unicode__(self):
+        return self.video.titulo
 
 ## COLA ##
 
