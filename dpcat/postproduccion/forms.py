@@ -31,6 +31,10 @@ class FicheroEntradaForm(ModelForm):
 
     def clean_fichero(self):
         data = self.cleaned_data['fichero']
+        try:
+            str(data)
+        except UnicodeEncodeError:
+            raise forms.ValidationError("El campo no debe contener tíldes ni caracteres especiales")
         if not is_video_file(os.path.normpath(config.get_option('VIDEO_INPUT_PATH') + data)):
             raise ValidationError(u"El fichero no es un formato de vídeo reconocido")
         return data
