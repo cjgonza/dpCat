@@ -445,6 +445,7 @@ def videoteca(request):
 
     autor = request.GET.get('autor')
     titulo = request.GET.get('titulo')
+    vid = request.GET.get('id')
     try:
         f_ini = datetime.datetime.strptime(request.GET.get('f_ini'), "%d/%m/%Y")
     except (ValueError, TypeError):
@@ -458,6 +459,8 @@ def videoteca(request):
         video_list = video_list.filter(autor__icontains = autor)
     if titulo:
         video_list = video_list.filter(titulo__icontains = titulo)
+    if vid:
+        video_list = video_list.filter(pk = vid)
     video_list = video_list.filter(informeproduccion__fecha_validacion__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
 
     try:
