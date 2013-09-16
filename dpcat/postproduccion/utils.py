@@ -111,11 +111,11 @@ def ffmpeg_version():
     fpath = config.get_option('FFMPEG_PATH')
     if is_exec(fpath):
         command = "%s -version" % fpath
-        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()[1]
+        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.STDOUT).communicate()[0]
         try:
-            return re.search('svn-(r[0-9]+)', data, re.I).group(1)
+            return re.match('ffmpeg version ([\.0-9]+)', data).group(1)
         except AttributeError:
-            return 'N/D' if re.match('ffmpeg version', data) else None
+            return None
     
 """
 Devuelve la versión del melt instalado.
@@ -124,9 +124,9 @@ def melt_version():
     fpath = config.get_option('MELT_PATH')
     if is_exec(fpath):
         command = "%s -version" % fpath
-        data = subprocess.Popen(shlex.split(str(command)), stderr = subprocess.PIPE).communicate()[1]
+        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.STDOUT).communicate()[0]
         try:
-            return re.search('mlt melt ([\.0-9]+)', data, re.I).group(1)
+            return re.search('melt ([\.0-9]+)', data).group(1)
         except AttributeError:
             return None
     
