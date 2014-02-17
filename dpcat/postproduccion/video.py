@@ -26,7 +26,7 @@ def get_fdv_template(v):
     for i in v.ficheroentrada_set.all():
         fe = dict()
         fe['fichero'] = i.fichero
-        fe['geom'] = "%d,%d:%dx%d:%d" % (
+        fe['geom'] = "%d/%d:%dx%d:%d" % (
             i.tipo.x,
             i.tipo.y,
             i.tipo.ancho,

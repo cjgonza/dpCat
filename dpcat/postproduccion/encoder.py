@@ -72,7 +72,7 @@ def x264_presets():
 Realiza el montaje de un video
 """
 def encode_mixed_video(mltfile, outfile, logfile, pid_notifier = None):
-    command = "'%s' -progress -verbose '%s' -consumer 'avformat:/%s' deinterlace=1 acodec=libfaac ab=348k ar=48000 pix_fmt=yuv420p f=mp4 vcodec=libx264 minrate=0 b=1000k aspect=@16/9 s=1280x720i r=25 threads=0 %s" % (config.get_option('MELT_PATH'), mltfile, outfile, x264_presets())
+    command = "'%s' -progress -verbose '%s' -consumer 'avformat:/%s' deinterlace=1 acodec=aac ab=348k ar=48000 pix_fmt=yuv420p f=mp4 vcodec=libx264 minrate=0 vb=850k aspect=@16/9 s=1280x720i r=25 threads=0 %s" % (config.get_option('MELT_PATH'), mltfile, outfile, x264_presets())
     p = subprocess.Popen(shlex.split(str(command)), stderr=logfile)
 
     if pid_notifier:
