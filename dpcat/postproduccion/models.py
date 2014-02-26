@@ -663,3 +663,12 @@ class Token(models.Model):
 
     def __unicode__(self):
         return self.video.titulo
+
+class RegistroPublicacion(models.Model):
+    video = models.ForeignKey(Video)
+    fecha = models.DateTimeField(auto_now_add = True)
+    enlace = models.CharField(max_length = 255)
+
+    class Meta:
+        verbose_name = u'registro de publicación'
+        verbose_name_plural = u'registro de publicaciones'

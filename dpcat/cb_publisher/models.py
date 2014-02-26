@@ -55,7 +55,7 @@ class Publicacion(models.Model):
         self.status = st
         self.save()
 
-class RegistroPublicacion(models.Model):
+class RegistroPublicacionCB(models.Model):
     video = models.ForeignKey(Video)
     fecha = models.DateTimeField(auto_now_add = True)
     enlace = models.CharField(max_length = 255)
