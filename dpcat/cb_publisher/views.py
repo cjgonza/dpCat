@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 
-from cb_publisher.models import Publicacion, RegistroPublicacion
+from cb_publisher.models import Publicacion, RegistroPublicacionCB
 from cb_publisher.forms import ConfigForm, PublishingForm, NewCollectionForm, AddToCollectionForm
 from cb_publisher.functions import get_categories, send_published_mail_to_user, get_category_id, get_collection_categories, get_collections
 from configuracion import config
@@ -96,7 +96,7 @@ Borra el registro dado
 """
 @permission_required('postproduccion.video_manager')
 def borrar_registro(request, record_id):
-    r = get_object_or_404(RegistroPublicacion, pk = record_id)
+    r = get_object_or_404(RegistroPublicacionCB, pk = record_id)
     v = r.video
     r.delete()
     messages.success(request, u'Registro de publicación eliminado')
@@ -118,7 +118,7 @@ Envía un correo al autor notificando de que una producción se encuentra public
 """
 @permission_required('postproduccion.video_manager')
 def notificar_publicacion(request, record_id):
-    r = get_object_or_404(RegistroPublicacion, pk = record_id)
+    r = get_object_or_404(RegistroPublicacionCB, pk = record_id)
     send_published_mail_to_user(r)
     messages.success(request, u'Enviado correo de notificación de publicacion al autor')
     return redirect('estado_video', r.video.id)

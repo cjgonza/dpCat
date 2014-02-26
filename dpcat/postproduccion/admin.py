@@ -1,5 +1,5 @@
 from django.contrib import admin
-from postproduccion.models import Cola, Video, FicheroEntrada, TipoVideo, PlantillaFDV, TecData, MetadataOA, MetadataGen, InformeProduccion
+from postproduccion.models import Cola, Video, FicheroEntrada, TipoVideo, PlantillaFDV, TecData, MetadataOA, MetadataGen, InformeProduccion, RegistroPublicacion
 
 class ColaAdmin(admin.ModelAdmin):
     list_display = ('id', 'video', 'tipo', 'status', 'comienzo', 'fin', 'logfile')
@@ -44,9 +44,13 @@ class TipoVideoInline(admin.StackedInline):
 class PlantillaFDVAdmin(admin.ModelAdmin):
     inlines = [TipoVideoInline]
 
+class RegistroPublicacionAdmin(admin.ModelAdmin):
+    list_display = ('video', 'fecha', 'enlace')
+
 admin.site.register(Cola, ColaAdmin)
 admin.site.register(PlantillaFDV, PlantillaFDVAdmin)
 admin.site.register(Video, VideoAdmin)
 admin.site.register(TipoVideo)
 admin.site.register(MetadataOA)
 admin.site.register(MetadataGen)
+admin.site.register(RegistroPublicacion, RegistroPublicacionAdmin)

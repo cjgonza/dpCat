@@ -4,7 +4,7 @@ from django.template import Template, Context
 from django.core.mail import send_mail
 from configuracion import config
 from settings import MEDIA_ROOT
-from cb_publisher.models import RegistroPublicacion
+from cb_publisher.models import RegistroPublicacionCB
 from postproduccion.utils import generate_token
 
 import urllib
@@ -76,7 +76,7 @@ def publish(task):
                 error_text += '--- Salida de error del plugin --\n'
                 error_text += ret_data['message'] + '\n'
         else:
-            RegistroPublicacion(video = v, enlace = ret_data['vlink']).save()
+            RegistroPublicacionCB(video = v, enlace = ret_data['vlink']).save()
             task.delete()
             return
         
