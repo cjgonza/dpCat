@@ -653,12 +653,20 @@ def status(request):
 
     # Tareas Programadas
     if request.method == 'POST':
-        if request.POST['status'] == '1':
-            crontab.stop()
-            messages.warning(request, 'Tareas programadas desactivadas')
-        else:
-            crontab.start()
-            messages.success(request, 'Tareas programadas activadas')
-    cron = crontab.status()
+        if 'status_process' in request.POST:
+            if request.POST['status_process'] == '1':
+                crontab.stop()
+                messages.warning(request, 'Tareas programadas de codificación desactivadas')
+            else:
+                crontab.start()
+                messages.success(request, 'Tareas programadas de codificacion activadas')
+        if 'status_publish' in request.POST:
+            if request.POST['status_publish'] == '1':
+                crontab.stop(publish = True)
+                messages.warning(request, 'Tareas programadas de publicación desactivadas')
+            else:
+                crontab.start(publish = True)
+                messages.success(request, 'Tareas programadas de publicación activadas')
+    cron = { 'process' : crontab.status(), 'publish' : crontab.status(publish = True) }
 
     return render_to_response("postproduccion/section-status.html", { 'exes' : exes, 'dirs' : dirs, 'cron' : cron }, context_instance=RequestContext(request))

@@ -65,12 +65,23 @@
   <tbody>
     <tr>
       <td>Codificaci&oacute;n de v&iacute;deos</td>
-      <td class="{{ cron|yesno:'on,off' }}">&nbsp;</td>
+      <td class="{{ cron.process|yesno:'on,off' }}">&nbsp;</td>
       <td>
         <form action="" method="POST">
           {% csrf_token %}
-          <input type="hidden" name="status" value="{{ cron|yesno:'1,0' }}" />
-          <input class="{{ cron|yesno:'on,off' }}" type="submit" value="{{ cron|yesno:'Desactivar,Activar' }}" />
+          <input type="hidden" name="status_process" value="{{ cron.process|yesno:'1,0' }}" />
+          <input class="{{ cron.process|yesno:'on,off' }}" type="submit" value="{{ cron.process|yesno:'Desactivar,Activar' }}" />
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td>Publicaci&oacute;n de v&iacute;deos</td>
+      <td class="{{ cron.publish|yesno:'on,off' }}">&nbsp;</td>
+      <td>
+        <form action="" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="status_publish" value="{{ cron.publish|yesno:'1,0' }}" />
+          <input class="{{ cron.publish|yesno:'on,off' }}" type="submit" value="{{ cron.publish|yesno:'Desactivar,Activar' }}" />
         </form>
       </td>
     </tr>
