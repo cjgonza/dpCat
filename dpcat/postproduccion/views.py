@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
-from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion
+from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion, RegistroPublicacion
 from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm
 from postproduccion import queue 
 from postproduccion import utils
@@ -435,6 +435,27 @@ def borrar_produccion(request, video_id):
     v.delete()
     messages.success(request, 'Producción eliminada con éxito.')
     return redirect('postproduccion.views.index')
+
+"""
+Envía un correo al autor notificando de que una producción se encuentra publicada.
+"""
+@permission_required('postproduccion.video_manager')
+def notificar_publicacion(request, record_id):
+    r = get_object_or_404(RegistroPublicacion, pk = record_id)
+    token.send_published_mail_to_user(r)
+    messages.success(request, u'Enviado correo de notificación de publicacion al autor')
+    return redirect('estado_video', r.video.id)
+
+"""
+Borra el registro de publicación dado.
+"""
+@permission_required('postproduccion.video_manager')
+def borrar_registro(request, record_id):
+    r = get_object_or_404(RegistroPublicacion, pk = record_id)
+    v = r.video
+    r.delete()
+    messages.success(request, u'Registro de publicación eliminado')
+    return redirect('estado_video', v.id)
 
 """
 Muestra la videoteca.

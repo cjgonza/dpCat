@@ -149,23 +149,3 @@ def get_collections():
         choices.append((cat['collection_id'], cat['collection_name']))
 
     return choices
-
-
-"""
-Genera el mensaje de correo para avisar al usuario de que su producción ya ha sido publicada.
-"""
-def generate_published_mail_message(r):
-    (nombre, titulo, vid, fecha, url) = (r.video.autor, r.video.titulo, r.video.id, r.fecha, r.enlace)
-    return Template(config.get_option('PUBLISHED_MAIL_MESSAGE')).render(Context({
-        'nombre'   : nombre,
-        'titulo'   : titulo,
-        'vid'      : vid,
-        'fecha'    : fecha,
-        'url'      : url,
-        }))
-
-"""
-Envía un correo para avisar al usuario de que su producción ya ha sido publicada.
-"""
-def send_published_mail_to_user(r):
-    send_mail(config.get_option('PUBLISHED_MAIL_SUBJECT'), generate_published_mail_message(r), config.get_option('RETURN_EMAIL'), [r.video.email])
