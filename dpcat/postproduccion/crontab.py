@@ -7,8 +7,7 @@ import shlex
 from settings import dirname
 from configuracion import config
 
-_process_line = "* * * * * /usr/bin/env python %s procesar_video" % os.path.join(dirname, 'manage.py')
-_publish_line = "* * * * * /usr/bin/env python %s publicar_video" % os.path.join(dirname, 'manage.py')
+_cronline = "* * * * * /usr/bin/env python %s" % os.path.join(dirname, 'manage.py')
 
 """
 Devuelve una lista donde cada elemento es una línea de crontab actual (puede contener comentarios).
@@ -28,16 +27,16 @@ def _set_crontab(data):
 """
 Devuelve si la tarea de procesamiento está activa en el crontab actual.
 """
-def status(publish = False):
-    cronline = _publish_line if publish else _process_line
+def status(command):
+    cronline = "%s %s" % (_cronline, command)
     return cronline in _get_crontab()
 
 """
 Elimina del crontab actual la tarea de procesamiento.
 """
-def stop(publish = False):
+def stop(command):
     data = _get_crontab()
-    cronline = _publish_line if publish else _process_line
+    cronline = "%s %s" % (_cronline, command)
     if cronline in data:
         data.remove(cronline)
     _set_crontab(data)
@@ -45,9 +44,9 @@ def stop(publish = False):
 """
 Añade al crontab actual la tarea de procesamiento.
 """
-def start(publish = False):
+def start(command):
     data = _get_crontab()
-    cronline = _publish_line if publish else _process_line
+    cronline = "%s %s" % (_cronline, command)
     if not cronline in data:
         data.append(cronline)
     _set_crontab(data)

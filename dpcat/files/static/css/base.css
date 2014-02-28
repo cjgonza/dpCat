@@ -985,7 +985,8 @@ a {
 .alerta-header span.icon-title {
     padding-left: 25px;
 }
-.cron .alerta-header,
+.cron_proc .alerta-header,
+.cron_pub .alerta-header,
 .disco .alerta-header,
 .ruta .alerta-header,
 .ejecutable .alerta-header,
@@ -1000,7 +1001,8 @@ a {
     border-bottom: 2px solid #E6DB55;
 }
 
-.cron .alerta-header span.icon-title,
+.cron_proc .alerta-header span.icon-title,
+.cron_pub .alerta-header span.icon-title,
 .disco .alerta-header span.icon-title,
 .ruta .alerta-header span.icon-title,
 .ejecutable .alerta-header span.icon-title,

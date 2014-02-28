@@ -570,8 +570,10 @@ def alerts(request):
             if int(cap.rstrip('%')) > 90:
                 lista.append({ 'tipo' : 'disco', 'path' : i, 'cap' : cap, 'fecha' : datetime.datetime.min })
     # Comprueba las tareas programadas
-    if not crontab.status():
-        lista.append({ 'tipo' : 'cron', 'fecha' : datetime.datetime.min })
+    if not crontab.status('procesar_video'):
+        lista.append({ 'tipo' : 'cron_proc', 'fecha' : datetime.datetime.min })
+    if not crontab.status('publicar_video'):
+        lista.append({ 'tipo' : 'cron_pub', 'fecha' : datetime.datetime.min })
     # Ordena los elementos cronológicamente
     lista = sorted(lista, key=lambda it: it['fecha'])
     if request.is_ajax():
@@ -655,18 +657,18 @@ def status(request):
     if request.method == 'POST':
         if 'status_process' in request.POST:
             if request.POST['status_process'] == '1':
-                crontab.stop()
+                crontab.stop('procesar_video')
                 messages.warning(request, 'Tareas programadas de codificación desactivadas')
             else:
-                crontab.start()
+                crontab.start('procesar_video')
                 messages.success(request, 'Tareas programadas de codificacion activadas')
         if 'status_publish' in request.POST:
             if request.POST['status_publish'] == '1':
-                crontab.stop(publish = True)
+                crontab.stop('publicar_video')
                 messages.warning(request, 'Tareas programadas de publicación desactivadas')
             else:
-                crontab.start(publish = True)
+                crontab.start('publicar_video')
                 messages.success(request, 'Tareas programadas de publicación activadas')
-    cron = { 'process' : crontab.status(), 'publish' : crontab.status(publish = True) }
+    cron = { 'process' : crontab.status('procesar_video'), 'publish' : crontab.status('publicar_video') }
 
     return render_to_response("postproduccion/section-status.html", { 'exes' : exes, 'dirs' : dirs, 'cron' : cron }, context_instance=RequestContext(request))

@@ -121,14 +121,33 @@
     </div>
     {% endif %}
 
-    {% if i.tipo == 'cron' %}
+    {% if i.tipo == 'cron_proc' %}
     <div class="{{ i.tipo }}">
         <div class="alerta">
-            <div class="alerta-header"><span class="icon-title">El gestor de tareas programas del sistema (CRON) esta desactivado.</span><span class="icon plus"></span></div>
+            <div class="alerta-header"><span class="icon-title">Las tareas programadas de codificaci&oacute;n est&aacute;n desactivadas.</span><span class="icon plus"></span></div>
             <div class="alerta-content">
                 <ul class="item-alerta">
                     <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
-                    <span class="item-alerta-content">Las tareas programas est&aacute;n desactivadas, no se codificar&aacute; ning&uacute;n video hasta que se active el gestor de tareas programas del sistema (CRON). Revise la configuraci&oacute;n del sistema.</span></li>
+                    <span class="item-alerta-content">Las tareas programadas de codificaci&oacute;n est&aacute;n desactivadas, no se codificar&aacute; ning&uacute;n video hasta que se active el gestor de tareas programas del sistema (CRON). Revise la configuraci&oacute;n del sistema.</span></li>
+                </ul>           
+            </div>
+            <div class="alerta-links">
+                <ul>
+                   <li class="item-alerta-links"><a class="edit-icon" href="{% url status %}">Acceder a la configuraci&oacute;n del sistema</a></li>
+                </ul> 
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if i.tipo == 'cron_pub' %}
+    <div class="{{ i.tipo }}">
+        <div class="alerta">
+            <div class="alerta-header"><span class="icon-title">Las tareas programadas de publicaci&oacute;n est&aacute;n desactivadas.</span><span class="icon plus"></span></div>
+            <div class="alerta-content">
+                <ul class="item-alerta">
+                    <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
+                    <span class="item-alerta-content">Las tareas programadas de publicaci&oacute;n est&aacute;n desactivadas, no se publicar&aacute; ning&uacute;n video hasta que se active el gestor de tareas programas del sistema (CRON). Revise la configuraci&oacute;n del sistema.</span></li>
                 </ul>           
             </div>
             <div class="alerta-links">
