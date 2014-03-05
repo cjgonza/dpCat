@@ -1,4 +1,4 @@
-{% extends "postproduccion/base-2-1.html" %}
+{% extends "postproduccion/section-base-config.html" %}
 
 {% block page-title %}Configuraci&oacute;n{% endblock %}
 {% block section-class %} class = "status" {% endblock %}
@@ -90,17 +90,3 @@
 
 
 {% endblock %}
-
-{% block section-widget %}
-            <div class="portlet">
-                <div class="portlet-header">Detalles de configuraci&oacute;n</div>
-                <div class="portlet-content">
-                    <ul> 
-                <li><a class="link" href="{% url config %}">Configuraci&oacute;n del sistema</a></li> 
-                <li><a class="link" href="{% url status %}">Ver el estado del sistema</a></li> 
-                <li><a class="link" href="{% url config_plugin %}">Configuraci&oacute;n del plugin: Clipbucket</a></li> 
-                    </ul>
-                </div>
-            </div>
-{% endblock %}
-
