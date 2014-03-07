@@ -20,13 +20,14 @@ class Storage(BaseStorage):
     __STORAGE_OPTION_KEY__ = "YT_PUBLISHER_STORAGE"
 
     def locked_get(self):
-        credential = None
+        credentials = None
 
         raw = config.get_option(self.__STORAGE_OPTION_KEY__)
         if raw:
-            credential = pickle.loads(base64.b64decode(raw))
+            credentials = pickle.loads(base64.b64decode(raw))
+            credentials.set_store(self)
 
-        return credential
+        return credentials
 
 
     def locked_put(self, credentials):
