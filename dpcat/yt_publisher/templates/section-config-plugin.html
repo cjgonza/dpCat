@@ -29,10 +29,10 @@
                     <div id="dialog-eliminar" title="¿Eliminar cuenta de publicaci&oacute;n?">
                         <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Si se elimina la cuenta de publicaci&oacute;n no se podrán publicar v&iacute;deos.</p>
                     </div>
-                <a class="eliminar" href="">Eliminar cuenta de publicaci&oacute;n</a></li>
+                <a class="eliminar" href="{% url revoke %}">Eliminar cuenta de publicaci&oacute;n</a></li>
                 {% else %}
                 <li class="tip">Actualmente no existe cuenta de YouTube asociada para la publicaci&oacute;n, es necesario asociar una cuenta para poder publicar.</li>
-                <li><a class="descargar" href="">Asociar cuenta de publicaci&oacute;n</a></li>
+                <li><a class="descargar" href="{% url authorize %}">Asociar cuenta de publicaci&oacute;n</a></li>
                 {% endif %}
             </ul>
         </div>

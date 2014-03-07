@@ -1,6 +1,7 @@
 # Create your views here.
 # -*- encoding: utf-8 -*-
 from django.shortcuts import render_to_response, get_object_or_404, redirect
+from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
@@ -14,6 +15,7 @@ from configuracion import config
 import settings
 
 import json
+import httplib2
 
 """
 Edita los ajustes de configuración del plugin de publicación.
@@ -35,12 +37,33 @@ def config_plugin(request):
     return render_to_response("section-config-plugin.html", { 'form' : form, 'auth_state' : auth_state }, context_instance=RequestContext(request))
 
 
+"""
+Gestiona la autorización y revocación de la cuenta de publicación.
+"""
+@permission_required('postproduccion.video_manager')
+def auth_manage(request, revoke = False):
+    credentials = Storage().get()
+    if revoke:
+        credentials.revoke(httplib2.Http())
+        messages.warning(request, u'Eliminada cuenta de publicación')
+    else:
+        if credentials is None or credentials.invalid:
+            flow = get_flow()
+            flow.params['state'] = xsrfutil.generate_token(settings.SECRET_KEY, None)
+            authorize_url = flow.step1_get_authorize_url()
+            return HttpResponseRedirect(authorize_url)
+
+    return HttpResponseRedirect(reverse("config_plugin"))
+
+"""
+Callback para la autorización OAuth2 de YouTube.
+"""
 @permission_required('postproduccion.video_manager')
 def auth_return(request):
     if not xsrfutil.validate_token(settings.SECRET_KEY, request.REQUEST['state'], None):
         return  HttpResponseBadRequest()
-    credential = get_flow().step2_exchange(request.REQUEST)
-    storage = Storage()
-    storage.put(credential)
-    return HttpResponseRedirect("/")
+    credentials = get_flow().step2_exchange(request.REQUEST)
+    Storage().put(credentials)
+    messages.success(request, u'Asociada cuenta de publicación')
+    return HttpResponseRedirect(reverse("config_plugin"))
 

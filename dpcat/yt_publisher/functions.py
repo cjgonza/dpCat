@@ -42,17 +42,3 @@ def get_flow():
                                client_secret = config.get_option('YT_PUBLISHER_CLIENT_SECRET'),
                                scope = YOUTUBE_SCOPES,
                                redirect_uri = urljoin(config.get_option('SITE_URL'), reverse('oauth2callback')))
-
-def get_authenticated_service():
-    storage = Storage()
-    credentials = storage.get()
-
-    if credentials is None or credentials.invalid:
-        flow = get_flow()
-        flow.params['state'] = xsrfutil.generate_token(settings.SECRET_KEY, None)
-        authorize_url = flow.step1_get_authorize_url()
-        return HttpResponseRedirect(authorize_url)
-
-    return build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
-                 http = credentials.authorize(httplib2.Http()))
-
