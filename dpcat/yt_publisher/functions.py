@@ -5,8 +5,10 @@ import httplib2
 from urlparse import urljoin
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from oauth2client.client import Storage as BaseStorage, OAuth2WebServerFlow
+from django.contrib import messages
+from oauth2client.client import Storage as BaseStorage, OAuth2WebServerFlow, Error
 from oauth2client import xsrfutil
+from apiclient.discovery import build
 from configuracion import config
 import settings
 
@@ -36,9 +38,54 @@ class Storage(BaseStorage):
     def locked_delete(self):
         config.del_option(self.__STORAGE_OPTION_KEY__)
 
+class UnauthorizedError(Error):
+    pass
 
 def get_flow():
     return OAuth2WebServerFlow(client_id = config.get_option('YT_PUBLISHER_CLIENT_ID'),
                                client_secret = config.get_option('YT_PUBLISHER_CLIENT_SECRET'),
                                scope = YOUTUBE_SCOPES,
                                redirect_uri = urljoin(config.get_option('SITE_URL'), reverse('oauth2callback')))
+
+
+def get_authenticated_service():
+    credential = Storage().get()
+    if credential is None or credential.invalid == True:
+        raise UnauthorizedError
+    http = httplib2.Http()
+    http = credential.authorize(http)
+    return build("youtube", "v3", http=http)
+
+def get_playlists():
+    youtube = get_authenticated_service()
+
+    data = list()
+
+    next_page_token = ""
+    while next_page_token is not None:
+        playlists_response = youtube.playlists().list(
+          mine=True,
+          part="snippet",
+          maxResults=50,
+          fields="items(id,snippet(title)),nextPageToken",
+          pageToken=next_page_token
+        ).execute()
+
+        for playlist in playlists_response["items"]:
+            data.append({ 'id' : playlist['id'], 'title' : playlist['snippet']['title'] })
+
+        next_page_token = playlists_response.get("nextPageToken")
+
+    return data
+
+def error_handler(e, request):
+    try:
+        raise e
+    except UnauthorizedError:
+        messages.error(request, u'No existe una cuenta asociada para la publicación, debe configurar una para poder publicar')
+        return HttpResponseRedirect(reverse("config_plugin"))
+    except Error:
+        credentials = Storage().get()
+        credentials.revoke(httplib2.Http())
+        messages.error(request, u'Ha habido un error con cuenta de publicación, se debe volver a realizar la asociación')
+        return HttpResponseRedirect(reverse("config_plugin"))

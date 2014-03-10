@@ -5,12 +5,14 @@ from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
+from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from oauth2client import xsrfutil
 
 from yt_publisher.forms import ConfigForm
-from yt_publisher.functions import Storage, get_flow
+from yt_publisher.functions import Storage, Error
+from yt_publisher.functions import get_flow, get_playlists, error_handler
 from configuracion import config
 import settings
 
@@ -67,3 +69,11 @@ def auth_return(request):
     messages.success(request, u'Asociada cuenta de publicación')
     return HttpResponseRedirect(reverse("config_plugin"))
 
+@permission_required('postproduccion.video_manager')
+def test(request):
+    try:
+        lista = get_playlists()
+    except Error as e:
+        return error_handler(e, request)
+
+    return HttpResponse(lista)
