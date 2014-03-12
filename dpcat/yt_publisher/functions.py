@@ -17,6 +17,13 @@ YOUTUBE_SCOPES = [ 'https://www.googleapis.com/auth/youtube.readonly',
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
+LICENSE_TEXTS = {
+    'CR' : 'Todos los derechos reservados.',
+    'MD' : 'Creative Commons: Reconocimiento - No Comercial (CC BY NC).\nhttp://creativecommons.org/licenses/by-nc/4.0/deed.es_ES',
+    'SA' : 'Creative Commons: Reconocimiento - No Comercial - Compartir Igual (CC BY NC SA).\nhttp://creativecommons.org/licenses/by-nc-sa/4.0/deed.es_ES',
+    'ND' : 'Creative Commons: Reconocimiento - No Comercial - Sin Obra Derivada (CC BY NC ND).\nhttp://creativecommons.org/licenses/by-nc-nd/4.0/deed.es_ES'
+}
+
 class Storage(BaseStorage):
 
     __STORAGE_OPTION_KEY__ = "YT_PUBLISHER_STORAGE"

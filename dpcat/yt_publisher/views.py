@@ -10,9 +10,11 @@ from django.http import HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from oauth2client import xsrfutil
 
-from yt_publisher.forms import ConfigForm
+from postproduccion.models import Video
+from yt_publisher.forms import ConfigForm, PublishingForm, AddToPlaylistForm, NewPlaylistForm
 from yt_publisher.functions import Storage, Error
 from yt_publisher.functions import get_flow, get_playlists, error_handler
+from yt_publisher.functions import LICENSE_TEXTS
 from configuracion import config
 import settings
 
@@ -36,7 +38,7 @@ def config_plugin(request):
             initial_data[i] = config.get_option("YT_PUBLISHER_%s" % i.upper())
         form = ConfigForm(initial = initial_data)
     auth_state = Storage().get() is not None
-    return render_to_response("section-config-plugin.html", { 'form' : form, 'auth_state' : auth_state }, context_instance=RequestContext(request))
+    return render_to_response("yt-section-config-plugin.html", { 'form' : form, 'auth_state' : auth_state }, context_instance=RequestContext(request))
 
 
 """
@@ -56,6 +58,48 @@ def auth_manage(request, revoke = False):
             return HttpResponseRedirect(authorize_url)
 
     return HttpResponseRedirect(reverse("config_plugin"))
+
+"""
+Realiza la publicación de la producción.
+"""
+@permission_required('postproduccion.video_manager')
+def publicar(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    if request.method == 'POST':
+        form = PublishingForm(request.POST)
+        new_form = NewPlaylistForm(request.POST)
+        add_form = AddToPlaylistForm(request.POST)
+        try:
+            add_form.fields['add_to_playlist'].choices = get_playlists()
+        except Error as e:
+            return error_handler(e, request)
+        if form.is_valid() \
+            and not (form.cleaned_data['playlist'] is 1 and not add_form.is_valid()) \
+            and not (form.cleaned_data['playlist'] is 2 and not new_form.is_valid()):
+            if form.cleaned_data['playlist'] is 0:
+                pub_data = form.cleaned_data
+            if form.cleaned_data['playlist'] is 1:
+                pub_data = dict(form.cleaned_data, **add_form.cleaned_data)
+            if form.cleaned_data['playlist'] is 2:
+                pub_data = dict(form.cleaned_data, **new_form.cleaned_data)
+            print pub_data
+            #Publicacion(video = v, data = json.dumps(pub_data)).save()
+            messages.success(request, u'Producción encolada para su publicación')
+            return redirect('estado_video', v.id)
+    else:
+        form = PublishingForm()
+        new_form = NewPlaylistForm()
+        add_form = AddToPlaylistForm()
+        metadataField = 'metadataoa' if v.objecto_aprendizaje else 'metadatagen'
+        form.fields['title'].initial = getattr(v, metadataField).title
+        form.fields['description'].initial = "%s\n\n---\n%s" % (getattr(v, metadataField).description, LICENSE_TEXTS[getattr(v, metadataField).license])
+        form.fields['tags'].initial = "%s,%s" % (getattr(v, metadataField).keyword, getattr(v, metadataField).get_knowledge_areas_display())
+        try:
+            add_form.fields['add_to_playlist'].choices = get_playlists()
+        except Error as e:
+            return error_handler(e, request)
+
+    return render_to_response("yt-section-publish.html", { 'form' : form, 'new_form' : new_form, 'add_form' : add_form }, context_instance=RequestContext(request))
 
 """
 Callback para la autorización OAuth2 de YouTube.
