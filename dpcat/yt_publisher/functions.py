@@ -72,7 +72,7 @@ def get_playlists():
         ).execute()
 
         for playlist in playlists_response["items"]:
-            data.append({ 'id' : playlist['id'], 'title' : playlist['snippet']['title'] })
+            data.append((playlist['id'], playlist['snippet']['title']))
 
         next_page_token = playlists_response.get("nextPageToken")
 
