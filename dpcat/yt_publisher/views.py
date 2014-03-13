@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 from oauth2client import xsrfutil
 
 from postproduccion.models import Video
+from yt_publisher.models import Publicacion
 from yt_publisher.forms import ConfigForm, PublishingForm, AddToPlaylistForm, NewPlaylistForm
 from yt_publisher.functions import Storage, Error
 from yt_publisher.functions import get_flow, get_playlists, error_handler
@@ -83,7 +84,7 @@ def publicar(request, video_id):
             if form.cleaned_data['playlist'] is 2:
                 pub_data = dict(form.cleaned_data, **new_form.cleaned_data)
             print pub_data
-            #Publicacion(video = v, data = json.dumps(pub_data)).save()
+            Publicacion(video = v, data = json.dumps(pub_data)).save()
             messages.success(request, u'Producción encolada para su publicación')
             return redirect('estado_video', v.id)
     else:
@@ -121,3 +122,28 @@ def test(request):
         return error_handler(e, request)
 
     return HttpResponse(lista)
+
+"""
+Muestra la cola de publicación.
+"""
+@permission_required('postproduccion.video_manager')
+def cola_publicacion(request):
+    return render_to_response("yt-section-cola.html", context_instance=RequestContext(request))
+
+"""
+Contenido de la cola de publicación.
+"""
+@permission_required('postproduccion.video_manager')
+def contenido_cola_publicacion(request):
+    return render_to_response("yt-ajax-cola.html", { 'list' : Publicacion.objects.order_by('id') }, context_instance=RequestContext(request))
+
+"""
+Purga las publicaciones erroneas
+"""
+@permission_required('postproduccion.video_manager')
+def purgar_publicaciones(request):
+    failed = Publicacion.objects.get_failed()
+    cont = failed.count()
+    failed.delete()
+    messages.success(request, u'Publicaciones erroneas purgadas. Nº de elementos borrados: %d' % cont)
+    return redirect('cola_publicacion')
