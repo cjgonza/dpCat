@@ -5,6 +5,9 @@ import httplib2
 import random
 import time
 import json
+import tempfile
+import os
+from cgi import escape
 
 from apiclient.errors import HttpError
 from apiclient.http import MediaFileUpload
@@ -47,9 +50,9 @@ def publish(task):
 
     body = dict(
         snippet = dict(
-            title = d['title'],
-            description = d['description'],
-            tags = d['tags'].split(','),
+            title = escape(d['title']),
+            description = escape(d['description']),
+            tags = escape(d['tags']).split(','),
             categoryId = PUBLICATION_CATEGORY
         ),
         status = dict(
@@ -83,7 +86,7 @@ def publish(task):
                     if d['playlist'] == 1:
                         playlistid = d['add_to_playlist']
                     else:
-                        playlistid = create_playlist(d['new_playlist_name'], d['new_playlist_description'], PRIVACY_STATUS)
+                        playlistid = create_playlist(escape(d['new_playlist_name']), escape(d['new_playlist_description']), PRIVACY_STATUS)
                     insert_video_in_playlist(videoid, playlistid)
                 return
             else:
@@ -95,7 +98,10 @@ def publish(task):
             if e.resp.status in RETRIABLE_STATUS_CODES:
                 error = "A retriable HTTP error %d occurred:\n%s\n" % (e.resp.status, e.content)
             else:
-                raise
+                messages += "A HTTP error %d occurred:\n%s\n" % (e.resp.status, e.content)
+                create_error_logfile(task, messages)
+                task.set_status('ERR')
+                return
         except RETRIABLE_EXCEPTIONS, e:
             error = "A retriable error occurred: %s\n" % e
 
