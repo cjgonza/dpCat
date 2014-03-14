@@ -12,7 +12,7 @@ from apiclient.discovery import build
 from configuracion import config
 import settings
 
-YOUTUBE_SCOPES = [ 'https://www.googleapis.com/auth/youtube.readonly',
+YOUTUBE_SCOPES = [ 'https://www.googleapis.com/auth/youtube',
                    'https://www.googleapis.com/auth/youtube.upload' ]
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
@@ -84,6 +84,42 @@ def get_playlists():
         next_page_token = playlists_response.get("nextPageToken")
 
     return data
+
+def create_playlist(title, description, privacy_status):
+    youtube = get_authenticated_service()
+
+    playlists_insert_response = youtube.playlists().insert(
+        part = "snippet,status",
+        body = dict(
+            snippet = dict(
+                title = title,
+                description = description
+            ),
+            status = dict(
+                privacyStatus = privacy_status
+            )
+        ),
+        fields = "id"
+    ).execute()
+
+    return playlists_insert_response["id"]
+
+def insert_video_in_playlist(videoid, playlistid):
+    youtube = get_authenticated_service()
+
+    youtube.playlistItems().insert(
+        part = "snippet",
+        body = dict(
+            snippet = dict(
+                playlistId = playlistid,
+                resourceId = dict(
+                    kind = 'youtube#video',
+                    videoId = videoid
+                )
+            )
+        ),
+        fields = ""
+    ).execute()
 
 def error_handler(e, request):
     try:
