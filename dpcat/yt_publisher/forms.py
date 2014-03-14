@@ -4,6 +4,7 @@ from django import forms
 class ConfigForm(forms.Form):
     client_id = forms.CharField(label = u'API Client ID')
     client_secret = forms.CharField(label = u'API Client Secret')
+    max_tasks = forms.IntegerField(label = u'Nº máximo de publicaciones simultaneas')
 
 class PublishingForm(forms.Form):
     title = forms.CharField(max_length = 255, label = u'Título')

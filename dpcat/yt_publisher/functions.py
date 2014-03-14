@@ -9,6 +9,7 @@ from django.contrib import messages
 from oauth2client.client import Storage as BaseStorage, OAuth2WebServerFlow, Error
 from oauth2client import xsrfutil
 from apiclient.discovery import build
+from yt_publisher.models import Publicacion
 from configuracion import config
 import settings
 
@@ -132,3 +133,9 @@ def error_handler(e, request):
         credentials.revoke(httplib2.Http())
         messages.error(request, u'Ha habido un error con cuenta de publicación, se debe volver a realizar la asociación')
         return HttpResponseRedirect(reverse("config_plugin"))
+
+"""
+Devuelve el número de puestos libres para iniciar el proceso de publicación.
+"""
+def available_slots():
+    return int(config.get_option('YT_PUBLISHER_MAX_TASKS')) - Publicacion.objects.count_actives()

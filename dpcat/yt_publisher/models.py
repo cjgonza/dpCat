@@ -26,8 +26,8 @@ class PublicacionManager(models.Manager):
     """
     Devuelve verdadero si se está procesando alguna publicación.
     """
-    def is_processing(self):
-        return super(PublicacionManager, self).get_query_set().filter(status = 'EXE').count() is not 0
+    def count_actives(self):
+        return super(PublicacionManager, self).get_query_set().filter(status = 'EXE').count()
 
 
 class Publicacion(models.Model):
