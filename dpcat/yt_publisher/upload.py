@@ -9,8 +9,9 @@ import json
 from apiclient.errors import HttpError
 from apiclient.http import MediaFileUpload
 
+from settings import MEDIA_ROOT
 from postproduccion.models import RegistroPublicacion
-from yt_publisher.functions import get_authenticated_service
+from yt_publisher.functions import get_authenticated_service, create_playlist, insert_video_in_playlist
 
 # Explicitly tell the underlying HTTP transport library not to retry, since
 # we are handling retry logic ourselves.
@@ -36,9 +37,11 @@ PUBLICATION_CATEGORY = 27
 #PRIVACY_STATUS = 'public'
 PRIVACY_STATUS = 'unlisted'
 
+# Patrón de la URL de los vídeos publicados
+PUBLISHED_PATTERN_URL = 'http://www.youtube.com/watch?v=%s'
+
 def publish(task):
-    task.status = 'EXE' # esto se debería hacer desde fuera en caso de multithread.
-    task.save()
+    task.set_status('EXE') # esto se debería hacer desde fuera en caso de multithread.
     v = task.video
     d = json.loads(task.data)
 
@@ -57,35 +60,61 @@ def publish(task):
     insert_request = get_authenticated_service().videos().insert(
         part = ",".join(body.keys()),
         body = body,
+        fields = "id",
         media_body = MediaFileUpload(task.video.fichero, chunksize = -1, resumable = True)
     )
 
+    messages = str()
     response = None
     error = None
     retry = 0
     while response is None:
         try:
-            print "Uploading file..."
             status, response = insert_request.next_chunk()
             if 'id' in response:
-                print "Video id '%s' was successfully uploaded." % response['id']
+                # Vídeo subido correctamente
+                videoid = response['id']
+                messages += "Video id '%s' was successfully uploaded.\n" % videoid
+                RegistroPublicacion(video = v, enlace = PUBLISHED_PATTERN_URL % videoid).save()
+                task.delete()
+
+                # Se crea o inserta una lista de reproducción si es necesario.
+                if d['playlist']:
+                    if d['playlist'] == 1:
+                        playlistid = d['add_to_playlist']
+                    else:
+                        playlistid = create_playlist(d['new_playlist_name'], d['new_playlist_description'], PRIVACY_STATUS)
+                    insert_video_in_playlist(videoid, playlistid)
+                return
             else:
-                exit("The upload failed with an unexpected response: %s" % response)
+                messages += "The upload failed with an unexpected response: %s\n" % response
+                create_error_logfile(task, messages)
+                task.set_status('ERR')
+                return
         except HttpError, e:
             if e.resp.status in RETRIABLE_STATUS_CODES:
-                error = "A retriable HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
+                error = "A retriable HTTP error %d occurred:\n%s\n" % (e.resp.status, e.content)
             else:
                 raise
         except RETRIABLE_EXCEPTIONS, e:
-            error = "A retriable error occurred: %s" % e
+            error = "A retriable error occurred: %s\n" % e
 
         if error is not None:
-            print error
+            messages += error
             retry += 1
             if retry > MAX_RETRIES:
-                exit("No longer attempting to retry.")
+                messages += "No longer attempting to retry.\n"
+                create_error_logfile(task, messages)
+                task.set_status('ERR')
+                return
 
             max_sleep = 2 ** retry
             sleep_seconds = random.random() * max_sleep
-            print "Sleeping %f seconds and then retrying..." % sleep_seconds
+            messages += "Sleeping %f seconds and then retrying...\n" % sleep_seconds
             time.sleep(sleep_seconds)
+
+def create_error_logfile(task, error_text):
+    (handle, path) = tempfile.mkstemp(suffix = '.yt-pub.log', dir = MEDIA_ROOT + '/' + task.logfile.field.get_directory_name())
+    task.logfile = task.logfile.field.get_directory_name() + '/' + os.path.basename(path)
+    os.write(handle, error_text.encode('utf-8'))
+    os.close(handle)
