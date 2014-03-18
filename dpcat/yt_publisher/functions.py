@@ -13,7 +13,7 @@ from yt_publisher.models import Publicacion
 from configuracion import config
 import settings
 
-YOUTUBE_SCOPES = [ 'https://www.googleapis.com/auth/youtube',
+YOUTUBE_SCOPES = [ 'https://www.googleapis.com/auth/youtubepartner',
                    'https://www.googleapis.com/auth/youtube.upload' ]
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
