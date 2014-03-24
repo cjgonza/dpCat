@@ -85,7 +85,7 @@ class InformeProduccion(models.Model):
     observacion = models.TextField(null = True, blank = True)
     fecha_grabacion = models.DateTimeField()
     fecha_produccion = models.DateTimeField(auto_now_add = True)
-    fecha_validacion = models.DateTimeField(null = True)
+    fecha_validacion = models.DateTimeField(null = True, blank = True)
     aprobacion = models.BooleanField(default = True)
 
 class IncidenciaProduccion(models.Model):
