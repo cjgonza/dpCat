@@ -29,7 +29,7 @@ def config_plugin(request):
         for i in ConfigForm.base_fields.keys():
             initial_data[i] = config.get_option("CB_PUBLISHER_%s" % i.upper())
         form = ConfigForm(initial = initial_data)
-    return render_to_response("cb_publisher/section-config.html", { 'form' : form }, context_instance=RequestContext(request))
+    return render_to_response("cb-section-config.html", { 'form' : form }, context_instance=RequestContext(request))
 
 """
 Realiza la publicación de la producción.
@@ -75,21 +75,21 @@ def publicar(request, video_id):
             messages.error(request, u'Imposible conectar con el servidor de publicación.')
             return redirect('estado_video', v.id)
 
-    return render_to_response("cb_publisher/section-publish.html", { 'form' : form, 'new_form' : new_form, 'add_form' : add_form }, context_instance=RequestContext(request))
+    return render_to_response("cb-section-publish.html", { 'form' : form, 'new_form' : new_form, 'add_form' : add_form }, context_instance=RequestContext(request))
 
 """
 Muestra la cola de publicación.
 """
 @permission_required('postproduccion.video_manager')
 def cola_publicacion(request):
-    return render_to_response("cb_publisher/section-cola.html", context_instance=RequestContext(request))
+    return render_to_response("cb-section-cola.html", context_instance=RequestContext(request))
 
 """
 Contenido de la cola de publicación.
 """
 @permission_required('postproduccion.video_manager')
 def contenido_cola_publicacion(request):
-    return render_to_response("cb_publisher/ajax-cola.html", { 'list' : Publicacion.objects.order_by('id') }, context_instance=RequestContext(request))
+    return render_to_response("cb-ajax-cola.html", { 'list' : Publicacion.objects.order_by('id') }, context_instance=RequestContext(request))
 
 """
 Purga las publicaciones erroneas
