@@ -33,7 +33,7 @@ Muestra la página inicial
 @permission_required('postproduccion.video_manager')
 def index(request):
     utils.set_default_settings() # Fija la configuración por defecto si no existía configuración previa.
-    return render_to_response("postproduccion/section-inicio.html", { }, context_instance=RequestContext(request))
+    return render_to_response("section-inicio.html", { }, context_instance=RequestContext(request))
 
 
 """
@@ -55,7 +55,7 @@ def crear(request, video_id = None):
     else:
         vform = VideoForm(instance = v) if v else VideoForm()
         iform = InformeCreacionForm(instance = v.informeproduccion) if v else InformeCreacionForm(initial = { 'fecha_grabacion' : datetime.datetime.now() })
-    return render_to_response("postproduccion/section-nueva-paso1.html", { 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
+    return render_to_response("section-nueva-paso1.html", { 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
 
 
 """
@@ -78,7 +78,7 @@ def _fichero_entrada_simple(request, v):
             form = FicheroEntradaForm(instance = fe)
         else:
             form = FicheroEntradaForm()
-    return render_to_response("postproduccion/section-nueva-paso2-fichero.html", { 'v' : v, 'form' : form }, context_instance=RequestContext(request))
+    return render_to_response("section-nueva-paso2-fichero.html", { 'v' : v, 'form' : form }, context_instance=RequestContext(request))
 
 """
 Muestra el formulario para seleccionar los ficheros de entrada.
@@ -105,7 +105,7 @@ def _fichero_entrada_multiple(request, v):
         formset.forms[i].titulo = tipos[i].nombre
         if formset.forms[i].initial:
             formset.forms[i].initial['fichero'] = os.path.join('/', os.path.relpath(formset.forms[i].initial['fichero'], config.get_option('VIDEO_INPUT_PATH')))
-    return render_to_response("postproduccion/section-nueva-paso2-ficheros.html", { 'v' : v, 'formset' : formset }, context_instance=RequestContext(request))
+    return render_to_response("section-nueva-paso2-ficheros.html", { 'v' : v, 'formset' : formset }, context_instance=RequestContext(request))
 
 """
 Llama al método privado adecuado para insertar los ficheros de entrada según
@@ -133,7 +133,7 @@ def resumen_video(request, video_id):
         v.set_status('DEF')
         messages.success(request, "Producción creada y encolada para su procesado")
         return redirect('index')
-    return render_to_response("postproduccion/section-nueva-paso3.html", { 'v' : v }, context_instance=RequestContext(request))
+    return render_to_response("section-nueva-paso3.html", { 'v' : v }, context_instance=RequestContext(request))
 
 """
 Devuelve una lista (html) con el contenido de un directorio para usar con la
@@ -163,7 +163,7 @@ def dirlist(request):
 
 @permission_required('postproduccion.video_manager')
 def cola_base(request):
-    return render_to_response("postproduccion/section-cola-base.html", context_instance=RequestContext(request))
+    return render_to_response("section-cola-base.html", context_instance=RequestContext(request))
 
 @permission_required('postproduccion.video_manager')
 def cola_listado(request):
@@ -199,9 +199,9 @@ Lista los vídeos que están pendientes de atención por parte del operador.
 def listar_pendientes(request):
     filtro = Q(status = 'PTO') | Q(status = 'ACE') | Q(status = 'REC')
     if request.is_ajax():
-        return render_to_response("postproduccion/ajax/content-pendientes.html", { 'list' : listar(filtro)[:5] }, context_instance=RequestContext(request))
+        return render_to_response("ajax/content-pendientes.html", { 'list' : listar(filtro)[:5] }, context_instance=RequestContext(request))
     else:
-        return render_to_response("postproduccion/section-pendientes.html", { 'list' : listar(filtro) }, context_instance=RequestContext(request))
+        return render_to_response("section-pendientes.html", { 'list' : listar(filtro) }, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados.
@@ -209,9 +209,9 @@ Lista los vídeos que están siendo procesados.
 @permission_required('postproduccion.video_manager')
 def listar_en_proceso(request):
     if request.is_ajax(): 
-        return render_to_response("postproduccion/ajax/content-enproceso.html", { 'list' : listar()[:10] }, context_instance=RequestContext(request))
+        return render_to_response("ajax/content-enproceso.html", { 'list' : listar()[:10] }, context_instance=RequestContext(request))
     else:
-        return render_to_response("postproduccion/section-enproceso.html", { 'list' : listar() }, context_instance=RequestContext(request))
+        return render_to_response("section-enproceso.html", { 'list' : listar() }, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados que cumplan el filto dado.
@@ -238,7 +238,7 @@ Lista las últimas producciones incluidas en la videoteca.
 @permission_required('postproduccion.video_manager')
 def ultimas_producciones(request):
     videolist = Video.objects.filter(status = 'LIS').order_by('-informeproduccion__fecha_validacion')
-    return render_to_response("postproduccion/ajax/content-ultimas.html", { 'videos' : videolist[:5] }, context_instance=RequestContext(request))
+    return render_to_response("ajax/content-ultimas.html", { 'videos' : videolist[:5] }, context_instance=RequestContext(request))
 
 #######
 # Vistas públicas para que el usuario acepte una producción.
@@ -250,7 +250,7 @@ Vista para que el usuario verifique un vídeo y lo apruebe o rechace.
 def aprobacion_video(request, tk_str):
     v = token.is_valid_token(tk_str)
     if not v: raise Http404
-    return render_to_response("postproduccion/section-inicio-aprobacion.html", { 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
+    return render_to_response("section-inicio-aprobacion.html", { 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
 Vista para que el usuario rellene los metadatos de un vídeo.
@@ -284,10 +284,10 @@ def definir_metadatos_user(request, tk_str):
             token.token_attended(v)
             v.status = 'ACE'
             v.save()
-            return render_to_response("postproduccion/section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : True }, context_instance=RequestContext(request))
+            return render_to_response("section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : True }, context_instance=RequestContext(request))
     else:
         form = MetadataForm(instance = getattr(v, metadataField)) if hasattr(v, metadataField) else MetadataForm(initial = initial_data)
-    return render_to_response("postproduccion/section-metadatos-user.html", { 'form' : form, 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
+    return render_to_response("section-metadatos-user.html", { 'form' : form, 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
 Solicita al usuario una razón por la cual el vídeo ha sido rechazado
@@ -306,10 +306,10 @@ def rechazar_video(request, tk_str):
             token.token_attended(v)
             v.status = 'REC'
             v.save()
-            return render_to_response("postproduccion/section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : False }, context_instance=RequestContext(request))
+            return render_to_response("section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : False }, context_instance=RequestContext(request))
     else:
         form = IncidenciaProduccionForm()
-    return render_to_response("postproduccion/section-rechazar-produccion.html", { 'v' : v, 'form' : form, 'token' : tk_str }, context_instance=RequestContext(request))
+    return render_to_response("section-rechazar-produccion.html", { 'v' : v, 'form' : form, 'token' : tk_str }, context_instance=RequestContext(request))
 
 
 #######
@@ -346,7 +346,7 @@ def definir_metadatos_oper(request, video_id):
             messages.success(request, 'Metadata actualizada')
     else:
         form = MetadataForm(instance = getattr(v, metadataField)) if hasattr(v, metadataField) else MetadataForm(initial = initial_data)
-    return render_to_response("postproduccion/section-metadatos-oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
+    return render_to_response("section-metadatos-oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
 
 
 """
@@ -355,7 +355,7 @@ Vista que muestra el estado e información de una producción.
 @permission_required('postproduccion.video_manager')
 def estado_video(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
-    return render_to_response("postproduccion/section-resumen-produccion.html", { 'v' : v }, context_instance=RequestContext(request))
+    return render_to_response("section-resumen-produccion.html", { 'v' : v }, context_instance=RequestContext(request))
 
 """
 Muestra la información técnica del vídeo
@@ -364,7 +364,7 @@ Muestra la información técnica del vídeo
 def media_info(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
     info = video.parse_mediainfo(v.tecdata.txt_data) if hasattr(v, 'tecdata') else None
-    return render_to_response("postproduccion/section-metadata-tecnica.html", { 'v' : v, 'info' : info }, context_instance=RequestContext(request))
+    return render_to_response("section-metadata-tecnica.html", { 'v' : v, 'info' : info }, context_instance=RequestContext(request))
 
 """
 Devuelve la información técnica del vídeo en XML para su descarga.
@@ -400,7 +400,7 @@ def gestion_tickets(request, video_id):
     else:
         form = IncidenciaProduccionForm()
 
-    return render_to_response("postproduccion/section-gestion-tickets.html", { 'v' : v, 'form' : form, 'token' : tk }, context_instance=RequestContext(request))
+    return render_to_response("section-gestion-tickets.html", { 'v' : v, 'form' : form, 'token' : tk }, context_instance=RequestContext(request))
 
 """
 Valida una producción y la pasa a la videoteca.
@@ -501,7 +501,7 @@ def videoteca(request):
     except (EmptyPage, InvalidPage):
         videos = paginator.page(paginator.num_pages)
 
-    return render_to_response("postproduccion/section-videoteca.html", { 'videos' : videos }, context_instance=RequestContext(request))
+    return render_to_response("section-videoteca.html", { 'videos' : videos }, context_instance=RequestContext(request))
 
 
 #######
@@ -533,7 +533,7 @@ Muestra el registro de eventos de la aplicación.
 @permission_required('postproduccion.video_manager')
 def showlog(request, old = False):
     logdata = log.get_log() if not old else log.get_old_log()
-    return render_to_response("postproduccion/section-log.html", { 'log' : logdata, 'old' : old }, context_instance=RequestContext(request))
+    return render_to_response("section-log.html", { 'log' : logdata, 'old' : old }, context_instance=RequestContext(request))
 
 """
 Muestra las alertas de la aplicación.
@@ -577,9 +577,9 @@ def alerts(request):
     # Ordena los elementos cronológicamente
     lista = sorted(lista, key=lambda it: it['fecha'])
     if request.is_ajax():
-        return render_to_response("postproduccion/ajax/content-alertas.html", { 'lista' : lista[:5] }, context_instance=RequestContext(request))
+        return render_to_response("ajax/content-alertas.html", { 'lista' : lista[:5] }, context_instance=RequestContext(request))
     else:
-        return render_to_response("postproduccion/section-alertas.html", { 'lista' : lista }, context_instance=RequestContext(request))
+        return render_to_response("section-alertas.html", { 'lista' : lista }, context_instance=RequestContext(request))
 
 """
 Edita los ajustes de configuración de la aplicación.
@@ -598,7 +598,7 @@ def config_settings(request, mail = False):
         for i in ClassForm.base_fields.keys():
             initial_data[i] = config.get_option(i.upper())
         form = ClassForm(initial_data)
-    return render_to_response("postproduccion/section-config.html", { 'form' : form, 'mail' : mail }, context_instance=RequestContext(request))
+    return render_to_response("section-config.html", { 'form' : form, 'mail' : mail }, context_instance=RequestContext(request))
 
 """
 Muestra el estado de la aplicación con la configuración actual.
@@ -671,4 +671,4 @@ def status(request):
                 messages.success(request, 'Tareas programadas de publicación activadas')
     cron = { 'process' : crontab.status('procesar_video'), 'publish' : crontab.status('publicar_video') }
 
-    return render_to_response("postproduccion/section-status.html", { 'exes' : exes, 'dirs' : dirs, 'cron' : cron }, context_instance=RequestContext(request))
+    return render_to_response("section-status.html", { 'exes' : exes, 'dirs' : dirs, 'cron' : cron }, context_instance=RequestContext(request))
