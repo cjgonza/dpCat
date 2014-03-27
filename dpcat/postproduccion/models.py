@@ -649,6 +649,8 @@ class Cola(models.Model):
                 self.status = 'ERR'
                 self.save()
             while Cola.objects.get(pk=self.id).status == 'PRO': pass
+        if self.logfile:
+            self.logfile.delete()
         super(Cola, self).delete(*args, **kwargs)
 
     class Meta:
