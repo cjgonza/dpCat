@@ -39,7 +39,7 @@ def get_fdv_template(v):
     data['videos'] = videos
     data['duracion'] = min(duracion) * 25
 
-    return render_to_response('postproduccion/get_fdv_template.mlt', { 'data' : data })
+    return render_to_response('get_fdv_template.mlt', { 'data' : data })
 
 """
 """
