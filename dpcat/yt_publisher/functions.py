@@ -53,7 +53,8 @@ def get_flow():
     return OAuth2WebServerFlow(client_id = config.get_option('YT_PUBLISHER_CLIENT_ID'),
                                client_secret = config.get_option('YT_PUBLISHER_CLIENT_SECRET'),
                                scope = YOUTUBE_SCOPES,
-                               redirect_uri = urljoin(config.get_option('SITE_URL'), reverse('oauth2callback')))
+                               redirect_uri = urljoin(config.get_option('SITE_URL'), reverse('oauth2callback')),
+                               access_type = 'offline')
 
 
 def get_authenticated_service():
