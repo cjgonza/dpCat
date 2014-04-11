@@ -104,6 +104,11 @@ def publish(task):
                 return
         except RETRIABLE_EXCEPTIONS, e:
             error = "A retriable error occurred: %s\n" % e
+        except Exception, e:
+            error = "Unexpected Error:\n  %s: %s\n" % (type(e).__name__, e)
+            create_error_logfile(task, messages)
+            task.set_status('ERR')
+            return
 
         if error is not None:
             messages += error

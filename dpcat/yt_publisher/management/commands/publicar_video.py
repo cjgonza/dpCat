@@ -4,11 +4,13 @@ from yt_publisher.models import Publicacion
 from yt_publisher.upload import publish
 from yt_publisher.functions import available_slots
 import threading
+import logging
 
 class Command(NoArgsCommand):
     help = 'Publica los videos pendientes en la cola'
 
     def handle_noargs(self, **options):
+        logging.basicConfig()
 
         while True:
             threads = []
