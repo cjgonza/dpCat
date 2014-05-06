@@ -57,7 +57,7 @@ def generate_tecdata(v):
 """
 """
 def get_tec_data(xmlstring):
-    dom = parseString(xmlstring)
+    dom = parseString(xmlstring.encode('utf-8'))
     unparse_width = dom.getElementsByTagName('Width')[0].firstChild.data
     unparse_height = dom.getElementsByTagName('Height')[0].firstChild.data
     unparse_ratio = dom.getElementsByTagName('Display_aspect_ratio')[0].firstChild.data
