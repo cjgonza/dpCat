@@ -51,7 +51,7 @@ class Video(models.Model):
     plantilla = models.ForeignKey(PlantillaFDV, null = True, blank = True)
 
  
-    titulo = models.CharField(max_length = 255)
+    titulo = models.CharField(max_length = 100)
     autor = models.CharField(max_length = 255, verbose_name = u'Responsable')
     email = models.EmailField(verbose_name = u'Email del responsable')
 
@@ -388,7 +388,7 @@ class Metadata(models.Model):
     video = models.OneToOneField(Video, editable = False)
 
     knowledge_areas = models.CharField(max_length = 2, choices = KNOWLEDGE_AREAS_KEYS, verbose_name = u'Clasificación Universidad')
-    title = models.CharField(max_length = 255, verbose_name = u'Título completo de la producción')
+    title = models.CharField(max_length = 100, verbose_name = u'Título completo de la producción')
     creator = models.CharField(max_length = 255, verbose_name = u'Autor/es o creador/es')
     keyword = models.CharField(max_length = 255, verbose_name = u'Palabras clave o etiquetas', help_text = u'Pude incluir tantas como quiera siempre y cuando se separen por comas.')
     description = models.TextField(verbose_name = u'Descripción breve')
