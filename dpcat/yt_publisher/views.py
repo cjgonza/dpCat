@@ -94,7 +94,7 @@ def publicar(request, video_id):
         metadataField = 'metadataoa' if v.objecto_aprendizaje else 'metadatagen'
         form.fields['title'].initial = getattr(v, metadataField).title
         form.fields['description'].initial = "%s\n\n---\n%s" % (getattr(v, metadataField).description, LICENSE_TEXTS[getattr(v, metadataField).license])
-        form.fields['tags'].initial = "%s,%s" % (getattr(v, metadataField).keyword, getattr(v, metadataField).get_knowledge_areas_display())
+        form.fields['tags'].initial = "%s,%s" % (getattr(v, metadataField).keyword, getattr(v, metadataField).get_knowledge_areas_display().replace(',',''))
         try:
             add_form.fields['add_to_playlist'].choices = get_playlists()
         except Error as e:
