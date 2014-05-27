@@ -249,7 +249,7 @@ Vista para que el usuario verifique un vídeo y lo apruebe o rechace.
 """
 def aprobacion_video(request, tk_str):
     v = token.is_valid_token(tk_str)
-    if not v: raise Http404
+    if not v: return render_to_response("section-ticket-caducado.html")
     return render_to_response("section-inicio-aprobacion.html", { 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
@@ -257,7 +257,7 @@ Vista para que el usuario rellene los metadatos de un vídeo.
 """
 def definir_metadatos_user(request, tk_str):
     v = token.is_valid_token(tk_str)
-    if not v: raise Http404
+    if not v: return render_to_response("section-ticket-caducado.html")
 
     if v.objecto_aprendizaje:
         MetadataForm = MetadataOAForm
@@ -294,7 +294,7 @@ Solicita al usuario una razón por la cual el vídeo ha sido rechazado
 """
 def rechazar_video(request, tk_str):
     v = token.is_valid_token(tk_str)
-    if not v: raise Http404
+    if not v: return render_to_response("section-ticket-caducado.html")
 
     if request.method == 'POST':
         form = IncidenciaProduccionForm(request.POST)
