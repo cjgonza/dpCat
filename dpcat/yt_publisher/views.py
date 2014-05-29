@@ -83,7 +83,6 @@ def publicar(request, video_id):
                 pub_data = dict(form.cleaned_data, **add_form.cleaned_data)
             if form.cleaned_data['playlist'] is 2:
                 pub_data = dict(form.cleaned_data, **new_form.cleaned_data)
-            print pub_data
             Publicacion(video = v, data = json.dumps(pub_data)).save()
             messages.success(request, u'Producción encolada para su publicación')
             return redirect('estado_video', v.id)
@@ -109,9 +108,12 @@ Callback para la autorización OAuth2 de YouTube.
 def auth_return(request):
     if not xsrfutil.validate_token(settings.SECRET_KEY, request.REQUEST['state'], None):
         return  HttpResponseBadRequest()
-    credentials = get_flow().step2_exchange(request.REQUEST)
-    Storage().put(credentials)
-    messages.success(request, u'Asociada cuenta de publicación')
+    try:
+        credentials = get_flow().step2_exchange(request.REQUEST)
+        Storage().put(credentials)
+        messages.success(request, u'Asociada cuenta de publicación')
+    except Error:
+        messages.error(request, u'Autorización no concedida')
     return HttpResponseRedirect(reverse("config_plugin"))
 
 @permission_required('postproduccion.video_manager')
