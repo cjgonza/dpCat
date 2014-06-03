@@ -150,7 +150,7 @@ def mp4box_version():
     fpath = config.get_option('MP4BOX_PATH')
     if is_exec(fpath):
         command = "%s -version" % fpath
-        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()[0]
+        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.STDOUT).communicate()[0]
         try:
             return re.search('version (\S*)', data).group(1)
         except AttributeError:
