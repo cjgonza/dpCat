@@ -31,7 +31,7 @@
         {% endfor %}
         <hr/>
         <input type="submit" value="Siguiente paso" />
-        <div id="volver"><a class="volver" href="{% url postproduccion.views.crear v.id %}">Anterior</a></div>
+        <div id="volver"><a class="volver" href="{% url 'postproduccion.views.crear' v.id %}">Anterior</a></div>
         <input type="reset" value="Restaurar formulario" />
     </form>
 </div>
@@ -54,7 +54,7 @@
         <div class="portlet-header">Acciones disponibles</div>
         <div class="portlet-content">
             <ul> 
-                <li><a class="eliminar" href="{% url borrar v.id %}">Eliminar producci&oacute;n</a></li>
+                <li><a class="eliminar" href="{% url 'borrar' v.id %}">Eliminar producci&oacute;n</a></li>
             </ul>
         </div>
     </div>

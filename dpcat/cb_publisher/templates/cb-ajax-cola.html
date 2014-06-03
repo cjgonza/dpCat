@@ -16,7 +16,7 @@
             {{ task.get_status_display }}
         {% endif %}
         </td>
-        <td class="title"><a href="{% url estado_video task.video.id %}">{{ task.video.titulo }}</a></td>
+        <td class="title"><a href="{% url 'estado_video' task.video.id %}">{{ task.video.titulo }}</a></td>
     </tr>
     {% endfor %}
   </tbody>

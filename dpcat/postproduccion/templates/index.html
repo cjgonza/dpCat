@@ -10,16 +10,16 @@
 
 <div id="main-header">
      <div id="inner-header">
-        <div id="logo"><a title="Ir a Inicio" href="{% url index %}">dpCat</a></div>
+        <div id="logo"><a title="Ir a Inicio" href="{% url 'index' %}">dpCat</a></div>
         <div id="inner-menu-content">
         <ul>
-            <li><a class="home" href="{% url index %}">Inicio</a></li>
-            <li><a class="videoteca" href="{% url videoteca %}">Videoteca</a></li>
-            <li><a class="monitorizacion" href="{% url enproceso %}">Centro de monitorizaci&oacute;n</a></li>
-            <li><a class="nuevaproduccion" href="{% url crear %}">Nueva producci&oacute;n</a></li>
+            <li><a class="home" href="{% url 'index' %}">Inicio</a></li>
+            <li><a class="videoteca" href="{% url 'videoteca' %}">Videoteca</a></li>
+            <li><a class="monitorizacion" href="{% url 'enproceso' %}">Centro de monitorizaci&oacute;n</a></li>
+            <li><a class="nuevaproduccion" href="{% url 'crear' %}">Nueva producci&oacute;n</a></li>
         </ul>
         <ul class="utils">
-            <li>Hola, {{ user }} | <a title="Configuraci&oacute;n del sistema" href="{% url config %}">Configuraci&oacute;n</a> | <a title="Cerrar sesi&oacute;n en dpCat" href="{% url django.contrib.auth.views.logout %}">Cerrar sesi&oacute;n</a></li>
+            <li>Hola, {{ user }} | <a title="Configuraci&oacute;n del sistema" href="{% url 'config' %}">Configuraci&oacute;n</a> | <a title="Cerrar sesi&oacute;n en dpCat" href="{% url 'django.contrib.auth.views.logout' %}">Cerrar sesi&oacute;n</a></li>
         </ul>
         </div>
     </div>

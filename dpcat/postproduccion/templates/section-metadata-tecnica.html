@@ -28,8 +28,8 @@
                 <div class="portlet-header">Tipo de metadata</div>
                 <div class="portlet-content">
                     <ul> 
-            <li><a class="link" href="{% url definir_metadatos_oper v.id %}">Metadata principal</a></li> 
-            <li><a class="link" href="{% url media_info v.id %}">Metadata t&eacute;cnica</a></li> 
+            <li><a class="link" href="{% url 'definir_metadatos_oper' v.id %}">Metadata principal</a></li> 
+            <li><a class="link" href="{% url 'media_info' v.id %}">Metadata t&eacute;cnica</a></li> 
                     </ul>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                 <div class="portlet-header">Versi&oacute;n descargable</div>
                 <div class="portlet-content">
                     <ul> 
-                        <li><a class="descargar" href="{% url download_media_info v.id %}">Metadata t&eacute;cnica en XML</a></li> 
+                        <li><a class="descargar" href="{% url 'download_media_info' v.id %}">Metadata t&eacute;cnica en XML</a></li> 
                     </ul>
                 </div>
             </div>

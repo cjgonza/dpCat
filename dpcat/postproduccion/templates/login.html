@@ -11,7 +11,7 @@
             <div class="portlet">
                 <div class="portlet-header">Acceso al sistema</div>
                 <div class="portlet-content info-interes">
-                    <form method="post" action="{% url django.contrib.auth.views.login %}" class="form-nueva">
+                    <form method="post" action="{% url 'django.contrib.auth.views.login' %}" class="form-nueva">
                         <ul>
                             {% csrf_token %}
                             {{ form.as_ul }}

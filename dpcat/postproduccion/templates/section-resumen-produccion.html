@@ -9,13 +9,13 @@
         <script type="text/javascript">
             jwplayer("container").setup({
                 flashplayer: "/static/jwplayer/player.swf",
-                file: "{% url stream_video v.id %}",
+                file: "{% url 'stream_video' v.id %}",
                 height: 270,
                 width: 480
             });
         </script>
 {% else %}
-    <div id="no-disponible"><p>Previsualizaci&oacute;n no disponible, revise el <a href="{% url enproceso %}">listado de producciones en proceso</a></div>
+    <div id="no-disponible"><p>Previsualizaci&oacute;n no disponible, revise el <a href="{% url 'enproceso' %}">listado de producciones en proceso</a></div>
 {% endif %}
 </div>
 
@@ -81,7 +81,7 @@
             {% for pub in v.registropublicacion_set.all %}
                 <tr>
                     <td>
-                        <a class="notificar" href="{% url notificar_publicacion pub.id %}">Notificar</a> / <a class="borrar-publi" href="{% url borrar_registro pub.id %}">Borrar</a></td>
+                        <a class="notificar" href="{% url 'notificar_publicacion' pub.id %}">Notificar</a> / <a class="borrar-publi" href="{% url 'borrar_registro' pub.id %}">Borrar</a></td>
                 <td>{{ pub.fecha|date:"G:i:s - d/m/Y" }}</td><td><a class="enlace" href="{{ pub.enlace }}" target="_blank">{{ pub.enlace }}</a></td>
             {% endfor %}
         </tbody>
@@ -102,7 +102,7 @@
         </tbody>
     </table>
 {% else %}
-        <div class="mensaje warning">El hist&oacute;rico de codificaci&oacute;n no estar&aacute; disponible hasta que la producci&oacute;n haya sido validada.<br/><br/><a href="{% url cola %}">Pulse aqu&iacute; para acceder a la cola de procesamiento del centro de monitorizaci&oacute;n</a></div>
+        <div class="mensaje warning">El hist&oacute;rico de codificaci&oacute;n no estar&aacute; disponible hasta que la producci&oacute;n haya sido validada.<br/><br/><a href="{% url 'cola' %}">Pulse aqu&iacute; para acceder a la cola de procesamiento del centro de monitorizaci&oacute;n</a></div>
 {% endif %}
 
 {% endblock %}

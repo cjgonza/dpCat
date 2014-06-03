@@ -7,7 +7,7 @@
 
 <script>
 function ajax_ultimas() {
-    $.get("{% url ultimas %}", function(data) {
+    $.get("{% url 'ultimas' %}", function(data) {
         $("#box-ultimas").html(data);
     }).complete(function() { setTimeout("ajax_ultimas();", 300000); });
 }

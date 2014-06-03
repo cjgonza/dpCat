@@ -7,7 +7,7 @@
 
 <script>
 function ajax_enproceso() {
-    $.get("{% url enproceso %}", function(data) {
+    $.get("{% url 'enproceso' %}", function(data) {
         $("#box-enproceso").html(data);
     }).complete(function() { setTimeout("ajax_enproceso();", 300000); });
 }

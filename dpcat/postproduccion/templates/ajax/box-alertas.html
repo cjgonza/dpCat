@@ -7,7 +7,7 @@
 
 <script>
 function ajax_alertas() {
-    $.get("{% url alertas %}", function(data) {
+    $.get("{% url 'alertas' %}", function(data) {
         $("#box-alertas").html(data);
         $(".alerta-header").click(function () {
             $(this).find(".icon").toggleClass("minus").toggleClass("plus");

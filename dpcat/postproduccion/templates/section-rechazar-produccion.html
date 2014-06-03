@@ -11,7 +11,7 @@
         <script type="text/javascript">
             jwplayer("container").setup({
                 flashplayer: "/static/jwplayer/player.swf",
-                file: "{% url stream_preview token %}",
+                file: "{% url 'stream_preview' token %}",
                 height: 270,
                 width: 480
             });
@@ -63,9 +63,9 @@
                         <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
                         Aseg&uacute;rese de haber visualizado el v&iacute;deo por completo, tenga en cuenta que este paso supone la aceptaci&oacute;n <strong>definitiva</strong> de la producci&oacute;n.
                     </div>
-                    <li><a href="{% url definir_metadatos_user token %}" class="aprobar">Aceptar e introducir metadata</a></li>
+                    <li><a href="{% url 'definir_metadatos_user' token %}" class="aprobar">Aceptar e introducir metadata</a></li>
                     <li>
-                        <a href="{% url rechazar_video token %}" class="rechazar">Rechazar producci&oacute;n</a>
+                        <a href="{% url 'rechazar_video' token %}" class="rechazar">Rechazar producci&oacute;n</a>
                     </li>
                 </ul>
             </div>

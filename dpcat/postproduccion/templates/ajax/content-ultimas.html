@@ -11,7 +11,7 @@
     <tr class="{%cycle 'odd' 'even' %}">
         <td class="id">{{ video.id }}</td>
         <td class="date">{{ video.informeproduccion.fecha_validacion|date:"d/m/Y" }}</td>
-        <td class="title"><a href="{% url estado_video video.id %}">{{ video.titulo }}</a></td>
+        <td class="title"><a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a></td>
         <td class="author">{{ video.autor }}</td>
     </tr>
     {% endfor %}
@@ -21,5 +21,5 @@
     <div class="mensaje info">No hay ning&uacute;n elemento que mostrar.</div></td>
 {% endif %}
 <ul class="portlet-bottom-link">
-    <li><a class="link-section" href="{% url videoteca %}">Videoteca</a></li>
+    <li><a class="link-section" href="{% url 'videoteca' %}">Videoteca</a></li>
 </ul>

@@ -18,7 +18,7 @@
                     <div id="dialog-eliminar" title="¿Pugar cola de publicaci&oacute;n?">
                         <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>La informaci&oacute;n de la cola de publicaci&oacute;n ser&aacute; purgada y no podr&aacute; ser recuperada.</p>
                     </div>
-                <a class="eliminar" href="{% url purgar_publicaciones %}">Purgar cola de publicaci&oacute;n</a></li>
+                <a class="eliminar" href="{% url 'purgar_publicaciones' %}">Purgar cola de publicaci&oacute;n</a></li>
             </ul>
         </div>
     </div>
@@ -37,7 +37,7 @@
     <script type="text/javascript">
 
         function refrescar() {
-            $.get('{% url contenido_cola_publicacion %}', function(data) {
+            $.get('{% url 'contenido_cola_publicacion' %}', function(data) {
 								$("#contenedor").html(data);
             }).complete(function() { setTimeout("refrescar();", 1000); });
             

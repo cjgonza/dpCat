@@ -16,9 +16,9 @@
         <td class="respon">{{ video.responsable }}</td>
         <td class="title">
         {% if video.status == 'Incompleto' %}
-            <a href="{% url crear video.id %}">{{ video.titulo }}</a>
+            <a href="{% url 'crear' video.id %}">{{ video.titulo }}</a>
         {% else %}
-            <a href="{% url estado_video video.id %}">{{ video.titulo }}</a>
+            <a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a>
         {% endif %}
         </td>
     </tr>
@@ -30,5 +30,5 @@
 {% endif %}
 
 <ul class="portlet-bottom-link">
-    <li><a class="link-section" href="{% url enproceso %}">Listado completo de producciones en proceso</a></li>
+    <li><a class="link-section" href="{% url 'enproceso' %}">Listado completo de producciones en proceso</a></li>
 </ul>

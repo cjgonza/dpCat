@@ -42,14 +42,14 @@
                 <div class="portlet-header">Registro actual</div>
                 <div class="portlet-content">
                     <ul>
-                        <li><a class="link" href="{% url log %}">Acceder al registro actual del sistema.</a></li> 
+                        <li><a class="link" href="{% url 'log' %}">Acceder al registro actual del sistema.</a></li> 
                     </ul>
                 </div>
                 {% else %}
                 <div class="portlet-header">Registro antiguo</div>
                 <div class="portlet-content">
                     <ul>
-                        <li><a class="link" href="{% url oldlog %}">Acceder al registro antiguo del sistema.</a></li> 
+                        <li><a class="link" href="{% url 'oldlog' %}">Acceder al registro antiguo del sistema.</a></li> 
                     </ul>
                 </div>
                 {% endif %}
