@@ -24,7 +24,7 @@ def set_default_settings():
     defaults = [
         [ 'MAX_ENCODING_TASKS', 5 ],
         [ 'MELT_PATH' ,          which('melt') ], 
-        [ 'FFMPEG_PATH',         which('ffmpeg') ],
+        [ 'AVCONV_PATH',         which('avconv') ],
         [ 'MP4BOX_PATH',         which('MP4Box') ],
         [ 'CRONTAB_PATH',        which('crontab') ],
         [ 'MEDIAINFO_PATH',      which('mediainfo') ],
@@ -105,15 +105,15 @@ def which(fpath):
     return subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE).communicate()[0].strip()
 
 """
-Devuelve la versión del ffmpeg instalado.
+Devuelve la versión del avconv instalado.
 """
-def ffmpeg_version():
-    fpath = config.get_option('FFMPEG_PATH')
+def avconv_version():
+    fpath = config.get_option('AVCONV_PATH')
     if is_exec(fpath):
         command = "%s -version" % fpath
         data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.STDOUT).communicate()[0]
         try:
-            return re.match('ffmpeg version ([\.0-9]+)', data).group(1)
+            return re.match('avconv version ([\.0-9]+)', data).group(1)
         except AttributeError:
             return None
     

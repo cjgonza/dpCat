@@ -86,7 +86,7 @@ class ConfigForm(Form):
     max_encoding_tasks = forms.IntegerField(label = u'Nº máximo de codificaciones simultaneas')
     mediainfo_path = ExecutableField(label = u'Ruta del \'mediainfo\'')
     melt_path = ExecutableField(label = u'Ruta del \'melt\'')
-    ffmpeg_path = ExecutableField(label = u'Ruta del \'ffmpeg\'')
+    avconv_path = ExecutableField(label = u'Ruta del \'avconv\'')
     mp4box_path = ExecutableField(label = u'Ruta del \'MP4Box\'')
     crontab_path = ExecutableField(label = u'Ruta del \'crontab\'')
     max_preview_width = forms.IntegerField(label = u'Anchura máxima de la previsualización')

@@ -551,8 +551,8 @@ def alerts(request):
     for i in token.get_expired_tokens():
         lista.append({ 'tipo' : 'token-caducado', 't' : i, 'fecha' : token.get_expire_time(i) })
     # Comprueba los ejecutables.
-    if not utils.ffmpeg_version():
-        lista.append({ 'tipo' : 'ejecutable', 'exe' : 'ffmpeg', 'fecha' : datetime.datetime.min })
+    if not utils.avconv_version():
+        lista.append({ 'tipo' : 'ejecutable', 'exe' : 'avconv', 'fecha' : datetime.datetime.min })
     if not utils.melt_version():
         lista.append({ 'tipo' : 'ejecutable', 'exe' : 'melt', 'fecha' : datetime.datetime.min })
     if not utils.mediainfo_version():
@@ -606,15 +606,15 @@ Muestra el estado de la aplicación con la configuración actual.
 @permission_required('postproduccion.video_manager')
 def status(request):
     # Programas externos
-    ffmpegver = utils.ffmpeg_version()
+    avconvver = utils.avconv_version()
     meltver = utils.melt_version()
     mediainfover = utils.mediainfo_version()
     mp4boxver = utils.mp4box_version()
     exes = {
-        'FFMPEG'  : {
-            'path'    : config.get_option('FFMPEG_PATH'),
-            'status'  : True if ffmpegver else False,
-            'version' : ffmpegver,
+        'AVCONV'  : {
+            'path'    : config.get_option('AVCONV_PATH'),
+            'status'  : True if avconvver else False,
+            'version' : avconvver,
         },
         'MELT'    : {
             'path'    : config.get_option('MELT_PATH'),
