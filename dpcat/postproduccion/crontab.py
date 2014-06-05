@@ -7,7 +7,7 @@ import shlex
 from django.conf import settings
 from configuracion import config
 
-_cronline = "* * * * * /usr/bin/env python %s" % os.path.join(settings.DIRNAME, 'manage.py')
+_cronline = "* * * * * /usr/bin/env python %s" % os.path.join(settings.BASE_DIR, 'manage.py')
 
 """
 Devuelve una lista donde cada elemento es una línea de crontab actual (puede contener comentarios).
