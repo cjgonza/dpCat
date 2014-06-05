@@ -131,7 +131,10 @@ def error_handler(e, request):
         return HttpResponseRedirect(reverse("config_plugin"))
     except Error:
         credentials = Storage().get()
-        credentials.revoke(httplib2.Http())
+        try:
+            credentials.revoke(httplib2.Http())
+        except Error:
+            Storage().delete()
         messages.error(request, u'Ha habido un error con cuenta de publicación, se debe volver a realizar la asociación')
         return HttpResponseRedirect(reverse("config_plugin"))
 

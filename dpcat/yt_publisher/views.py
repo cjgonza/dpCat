@@ -49,7 +49,10 @@ Gestiona la autorización y revocación de la cuenta de publicación.
 def auth_manage(request, revoke = False):
     credentials = Storage().get()
     if revoke:
-        credentials.revoke(httplib2.Http())
+        try:
+            credentials.revoke(httplib2.Http())
+        except Error:
+            Storage().delete()
         messages.warning(request, u'Eliminada cuenta de publicación')
     else:
         if credentials is None or credentials.invalid:
