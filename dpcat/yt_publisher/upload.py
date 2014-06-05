@@ -12,7 +12,7 @@ from cgi import escape
 from apiclient.errors import HttpError
 from apiclient.http import MediaFileUpload
 
-from settings import MEDIA_ROOT
+from django.conf import settings
 from postproduccion.models import RegistroPublicacion
 from yt_publisher.functions import get_authenticated_service, create_playlist, insert_video_in_playlist
 
@@ -125,7 +125,7 @@ def publish(task):
             time.sleep(sleep_seconds)
 
 def create_error_logfile(task, error_text):
-    (handle, path) = tempfile.mkstemp(suffix = '.yt-pub.log', dir = MEDIA_ROOT + '/' + task.logfile.field.get_directory_name())
+    (handle, path) = tempfile.mkstemp(suffix = '.yt-pub.log', dir = settings.MEDIA_ROOT + '/' + task.logfile.field.get_directory_name())
     task.logfile = task.logfile.field.get_directory_name() + '/' + os.path.basename(path)
     os.write(handle, error_text.encode('utf-8'))
     os.close(handle)

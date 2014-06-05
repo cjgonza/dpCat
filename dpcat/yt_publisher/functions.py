@@ -11,7 +11,7 @@ from oauth2client import xsrfutil
 from apiclient.discovery import build
 from yt_publisher.models import Publicacion
 from configuracion import config
-import settings
+from django.conf import settings
 
 YOUTUBE_SCOPES = [ 'https://www.googleapis.com/auth/youtubepartner',
                    'https://www.googleapis.com/auth/youtube.upload' ]

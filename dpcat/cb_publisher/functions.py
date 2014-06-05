@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.template import Template, Context
 from django.core.mail import send_mail
 from configuracion import config
-from settings import MEDIA_ROOT
+from django.conf import settings
 from cb_publisher.models import RegistroPublicacionCB
 from postproduccion.utils import generate_token
 
@@ -83,7 +83,7 @@ def publish(task):
     # Hubo algún error
 
     # Guarda el registro del error.
-    (handle, path) = tempfile.mkstemp(suffix = '.pub.log', dir = MEDIA_ROOT + '/' + task.logfile.field.get_directory_name())
+    (handle, path) = tempfile.mkstemp(suffix = '.pub.log', dir = settings.MEDIA_ROOT + '/' + task.logfile.field.get_directory_name())
     task.logfile = task.logfile.field.get_directory_name() + '/' + os.path.basename(path)
     os.write(handle, error_text.encode('utf-8'))
     os.close(handle)

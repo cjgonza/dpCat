@@ -48,8 +48,8 @@ USE_L10N = True
 # Example: "/home/media/media.lawrence.com/"
 #MEDIA_ROOT = ''
 import os
-dirname = os.path.dirname(globals()["__file__"])
-MEDIA_ROOT = os.path.join(dirname, 'files')
+DIRNAME = os.path.dirname(globals()["__file__"])
+MEDIA_ROOT = os.path.join(DIRNAME, 'files')
 
 # Ruta para los ficheros estáticos
 STATIC_ROOT = os.path.join(MEDIA_ROOT, 'static')
@@ -88,7 +88,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(dirname, 'templates')
+    os.path.join(DIRNAME, 'templates')
 )
 
 INSTALLED_APPS = (

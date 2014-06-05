@@ -17,7 +17,7 @@ from yt_publisher.functions import Storage, Error
 from yt_publisher.functions import get_flow, get_playlists, error_handler
 from yt_publisher.functions import LICENSE_TEXTS
 from configuracion import config
-import settings
+from django.conf import settings
 
 import json
 import httplib2
