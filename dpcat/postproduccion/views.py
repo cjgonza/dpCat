@@ -416,8 +416,8 @@ def validar_produccion(request, video_id):
         getattr(v, metadataField).save()
         v.status = 'LIS'
         v.save()
-        if v.informeproduccion.aprobacion:
-            token.send_validation_mail_to_user(v, request.user.first_name)
+        #if v.informeproduccion.aprobacion:
+        #    token.send_validation_mail_to_user(v, request.user.first_name)
         queue.removeVideoTasks(v)
         if v.informeproduccion.aprobacion:
             v.previsualizacion.delete()
