@@ -59,6 +59,8 @@ STATIC_ROOT = os.path.join(MEDIA_ROOT, 'static')
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/files/'
 
+STATIC_URL = os.path.join(MEDIA_URL, '/static/')
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
@@ -100,6 +102,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'django.contrib.staticfiles',
     'south',
     'configuracion',
     'postproduccion',
