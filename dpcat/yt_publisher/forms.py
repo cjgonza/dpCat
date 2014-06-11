@@ -7,8 +7,8 @@ class ConfigForm(forms.Form):
     max_tasks = forms.IntegerField(label = u'Nº máximo de publicaciones simultaneas')
 
 class PublishingForm(forms.Form):
-    title = forms.CharField(max_length = 255, label = u'Título')
-    description = forms.CharField(label = u'Descripción', widget = forms.Textarea)
+    title = forms.CharField(max_length = 100, label = u'Título')
+    description = forms.CharField(max_length = 5000, label = u'Descripción', widget = forms.Textarea)
     tags = forms.CharField(max_length = 255, label = u'Etiquetas')
     playlist = forms.TypedChoiceField(
         label = u'Lista de reproducción',
