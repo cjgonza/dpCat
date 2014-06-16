@@ -25,12 +25,13 @@
         <th class="autor">Autor</th>
         <th class="date">Fecha</th>
         <th class="oper">Operador</th>
-        <th class="title">T&iacute;tulo</th>
-        <th class="oa">Objeto de Aprendizaje</th>
+        <th>T&iacute;tulo</th>
+        <th>Observaci&oacute;n</th>
+        <th class="oa">OA</th>
     </thead>
     <tbody>
         <tr>
-            <td class="autor">{{ v.autor }}<br/>(<a class="email" href="mailto:{{v.email}}">{{ v.email }}</a>)</td>
+            <td>{{ v.autor }}<br/>(<a class="email" href="mailto:{{v.email}}">{{ v.email }}</a>)</td>
             <td class="date">
                 <ul>
                     <li>{{ v.informeproduccion.fecha_grabacion|date:"G:i:s - d/m/Y" }} - Grabaci&oacute;n</li>
@@ -41,7 +42,8 @@
                 </ul>
             </td>
             <td class="oper">{{ v.informeproduccion.operador }}</td>
-            <td class="titulo">{{ v.titulo }}</td>
+            <td>{{ v.titulo }}</td>
+            <td>{{ v.informaproduccion.observacion }}</td>
             <td class="{{ v.objecto_aprendizaje|yesno:'on,off' }}">&nbsp;</td>
         </tr>
     </tbody>
