@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion, RegistroPublicacion
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm
+from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm, VideoEditarForm, InformeEditarForm
 from postproduccion import queue 
 from postproduccion import utils
 from postproduccion import token
@@ -401,6 +401,32 @@ def gestion_tickets(request, video_id):
         form = IncidenciaProduccionForm()
 
     return render_to_response("section-gestion-tickets.html", { 'v' : v, 'form' : form, 'token' : tk }, context_instance=RequestContext(request))
+
+"""
+Edita la información básica de la producción.
+"""
+@permission_required('postproduccion.video_manager')
+def editar_produccion(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    if v.status == 'LIS': raise Http404
+
+    if request.method == 'POST':
+        vform = VideoEditarForm(request.POST, instance = v)
+        iform = InformeEditarForm(request.POST, instance = v.informeproduccion)
+        if vform.is_valid():
+            v = vform.save()
+            i = iform.save()
+            if v.objecto_aprendizaje and hasattr(v, 'metadatagen'):
+                v.metadatagen.delete()
+                messages.error(request, u'Eliminada la metadata previamente asociada a la producción')
+            if not v.objecto_aprendizaje and hasattr(v, 'metadataoa'):
+                v.metadataoa.delete()
+                messages.error(request, u'Eliminada la metadata previamente asociada a la producción')
+            messages.success(request, u'Actualizada la información básica de la producción')
+    else:
+        vform = VideoEditarForm(instance = v)
+        iform = InformeEditarForm(instance = v.informeproduccion)
+    return  render_to_response("section-editar-info.html", { 'v' : v, 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
 
 """
 Valida una producción y la pasa a la videoteca.

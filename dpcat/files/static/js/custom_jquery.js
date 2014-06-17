@@ -162,6 +162,22 @@ $(document).ready(function() {
         $("#dialog-generarticket").dialog("open");
     });
 
+// Dialog cambiar tipo de metadata
+    $('#dialog-editar-oa').dialog({
+        autoOpen: false,
+        height: 160,
+        modal: true,
+        resizable: false,
+        buttons: {
+            "Ok": function() {
+                $(this).dialog("close");
+            }
+        }
+    });
+		$('.form-editar #id_objecto_aprendizaje').change(function(e) {
+				$('#dialog-editar-oa').dialog("open");
+		});
+
 // Dialog generación de ticket
     $('#dialog-terminos').dialog({
         autoOpen: false,

@@ -18,6 +18,16 @@ class InformeCreacionForm(ModelForm):
         model = InformeProduccion
         fields = ('observacion', 'aprobacion', 'fecha_grabacion')
 
+class VideoEditarForm(ModelForm):
+    class Meta:
+        model = Video
+        fields = ('titulo', 'autor', 'email', 'objecto_aprendizaje')
+
+class InformeEditarForm(ModelForm):
+    class Meta:
+        model = InformeProduccion
+        fields = ('observacion',)
+
 class IncidenciaProduccionForm(ModelForm):
     comentario = CharField(required = True, widget = Textarea())
 

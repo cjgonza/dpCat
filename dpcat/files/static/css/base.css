@@ -1266,6 +1266,10 @@ a.ticket {
     background: url(../img/icon/ticket16.png) 10px 45% no-repeat;
 }
 
+a.editar {
+    background: url(../img/icon/edit16.png) 10px 45% no-repeat;
+}
+
 a.historico {
     background: url(../img/icon/historico16.png) 10px 45% no-repeat;
 }
