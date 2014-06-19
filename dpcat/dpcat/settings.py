@@ -118,3 +118,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+try:
+    from settings_produccion import *
+except ImportError:
+    pass
