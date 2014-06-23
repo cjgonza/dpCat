@@ -54,6 +54,7 @@ def get_flow():
                                client_secret = config.get_option('YT_PUBLISHER_CLIENT_SECRET'),
                                scope = YOUTUBE_SCOPES,
                                redirect_uri = urljoin(config.get_option('SITE_URL'), reverse('oauth2callback')),
+                               approval_prompt='force',
                                access_type = 'offline')
 
 

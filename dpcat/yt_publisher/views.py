@@ -52,6 +52,7 @@ def auth_manage(request, revoke = False):
         try:
             credentials.revoke(httplib2.Http())
         except Error:
+            messages.error(request, u'No pudo ser revocado el permiso en el servidor de Google')
             Storage().delete()
         messages.warning(request, u'Eliminada cuenta de publicación')
     else:
