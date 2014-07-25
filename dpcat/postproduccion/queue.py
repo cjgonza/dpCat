@@ -1,7 +1,7 @@
 #encoding: utf-8
 from postproduccion.models import Cola, HistoricoCodificacion
 from postproduccion.video import create_pil, create_preview, copy_video
-from settings import MEDIA_ROOT
+from django.conf import settings
 from configuracion import config
 from postproduccion import log, token, utils
 
@@ -56,7 +56,7 @@ def process_task(task):
     error = False
 
     # Crea el fichero para el registro de la salida de codificación.
-    (handle, path) = tempfile.mkstemp(suffix = '.log', dir = MEDIA_ROOT + '/logs')
+    (handle, path) = tempfile.mkstemp(suffix = '.log', dir = settings.MEDIA_ROOT + '/logs')
 
     # Actualiza la información de la base de datos.
     task.logfile = 'logs/' + os.path.basename(path)

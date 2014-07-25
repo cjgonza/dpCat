@@ -11,8 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
-from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm
+from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion, RegistroPublicacion
+from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm, VideoEditarForm, InformeEditarForm
 from postproduccion import queue 
 from postproduccion import utils
 from postproduccion import token
@@ -33,7 +33,7 @@ Muestra la página inicial
 @permission_required('postproduccion.video_manager')
 def index(request):
     utils.set_default_settings() # Fija la configuración por defecto si no existía configuración previa.
-    return render_to_response("postproduccion/section-inicio.html", { }, context_instance=RequestContext(request))
+    return render_to_response("section-inicio.html", { }, context_instance=RequestContext(request))
 
 
 """
@@ -55,7 +55,7 @@ def crear(request, video_id = None):
     else:
         vform = VideoForm(instance = v) if v else VideoForm()
         iform = InformeCreacionForm(instance = v.informeproduccion) if v else InformeCreacionForm(initial = { 'fecha_grabacion' : datetime.datetime.now() })
-    return render_to_response("postproduccion/section-nueva-paso1.html", { 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
+    return render_to_response("section-nueva-paso1.html", { 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
 
 
 """
@@ -78,7 +78,7 @@ def _fichero_entrada_simple(request, v):
             form = FicheroEntradaForm(instance = fe)
         else:
             form = FicheroEntradaForm()
-    return render_to_response("postproduccion/section-nueva-paso2-fichero.html", { 'v' : v, 'form' : form }, context_instance=RequestContext(request))
+    return render_to_response("section-nueva-paso2-fichero.html", { 'v' : v, 'form' : form }, context_instance=RequestContext(request))
 
 """
 Muestra el formulario para seleccionar los ficheros de entrada.
@@ -105,7 +105,7 @@ def _fichero_entrada_multiple(request, v):
         formset.forms[i].titulo = tipos[i].nombre
         if formset.forms[i].initial:
             formset.forms[i].initial['fichero'] = os.path.join('/', os.path.relpath(formset.forms[i].initial['fichero'], config.get_option('VIDEO_INPUT_PATH')))
-    return render_to_response("postproduccion/section-nueva-paso2-ficheros.html", { 'v' : v, 'formset' : formset }, context_instance=RequestContext(request))
+    return render_to_response("section-nueva-paso2-ficheros.html", { 'v' : v, 'formset' : formset }, context_instance=RequestContext(request))
 
 """
 Llama al método privado adecuado para insertar los ficheros de entrada según
@@ -133,7 +133,7 @@ def resumen_video(request, video_id):
         v.set_status('DEF')
         messages.success(request, "Producción creada y encolada para su procesado")
         return redirect('index')
-    return render_to_response("postproduccion/section-nueva-paso3.html", { 'v' : v }, context_instance=RequestContext(request))
+    return render_to_response("section-nueva-paso3.html", { 'v' : v }, context_instance=RequestContext(request))
 
 """
 Devuelve una lista (html) con el contenido de un directorio para usar con la
@@ -163,7 +163,7 @@ def dirlist(request):
 
 @permission_required('postproduccion.video_manager')
 def cola_base(request):
-    return render_to_response("postproduccion/section-cola-base.html", context_instance=RequestContext(request))
+    return render_to_response("section-cola-base.html", context_instance=RequestContext(request))
 
 @permission_required('postproduccion.video_manager')
 def cola_listado(request):
@@ -199,9 +199,9 @@ Lista los vídeos que están pendientes de atención por parte del operador.
 def listar_pendientes(request):
     filtro = Q(status = 'PTO') | Q(status = 'ACE') | Q(status = 'REC')
     if request.is_ajax():
-        return render_to_response("postproduccion/ajax/content-pendientes.html", { 'list' : listar(filtro)[:5] }, context_instance=RequestContext(request))
+        return render_to_response("ajax/content-pendientes.html", { 'list' : listar(filtro)[:5] }, context_instance=RequestContext(request))
     else:
-        return render_to_response("postproduccion/section-pendientes.html", { 'list' : listar(filtro) }, context_instance=RequestContext(request))
+        return render_to_response("section-pendientes.html", { 'list' : listar(filtro) }, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados.
@@ -209,9 +209,9 @@ Lista los vídeos que están siendo procesados.
 @permission_required('postproduccion.video_manager')
 def listar_en_proceso(request):
     if request.is_ajax(): 
-        return render_to_response("postproduccion/ajax/content-enproceso.html", { 'list' : listar()[:10] }, context_instance=RequestContext(request))
+        return render_to_response("ajax/content-enproceso.html", { 'list' : listar()[:10] }, context_instance=RequestContext(request))
     else:
-        return render_to_response("postproduccion/section-enproceso.html", { 'list' : listar() }, context_instance=RequestContext(request))
+        return render_to_response("section-enproceso.html", { 'list' : listar() }, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados que cumplan el filto dado.
@@ -238,7 +238,7 @@ Lista las últimas producciones incluidas en la videoteca.
 @permission_required('postproduccion.video_manager')
 def ultimas_producciones(request):
     videolist = Video.objects.filter(status = 'LIS').order_by('-informeproduccion__fecha_validacion')
-    return render_to_response("postproduccion/ajax/content-ultimas.html", { 'videos' : videolist[:5] }, context_instance=RequestContext(request))
+    return render_to_response("ajax/content-ultimas.html", { 'videos' : videolist[:5] }, context_instance=RequestContext(request))
 
 #######
 # Vistas públicas para que el usuario acepte una producción.
@@ -249,15 +249,15 @@ Vista para que el usuario verifique un vídeo y lo apruebe o rechace.
 """
 def aprobacion_video(request, tk_str):
     v = token.is_valid_token(tk_str)
-    if not v: raise Http404
-    return render_to_response("postproduccion/section-inicio-aprobacion.html", { 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
+    if not v: return render_to_response("section-ticket-caducado.html")
+    return render_to_response("section-inicio-aprobacion.html", { 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
 Vista para que el usuario rellene los metadatos de un vídeo.
 """
 def definir_metadatos_user(request, tk_str):
     v = token.is_valid_token(tk_str)
-    if not v: raise Http404
+    if not v: return render_to_response("section-ticket-caducado.html")
 
     if v.objecto_aprendizaje:
         MetadataForm = MetadataOAForm
@@ -284,17 +284,17 @@ def definir_metadatos_user(request, tk_str):
             token.token_attended(v)
             v.status = 'ACE'
             v.save()
-            return render_to_response("postproduccion/section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : True }, context_instance=RequestContext(request))
+            return render_to_response("section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : True }, context_instance=RequestContext(request))
     else:
         form = MetadataForm(instance = getattr(v, metadataField)) if hasattr(v, metadataField) else MetadataForm(initial = initial_data)
-    return render_to_response("postproduccion/section-metadatos-user.html", { 'form' : form, 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
+    return render_to_response("section-metadatos-user.html", { 'form' : form, 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
 Solicita al usuario una razón por la cual el vídeo ha sido rechazado
 """
 def rechazar_video(request, tk_str):
     v = token.is_valid_token(tk_str)
-    if not v: raise Http404
+    if not v: return render_to_response("section-ticket-caducado.html")
 
     if request.method == 'POST':
         form = IncidenciaProduccionForm(request.POST)
@@ -306,10 +306,10 @@ def rechazar_video(request, tk_str):
             token.token_attended(v)
             v.status = 'REC'
             v.save()
-            return render_to_response("postproduccion/section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : False }, context_instance=RequestContext(request))
+            return render_to_response("section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : False }, context_instance=RequestContext(request))
     else:
         form = IncidenciaProduccionForm()
-    return render_to_response("postproduccion/section-rechazar-produccion.html", { 'v' : v, 'form' : form, 'token' : tk_str }, context_instance=RequestContext(request))
+    return render_to_response("section-rechazar-produccion.html", { 'v' : v, 'form' : form, 'token' : tk_str }, context_instance=RequestContext(request))
 
 
 #######
@@ -346,7 +346,7 @@ def definir_metadatos_oper(request, video_id):
             messages.success(request, 'Metadata actualizada')
     else:
         form = MetadataForm(instance = getattr(v, metadataField)) if hasattr(v, metadataField) else MetadataForm(initial = initial_data)
-    return render_to_response("postproduccion/section-metadatos-oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
+    return render_to_response("section-metadatos-oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
 
 
 """
@@ -355,7 +355,7 @@ Vista que muestra el estado e información de una producción.
 @permission_required('postproduccion.video_manager')
 def estado_video(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
-    return render_to_response("postproduccion/section-resumen-produccion.html", { 'v' : v }, context_instance=RequestContext(request))
+    return render_to_response("section-resumen-produccion.html", { 'v' : v }, context_instance=RequestContext(request))
 
 """
 Muestra la información técnica del vídeo
@@ -364,7 +364,7 @@ Muestra la información técnica del vídeo
 def media_info(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
     info = video.parse_mediainfo(v.tecdata.txt_data) if hasattr(v, 'tecdata') else None
-    return render_to_response("postproduccion/section-metadata-tecnica.html", { 'v' : v, 'info' : info }, context_instance=RequestContext(request))
+    return render_to_response("section-metadata-tecnica.html", { 'v' : v, 'info' : info }, context_instance=RequestContext(request))
 
 """
 Devuelve la información técnica del vídeo en XML para su descarga.
@@ -400,7 +400,33 @@ def gestion_tickets(request, video_id):
     else:
         form = IncidenciaProduccionForm()
 
-    return render_to_response("postproduccion/section-gestion-tickets.html", { 'v' : v, 'form' : form, 'token' : tk }, context_instance=RequestContext(request))
+    return render_to_response("section-gestion-tickets.html", { 'v' : v, 'form' : form, 'token' : tk }, context_instance=RequestContext(request))
+
+"""
+Edita la información básica de la producción.
+"""
+@permission_required('postproduccion.video_manager')
+def editar_produccion(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    if v.status == 'LIS': raise Http404
+
+    if request.method == 'POST':
+        vform = VideoEditarForm(request.POST, instance = v)
+        iform = InformeEditarForm(request.POST, instance = v.informeproduccion)
+        if vform.is_valid():
+            v = vform.save()
+            i = iform.save()
+            if v.objecto_aprendizaje and hasattr(v, 'metadatagen'):
+                v.metadatagen.delete()
+                messages.error(request, u'Eliminada la metadata previamente asociada a la producción')
+            if not v.objecto_aprendizaje and hasattr(v, 'metadataoa'):
+                v.metadataoa.delete()
+                messages.error(request, u'Eliminada la metadata previamente asociada a la producción')
+            messages.success(request, u'Actualizada la información básica de la producción')
+    else:
+        vform = VideoEditarForm(instance = v)
+        iform = InformeEditarForm(instance = v.informeproduccion)
+    return  render_to_response("section-editar-info.html", { 'v' : v, 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
 
 """
 Valida una producción y la pasa a la videoteca.
@@ -435,6 +461,27 @@ def borrar_produccion(request, video_id):
     v.delete()
     messages.success(request, 'Producción eliminada con éxito.')
     return redirect('postproduccion.views.index')
+
+"""
+Envía un correo al autor notificando de que una producción se encuentra publicada.
+"""
+@permission_required('postproduccion.video_manager')
+def notificar_publicacion(request, record_id):
+    r = get_object_or_404(RegistroPublicacion, pk = record_id)
+    token.send_published_mail_to_user(r)
+    messages.success(request, u'Enviado correo de notificación de publicacion al autor')
+    return redirect('estado_video', r.video.id)
+
+"""
+Borra el registro de publicación dado.
+"""
+@permission_required('postproduccion.video_manager')
+def borrar_registro(request, record_id):
+    r = get_object_or_404(RegistroPublicacion, pk = record_id)
+    v = r.video
+    r.delete()
+    messages.success(request, u'Registro de publicación eliminado')
+    return redirect('estado_video', v.id)
 
 """
 Muestra la videoteca.
@@ -480,7 +527,7 @@ def videoteca(request):
     except (EmptyPage, InvalidPage):
         videos = paginator.page(paginator.num_pages)
 
-    return render_to_response("postproduccion/section-videoteca.html", { 'videos' : videos }, context_instance=RequestContext(request))
+    return render_to_response("section-videoteca.html", { 'videos' : videos }, context_instance=RequestContext(request))
 
 
 #######
@@ -512,7 +559,7 @@ Muestra el registro de eventos de la aplicación.
 @permission_required('postproduccion.video_manager')
 def showlog(request, old = False):
     logdata = log.get_log() if not old else log.get_old_log()
-    return render_to_response("postproduccion/section-log.html", { 'log' : logdata, 'old' : old }, context_instance=RequestContext(request))
+    return render_to_response("section-log.html", { 'log' : logdata, 'old' : old }, context_instance=RequestContext(request))
 
 """
 Muestra las alertas de la aplicación.
@@ -530,8 +577,8 @@ def alerts(request):
     for i in token.get_expired_tokens():
         lista.append({ 'tipo' : 'token-caducado', 't' : i, 'fecha' : token.get_expire_time(i) })
     # Comprueba los ejecutables.
-    if not utils.ffmpeg_version():
-        lista.append({ 'tipo' : 'ejecutable', 'exe' : 'ffmpeg', 'fecha' : datetime.datetime.min })
+    if not utils.avconv_version():
+        lista.append({ 'tipo' : 'ejecutable', 'exe' : 'avconv', 'fecha' : datetime.datetime.min })
     if not utils.melt_version():
         lista.append({ 'tipo' : 'ejecutable', 'exe' : 'melt', 'fecha' : datetime.datetime.min })
     if not utils.mediainfo_version():
@@ -549,14 +596,16 @@ def alerts(request):
             if int(cap.rstrip('%')) > 90:
                 lista.append({ 'tipo' : 'disco', 'path' : i, 'cap' : cap, 'fecha' : datetime.datetime.min })
     # Comprueba las tareas programadas
-    if not crontab.status():
-        lista.append({ 'tipo' : 'cron', 'fecha' : datetime.datetime.min })
+    if not crontab.status('procesar_video'):
+        lista.append({ 'tipo' : 'cron_proc', 'fecha' : datetime.datetime.min })
+    if not crontab.status('publicar_video'):
+        lista.append({ 'tipo' : 'cron_pub', 'fecha' : datetime.datetime.min })
     # Ordena los elementos cronológicamente
     lista = sorted(lista, key=lambda it: it['fecha'])
     if request.is_ajax():
-        return render_to_response("postproduccion/ajax/content-alertas.html", { 'lista' : lista[:5] }, context_instance=RequestContext(request))
+        return render_to_response("ajax/content-alertas.html", { 'lista' : lista[:5] }, context_instance=RequestContext(request))
     else:
-        return render_to_response("postproduccion/section-alertas.html", { 'lista' : lista }, context_instance=RequestContext(request))
+        return render_to_response("section-alertas.html", { 'lista' : lista }, context_instance=RequestContext(request))
 
 """
 Edita los ajustes de configuración de la aplicación.
@@ -575,7 +624,7 @@ def config_settings(request, mail = False):
         for i in ClassForm.base_fields.keys():
             initial_data[i] = config.get_option(i.upper())
         form = ClassForm(initial_data)
-    return render_to_response("postproduccion/section-config.html", { 'form' : form, 'mail' : mail }, context_instance=RequestContext(request))
+    return render_to_response("section-config.html", { 'form' : form, 'mail' : mail }, context_instance=RequestContext(request))
 
 """
 Muestra el estado de la aplicación con la configuración actual.
@@ -583,15 +632,15 @@ Muestra el estado de la aplicación con la configuración actual.
 @permission_required('postproduccion.video_manager')
 def status(request):
     # Programas externos
-    ffmpegver = utils.ffmpeg_version()
+    avconvver = utils.avconv_version()
     meltver = utils.melt_version()
     mediainfover = utils.mediainfo_version()
     mp4boxver = utils.mp4box_version()
     exes = {
-        'FFMPEG'  : {
-            'path'    : config.get_option('FFMPEG_PATH'),
-            'status'  : True if ffmpegver else False,
-            'version' : ffmpegver,
+        'AVCONV'  : {
+            'path'    : config.get_option('AVCONV_PATH'),
+            'status'  : True if avconvver else False,
+            'version' : avconvver,
         },
         'MELT'    : {
             'path'    : config.get_option('MELT_PATH'),
@@ -632,12 +681,20 @@ def status(request):
 
     # Tareas Programadas
     if request.method == 'POST':
-        if request.POST['status'] == '1':
-            crontab.stop()
-            messages.warning(request, 'Tareas programadas desactivadas')
-        else:
-            crontab.start()
-            messages.success(request, 'Tareas programadas activadas')
-    cron = crontab.status()
+        if 'status_process' in request.POST:
+            if request.POST['status_process'] == '1':
+                crontab.stop('procesar_video')
+                messages.warning(request, 'Tareas programadas de codificación desactivadas')
+            else:
+                crontab.start('procesar_video')
+                messages.success(request, 'Tareas programadas de codificacion activadas')
+        if 'status_publish' in request.POST:
+            if request.POST['status_publish'] == '1':
+                crontab.stop('publicar_video')
+                messages.warning(request, 'Tareas programadas de publicación desactivadas')
+            else:
+                crontab.start('publicar_video')
+                messages.success(request, 'Tareas programadas de publicación activadas')
+    cron = { 'process' : crontab.status('procesar_video'), 'publish' : crontab.status('publicar_video') }
 
-    return render_to_response("postproduccion/section-status.html", { 'exes' : exes, 'dirs' : dirs, 'cron' : cron }, context_instance=RequestContext(request))
+    return render_to_response("section-status.html", { 'exes' : exes, 'dirs' : dirs, 'cron' : cron }, context_instance=RequestContext(request))

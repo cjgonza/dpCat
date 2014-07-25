@@ -1,0 +1,88 @@
+{% extends "base-2-1-public.html" %}
+
+{% block page-title %}Validaci&oacute;n de una producci&oacute;n{% endblock %}
+{% block page-script %} <script type="text/javascript" src="/static/jwplayer/jwplayer.js"></script>{% endblock %}
+{% block section-class %} class="informe-video"{% endblock %}
+{% block section-title %}<h1>Validación de una producci&oacute;n</h1>{% endblock %}
+
+{% block section-content %}
+<div class="info-prevideo">
+    <div id="container">Cargando video ...</div>
+        <script type="text/javascript">
+            jwplayer("container").setup({
+                flashplayer: "/static/jwplayer/player.swf",
+                file: "{% url 'stream_preview' token %}",
+                height: 270,
+                width: 480
+            });
+        </script>
+</div>
+
+<h2>Informaci&oacute;n b&aacute;sica de la producci&oacute;n</h2>
+<table id="tabla" class="infobasica">
+    <thead>
+        <th class="autor">Autor</th>
+        <th class="date">Fecha</th>
+        <th class="oper">Operador</th>
+        <th class="title">T&iacute;tulo</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="autor">{{ v.autor }}<br/>(<a class="email" href="mailto:{{v.email}}">{{ v.email }}</a>)</td>
+            <td class="date">
+                <ul>
+                    <li>{{ v.informeproduccion.fecha_produccion|date:"G:i:s - d/m/Y" }} - Producci&oacute;n</li>
+                </ul>
+            </td>
+            <td class="oper">{{ v.informeproduccion.operador }}</td>
+            <td class="titulo">{{ v.titulo }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Completar la metadata de producci&oacute;n</h2>
+<div class="formulario-nueva">
+    <form method="post" action="" class="form-nueva">
+        {% csrf_token %}
+        <ul>
+        {{ form.as_ul }}
+        </ul>
+        <hr/>
+        <ul>
+          <li><input id="accept_terms" type="checkbox">Acepto las <a href="/static/docs/condiciones_de_uso_ullmedia.pdf" target="_blank">condiciones de uso del servicio ULLmedia</a>.</input></li>
+        </ul>
+        <div id="dialog-terminos" title="T&eacute;rminos no aceptados">
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Debe aceptar las condiciones de uso de ULLMedia para que la producci&oacute;n sea validada.</p>
+        </div>
+        <input class="terminos" type="submit" value="Aprobar producci&oacute;n y enviar metadata" />
+    </form>
+</div>
+
+{% endblock %}
+
+{% block section-widget %}
+        <div class="portlet">
+            <div class="portlet-header">Acciones disponibles</div>
+            <div class="portlet-content">
+                <ul> 
+                    <div id="dialog-aprobar" title="Aprobar producci&oacute;n">
+                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+                        Aseg&uacute;rese de haber visualizado el v&iacute;deo por completo, tenga en cuenta que este paso supone la aceptaci&oacute;n <strong>definitiva</strong> de la producci&oacute;n.
+                    </div>
+                    <li><a href="{% url 'definir_metadatos_user' token %}" class="aprobar">Aceptar e introducir metadata</a></li>
+                    <li>
+                        <a href="{% url 'rechazar_video' token %}" class="rechazar">Rechazar producci&oacute;n</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="portlet">
+            <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+            <div class="portlet-content">
+                <ul> 
+                    <li class="tip">Ha decicido aceptar la producci&oacute;n<br/><br/>Antes de continuar debe incluir toda la metadata de la producci&oacute;n de la manera m&aacute;s precisa posible.<br/><br/>Si tiene cualquier duda o sugerencia no dude en ponerse en contacto con el operador responsable de la producci&oacute;n.</li>
+                </ul>
+            </div>
+        </div>
+{% endblock %}
+

@@ -1,0 +1,62 @@
+{% extends "base-2-1.html" %}
+
+{% block page-title %}Nueva producci&oacute;n, paso 2{% endblock %}
+{% block section-class %}class = "formulario paso2" {% endblock %}
+{% block section-title %}<h1>Nueva producci&oacute;n, paso 2: Contenido de la producci&oacute;n</h1>{% endblock %}
+{% block section-description %} {% endblock %}
+
+{% block page-script %}
+    <script src="/static/js/jqueryFileTree/jqueryFileTree.js" type="text/javascript"></script>
+    <link href="/static/js/jqueryFileTree/jqueryFileTree.css" rel="stylesheet" type="text/css" media="screen" />
+    <script>
+        $(document).ready( function() {
+            $('#fileTree').fileTree({ script: '/postproduccion/dirlist/', multiFolder: false }, function(file) {
+                $('#id_fichero')[0].value = file;
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block section-content %} 
+<div class="formulario-nueva">
+    <form method="post" action="" class="form-nueva">
+        {% csrf_token %}
+        <label>Selecciona el fichero de entrada</label>
+        <div id="fileTree" class="navegador"></div>
+        {{ form.as_p }}
+        <hr/>
+        <input type="submit" value="Siguiente paso" />
+        <div id="volver"><a class="volver" href="{% url 'postproduccion.views.crear' v.id %}">Anterior</a></div>
+        <input type="reset" value="Restaurar formulario" />
+    </form>
+</div>
+{% endblock %}
+
+{% block section-widget %}
+    <div id="progreso" class="dos"></div>
+    <div class="portlet">
+        <div class="portlet-header">Paso 2 de 3: Contenido de la producci&oacute;n</div>
+        <div class="portlet-content info-basica">
+            <ul> 
+                <li class="tip">Seleccione de la unidad de almacenamiento el contenido que desea incluir en la producci&oacute;n.</li>
+            </ul>
+        </div>
+    </div>
+    <div id="dialog-eliminar" title="¿Eliminar producci&oacute;n?">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>La producci&oacute;n ser&aacute; eliminada de forma permanente y no podr&aacute; ser recuperada.</p>
+    </div>
+     <div class="portlet">
+        <div class="portlet-header">Acciones disponibles</div>
+        <div class="portlet-content">
+            <ul> 
+                <li><a class="eliminar" href="{% url 'borrar' v.id %}">Eliminar producci&oacute;n</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+

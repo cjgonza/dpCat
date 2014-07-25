@@ -1,0 +1,38 @@
+{% extends "section-info-produccion.html" %}
+
+{% block current-metadata %} class="current" {% endblock %}
+
+{% block section-content %} 
+    <div class="formulario-nueva">
+        <form method="post" action="" class="form-nueva">
+            <h2>Metadata principal</h2>
+            <ul>
+                {% csrf_token %}
+                {{ form.as_ul }}
+            </ul>
+            <hr/>
+            <input type="submit" value="Guardar" />
+        </form>
+    </div>
+{% endblock %}
+
+{% block section-widget2 %} 
+    <div class="portlet">
+        <div class="portlet-header">Tipo de metadata</div>
+        <div class="portlet-content">
+            <ul> 
+                <li><a class="link" href="{% url 'definir_metadatos_oper' v.id %}">Metadata principal</a></li> 
+                <li><a class="link" href="{% url 'media_info' v.id %}">Metadata t&eacute;cnica</a></li> 
+            </ul>
+        </div>
+    </div>
+    
+    <div class="portlet">
+        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+        <div class="portlet-content info-interes">
+            <ul> 
+                <li class="tip">Revise y valide el contenido de los metadatos antes de continuar.</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "section-base-config.html" %}
+
+{% block page-title %}Configuraci&oacute;n{% endblock %}
+{% block section-class %} class = "status" {% endblock %}
+{% block section-title %}<h1>Estado del sistema</h1>{% endblock %}
+{% block section-description %} {% endblock %}
+
+{% block section-content %} 
+<h2>Programas externos</h2>
+<table id="tabla">
+  <thead>
+    <th>Programa</th>
+    <th>Ruta</th>
+    <th>Estado</th>
+    <th>Versi&oacute;n detectada</th>
+  </thead>
+  <tbody>
+    {% for key, value in exes.items %}
+    <tr>
+      <td>{{ key }}</td>
+      <td>{{ value.path }}</td>
+      <td class="{{ value.status|yesno:'ok,err' }}">&nbsp;</td> <!-- David, cambia 'ok' y 'err' por los nombres de clases que quieras pa mostar un icono de status -->
+      <td>{% if value.status %}{{ value.version }}{% else %} - {% endif %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<hr/>
+<h2>Directorios</h2>
+<table id="tabla">
+  <thead>
+    <th>Directorio</th>
+    <th>Ruta</th>
+    <th>Estado</th>
+    <th>Sistema de ficheros</th>
+    <th>Tama&ntilde;o total</th>
+    <th>Usado</th>
+    <th>Libre</th>
+    <th>Ocupaci&oacute;n</th>
+  </thead>
+  <tbody>
+    {% for key, value in dirs.items %}
+    <tr>
+      <td>{% ifequal key 'input' %}Fuentes{% endifequal %}{% ifequal key 'library' %}Videoteca{% endifequal %}{% ifequal key 'previews' %}Previsualizaciones{% endifequal %}</td>
+      <td>{{ value.path }}</td>
+      <td class="{{ value.info|yesno:'ok,err' }}">&nbsp;</td> <!-- Lo mismo que arriba -->
+      <td>{% if value.info %}{{ value.info.mount }}{% endif %}</td>
+      <td>{% if value.info %}{{ value.info.total }}{% endif %}</td>
+      <td>{% if value.info %}{{ value.info.used }}{% endif %}</td>
+      <td>{% if value.info %}{{ value.info.left }}{% endif %}</td>
+      <td>{% if value.info %}{{ value.info.perc }}{% endif %}</td>
+    <tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<hr/>
+<h2>Tareas Programadas</h2>
+<table id="tabla">
+  <thead>
+    <th>Tarea</th>
+    <th>Estado</th>
+    <th>Acci&oacute;n</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Codificaci&oacute;n de v&iacute;deos</td>
+      <td class="{{ cron.process|yesno:'on,off' }}">&nbsp;</td>
+      <td>
+        <form action="" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="status_process" value="{{ cron.process|yesno:'1,0' }}" />
+          <input class="{{ cron.process|yesno:'on,off' }}" type="submit" value="{{ cron.process|yesno:'Desactivar,Activar' }}" />
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td>Publicaci&oacute;n de v&iacute;deos</td>
+      <td class="{{ cron.publish|yesno:'on,off' }}">&nbsp;</td>
+      <td>
+        <form action="" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="status_publish" value="{{ cron.publish|yesno:'1,0' }}" />
+          <input class="{{ cron.publish|yesno:'on,off' }}" type="submit" value="{{ cron.publish|yesno:'Desactivar,Activar' }}" />
+        </form>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+{% endblock %}

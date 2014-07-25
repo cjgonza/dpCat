@@ -3,8 +3,8 @@ from django.shortcuts import render_to_response
 from django.template import Template, Context
 from django.core.mail import send_mail
 from configuracion import config
-from settings import MEDIA_ROOT
-from cb_publisher.models import RegistroPublicacion
+from django.conf import settings
+from cb_publisher.models import RegistroPublicacionCB
 from postproduccion.utils import generate_token
 
 import urllib
@@ -76,14 +76,14 @@ def publish(task):
                 error_text += '--- Salida de error del plugin --\n'
                 error_text += ret_data['message'] + '\n'
         else:
-            RegistroPublicacion(video = v, enlace = ret_data['vlink']).save()
+            RegistroPublicacionCB(video = v, enlace = ret_data['vlink']).save()
             task.delete()
             return
         
     # Hubo algún error
 
     # Guarda el registro del error.
-    (handle, path) = tempfile.mkstemp(suffix = '.pub.log', dir = MEDIA_ROOT + '/' + task.logfile.field.get_directory_name())
+    (handle, path) = tempfile.mkstemp(suffix = '.pub.log', dir = settings.MEDIA_ROOT + '/' + task.logfile.field.get_directory_name())
     task.logfile = task.logfile.field.get_directory_name() + '/' + os.path.basename(path)
     os.write(handle, error_text.encode('utf-8'))
     os.close(handle)
@@ -149,23 +149,3 @@ def get_collections():
         choices.append((cat['collection_id'], cat['collection_name']))
 
     return choices
-
-
-"""
-Genera el mensaje de correo para avisar al usuario de que su producción ya ha sido publicada.
-"""
-def generate_published_mail_message(r):
-    (nombre, titulo, vid, fecha, url) = (r.video.autor, r.video.titulo, r.video.id, r.fecha, r.enlace)
-    return Template(config.get_option('PUBLISHED_MAIL_MESSAGE')).render(Context({
-        'nombre'   : nombre,
-        'titulo'   : titulo,
-        'vid'      : vid,
-        'fecha'    : fecha,
-        'url'      : url,
-        }))
-
-"""
-Envía un correo para avisar al usuario de que su producción ya ha sido publicada.
-"""
-def send_published_mail_to_user(r):
-    send_mail(config.get_option('PUBLISHED_MAIL_SUBJECT'), generate_published_mail_message(r), config.get_option('RETURN_EMAIL'), [r.video.email])

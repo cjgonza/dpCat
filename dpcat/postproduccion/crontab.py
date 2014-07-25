@@ -4,10 +4,10 @@ import os
 import subprocess
 import shlex
 
-from settings import dirname
+from django.conf import settings
 from configuracion import config
 
-cronline = "* * * * * /usr/bin/env python %s procesar_video" % os.path.join(dirname, 'manage.py')
+_cronline = "* * * * * /usr/bin/env python %s" % os.path.join(settings.BASE_DIR, 'manage.py')
 
 """
 Devuelve una lista donde cada elemento es una línea de crontab actual (puede contener comentarios).
@@ -27,14 +27,16 @@ def _set_crontab(data):
 """
 Devuelve si la tarea de procesamiento está activa en el crontab actual.
 """
-def status():
+def status(command):
+    cronline = "%s %s" % (_cronline, command)
     return cronline in _get_crontab()
 
 """
 Elimina del crontab actual la tarea de procesamiento.
 """
-def stop():
+def stop(command):
     data = _get_crontab()
+    cronline = "%s %s" % (_cronline, command)
     if cronline in data:
         data.remove(cronline)
     _set_crontab(data)
@@ -42,8 +44,9 @@ def stop():
 """
 Añade al crontab actual la tarea de procesamiento.
 """
-def start():
+def start(command):
     data = _get_crontab()
+    cronline = "%s %s" % (_cronline, command)
     if not cronline in data:
         data.append(cronline)
     _set_crontab(data)

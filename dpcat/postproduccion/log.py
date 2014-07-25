@@ -3,7 +3,7 @@
 import datetime
 import gzip
 import os
-from settings import MEDIA_ROOT
+from django.conf import settings
 from configuracion import config
 from postproduccion.utils import lock, ensure_dir
 
@@ -18,7 +18,7 @@ DEBUG = 'D'
 """
 Constante con el nombre de fichero del registro.
 """
-LOGFILE = MEDIA_ROOT + '/logs/application.log'
+LOGFILE = settings.MEDIA_ROOT + '/logs/application.log'
 ensure_dir(LOGFILE)
 
 """

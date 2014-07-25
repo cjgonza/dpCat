@@ -26,7 +26,7 @@ def get_fdv_template(v):
     for i in v.ficheroentrada_set.all():
         fe = dict()
         fe['fichero'] = i.fichero
-        fe['geom'] = "%d,%d:%dx%d:%d" % (
+        fe['geom'] = "%d/%d:%dx%d:%d" % (
             i.tipo.x,
             i.tipo.y,
             i.tipo.ancho,
@@ -39,7 +39,7 @@ def get_fdv_template(v):
     data['videos'] = videos
     data['duracion'] = min(duracion) * 25
 
-    return render_to_response('postproduccion/get_fdv_template.mlt', { 'data' : data })
+    return render_to_response('get_fdv_template.mlt', { 'data' : data })
 
 """
 """

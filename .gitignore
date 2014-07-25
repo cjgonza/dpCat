@@ -1,1 +1,4 @@
+.idea
 *.pyc
+dpcat/files/logs/*
+dpcat/files/plantillas/*

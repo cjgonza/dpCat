@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns, include, url
 
 
 urlpatterns = patterns('postproduccion.views',
@@ -18,7 +18,10 @@ urlpatterns = patterns('postproduccion.views',
     url(r'^media_info/(?P<video_id>\d+)/$', 'media_info', name = "media_info"),
     url(r'^download_media_info/(?P<video_id>\d+)/$', 'download_media_info', name = "download_media_info"),
     url(r'^gestion_tickets/(?P<video_id>\d+)/$', 'gestion_tickets', name = "gestion_tickets"),
+    url(r'^editar/(?P<video_id>\d+)/$', 'editar_produccion', name = "editar"),
     url(r'^borrar/(?P<video_id>\d+)/$', 'borrar_produccion', name = "borrar"),
+    url(r'^notificar/(?P<record_id>\d+)/$', 'notificar_publicacion', name = "notificar_publicacion"),
+    url(r'^borrar_registro/(?P<record_id>\d+)/$', 'borrar_registro', name = "borrar_registro"),
     url(r'^aprobacion_video/(?P<tk_str>\w{25})/$', 'aprobacion_video', name = "aprobacion_video"),
     url(r'^rechazar_video/(?P<tk_str>\w{25})/$', 'rechazar_video', name = "rechazar_video"),
     url(r'^stream/(?P<video_id>\d+).mp4$', 'stream_video', name = "stream_video"),

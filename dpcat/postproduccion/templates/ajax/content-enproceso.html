@@ -1,0 +1,34 @@
+{% if list %}
+<table id="tabla">
+  <thead>
+    <th class="id">ID</th>
+    <th class="status">Estado</th>
+    <th class="date">Fecha</th>
+    <th class="respon">Responsable</th>
+    <th class="title">T&iacute;tulo</th>
+  </thead>
+  <tbody>
+    {% for video in list %}
+    <tr class="{{ video.tipo }} {%cycle 'odd' 'even' %}">
+        <td class="id">{{ video.id }}</td>
+        <td class="status">{{ video.status }}</td>
+        <td class="date">{{ video.fecha }}</td>
+        <td class="respon">{{ video.responsable }}</td>
+        <td class="title">
+        {% if video.status == 'Incompleto' %}
+            <a href="{% url 'crear' video.id %}">{{ video.titulo }}</a>
+        {% else %}
+            <a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a>
+        {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+    <div class="mensaje info">No se ha encontrado ninguna producci&oacute;n siendo procesada.</div>
+{% endif %}
+
+<ul class="portlet-bottom-link">
+    <li><a class="link-section" href="{% url 'enproceso' %}">Listado completo de producciones en proceso</a></li>
+</ul>

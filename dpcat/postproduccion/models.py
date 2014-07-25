@@ -85,7 +85,7 @@ class InformeProduccion(models.Model):
     observacion = models.TextField(null = True, blank = True)
     fecha_grabacion = models.DateTimeField()
     fecha_produccion = models.DateTimeField(auto_now_add = True)
-    fecha_validacion = models.DateTimeField(null = True)
+    fecha_validacion = models.DateTimeField(null = True, blank = True)
     aprobacion = models.BooleanField(default = True)
 
 class IncidenciaProduccion(models.Model):
@@ -649,6 +649,8 @@ class Cola(models.Model):
                 self.status = 'ERR'
                 self.save()
             while Cola.objects.get(pk=self.id).status == 'PRO': pass
+        if self.logfile:
+            self.logfile.delete()
         super(Cola, self).delete(*args, **kwargs)
 
     class Meta:
@@ -663,3 +665,12 @@ class Token(models.Model):
 
     def __unicode__(self):
         return self.video.titulo
+
+class RegistroPublicacion(models.Model):
+    video = models.ForeignKey(Video)
+    fecha = models.DateTimeField(auto_now_add = True)
+    enlace = models.CharField(max_length = 255)
+
+    class Meta:
+        verbose_name = u'registro de publicación'
+        verbose_name_plural = u'registro de publicaciones'

@@ -1,0 +1,40 @@
+{% extends "section-base-config.html" %}
+
+{% block page-title %}Configuraci&oacute;n{% endblock %}
+{% block section-class %} class = "formulario config" {% endblock %}
+{% block section-title %}<h1>Configuraci&oacute;n del plugin: YouTube</h1>{% endblock %}
+
+{% block section-content %}
+    <div class="formulario-nueva">
+        <form method="post" action="" class="form-nueva">
+        <ul>
+            {% csrf_token %}
+            {{ form.as_ul }}
+            </ul>
+            <hr/>
+            <input type="submit" value="Guardar" />
+            <input type="reset" value="Restaurar formulario" />
+        </form>
+    </div>
+{% endblock %}
+
+{% block section-widget2 %}
+    <div class="portlet">
+        <div class="portlet-header">Cuenta de YouTube para la publicaci&oacute;n</div>
+        <div class="portlet-content info-interes">
+            <ul>
+                {% if auth_state %}
+                <li class="tip">Actualmente existe una cuenta de YouTube asociada para la publicaci&oacute;n, todos lo v&iacute;deos ser&aacute;n publicados en esta cuenta.</li>
+                <li>
+                    <div id="dialog-eliminar" title="¿Eliminar cuenta de publicaci&oacute;n?">
+                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Si se elimina la cuenta de publicaci&oacute;n no se podrán publicar v&iacute;deos.</p>
+                    </div>
+                <a class="eliminar" href="{% url 'revoke' %}">Eliminar cuenta de publicaci&oacute;n</a></li>
+                {% else %}
+                <li class="tip">Actualmente no existe cuenta de YouTube asociada para la publicaci&oacute;n, es necesario asociar una cuenta para poder publicar.</li>
+                <li><a class="descargar" href="{% url 'authorize' %}">Asociar cuenta de publicaci&oacute;n</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

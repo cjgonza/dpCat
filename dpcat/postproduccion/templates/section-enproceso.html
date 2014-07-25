@@ -1,0 +1,53 @@
+{% extends "base-2-1-monitor.html" %}
+
+{% block page-title %}Centro de monitorizaci&oacute;n{% endblock %}
+{% block section-class %} {% endblock %}
+{% block section-title %}<h1>Centro de monitorizaci&oacute;n</h1>{% endblock %}
+{% block section-description %}<h2>Producciones en proceso</h2>{% endblock %}
+
+{% block section-content %}
+
+{% if list %}
+<table id="tabla">
+  <thead>
+    <th class="id">ID</th>
+    <th class="status">Estado</th>
+    <th class="oper">Operador</th>
+    <th class="date">Fecha</th>
+    <th class="respon">Responsable</th>
+    <th class="title">T&iacute;tulo</th>
+  </thead>
+  <tbody>
+    {% for video in list %}
+    <tr class="{{ video.tipo }} {%cycle 'odd' 'even' %}">
+        <td class="id">{{ video.id }}</td>
+        <td class="status">{{ video.status }}</td>
+        <td class="oper">{{ video.operador }}</td>
+        <td class="date">{{ video.fecha }}</td>
+        <td class="respon">{{ video.responsable }}</td>
+        <td class="title">
+        {% if video.status == 'Incompleto' %}
+            <a href="{% url 'crear' video.id %}">{{ video.titulo }}</a>
+        {% else %}
+            <a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a>
+        {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+    <div class="mensaje info">No se ha encontrado ninguna producci&oacute;n siendo procesada.</div>
+{% endif %}
+{% endblock %}
+
+{% block section-widget %}
+    <div class="portlet">
+        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+        <div class="portlet-content info-interes">
+            <ul> 
+                <li class="tip">Producciones que actualmente est&aacute;n siendo procesadas en el sistema en cualquiera de los estados en el que se encuentre.</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
