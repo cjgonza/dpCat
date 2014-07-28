@@ -91,7 +91,7 @@ def encode_preview(filename, outfile, size, logfile, pid_notifier = None):
 
 def make_streamable(filename, logfile, pid_notifier = None):
     command = "'%s' -inter 0.5 '%s' -tmp '%s'" % (config.get_option('MP4BOX_PATH'), filename, os.path.dirname(filename))
-    p = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE)
+    p = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
 
     if pid_notifier:
         pid_notifier(p.pid)
