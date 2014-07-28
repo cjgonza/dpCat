@@ -37,8 +37,7 @@ RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
 PUBLICATION_CATEGORY = 27
 
 # Estado de privacidad de la publicación
-#PRIVACY_STATUS = 'public'
-PRIVACY_STATUS = 'unlisted'
+PRIVACY_STATUS = 'public'
 
 # Patrón de la URL de los vídeos publicados
 PUBLISHED_PATTERN_URL = 'http://www.youtube.com/watch?v=%s'
