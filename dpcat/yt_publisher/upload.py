@@ -40,7 +40,7 @@ PUBLICATION_CATEGORY = 27
 PRIVACY_STATUS = 'public'
 
 # Patrón de la URL de los vídeos publicados
-PUBLISHED_PATTERN_URL = 'http://www.youtube.com/watch?v=%s'
+PUBLISHED_PATTERN_URL = 'https://www.youtube.com/watch?v=%s'
 
 def publish(task):
     task.set_status('EXE') # esto se debería hacer desde fuera en caso de multithread.
