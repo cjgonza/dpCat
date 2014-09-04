@@ -14,6 +14,7 @@ from apiclient.http import MediaFileUpload
 
 from django.conf import settings
 from postproduccion.models import RegistroPublicacion
+from postproduccion.token import send_published_mail_to_user
 from yt_publisher.functions import get_authenticated_service, create_playlist, insert_video_in_playlist
 
 # Explicitly tell the underlying HTTP transport library not to retry, since
@@ -77,7 +78,10 @@ def publish(task):
                 # Vídeo subido correctamente
                 videoid = response['id']
                 messages += "Video id '%s' was successfully uploaded.\n" % videoid
-                RegistroPublicacion(video = v, enlace = PUBLISHED_PATTERN_URL % videoid).save()
+                r = RegistroPublicacion(video = v, enlace = PUBLISHED_PATTERN_URL % videoid)
+                r.save()
+                if v.informeproduccion.aprobacion:
+                    send_published_mail_to_user(r)
                 task.delete()
 
                 # Se crea o inserta una lista de reproducción si es necesario.
