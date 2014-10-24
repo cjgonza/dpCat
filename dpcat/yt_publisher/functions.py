@@ -88,6 +88,47 @@ def get_playlists():
 
     return data
 
+def get_channel_id():
+    youtube = get_authenticated_service()
+
+    return youtube.search().list(
+        part = "snippet",
+        forMine = True,
+        maxResults = 1,
+        type = "video",
+        fields = "items(snippet(channelId))"
+    ).execute()['items'][0]['snippet']['channelId']
+
+def get_all_uploads(channel):
+    youtube = get_authenticated_service()
+
+    # Obtiene la playlist de uploads
+    playlist = youtube.channels().list(
+        part = "contentDetails",
+        id = channel,
+        fields = "items(contentDetails(relatedPlaylists))"
+    ).execute()['items'][0]['contentDetails']['relatedPlaylists']['uploads']
+
+    # Lista el contenido de la playlist
+    data = list()
+
+    next_page_token = ""
+    while next_page_token is not None:
+        list_response = youtube.playlistItems().list(
+            part = "contentDetails",
+            maxResults = 50,
+            playlistId = playlist,
+            fields = "nextPageToken,items(contentDetails)",
+            pageToken=next_page_token
+        ).execute()
+
+        for video in list_response['items']:
+            data.append(video['contentDetails']['videoId'])
+
+        next_page_token = list_response.get("nextPageToken")
+
+    return data
+
 def create_playlist(title, description, privacy_status):
     youtube = get_authenticated_service()
 
