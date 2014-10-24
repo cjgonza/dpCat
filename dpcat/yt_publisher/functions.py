@@ -129,6 +129,15 @@ def get_all_uploads(channel):
 
     return data
 
+def get_video_data(videoid):
+    youtube = get_authenticated_service()
+
+    return youtube.videos().list(
+        part = "snippet,status",
+        id = videoid,
+        fields = "items(snippet(title,description,thumbnails(medium),tags),status(uploadStatus,privacyStatus))"
+    ).execute()['items']
+
 def create_playlist(title, description, privacy_status):
     youtube = get_authenticated_service()
 
