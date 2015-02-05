@@ -133,9 +133,9 @@ def get_video_data(videoid):
     youtube = get_authenticated_service()
 
     return youtube.videos().list(
-        part = "id,snippet,status",
+        part = "snippet,status",
         id = videoid,
-        fields = "items(id,snippet(title,description,thumbnails(medium),tags),status(uploadStatus,privacyStatus))"
+        fields = "items(id,snippet(title,description,thumbnails(medium),tags,publishedAt),status(uploadStatus,privacyStatus))"
     ).execute()['items']
 
 def get_all_video_data():
