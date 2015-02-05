@@ -88,24 +88,22 @@ def get_playlists():
 
     return data
 
-def get_channel_id():
+def get_channel_data():
     youtube = get_authenticated_service()
 
-    return youtube.search().list(
-        part = "snippet",
-        forMine = True,
-        maxResults = 1,
-        type = "video",
-        fields = "items(snippet(channelId))"
-    ).execute()['items'][0]['snippet']['channelId']
+    return youtube.channels().list(
+        part="snippet",
+        mine=True,
+        fields="items(id,snippet(title,description,thumbnails(default)))"
+    ).execute()
 
-def get_all_uploads(channel):
+def get_all_uploads(channel_id):
     youtube = get_authenticated_service()
 
     # Obtiene la playlist de uploads
     playlist = youtube.channels().list(
         part = "contentDetails",
-        id = channel,
+        id = channel_id,
         fields = "items(contentDetails(relatedPlaylists))"
     ).execute()['items'][0]['contentDetails']['relatedPlaylists']['uploads']
 
@@ -138,8 +136,8 @@ def get_video_data(videoid):
         fields = "items(id,snippet(title,description,thumbnails(medium),tags,publishedAt),status(uploadStatus,privacyStatus))"
     ).execute()['items']
 
-def get_all_video_data():
-    vid_list = get_all_uploads(get_channel_id())
+def get_all_video_data(channel_id):
+    vid_list = get_all_uploads(channel_id)
     n = 0
     video_list = list()
     while(n < len(vid_list)):
@@ -148,9 +146,9 @@ def get_all_video_data():
 
     return video_list
 
-def get_all_public_video_data():
+def get_all_public_video_data(channel_id):
     video_list = list()
-    for i in get_all_video_data():
+    for i in get_all_video_data(channel_id):
         if i['status']['privacyStatus'] == 'public' and i['status']['uploadStatus'] == 'processed':
             video_list.append(i)
     return video_list
