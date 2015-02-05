@@ -133,10 +133,27 @@ def get_video_data(videoid):
     youtube = get_authenticated_service()
 
     return youtube.videos().list(
-        part = "snippet,status",
+        part = "id,snippet,status",
         id = videoid,
-        fields = "items(snippet(title,description,thumbnails(medium),tags),status(uploadStatus,privacyStatus))"
+        fields = "items(id,snippet(title,description,thumbnails(medium),tags),status(uploadStatus,privacyStatus))"
     ).execute()['items']
+
+def get_all_video_data():
+    vid_list = get_all_uploads(get_channel_id())
+    n = 0
+    video_list = list()
+    while(n < len(vid_list)):
+        video_list += get_video_data(",".join(vid_list[n:n + 50]))
+        n += 50
+
+    return video_list
+
+def get_all_public_video_data():
+    video_list = list()
+    for i in get_all_video_data():
+        if i['status']['privacyStatus'] == 'public' and i['status']['uploadStatus'] == 'processed':
+            video_list.append(i)
+    return video_list
 
 def create_playlist(title, description, privacy_status):
     youtube = get_authenticated_service()

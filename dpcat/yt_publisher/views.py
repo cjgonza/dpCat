@@ -16,6 +16,7 @@ from yt_publisher.forms import ConfigForm, PublishingForm, AddToPlaylistForm, Ne
 from yt_publisher.functions import Storage, Error
 from yt_publisher.functions import get_flow, get_playlists, error_handler
 from yt_publisher.functions import LICENSE_TEXTS
+from yt_publisher.functions import get_channel_id, get_all_uploads, get_video_data
 from configuracion import config
 from django.conf import settings
 
@@ -153,3 +154,6 @@ def purgar_publicaciones(request):
     failed.delete()
     messages.success(request, u'Publicaciones erroneas purgadas. Nº de elementos borrados: %d' % cont)
     return redirect('cola_publicacion')
+
+def feed(request):
+    pass
