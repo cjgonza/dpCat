@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<rss version="2.0" 
+        xmlns:atom="http://www.w3.org/2005/Atom"
+        xmlns:media="http://search.yahoo.com/mrss/"
+        xmlns:g="http://base.google.com/ns/1.0">
+<channel>
+    <title>{{ channel.title }}</title>
+    <link>http://www.youtube.com/channel/{{ channel.id }}</link>
+    <lastBuildDate>{{ feed.build }}</lastBuildDate>
+    <image>
+        <url>{{ channel.logo }}</url>
+        <link>http://www.youtube.com/channel/{{ channel.id }}</link>
+        <title>{{ channel.title }}</title>
+    </image>
+    <description>{{ channel.description }}</description>
+    <atom:link href="{{ feed.baseurl}}{% url 'feed' %}" rel="self" type="application/rss+xml" />
+    {%for item in items %}
+    <item>
+        <title>{{ item.title }}</title>
+        <link>https://www.youtube.com/watch?v={{ item.id }}</link>
+        <description>
+        <![CDATA[
+        {{ item.description }}
+        ]]>           
+        </description>
+        <category>{{ item.category }}</category>
+        <guid isPermaLink="true">https://www.youtube.com/watch?v={{ item.id }}</guid>
+        <pubDate>{{ item.published.long }}</pubDate>
+        <g:publish_date>{{ item.published.short }}</g:publish_date>
+        <g:image_link>{{ item.thumbnail.url }}</g:image_link>
+        <media:player url="https://www.youtube.com/watch?v={{ item.id }}" />
+        <media:thumbnail url="{{ item.thumbnail.url }}" width="{{ item.thumbnail.width }}" height="{{ item.thumbnail.height }}" />
+        <media:title>{{ item.title }}</media:title>
+        <media:category label="Tags">{{ item.tags }}</media:category>
+        <media:credit>{{ channel.title }}</media:credit>
+    </item>
+    {% endfor %}
+</channel>
+</rss>

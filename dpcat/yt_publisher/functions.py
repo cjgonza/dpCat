@@ -95,7 +95,7 @@ def get_channel_data():
         part="snippet",
         mine=True,
         fields="items(id,snippet(title,description,thumbnails(default)))"
-    ).execute()
+    ).execute()['items'][0]
 
 def get_all_uploads(channel_id):
     youtube = get_authenticated_service()
@@ -133,7 +133,7 @@ def get_video_data(videoid):
     return youtube.videos().list(
         part = "snippet,status",
         id = videoid,
-        fields = "items(id,snippet(title,description,thumbnails(medium),tags,publishedAt),status(uploadStatus,privacyStatus))"
+        fields = "items(id,snippet(title,description,thumbnails(high),tags,publishedAt),status(uploadStatus,privacyStatus))"
     ).execute()['items']
 
 def get_all_video_data(channel_id):

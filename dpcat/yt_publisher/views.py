@@ -16,12 +16,15 @@ from yt_publisher.forms import ConfigForm, PublishingForm, AddToPlaylistForm, Ne
 from yt_publisher.functions import Storage, Error
 from yt_publisher.functions import get_flow, get_playlists, error_handler
 from yt_publisher.functions import LICENSE_TEXTS
-from yt_publisher.functions import get_channel_id, get_all_uploads, get_video_data
+from yt_publisher.functions import get_channel_data, get_all_public_video_data
 from configuracion import config
 from django.conf import settings
 
 import json
 import httplib2
+from datetime import datetime
+import time
+from email.utils import formatdate
 
 """
 Edita los ajustes de configuración del plugin de publicación.
@@ -155,5 +158,38 @@ def purgar_publicaciones(request):
     messages.success(request, u'Publicaciones erroneas purgadas. Nº de elementos borrados: %d' % cont)
     return redirect('cola_publicacion')
 
+"""
+Genera un feed con la lista de los vídeos publicados
+"""
 def feed(request):
-    pass
+    channel_data = get_channel_data()
+
+    channel = dict()
+    channel['id'] = channel_data['id']
+    channel['title'] = channel_data['snippet']['title']
+    channel['description'] = channel_data['snippet']['description']
+    channel['logo'] = channel_data['snippet']['thumbnails']['default']['url']
+
+    feed = dict()
+    feed['build'] = formatdate(time.mktime(datetime.now().timetuple()))
+    feed['baseurl'] = config.get_option(u'SITE_URL')
+
+    video_list = get_all_public_video_data(channel['id'])
+
+    items = list()
+    for v in video_list:
+        item = dict()
+        item['id'] = v['id']
+        item['title'] = v['snippet']['title']
+        item['description'] = v['snippet']['description']
+        published_at = datetime.strptime(v['snippet']['publishedAt'], "%Y-%m-%dT%H:%M:%S.000Z")
+        item['published'] = dict()
+        item['published']['short'] = published_at.date().isoformat()
+        item['published']['long'] = formatdate(time.mktime(published_at.timetuple()))
+        item['thumbnail'] = v['snippet']['thumbnails']['high']
+        item['category'] = v['snippet']['tags'][-1]
+        item['tags'] = u','.join(v['snippet']['tags'][:-1])
+
+        items.append(item)
+
+    return render_to_response("yt-feed.html", { 'channel' :  channel, 'feed' : feed, 'items' : items }, context_instance=RequestContext(request))

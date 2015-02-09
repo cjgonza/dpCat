@@ -11,4 +11,5 @@ urlpatterns = patterns('yt_publisher.views',
     url(r'^purgar_publicaciones/$', 'purgar_publicaciones', name = "purgar_publicaciones"),
     url(r'^test/$', 'test', name = "test"),
     url(r'^oauth2callback', 'auth_return', name = "oauth2callback"),
+    url(r'^feed/$', 'feed', name = 'feed'),
 )
