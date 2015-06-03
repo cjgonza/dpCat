@@ -188,7 +188,8 @@ def feed(request):
         item['published']['long'] = formatdate(time.mktime(published_at.timetuple()))
         item['thumbnail'] = v['snippet']['thumbnails']['high']
         item['category'] = v['snippet']['tags'][-1]
-        item['tags'] = u','.join(v['snippet']['tags'][:-1])
+        if 'tags' in item:
+            item['tags'] = u','.join(v['snippet']['tags'][:-1])
 
         items.append(item)
 
