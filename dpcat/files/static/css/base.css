@@ -1525,7 +1525,14 @@ span.ajax-loader {
    color: #336699;
    font: bold 12px Arial;
    text-align: left;
-    margin-bottom: 3px;
+   margin-bottom: 3px;
+}
+#content form.form-buscador li.form-titulo {
+   color: #336699;
+   font: bold 14px Arial;
+   text-align: center;
+   margin-bottom: 10px;
+   padding-top: 10px;
 }
 
 #content form.form-buscador li select,

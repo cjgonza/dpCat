@@ -55,12 +55,23 @@
         <div class="portlet-content">
             <form method="GET" class="form-buscador">
                 <ul>
+                <li class="form-titulo">Producci&oacute;n</li>
                 <li class="form-nombre">ID:</li>
                 <li><input type="text" name="id" value="{{ request.GET.id }}" /></li>
                 <li class="form-nombre">T&iacute;tulo:</li>
                 <li><input type="text" name="titulo" value="{{ request.GET.titulo }}" /></li>
                 <li class="form-nombre">Autor:</li>
                 <li><input type="text" name="autor" value="{{ request.GET.autor }}" /></li>
+                <li class="form-titulo">Metadatos</li>
+                <li class="form-nombre">T&iacute;tulo:</li>
+                <li><input type="text" name="meta_titulo" value="{{ request.GET.meta_titulo }}" /></li>
+                <li class="form-nombre">Autor:</li>
+                <li><input type="text" name="meta_autor" value="{{ request.GET.meta_autor }}" /></li>
+                <li class="form-nombre">Descripci&oacute;n:</li>
+                <li><input type="text" name="meta_descripcion" value="{{ request.GET.meta_descripcion }}" /></li>
+                <li class="form-nombre">Etiqueta:</li>
+                <li><input type="text" name="meta_etiqueta" value="{{ request.GET.meta_etiqueta }}" /></li>
+                <li><hr /></li>
                 <li class="form-nombre">Intervalo de tiempo:</li>
                 <li>
                     <ul>
