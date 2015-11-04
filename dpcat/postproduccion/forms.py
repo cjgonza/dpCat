@@ -12,6 +12,7 @@ import os
 class VideoForm(ModelForm):
     class Meta:
         model = Video
+        fields = '__all__'
 
 class InformeCreacionForm(ModelForm):
     class Meta:
@@ -38,6 +39,7 @@ class IncidenciaProduccionForm(ModelForm):
 class FicheroEntradaForm(ModelForm):
     class Meta:
         model = FicheroEntrada
+        fields = '__all__'
 
     def clean_fichero(self):
         data = self.cleaned_data['fichero']
@@ -58,10 +60,12 @@ class RequiredBaseInlineFormSet(BaseInlineFormSet):
 class MetadataOAForm(ModelForm):
     class Meta:
         model = MetadataOA
+        fields = '__all__'
 
 class MetadataGenForm(ModelForm):
     class Meta:
         model = MetadataGen
+        fields = '__all__'
 
 class ASCIIField(forms.CharField):
     def validate(self, value):

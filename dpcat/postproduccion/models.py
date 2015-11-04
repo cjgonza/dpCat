@@ -596,19 +596,19 @@ class ColaManager(models.Manager):
     Devuelve el número de trabajos que están siendo codificados en este momento.
     """
     def count_actives(self):
-        return super(ColaManager, self).get_query_set().filter(status = 'PRO').count()
+        return super(ColaManager, self).get_queryset().filter(status = 'PRO').count()
 
     """
     Devuelve el número de trabajos que están pendientes de ser procesados
     """
     def count_pendings(self):
-        return super(ColaManager, self).get_query_set().filter(status = 'PEN').count()
+        return super(ColaManager, self).get_queryset().filter(status = 'PEN').count()
 
     """
     Devuelve la lista de vídeos pendientes de ser procesados.
     """
     def get_pendings(self):
-         return super(ColaManager, self).get_query_set().filter(status = 'PEN').order_by('id')
+         return super(ColaManager, self).get_queryset().filter(status = 'PEN').order_by('id')
 
 class Cola(models.Model):
     QUEUE_STATUS = (
