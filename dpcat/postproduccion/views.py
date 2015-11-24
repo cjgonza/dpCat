@@ -13,7 +13,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion, RegistroPublicacion
 from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm, VideoEditarForm, InformeEditarForm
-from postproduccion import queue 
+from postproduccion import queue
 from postproduccion import utils
 from postproduccion import token
 from postproduccion import log
@@ -100,7 +100,7 @@ def _fichero_entrada_multiple(request, v):
             return redirect('postproduccion.views.resumen_video', v.id)
     else:
         formset = FicheroEntradaFormSet(instance = v)
-    
+
     for i in range(n):
         formset.forms[i].titulo = tipos[i].nombre
         if formset.forms[i].initial:
@@ -190,7 +190,7 @@ Muestra el fichero de log para una tarea.
 @permission_required('postproduccion.video_manager')
 def mostrar_log(request, task_id):
     task = get_object_or_404(Cola, pk=task_id)
-    return HttpResponse(queue.get_log(task), mimetype='text/plain')
+    return HttpResponse(queue.get_log(task), content_type='text/plain')
 
 """
 Lista los vídeos que están pendientes de atención por parte del operador.
@@ -208,7 +208,7 @@ Lista los vídeos que están siendo procesados.
 """
 @permission_required('postproduccion.video_manager')
 def listar_en_proceso(request):
-    if request.is_ajax(): 
+    if request.is_ajax():
         return render_to_response("ajax/content-enproceso.html", { 'list' : listar()[:10] }, context_instance=RequestContext(request))
     else:
         return render_to_response("section-enproceso.html", { 'list' : listar() }, context_instance=RequestContext(request))
@@ -272,6 +272,7 @@ def definir_metadatos_user(request, tk_str):
     }
 
     if request.method == 'POST':
+
         form = MetadataForm(request.POST, instance = getattr(v, metadataField)) if  hasattr(v, metadataField) else MetadataForm(request.POST, initial = initial_data)
         if form.is_valid():
             m = form.save(commit = False)
@@ -285,8 +286,10 @@ def definir_metadatos_user(request, tk_str):
             v.status = 'ACE'
             v.save()
             return render_to_response("section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : True }, context_instance=RequestContext(request))
+
     else:
         form = MetadataForm(instance = getattr(v, metadataField)) if hasattr(v, metadataField) else MetadataForm(initial = initial_data)
+
     return render_to_response("section-metadatos-user.html", { 'form' : form, 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
 
 """
@@ -321,6 +324,7 @@ Vista para que el operador rellene los metadatos de un vídeo.
 """
 @permission_required('postproduccion.video_manager')
 def definir_metadatos_oper(request, video_id):
+
     v = get_object_or_404(Video, pk=video_id)
 
     if v.objecto_aprendizaje:
@@ -346,6 +350,7 @@ def definir_metadatos_oper(request, video_id):
             messages.success(request, 'Metadata actualizada')
     else:
         form = MetadataForm(instance = getattr(v, metadataField)) if hasattr(v, metadataField) else MetadataForm(initial = initial_data)
+
     return render_to_response("section-metadatos-oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
 
 
@@ -372,7 +377,7 @@ Devuelve la información técnica del vídeo en XML para su descarga.
 @permission_required('postproduccion.video_manager')
 def download_media_info(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
-    response = HttpResponse(v.tecdata.xml_data, mimetype='text/xml')
+    response = HttpResponse(v.tecdata.xml_data, content_type='text/xml')
     response['Content-Disposition'] = 'attachment; filename=%d.xml' % v.id
     return response
 
@@ -547,21 +552,21 @@ def videoteca(request):
 @permission_required('postproduccion.video_library')
 def stream_video(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
-    resp = HttpResponse(utils.stream_file(v.fichero), mimetype='video/mp4')
+    resp = HttpResponse(utils.stream_file(v.fichero), content_type='video/mp4')
     resp['Content-Length'] = os.path.getsize(v.fichero)
     return resp
 
 @permission_required('postproduccion.video_library')
 def download_video(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
-    resp = HttpResponse(utils.stream_file(v.fichero), mimetype='video/mp4')
+    resp = HttpResponse(utils.stream_file(v.fichero), content_type='video/mp4')
     resp['Content-Length'] = os.path.getsize(v.fichero)
     resp['Content-Disposition'] = "attachment;filename=%d_%s.mp4" % (v.id, utils.normalize_filename(v.titulo))
     return resp
 
 def stream_preview(request, tk_str):
     v = token.is_valid_token(tk_str)
-    resp = HttpResponse(utils.stream_file(v.previsualizacion.fichero), mimetype='video/x-flv')
+    resp = HttpResponse(utils.stream_file(v.previsualizacion.fichero), content_type='video/x-flv')
     resp['Content-Length'] = os.path.getsize(v.previsualizacion.fichero)
     return resp
 
@@ -675,7 +680,7 @@ def status(request):
             'version' : mp4boxver,
         },
     }
-    
+
     # Directorios
     dirs = dict()
     for i in [('library', 'VIDEO_LIBRARY_PATH'), ('input', 'VIDEO_INPUT_PATH'), ('previews', 'PREVIEWS_PATH')]:
