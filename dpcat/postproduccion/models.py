@@ -46,14 +46,25 @@ class Video(models.Model):
         ('LIS', u'Listo'),                       # Validado por el operador, todos los procedimientos terminados.
     )
 
+    VIDEO_TYPE = (
+        ('UNK', u'Sin definir'),
+        ('PIL', u'Píldora formativa'),
+        ('EXP', u'Exprésate'),
+        ('VID', u'Videotutoriales'),
+        ('EDU', u'Vídeos Educativos'),
+        ('PRA', u'Vídeo Prácticas'),
+        ('INN', u'Innovación Educativa'),
+    )
+
     fichero = models.CharField(max_length = 255, editable = False)
     status = models.CharField(max_length = 3, choices = VIDEO_STATUS, editable = False, default = 'INC')
     plantilla = models.ForeignKey(PlantillaFDV, null = True, blank = True)
 
- 
     titulo = models.CharField(max_length = 100)
     autor = models.CharField(max_length = 255, verbose_name = u'Responsable')
     email = models.EmailField(verbose_name = u'Email del responsable')
+
+    tipoVideo = models.CharField(verbose_name="Tipo Producción", max_length = 3, choices = VIDEO_TYPE, default = 'UNK')
 
     objecto_aprendizaje = models.BooleanField(default = True, verbose_name = u'Objeto de aprendizaje')
 

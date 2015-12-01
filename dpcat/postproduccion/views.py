@@ -41,6 +41,7 @@ Muestra el formulario para insertar un nuevo proyecto de vídeo.
 """
 @permission_required('postproduccion.video_manager')
 def crear(request, video_id = None):
+
     v = get_object_or_404(Video, pk=video_id) if video_id else None
     if request.method == 'POST':
         vform = VideoForm(request.POST, instance = v) if v else VideoForm(request.POST)
@@ -498,6 +499,7 @@ def videoteca(request):
     autor = request.GET.get('autor')
     titulo = request.GET.get('titulo')
     vid = request.GET.get('id')
+    tipoVideoSearch = request.GET.get('tipoVideo')
     meta_titulo = request.GET.get('meta_titulo')
     meta_autor = request.GET.get('meta_autor')
     meta_descripcion = request.GET.get('meta_descripcion')
@@ -525,7 +527,11 @@ def videoteca(request):
         video_list = video_list.filter(Q(metadatagen__description__icontains=meta_descripcion) | Q(metadataoa__description__icontains=meta_descripcion))
     if meta_etiqueta:
         video_list = video_list.filter(Q(metadatagen__keyword__icontains=meta_etiqueta) | Q(metadataoa__keyword__icontains=meta_etiqueta))
+    if tipoVideoSearch and tipoVideoSearch != 'UNK':
+        video_list = video_list.filter(tipoVideo = tipoVideoSearch)
+
     video_list = video_list.filter(informeproduccion__fecha_validacion__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
+
 
     try:
         nresults = int(request.GET.get('nresults', 25))
@@ -544,7 +550,7 @@ def videoteca(request):
     except (EmptyPage, InvalidPage):
         videos = paginator.page(paginator.num_pages)
 
-    return render_to_response("section-videoteca.html", { 'videos' : videos }, context_instance=RequestContext(request))
+    return render_to_response("section-videoteca.html", { 'videos' : videos, 'tipoVideo' : Video.VIDEO_TYPE }, context_instance=RequestContext(request))
 
 
 #######
