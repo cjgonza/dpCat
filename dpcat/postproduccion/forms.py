@@ -22,7 +22,9 @@ class InformeCreacionForm(ModelForm):
 class VideoEditarForm(ModelForm):
     class Meta:
         model = Video
-        fields = ('titulo', 'autor', 'email', 'objecto_aprendizaje')
+        fields = '__all__'
+        exclude = ['plantilla']
+        #fields = ('titulo', 'autor', 'email', 'objecto_aprendizaje')
 
 class InformeEditarForm(ModelForm):
     class Meta:

@@ -44,8 +44,8 @@ def crear(request, video_id = None):
 
     v = get_object_or_404(Video, pk=video_id) if video_id else None
     if request.method == 'POST':
-        vform = VideoForm(request.POST, instance = v) if v else VideoForm(request.POST)
-        iform = InformeCreacionForm(request.POST, instance = v.informeproduccion) if v else InformeCreacionForm(request.POST)
+        vform = VideoForm(request.POST, instance=v) if v else VideoForm(request.POST)
+        iform = InformeCreacionForm(request.POST, instance=v.informeproduccion) if v else InformeCreacionForm(request.POST)
         if vform.is_valid():
             v = vform.save()
             i = iform.save(commit = False)
@@ -417,8 +417,8 @@ def editar_produccion(request, video_id):
     if v.status == 'LIS': raise Http404
 
     if request.method == 'POST':
-        vform = VideoEditarForm(request.POST, instance = v)
-        iform = InformeEditarForm(request.POST, instance = v.informeproduccion)
+        vform = VideoEditarForm(request.POST, instance=v)
+        iform = InformeEditarForm(request.POST, instance=v.informeproduccion)
         if vform.is_valid():
             v = vform.save()
             i = iform.save()
