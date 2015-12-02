@@ -530,7 +530,7 @@ def videoteca(request):
     if tipoVideoSearch and tipoVideoSearch != 'UNK':
         video_list = video_list.filter(tipoVideo = tipoVideoSearch)
 
-    video_list = video_list.filter(informeproduccion__fecha_validacion__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
+    #video_list = video_list.filter(informeproduccion__fecha_validacion__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
 
 
     try:

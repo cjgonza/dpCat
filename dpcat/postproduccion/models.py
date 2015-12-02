@@ -49,11 +49,10 @@ class Video(models.Model):
     VIDEO_TYPE = (
         ('UNK', u'Sin definir'),
         ('PIL', u'Píldora formativa'),
-        ('EXP', u'Exprésate'),
         ('VID', u'Videotutoriales'),
         ('EDU', u'Vídeos Educativos'),
-        ('PRA', u'Vídeo Prácticas'),
-        ('INN', u'Innovación Educativa'),
+        ('EVE', u'Grabación de Eventos'),
+        ('OTR', u'Otros'),
     )
 
     fichero = models.CharField(max_length = 255, editable = False)
