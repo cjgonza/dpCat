@@ -15,6 +15,7 @@
     <th class="date">Fecha</th>
     <th class="title">T&iacute;tulo</th>
     <th class="author">Autor/Responsable</th>
+    <th class="author">Tipo</th>
   </thead>
   <tbody>
     {% for video in videos.object_list %}
@@ -23,6 +24,7 @@
         <td class="date">{{ video.informeproduccion.fecha_validacion|date:"d/m/Y" }}</td>
         <td class="title"><a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a></td>
         <td class="author">{{ video.autor }}</td>
+        <td class="tipoVideo">{{ video.tipoVideo }}</td>
     </tr>
     {% endfor %}
   </tbody>
@@ -62,6 +64,15 @@
                 <li><input type="text" name="titulo" value="{{ request.GET.titulo }}" /></li>
                 <li class="form-nombre">Autor:</li>
                 <li><input type="text" name="autor" value="{{ request.GET.autor }}" /></li>
+
+                <li class="form-nombre">Tipo:</li>
+                <select id="tipoVideo" name="tipoVideo">
+                    {% for value, name in tipoVideo %}
+                        <option value="{{value}}">{{name}}</option>
+                    {% endfor %}
+                </select>
+
+
                 <li class="form-titulo">Metadatos</li>
                 <li class="form-nombre">T&iacute;tulo:</li>
                 <li><input type="text" name="meta_titulo" value="{{ request.GET.meta_titulo }}" /></li>

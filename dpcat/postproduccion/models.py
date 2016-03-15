@@ -46,14 +46,24 @@ class Video(models.Model):
         ('LIS', u'Listo'),                       # Validado por el operador, todos los procedimientos terminados.
     )
 
+    VIDEO_TYPE = (
+        ('UNK', u'Sin definir'),
+        ('PIL', u'Píldora formativa'),
+        ('VID', u'Videotutoriales'),
+        ('EDU', u'Vídeos Educativos'),
+        ('EVE', u'Grabación de Eventos'),
+        ('OTR', u'Otros'),
+    )
+
     fichero = models.CharField(max_length = 255, editable = False)
     status = models.CharField(max_length = 3, choices = VIDEO_STATUS, editable = False, default = 'INC')
     plantilla = models.ForeignKey(PlantillaFDV, null = True, blank = True)
 
- 
     titulo = models.CharField(max_length = 100)
     autor = models.CharField(max_length = 255, verbose_name = u'Responsable')
     email = models.EmailField(verbose_name = u'Email del responsable')
+
+    tipoVideo = models.CharField(verbose_name="Tipo Producción", max_length = 3, choices = VIDEO_TYPE, default = 'UNK')
 
     objecto_aprendizaje = models.BooleanField(default = True, verbose_name = u'Objeto de aprendizaje')
 
@@ -577,6 +587,7 @@ class MetadataOA(Metadata):
         return self.video.titulo
 
 class MetadataGen(Metadata):
+
     contributor = models.CharField(max_length = 255, verbose_name = u'Colaborador/es', help_text = u'Aquellas personas, entidades u organizaciones que han participado en la creación de esta producción', null = True, blank = True)
     language = models.CharField(max_length = 255, verbose_name = u'Idioma', default = u'Español', null = True, blank = True)
     location = models.CharField(max_length = 255, verbose_name = u'Localización', help_text = u'Por ejemplo: el nombre de la institución, departamento, edificio, etc.', null = True, blank = True)
@@ -596,19 +607,19 @@ class ColaManager(models.Manager):
     Devuelve el número de trabajos que están siendo codificados en este momento.
     """
     def count_actives(self):
-        return super(ColaManager, self).get_query_set().filter(status = 'PRO').count()
+        return super(ColaManager, self).get_queryset().filter(status = 'PRO').count()
 
     """
     Devuelve el número de trabajos que están pendientes de ser procesados
     """
     def count_pendings(self):
-        return super(ColaManager, self).get_query_set().filter(status = 'PEN').count()
+        return super(ColaManager, self).get_queryset().filter(status = 'PEN').count()
 
     """
     Devuelve la lista de vídeos pendientes de ser procesados.
     """
     def get_pendings(self):
-         return super(ColaManager, self).get_query_set().filter(status = 'PEN').order_by('id')
+         return super(ColaManager, self).get_queryset().filter(status = 'PEN').order_by('id')
 
 class Cola(models.Model):
     QUEUE_STATUS = (

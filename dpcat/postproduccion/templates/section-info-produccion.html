@@ -4,6 +4,8 @@
 {% block page-script %}<script type="text/javascript" src="/static/jwplayer/jwplayer.js"></script>{% endblock %}
 {% block section-class %} class="informe-video"{% endblock %}
 {% block section-title %}<h1>Informe de la producci&oacute;n: {{v.titulo}}</h1>{% endblock %}
+
+
 {% block section-description %}
 
 <div id="info-menu">
@@ -14,9 +16,13 @@
         {% if v.status != 'LIS' %}<li {% block current-editar %} {% endblock %}><a class="editar" href="{% url 'editar' v.id %}">Editar</a></li>{% endif %}
     </ul>
 </div>
+
 {% endblock %}
 
+
+
 {% block section-widget %}
+
      <div class="portlet">
         <div class="portlet-header">Estado actual de la producci&oacute;n</div>
         <div class="portlet-content">
