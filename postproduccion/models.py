@@ -115,7 +115,7 @@ class HistoricoCodificacion(models.Model):
     informe = models.ForeignKey(InformeProduccion, editable = False)
     tipo = models.CharField(max_length = 3, choices = TASK_TYPE)
     fecha = models.DateTimeField()
-    status = models.BooleanField()
+    status = models.BooleanField(default=False)
 
 class FicheroEntrada(models.Model):
     video = models.ForeignKey(Video, editable = False)
