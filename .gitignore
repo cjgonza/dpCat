@@ -1,6 +1,7 @@
 .idea
 *.pyc
 dpcat/dpcat.db
+dpcat/settings_local.py
 dpcat/settings_produccion.py
 dpcat/files/logs/*
 dpcat/files/plantillas/*
