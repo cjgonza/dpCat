@@ -103,7 +103,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django.contrib.staticfiles',
-    'south',
+    # 'south',
     'configuracion',
     'postproduccion',
     #'cb_publisher',
