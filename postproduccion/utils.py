@@ -101,7 +101,7 @@ def is_exec(fpath):
 Trata de localizar la ruta del ejecutable dado en el PATH
 """
 def which(fpath):
-    command = "which %s" % fpath
+    command = "/usr/bin/which %s" % fpath
     return subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE).communicate()[0].strip()
 
 """
