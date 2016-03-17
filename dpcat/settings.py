@@ -55,7 +55,7 @@ STATIC_ROOT = os.path.join(MEDIA_ROOT, 'static')
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/files/'
 
-STATIC_URL = os.path.join(MEDIA_URL, '/static/')
+STATIC_URL = os.path.join(MEDIA_URL, 'static/')
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
