@@ -409,6 +409,23 @@ def gestion_tickets(request, video_id):
     return render_to_response("section-gestion-tickets.html", { 'v' : v, 'form' : form, 'token' : tk }, context_instance=RequestContext(request))
 
 """
+Regenerar tickets mediante checkbox
+"""
+def regenerar_tickets(request):
+    if request.method == 'POST':
+        for t in request.POST.getlist("ticket"):
+            v = get_object_or_404(Video, pk=t)
+            if v.status == 'LIS': pass
+            v.status = 'PTU'
+            v.save()
+            try:
+                token.send_custom_mail_to_user(v, ('regenerar ticket %s' % v.titulo), request.user.first_name)
+            except:
+                pass
+            messages.success(request, "Tickets regenerados y enviados al usuario")
+            return redirect('enproceso')
+
+"""
 Edita la información básica de la producción.
 """
 @permission_required('postproduccion.video_manager')

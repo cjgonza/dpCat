@@ -8,34 +8,41 @@
 {% block section-content %}
 
 {% if list %}
-<table id="tabla">
-  <thead>
-    <th class="id">ID</th>
-    <th class="status">Estado</th>
-    <th class="oper">Operador</th>
-    <th class="date">Fecha</th>
-    <th class="respon">Responsable</th>
-    <th class="title">T&iacute;tulo</th>
-  </thead>
-  <tbody>
-    {% for video in list %}
-    <tr class="{{ video.tipo }} {%cycle 'odd' 'even' %}">
-        <td class="id">{{ video.id }}</td>
-        <td class="status">{{ video.status }}</td>
-        <td class="oper">{{ video.operador }}</td>
-        <td class="date">{{ video.fecha }}</td>
-        <td class="respon">{{ video.responsable }}</td>
-        <td class="title">
-        {% if video.status == 'Incompleto' %}
-            <a href="{% url 'crear' video.id %}">{{ video.titulo }}</a>
-        {% else %}
-            <a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a>
-        {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<form method="post" action="{% url 'regenerar_tickets' %}" class="form-nueva" id="formgenerarticket" name="formgenerarticket">
+    {% csrf_token %}
+
+    <table id="tabla">
+      <thead>
+        <th class="ticket"><input type="checkbox" class="marcar-todo" name="tickets" value=""></th>
+        <th class="id">ID</th>
+        <th class="status">Estado</th>
+        <th class="oper">Operador</th>
+        <th class="date">Fecha</th>
+        <th class="respon">Responsable</th>
+        <th class="title">T&iacute;tulo</th>
+      </thead>
+      <tbody>
+        {% for video in list %}
+        <tr class="{{ video.tipo }} {%cycle 'odd' 'even' %}">
+            <td class="ticket"><input type="checkbox" class="checkbox-ticket" name="ticket" value="{{video.id}}" id="{{video.id}}"></td>
+            <td class="id">{{ video.id }}</td>
+            <td class="status">{{ video.status }}</td>
+            <td class="oper">{{ video.operador }}</td>
+            <td class="date">{{ video.fecha }}</td>
+            <td class="respon">{{ video.responsable }}</td>
+            <td class="title">
+            {% if video.status == 'Incompleto' %}
+                <a href="{% url 'crear' video.id %}">{{ video.titulo }}</a>
+            {% else %}
+                <a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a>
+            {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+        <input type="submit" id="generar-ticket" value="Generar ticket"/>
+</form>
 {% else %}
     <div class="mensaje info">No se ha encontrado ninguna producci&oacute;n siendo procesada.</div>
 {% endif %}
