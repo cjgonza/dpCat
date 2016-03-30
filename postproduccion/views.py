@@ -419,10 +419,7 @@ def regenerar_tickets(request):
             if v.status == 'LIS': continue
             v.status = 'PTU'
             v.save()
-            try:
-                token.send_custom_mail_to_user(v, ('regenerar ticket %s' % v.titulo), request.user.first_name)
-            except:
-                pass
+            token.send_custom_mail_to_user(v, ('regenerar ticket %s' % v.titulo), request.user.first_name)
         messages.success(request, "Tickets regenerados y enviados al usuario")
 
     return redirect('enproceso')
