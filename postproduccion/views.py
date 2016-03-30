@@ -411,20 +411,20 @@ def gestion_tickets(request, video_id):
 """
 Regenerar tickets mediante checkbox
 """
+@permission_required('postproduccion.video_manager')
 def regenerar_tickets(request):
     if request.method == 'POST':
-        for t in request.POST.getlist("ticket"):
-            v = get_object_or_404(Video, pk=t)
-            if v.status == 'LIS': pass
+        videos = Video.objects.filter(pk__in=request.POST.getlist('ticket'))
+        for v in videos:
+            if v.status == 'LIS': continue
             v.status = 'PTU'
             v.save()
             try:
                 token.send_custom_mail_to_user(v, ('regenerar ticket %s' % v.titulo), request.user.first_name)
             except:
                 pass
-            messages.success(request, "Tickets regenerados y enviados al usuario")
-            return redirect('enproceso')
-            
+        messages.success(request, "Tickets regenerados y enviados al usuario")
+
     return redirect('enproceso')
 
 """
