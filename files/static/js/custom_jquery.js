@@ -224,6 +224,27 @@ $(document).ready(function() {
         $( "#dialog-aprobar" ).dialog("open");
     });
 
+// Checkbox generación de ticket
+    function mostrarGenerarTicket() {
+        if ($("input:checkbox:checked").length == 0)
+            $("#generar-ticket").hide();
+        else
+            $("#generar-ticket").show();
+    }
+
+    mostrarGenerarTicket();
+
+    $(".marcar-todo").click(function() {
+        $(".checkbox-ticket").not(this).attr("checked", this.checked);
+        mostrarGenerarTicket();
+    });
+
+    $(".checkbox-ticket").click(function() {
+        if (!this.checked)
+            $(".marcar-todo").attr("checked", false);
+        mostrarGenerarTicket();
+    });
+
 });
 
 
