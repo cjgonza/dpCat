@@ -424,6 +424,8 @@ def regenerar_tickets(request):
                 pass
             messages.success(request, "Tickets regenerados y enviados al usuario")
             return redirect('enproceso')
+            
+    return redirect('enproceso')
 
 """
 Edita la información básica de la producción.
