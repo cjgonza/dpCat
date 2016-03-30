@@ -588,6 +588,7 @@ class MetadataOA(Metadata):
 
 class MetadataGen(Metadata):
 
+    transcription = models.TextField(verbose_name = u'Transcripción', help_text = u'Texto que se narra en el vídeo.', null = True, blank = True)
     contributor = models.CharField(max_length = 255, verbose_name = u'Colaborador/es', help_text = u'Aquellas personas, entidades u organizaciones que han participado en la creación de esta producción', null = True, blank = True)
     language = models.CharField(max_length = 255, verbose_name = u'Idioma', default = u'Español', null = True, blank = True)
     location = models.CharField(max_length = 255, verbose_name = u'Localización', help_text = u'Por ejemplo: el nombre de la institución, departamento, edificio, etc.', null = True, blank = True)
