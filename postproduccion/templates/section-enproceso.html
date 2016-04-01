@@ -41,6 +41,19 @@
 {% endif %}
 {% endblock %}
 
+{% block filter-widget %}
+    <div class="portlet">
+        <div class="portlet-header">Filtrar por operador:</div>
+        <div class="portlet-content info-interes" style="display:none;">
+            <ul>
+                {% for usuario in usuarios %}
+                    <li><a href="/postproduccion/enproceso/?operator_id={{ usuario.id }}">{{ usuario.username }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
 {% block section-widget %}
     <div class="portlet">
         <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
