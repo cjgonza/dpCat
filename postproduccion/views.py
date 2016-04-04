@@ -229,11 +229,9 @@ Lista los vídeos que están siendo procesados que cumplan el filto dado.
 def listar(operator_id = None, filtro = None):
     data = list()
     if operator_id:#si se esta filtrando por operador hay que coger los videos desde imforme de produccion
-        informes_produccion = InformeProduccion.objects.filter(operador = operator_id)
-        #informes_produccion = informes_produccion.filter(~Q(video.status = 'LIS')) #no deja hacer esto por eso la condicion de dentro del for
+        informes_produccion = InformeProduccion.objects.filter(operador = operator_id).exclude(video__status = 'LIS')
         for v in informes_produccion.order_by('pk'):
-            if v.video.status != 'LIS':
-                data.append(get_linea(v.video))
+            data.append(get_linea(v.video))
     else:#si no listamos todos los videos
         videolist = Video.objects.filter(~Q(status = 'LIS'))
         videolist = videolist.filter(filtro) if filtro else videolist
