@@ -842,6 +842,10 @@ a.link:hover {
     font-size: 12px;
 }
 
+#tabla th.ticket {
+    width: 30px;
+}
+
 a {
     color: #05396b;
     text-decoration: none;
