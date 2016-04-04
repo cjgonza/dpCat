@@ -3,7 +3,7 @@ from django import forms
 from django.forms import ModelForm, CharField, Textarea, widgets, Form, ValidationError
 from django.forms.models import BaseInlineFormSet
 from django.template import Template, TemplateSyntaxError
-from postproduccion.models import Video, FicheroEntrada, MetadataOA, MetadataGen, InformeProduccion, IncidenciaProduccion
+from postproduccion.models import Video, FicheroEntrada, MetadataOA, MetadataGen, InformeProduccion, IncidenciaProduccion, SolicitudReserva
 from postproduccion.utils import is_exec, is_dir
 from postproduccion.encoder import is_video_file
 from configuracion import config
@@ -12,6 +12,11 @@ import os
 class VideoForm(ModelForm):
     class Meta:
         model = Video
+        fields = '__all__'
+#formulario para la solicitud de reservas
+class SolicitudReservaForm(ModelForm):
+    class Meta:
+        model = SolicitudReserva
         fields = '__all__'
 
 class InformeCreacionForm(ModelForm):

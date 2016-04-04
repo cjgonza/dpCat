@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion, RegistroPublicacion, InformeProduccion
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm, VideoEditarForm, InformeEditarForm
+from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm, VideoEditarForm, InformeEditarForm, SolicitudReservaForm
 from postproduccion import queue
 from postproduccion import utils
 from postproduccion import token
@@ -271,6 +271,20 @@ def aprobacion_video(request, tk_str):
     v = token.is_valid_token(tk_str)
     if not v: return render_to_response("section-ticket-caducado.html")
     return render_to_response("section-inicio-aprobacion.html", { 'v' : v, 'token' : tk_str }, context_instance=RequestContext(request))
+
+"""
+Vista para que el usuario reserve un día para grabar
+"""
+def solicitud_reserva(request):
+    if request.method == 'POST':
+        form = SolicitudReservaForm(request.POST)
+        if form.is_valid():
+            solicitud = form.save(commit = False)
+            solicitud.save()
+            return render_to_response("section-reserva-user-aceptada.html", { 'solicitud' : solicitud}, context_instance=RequestContext(request))
+    else:
+        form = SolicitudReservaForm({'fecha_reserva' : 'Ejemplo: 2016-10-25 14:00:00'})
+    return render_to_response("section-reserva-user.html", { 'form' : form}, context_instance=RequestContext(request))
 
 """
 Vista para que el usuario rellene los metadatos de un vídeo.

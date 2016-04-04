@@ -1,0 +1,18 @@
+{% extends "base-2-1-public.html" %}
+
+{% block page-title %}Solicitud de reserva para grabaci&oacute;n{% endblock %}
+{% block section-class %} class="informe-video"{% endblock %}
+{% block section-title %}<h1>Solicitud de reserva para grabaci&oacute;n</h1>{% endblock %}
+
+{% block section-content %}
+<div class="formulario-nueva">
+    <form method="post" action="" class="form-nueva">
+        {% csrf_token %}
+        <ul>
+        {{ form.as_ul }}
+        </ul>
+        <hr/>
+        <input class="terminos" type="submit" value="Enviar solicitud para reserva" />
+    </form>
+</div>
+{% endblock %}
