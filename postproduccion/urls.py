@@ -39,5 +39,4 @@ urlpatterns = patterns('postproduccion.views',
     url(r'^status/$', 'status', name = "status"),
     url(r'^videoteca/$', 'videoteca', name = "videoteca"),
     url(r'^ultimas/$', 'ultimas_producciones', name = "ultimas"),
-    url(r'^solicitud_reserva/$', 'solicitud_reserva', name = "solicitud_reserva"),
 )

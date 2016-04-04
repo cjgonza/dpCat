@@ -32,11 +32,6 @@ class TipoVideo(models.Model):
     def __unicode__(self):
         return self.nombre
 
-class SolicitudReserva(models.Model):
-    nombre = models.CharField(max_length = 255)
-    email = models.EmailField()
-    fecha_reserva = models.DateTimeField()
-
 class Video(models.Model):
     VIDEO_STATUS = (
         ('INC', u'Incompleto'),                  # Creado pero sin ficheros de entrada.
