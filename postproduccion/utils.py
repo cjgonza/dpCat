@@ -10,6 +10,7 @@ import shlex
 import re
 import json
 
+from django.conf import settings
 from configuracion import config
 
 """
@@ -28,6 +29,8 @@ def set_default_settings():
         [ 'MP4BOX_PATH',         which('MP4Box') ],
         [ 'CRONTAB_PATH',        which('crontab') ],
         [ 'MEDIAINFO_PATH',      which('mediainfo') ],
+        [ 'EXIFTOOL_PATH',       which('exiftool') ],
+        [ 'EXIFTOOL_CONFIG',     os.path.join(settings.MEDIA_ROOT, 'config/exiftool_dpcat.config') ],
         [ 'MAX_PREVIEW_WIDTH',   400 ],
         [ 'MAX_PREVIEW_HEIGHT',  300 ],
         [ 'VIDEO_LIBRARY_PATH',  '/home/adminudv/videos/videoteca/' ],
@@ -55,6 +58,15 @@ Normaliza una cadena para generar nombres de fichero seguros.
 """
 def normalize_filename(name):
     return unicodedata.normalize('NFKD', name).encode('ascii','ignore').translate(None, string.punctuation).replace(' ', '_')
+
+"""
+Devuelve una cadena normalizada a partir de una de tipo unicode.
+"""
+def normalize_string(string):
+    try:
+        return unicodedata.normalize('NFKD', string).encode('ascii','ignore')
+    except:
+        return string
 
 """
 Genera un nombre de fichero para un nuevo vídeo
@@ -153,6 +165,19 @@ def mp4box_version():
         data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.STDOUT).communicate()[0]
         try:
             return re.search('version (\S*)', data).group(1)
+        except AttributeError:
+            return None
+
+"""
+Devuelve la versión del exiftool instalado.
+"""
+def exiftool_version():
+    fpath = config.get_option('EXIFTOOL_PATH')
+    if is_exec(fpath):
+        command = "%s -ver" % fpath
+        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.STDOUT).communicate()[0]
+        try:
+            return re.search('([\.0-9]+)', data).group(1)
         except AttributeError:
             return None
 
