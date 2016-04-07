@@ -96,9 +96,15 @@ def get_metadata(v):
     str_metadata = ''
 
     if v.objecto_aprendizaje:
-        metadata = v.metadataoa
+        try:
+            metadata = v.metadataoa
+        except:
+            return str_metadata
     else:
-        metadata = v.metadatagen
+        try:
+            metadata = v.metadatagen
+        except:
+            return str_metadata
 
     for f in metadata._meta.get_fields():
         try:
@@ -258,7 +264,8 @@ def add_metadata(video):
     # Obtener metadata
     metadata = get_metadata(video)
 
-    # Incrustar metadata
-    embed_metadata(video.fichero, metadata)
+    # Incrustar metadatas
+    if not embed_metadata(video.fichero, metadata):
+        return False
 
     return True

@@ -72,6 +72,10 @@ def x264_presets():
 Incrusta la metadata al video final
 """
 def embed_metadata(filename, metadata):
+
+    if not os.path.exists(filename):
+        return False
+
     command = "'%s' -config %s %s '%s'" % (config.get_option('EXIFTOOL_PATH'), config.get_option('EXIFTOOL_CONFIG'), metadata, filename)
     p = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
     out, err = p.communicate() # Esperar a finalizar
@@ -81,6 +85,8 @@ def embed_metadata(filename, metadata):
         os.unlink(filename + '_original')
     except:
         pass
+
+    return True
 
 """
 Realiza el montaje de un video

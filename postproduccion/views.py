@@ -286,6 +286,7 @@ def definir_metadatos_user(request, tk_str):
             token.token_attended(v)
             v.status = 'ACE'
             v.save()
+            video.add_metadata(v)
             return render_to_response("section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : True }, context_instance=RequestContext(request))
 
     else:
@@ -348,6 +349,7 @@ def definir_metadatos_oper(request, video_id):
             m.date = v.informeproduccion.fecha_grabacion
             m.created = v.informeproduccion.fecha_produccion
             m.save()
+            video.add_metadata(v)
             messages.success(request, 'Metadata actualizada')
     else:
         form = MetadataForm(instance = getattr(v, metadataField)) if hasattr(v, metadataField) else MetadataForm(initial = initial_data)
