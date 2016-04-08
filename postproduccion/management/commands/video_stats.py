@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 from django.core.management.base import BaseCommand
-from postproduccion.models import Video
+from django.db.models import Sum
+from postproduccion.models import Video, TecData
 from datetime import timedelta
 
 class Command(BaseCommand):
@@ -26,39 +27,40 @@ class Command(BaseCommand):
 
         # Producciones realizadas
 
-        d = timedelta()
-        for v in qs:
-            if hasattr(v, 'tecdata'):
-                d += timedelta(seconds = v.tecdata.duration)
+        tecdata = TecData.objects.filter(video=qs).aggregate(Sum('duration'))
+        if tecdata['duration__sum'] is None:
+            d = 0
+        else:
+            d = timedelta(seconds = tecdata['duration__sum'])
 
         print(u"Producciones realizadas: %s (%s)" % (str(qs.count()), d))
 
         # Producciones validadas
 
-        d = timedelta()
-        for v in qs.filter(status='LIS'):
-            if hasattr(v, 'tecdata'):
-                d += timedelta(seconds = v.tecdata.duration)
+        tecdata = TecData.objects.filter(video=qs.filter(status='LIS')).aggregate(Sum('duration'))
+        if tecdata['duration__sum'] is None:
+            d = 0
+        else:
+            d = timedelta(seconds = tecdata['duration__sum'])
 
         print(u"Producciones validadas: %s (%s)" % (str(qs.filter(status='LIS').count()), d))
 
-
         # Píldoras
 
-        d = timedelta()
-        for v in qs.exclude(plantilla=None):
-            if hasattr(v, 'tecdata'):
-                d += timedelta(seconds = v.tecdata.duration)
+        tecdata = TecData.objects.filter(video=qs.exclude(plantilla=None)).aggregate(Sum('duration'))
+        if tecdata['duration__sum'] is None:
+            d = 0
+        else:
+            d = timedelta(seconds = tecdata['duration__sum'])
 
         print(u"Píldoras: %s (%s)" % (str(qs.exclude(plantilla=None).count()), d))
 
         # Producciones propias
 
-        d = timedelta()
-        for v in qs.filter(plantilla=None):
-            if hasattr(v, 'tecdata'):
-                d += timedelta(seconds = v.tecdata.duration)
+        tecdata = TecData.objects.filter(video=qs.filter(plantilla=None)).aggregate(Sum('duration'))
+        if tecdata['duration__sum'] is None:
+            d = 0
+        else:
+            d = timedelta(seconds = tecdata['duration__sum'])
 
         print(u"Producciones propias: %s (%s)" % (str(qs.filter(plantilla=None).count()), d))
-
-
