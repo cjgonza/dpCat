@@ -3,7 +3,7 @@
 {% block page-title %}Videoteca{% endblock %}
 {% block section-class %} {% endblock %}
 {% block section-title %}<h1>Videoteca</h1>{% endblock %}
-{% block section-description %}{% endblock %}
+{% block section-description %}<h2>Producciones</h2>{% endblock %}
 
 {% block section-content %} 
 {% load append_to_get %}
@@ -52,6 +52,16 @@
 {% endblock %}
 
 {% block section-widget %}
+    <div class="portlet">
+        <div class="portlet-header">Opciones de la videoteca</div>
+        <div class="portlet-content">
+            <ul>
+                <li><a class="link" href="{% url 'videoteca' %}">Producciones</a></li>
+                <li><a class="link" href="{% url 'estadisticas' %}">Estad&iacute;sticas</a></li>
+            </ul>
+        </div>
+    </div>
+
     <div class="portlet">
         <div class="portlet-header">Personalizar resultados</div>
         <div class="portlet-content">

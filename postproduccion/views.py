@@ -589,6 +589,12 @@ def videoteca(request):
 
     return render_to_response("section-videoteca.html", { 'videos' : videos, 'tipoVideo' : Video.VIDEO_TYPE }, context_instance=RequestContext(request))
 
+"""
+Mostrar estadísticas de la videoteca
+"""
+@permission_required('postproduccion.video_manager')
+def estadisticas(request):
+    return render_to_response("section-estadisticas.html", { 'lista' : [] }, context_instance=RequestContext(request))
 
 #######
 
