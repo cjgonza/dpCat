@@ -1,8 +1,7 @@
 # -*- encoding: utf-8 -*-
 from django.core.management.base import BaseCommand
-from django.db.models import Sum
 from postproduccion.models import Video, TecData
-from datetime import timedelta
+from postproduccion impot video
 
 class Command(BaseCommand):
     args = u'[año]'
@@ -26,41 +25,17 @@ class Command(BaseCommand):
             qs = Video.objects.all()
 
         # Producciones realizadas
-
-        tecdata = TecData.objects.filter(video=qs).aggregate(Sum('duration'))
-        if tecdata['duration__sum'] is None:
-            d = 0
-        else:
-            d = timedelta(seconds = tecdata['duration__sum'])
-
+        d = video.get_duration(qs)
         print(u"Producciones realizadas: %s (%s)" % (str(qs.count()), d))
 
         # Producciones validadas
-
-        tecdata = TecData.objects.filter(video=qs.filter(status='LIS')).aggregate(Sum('duration'))
-        if tecdata['duration__sum'] is None:
-            d = 0
-        else:
-            d = timedelta(seconds = tecdata['duration__sum'])
-
+        d = video.get_duration(qs.filter(status='LIS'))
         print(u"Producciones validadas: %s (%s)" % (str(qs.filter(status='LIS').count()), d))
 
         # Píldoras
-
-        tecdata = TecData.objects.filter(video=qs.exclude(plantilla=None)).aggregate(Sum('duration'))
-        if tecdata['duration__sum'] is None:
-            d = 0
-        else:
-            d = timedelta(seconds = tecdata['duration__sum'])
-
+        d = video.get_duration(qs.exclude(plantilla=None))
         print(u"Píldoras: %s (%s)" % (str(qs.exclude(plantilla=None).count()), d))
 
         # Producciones propias
-
-        tecdata = TecData.objects.filter(video=qs.filter(plantilla=None)).aggregate(Sum('duration'))
-        if tecdata['duration__sum'] is None:
-            d = 0
-        else:
-            d = timedelta(seconds = tecdata['duration__sum'])
-
+        d = video.get_duration(qs.filter(plantilla=None))
         print(u"Producciones propias: %s (%s)" % (str(qs.filter(plantilla=None).count()), d))

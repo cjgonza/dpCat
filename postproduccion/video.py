@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
 from postproduccion.encoder import get_file_info, encode_mixed_video, encode_preview, get_video_duration, make_streamable, embed_metadata
+from django.db.models import Sum
 from postproduccion.models import TecData, Previsualizacion
 from configuracion import config
 from postproduccion import utils
@@ -73,6 +74,16 @@ def get_tec_data(xmlstring):
         ratio = float(unparse_ratio)
 
     return [width, height, ratio]
+
+"""
+Obtener duracion de vídeos a partir de la información técnica
+"""
+def get_duration(v):
+    t = TecData.objects.filter(video=v).aggregate(Sum('duration'))
+    if t['duration__sum'] is None:
+        return 0
+    else:
+        return datetime.timedelta(seconds = t['duration__sum'])
 
 """
 """

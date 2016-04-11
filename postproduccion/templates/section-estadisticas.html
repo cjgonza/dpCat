@@ -6,6 +6,25 @@
 {% block section-description %}<h2>Estad&iacute;sticas</h2>{% endblock %}
 
 {% block section-content %} 
+{% if stats %}
+<table id="tabla">
+    <thead>
+        <th class="meta-param">Propiedad</th><th>Informaci&oacute;n</th>
+    </thead>
+    <tbody>
+        <tr><td colspan="2" class="section">Producciones</td></tr>
+        {% for element in stats.n_prod %}
+            <tr><td>{{ element.0 }}</td><td>{{ element.1 }}</td></tr>
+        {% endfor %}
+        <tr><td colspan="2" class="section">Tiempo de grabaci&oacute;n</td></tr>
+        {% for element in stats.duration %}
+            <tr><td>{{ element.0 }}</td><td>{{ element.1 }}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <div class="mensaje info">No hay estad&iacute;sticas con los criterios de filtrado.</div>
+{% endif %}
 {% endblock %}
 
 {% block section-widget %}
@@ -16,6 +35,30 @@
                 <li><a class="link" href="{% url 'videoteca' %}">Producciones</a></li>
                 <li><a class="link" href="{% url 'estadisticas' %}">Estad&iacute;sticas</a></li>
             </ul>
+        </div>
+    </div>
+
+    <div class="portlet">
+        <div class="portlet-header">Personalizar resultados</div>
+        <div class="portlet-content">
+            <form method="GET" class="form-buscador">
+                <ul>
+                <li class="form-nombre">Intervalo de tiempo:</li>
+                <li>
+                    <ul>
+                        <li class="form-nombre">Inicio</li>
+                        <li><input type="text" id="from" name="f_ini" value="{{ request.GET.f_ini }}" /></li>
+                        <li class="form-nombre">Fin</li>
+                        <li><input type="text" id="to" name="f_fin" value="{{ request.GET.f_fin }}" /></li>
+                    </ul>
+                </li>
+                <li><hr/></li>
+                <li>
+                    <input type="submit" value="Filtrar" />
+                    <a class="reset" href="{% url 'estadisticas' %}">Reiniciar</a>
+                </li>
+                </ul>
+            </form>
         </div>
     </div>
 

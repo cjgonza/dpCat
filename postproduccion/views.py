@@ -594,7 +594,38 @@ Mostrar estadísticas de la videoteca
 """
 @permission_required('postproduccion.video_manager')
 def estadisticas(request):
-    return render_to_response("section-estadisticas.html", { 'lista' : [] }, context_instance=RequestContext(request))
+    videos = Video.objects.all()
+
+    # Personalizacion de resultados por fecha
+    try:
+        f_ini = datetime.datetime.strptime(request.GET.get('f_ini'), "%d/%m/%Y")
+    except (ValueError, TypeError):
+        f_ini = None
+    try:
+        f_fin = datetime.datetime.strptime(request.GET.get('f_fin'), "%d/%m/%Y")
+    except (ValueError, TypeError):
+        f_fin = None
+
+    videos = videos.filter(informeproduccion__fecha_grabacion__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
+
+    # Estadisticas
+    n_prod = [
+        ['Producciones realizadas', videos.count()],
+        ['Producciones validadas', videos.filter(status='LIS').count()],
+        ['Pildoras', videos.exclude(plantilla=None).count()],
+        ['Producciones propias', videos.filter(plantilla=None).count()]
+    ]
+
+    duration = [
+        ['Producciones realizadas', video.get_duration(videos)],
+        ['Producciones validadas', video.get_duration(videos.filter(status='LIS'))],
+        ['Pildoras', video.get_duration(videos.exclude(plantilla=None))],
+        ['Producciones propias', video.get_duration(videos.filter(plantilla=None))]
+    ]
+
+    stats = { 'n_prod': n_prod, 'duration': duration }
+
+    return render_to_response("section-estadisticas.html", { 'stats': stats }, context_instance=RequestContext(request))
 
 #######
 
