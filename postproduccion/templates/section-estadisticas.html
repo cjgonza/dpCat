@@ -5,6 +5,7 @@
 {% block section-title %}<h1>Videoteca</h1>{% endblock %}
 {% block section-description %}<h2>Estad&iacute;sticas</h2>{% endblock %}
 
+
 {% block section-content %} 
 {% if stats %}
 <table id="tabla">
@@ -66,7 +67,7 @@
         <div class="portlet-header">Acciones disponibles</div>
         <div class="portlet-content">
             <ul>
-                <li><a class="imprimir" href="{% url 'estadisticas' %}">Imprimir</a></li>
+                <li><a class="imprimir" onclick="imprimir('#content-left')">Imprimir</a></li>
             </ul>
         </div>
     </div>
@@ -79,4 +80,29 @@
             </ul>
         </div>
     </div>
+{% endblock %}
+
+{% block page-script %}
+<script type="text/javascript">
+function imprimir(data) {
+    // Escribir información
+    var mywindow = window.open('', 'dpCat', 'height=400,width=600');
+    mywindow.document.write('<html><head><title>dpCat Estad&iacute;sticas</title>');
+    mywindow.document.write('<link rel="stylesheet" href="/static/css/reset.css" type="text/css" />');
+    mywindow.document.write('<link rel="stylesheet" href="/static/css/jquery-ui.css" type="text/css" />');
+    mywindow.document.write('<link rel="stylesheet" href="/static/css/base.css" type="text/css" />');
+    mywindow.document.write('</head><body>');
+    mywindow.document.write($(data).html());
+    mywindow.document.write('</body></html>');
+
+    mywindow.document.close(); // IE >= 10
+    mywindow.focus(); // IE >= 10
+
+    // Imprimir
+    mywindow.print();
+    mywindow.close();
+
+    return true;
+}
+</script
 {% endblock %}

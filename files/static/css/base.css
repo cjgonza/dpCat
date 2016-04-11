@@ -194,6 +194,7 @@ div.info {
     border-color: #b8c7cf;
     background-color: #d0d8db;
     background-image: url(../img/icon/print16.png);
+    cursor: pointer;
 }
 .imprimir:hover {
     background-color: #b8c7cf;
