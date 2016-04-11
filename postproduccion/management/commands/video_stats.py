@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from django.core.management.base import BaseCommand
 from postproduccion.models import Video, TecData
-from postproduccion impot video
+from postproduccion import video
 
 class Command(BaseCommand):
     args = u'[año]'
