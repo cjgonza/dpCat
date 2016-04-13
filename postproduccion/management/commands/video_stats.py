@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from django.core.management.base import BaseCommand
-from postproduccion.models import Video
-from datetime import timedelta
+from postproduccion.models import Video, TecData
+from postproduccion import video
 
 class Command(BaseCommand):
     args = u'[año]'
@@ -25,40 +25,17 @@ class Command(BaseCommand):
             qs = Video.objects.all()
 
         # Producciones realizadas
-
-        d = timedelta()
-        for v in qs:
-            if hasattr(v, 'tecdata'):
-                d += timedelta(seconds = v.tecdata.duration)
-
+        d = video.get_duration(qs)
         print(u"Producciones realizadas: %s (%s)" % (str(qs.count()), d))
 
         # Producciones validadas
-
-        d = timedelta()
-        for v in qs.filter(status='LIS'):
-            if hasattr(v, 'tecdata'):
-                d += timedelta(seconds = v.tecdata.duration)
-
+        d = video.get_duration(qs.filter(status='LIS'))
         print(u"Producciones validadas: %s (%s)" % (str(qs.filter(status='LIS').count()), d))
 
-
         # Píldoras
-
-        d = timedelta()
-        for v in qs.exclude(plantilla=None):
-            if hasattr(v, 'tecdata'):
-                d += timedelta(seconds = v.tecdata.duration)
-
+        d = video.get_duration(qs.exclude(plantilla=None))
         print(u"Píldoras: %s (%s)" % (str(qs.exclude(plantilla=None).count()), d))
 
         # Producciones propias
-
-        d = timedelta()
-        for v in qs.filter(plantilla=None):
-            if hasattr(v, 'tecdata'):
-                d += timedelta(seconds = v.tecdata.duration)
-
+        d = video.get_duration(qs.filter(plantilla=None))
         print(u"Producciones propias: %s (%s)" % (str(qs.filter(plantilla=None).count()), d))
-
-

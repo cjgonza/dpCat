@@ -38,5 +38,6 @@ urlpatterns = patterns('postproduccion.views',
     url(r'^config_mail/$', 'config_settings', {'mail' : True }, name = "config_mail"),
     url(r'^status/$', 'status', name = "status"),
     url(r'^videoteca/$', 'videoteca', name = "videoteca"),
+    url(r'^estadisticas/$', 'estadisticas', name = "estadisticas"),
     url(r'^ultimas/$', 'ultimas_producciones', name = "ultimas"),
 )

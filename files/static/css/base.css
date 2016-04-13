@@ -147,6 +147,7 @@ div.info {
 .publicar,
 .descargar,
 .aprobar,
+.imprimir,
 .eliminar {
     border: solid 1px #DF8F8F;
     background: #FFcece url(../img/icon/error16.png) 5px 50% no-repeat;
@@ -189,7 +190,15 @@ div.info {
     background-color: #9adf8f;
 }
 
-
+.imprimir {
+    border-color: #b8c7cf;
+    background-color: #d0d8db;
+    background-image: url(../img/icon/print16.png);
+    cursor: pointer;
+}
+.imprimir:hover {
+    background-color: #b8c7cf;
+}
 
 .error {
     border-color: #DF8F8F;
