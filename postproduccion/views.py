@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
-from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion, RegistroPublicacion
+from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion, RegistroPublicacion, InformeProduccion
 from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm, VideoEditarForm, InformeEditarForm
 from postproduccion import queue
 from postproduccion import utils
@@ -20,6 +20,8 @@ from postproduccion import log
 from postproduccion import crontab
 from postproduccion import video
 from configuracion import config
+
+from django.contrib.auth.models import User
 
 import os
 import urllib
@@ -41,7 +43,6 @@ Muestra el formulario para insertar un nuevo proyecto de vídeo.
 """
 @permission_required('postproduccion.video_manager')
 def crear(request, video_id = None):
-
     v = get_object_or_404(Video, pk=video_id) if video_id else None
     if request.method == 'POST':
         vform = VideoForm(request.POST, instance=v) if v else VideoForm(request.POST)
@@ -209,29 +210,47 @@ Lista los vídeos que están siendo procesados.
 """
 @permission_required('postproduccion.video_manager')
 def listar_en_proceso(request):
-    if request.is_ajax():
-        return render_to_response("ajax/content-enproceso.html", { 'list' : listar()[:10] }, context_instance=RequestContext(request))
+    #comprueba si se está filtrando por operador o no
+    if (request.GET.get('operator_id', '') != None):
+        operator_id = request.GET.get('operator_id', '')
     else:
-        return render_to_response("section-enproceso.html", { 'list' : listar() }, context_instance=RequestContext(request))
+        operator_id = None
+    #si no existe operador devuelve un 404
+    op_id = get_object_or_404(User, id=operator_id) if operator_id else None
+
+    if request.is_ajax():
+        return render_to_response("ajax/content-enproceso.html", { 'list' : listar(op_id)[:10] }, context_instance=RequestContext(request))
+    else:
+        return render_to_response("section-enproceso.html", { 'list' : listar(op_id) , 'usuarios' : User.objects.all()}, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados que cumplan el filto dado.
 """
-def listar(filtro = None):
+def listar(operator_id = None, filtro = None):
     data = list()
-    videolist = Video.objects.filter(~Q(status = 'LIS'))
-    videolist = videolist.filter(filtro) if filtro else videolist
-    for v in videolist.order_by('pk'):
-        linea = dict()
-        linea['id'] = v.pk
-        linea['titulo'] = v.titulo
-        linea['operador'] = v.informeproduccion.operador.username
-        linea['fecha'] = v.informeproduccion.fecha_produccion.strftime("%d/%m/%Y")
-        linea['responsable'] = v.autor
-        linea['tipo'] = v.status.lower()
-        linea['status'] = dict(Video.VIDEO_STATUS)[v.status]
-        data.append(linea)
+    if operator_id:#si se esta filtrando por operador hay que coger los videos desde imforme de produccion
+        informes_produccion = InformeProduccion.objects.filter(operador = operator_id).exclude(video__status = 'LIS').filter(id__gt = 2179)
+        for v in informes_produccion.order_by('pk'):
+            data.append(get_linea(v.video))
+    else:#si no listamos todos los videos
+        videolist = Video.objects.exclude(status = 'LIS').filter(id__gt = 2179)
+        videolist = videolist.filter(filtro) if filtro else videolist
+        for v in videolist.order_by('pk'):
+            data.append(get_linea(v))
     return data
+'''
+Contruye una entrada con los datos de un video que toma como argumento
+'''
+def get_linea(video):
+    linea = dict()
+    linea['id'] = video.pk
+    linea['titulo'] = video.titulo
+    linea['operador'] = video.informeproduccion.operador.username
+    linea['fecha'] = video.informeproduccion.fecha_produccion.strftime("%d/%m/%Y")
+    linea['responsable'] = video.autor
+    linea['tipo'] = video.status.lower()
+    linea['status'] = dict(Video.VIDEO_STATUS)[video.status]
+    return linea
 
 """
 Lista las últimas producciones incluidas en la videoteca.

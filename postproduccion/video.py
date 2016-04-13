@@ -203,7 +203,7 @@ def create_preview(video, logfile, pid_notifier = None):
 
     # Obtiene los nombres de ficheros origen y destino
     src = video.fichero
-    dst = os.path.join(config.get_option('PREVIEWS_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_produccion.date(), ".flv"))
+    dst = os.path.join(config.get_option('PREVIEWS_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_produccion.date(), ".mp4"))
 
     # Crea el objecto previsualización
     pv = Previsualizacion(video = video, fichero = dst)

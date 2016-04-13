@@ -81,7 +81,7 @@ def encode_mixed_video(mltfile, outfile, logfile, pid_notifier = None):
     return os.waitpid(p.pid, 0)[1]
 
 def encode_preview(filename, outfile, size, logfile, pid_notifier = None):
-    command = "'%s' -y -i '%s' -f flv -vcodec flv -r 25 -b 512000 -s %sx%s -aspect %s -acodec libmp3lame -ab 128000 -ar 22050 '%s'" % (config.get_option('AVCONV_PATH'), filename, size['width'], size['height'], size['ratio'], outfile)
+    command = "'%s' -y -i '%s' -r 25 -b 512000 -s %sx%s -aspect %s -acodec libmp3lame -ab 128000 -ar 22050 '%s'" % (config.get_option('AVCONV_PATH'), filename, size['width'], size['height'], size['ratio'], outfile)
     p = subprocess.Popen(shlex.split(str(command)), stderr=logfile)
 
     if pid_notifier:
