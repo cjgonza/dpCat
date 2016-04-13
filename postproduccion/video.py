@@ -1,6 +1,6 @@
-#encoding: utf-8
+# -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
-from postproduccion.encoder import get_file_info, encode_mixed_video, encode_preview, get_video_duration, make_streamable
+from postproduccion.encoder import get_file_info, encode_mixed_video, encode_preview, get_video_duration, make_streamable, embed_metadata
 from postproduccion.models import TecData, Previsualizacion
 from configuracion import config
 from postproduccion import utils
@@ -12,6 +12,7 @@ import tempfile
 import shutil
 import string
 from StringIO import StringIO
+import datetime
 
 
 """
@@ -87,6 +88,36 @@ def parse_mediainfo(mediadata):
             mediainfo.append(sect)
     return mediainfo
 
+"""
+Devolver metada del video para incrustarla en el video
+"""
+def get_metadata(v):
+
+    str_metadata = ''
+
+    if v.objecto_aprendizaje:
+        try:
+            metadata = v.metadataoa
+        except:
+            return str_metadata
+    else:
+        try:
+            metadata = v.metadatagen
+        except:
+            return str_metadata
+
+    for f in metadata._meta.get_fields():
+        try:
+            value = getattr(metadata, 'get_%s_display' % f.name)()
+        except AttributeError:
+            value = getattr(metadata, f.name)
+
+        if value.__class__ == unicode:
+            str_metadata += "-XMP:%s='%s' " % (f.name, utils.normalize_string(value))
+        elif value.__class__ in (str, datetime.datetime):
+            str_metadata += "-XMP:%s='%s' " % (f.name, value)
+
+    return str_metadata
 
 def calculate_preview_size(v):
     [width, height, ratio] = get_tec_data(v.tecdata.xml_data)
@@ -224,4 +255,17 @@ def create_preview(video, logfile, pid_notifier = None):
 
     # Actualiza el estado del vídeo
     video.set_status('PTU')
+    return True
+
+"""
+Añadir toda la metadata al video
+"""
+def add_metadata(video):
+    # Obtener metadata
+    metadata = get_metadata(video)
+
+    # Incrustar metadatas
+    if not embed_metadata(video.fichero, metadata):
+        return False
+
     return True

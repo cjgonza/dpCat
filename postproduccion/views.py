@@ -305,6 +305,7 @@ def definir_metadatos_user(request, tk_str):
             token.token_attended(v)
             v.status = 'ACE'
             v.save()
+            video.add_metadata(v)
             return render_to_response("section-resumen-aprobacion.html", { 'v' : v, 'aprobado' : True }, context_instance=RequestContext(request))
 
     else:
@@ -367,6 +368,7 @@ def definir_metadatos_oper(request, video_id):
             m.date = v.informeproduccion.fecha_grabacion
             m.created = v.informeproduccion.fecha_produccion
             m.save()
+            video.add_metadata(v)
             messages.success(request, 'Metadata actualizada')
     else:
         form = MetadataForm(instance = getattr(v, metadataField)) if hasattr(v, metadataField) else MetadataForm(initial = initial_data)
@@ -643,6 +645,8 @@ def alerts(request):
         lista.append({ 'tipo' : 'ejecutable', 'exe' : 'mediainfo', 'fecha' : datetime.datetime.min })
     if not utils.mp4box_version():
         lista.append({ 'tipo' : 'ejecutable', 'exe' : 'MP4Box', 'fecha' : datetime.datetime.min })
+    if not utils.exiftool_version():
+        lista.append({ 'tipo' : 'ejecutable', 'exe' : 'exiftool', 'fecha' : datetime.datetime.min })
     if not utils.is_exec(config.get_option('CRONTAB_PATH')):
         lista.append({ 'tipo' : 'ejecutable', 'exe' : 'crontab', 'fecha' : datetime.datetime.min })
     # Comprueba las rutas a los directorios.
@@ -694,6 +698,7 @@ def status(request):
     meltver = utils.melt_version()
     mediainfover = utils.mediainfo_version()
     mp4boxver = utils.mp4box_version()
+    exiftoolver = utils.exiftool_version()
     exes = {
         'AVCONV'  : {
             'path'    : config.get_option('AVCONV_PATH'),
@@ -719,6 +724,11 @@ def status(request):
             'path'    : config.get_option('MP4BOX_PATH'),
             'status'  : True if mp4boxver else False,
             'version' : mp4boxver,
+        },
+        'exiftool'    : {
+            'path'    : config.get_option('EXIFTOOL_PATH'),
+            'status'  : True if exiftoolver else False,
+            'version' : exiftoolver,
         },
     }
 
