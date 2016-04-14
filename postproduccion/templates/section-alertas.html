@@ -1,189 +1,271 @@
 {% extends "base-2-1-monitor.html" %}
 
 {% block page-title %}Centro de monitorizaci&oacute;n{% endblock %}
-{% block section-class %} {% endblock %}
 {% block section-title %}<h1>Centro de monitorizaci&oacute;n</h1>{% endblock %}
-{% block section-description %}<h2>Alertas del sistema</h2>{% endblock %}
 
 {% block section-content %} 
-
-<div id="lista-alertas">
-{% for i in lista %}
-    {% if i.tipo == 'video-incompleto' %}
-    <div class="{{ i.tipo }}">
-        <div class="alerta">
-            <div class="alerta-header"><span class="icon-title">Producci&oacute;n con id {{ i.v.id }}, esta incompleta.</span><span class="icon plus"></span></div>
-            <div class="alerta-content">
-                <ul class="item-alerta">
-                    <li><span class="item-alerta-title">T&iacute;tulo de la producci&oacute;n:</span>{{ i.v.titulo }} </li>
-                    <li><span class="item-alerta-title">Identificador:</span> {{ i.v.id }} </li>
-                    <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
-                    <span class="item-alerta-content">No se ha terminado de definir la producci&oacute;n.</span></li>
-                </ul>           
-            </div>
-            <div class="alerta-links">
-                <ul>
-                    <li class="item-alerta-links"><a class="edit-icon" href="{% url 'crear' i.v.id %}">Editar v&iacute;deo</a></li>
-                </ul> 
-            </div>
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Alertas del sistema</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
         </div>
     </div>
-    {% endif %}
+    <div class="box-body">
+        {% for i in lista %}
+            {% if i.tipo == 'video-incompleto' %}
+            <div class="box box-warning collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Producci&oacute;n con id {{ i.v.id }}, esta incompleta.</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <ul class="item-alerta">
+                            <li><span>T&iacute;tulo de la producci&oacute;n:</span>{{ i.v.titulo }} </li>
+                            <li><span>Identificador:</span> {{ i.v.id }} </li>
+                            <li><span>Descripci&oacute;n de la alerta:</span>
+                            <span>No se ha terminado de definir la producci&oacute;n.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-footer clearfix" style="display:block;">
+                   <a class="btn btn-sm btn-info btn-flat" href="{% url 'crear' i.v.id %}">Editar v&iacute;deo</a></li>
+                </div>
+            </div>
+            {% endif %}
 
-    {% if i.tipo == 'trabajo-fail' %}
-    <div class="{{ i.tipo }}">
-        <div class="alerta">
-            <div class="alerta-header"><span class="icon-title">El proceso con id {{ i.t.id }}, ha fallado.</span><span class="icon plus"></span></div>
-            <div class="alerta-content">
-                <ul class="item-alerta">
-                    <li><span class="item-alerta-title">T&iacute;tulo de la producci&oacute;n:</span>{{ i.t.video.titulo }} </li>
-                    <li><span class="item-alerta-title">Identificador:</span> {{ i.t.id }} </li>
-                    <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
-                    <span class="item-alerta-content">La operaci&oacute;n realizada sobre esta producci&oacute;n ha fallado.</span></li>
-                </ul>           
+            {% if i.tipo == 'trabajo-fail' %}
+            <div class="box box-warning collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">El proceso con id {{ i.t.id }}, ha fallado.</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <ul class="item-alerta">
+                            <li><span>T&iacute;tulo de la producci&oacute;n:</span>{{ i.t.video.titulo }} </li>
+                            <li><span>Identificador:</span> {{ i.t.id  }} </li>
+                            <li><span>Descripci&oacute;n de la alerta:</span>
+                            <span>La operaci&oacute;n realizada sobre esta producci&oacute;n ha fallado.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-footer clearfix" style="display:block;">
+                   <a class="btn btn-sm btn-info btn-flat" href="{% url 'cola' %}">Cola de procesado</a></li>
+                    <a class="btn btn-sm btn-info btn-flat" href="{% url 'mostrar_log' i.t.id %}">Registro del sistema de la operaci&oacute;n</a></li>
+                </div>
             </div>
-            <div class="alerta-links">
-                <ul>
-                   <li class="item-alerta-links"><a class="edit-icon" href="{% url 'cola' %}">Cola de procesado</a></li>
-                   <li class="item-alerta-links"><a class="edit-icon" href="{% url 'mostrar_log' i.t.id %}">Registro del sistema de la operaci&oacute;n</a></li>
-                </ul> 
+            {% endif %}
+
+            {% if i.tipo == 'token-caducado' %}
+            <div class="box box-warning collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">La producci&oacute;n con id {{ i.t.video.id }}, ha caducado su ticket.</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <ul class="item-alerta">
+                            <li><span>T&iacute;tulo de la producci&oacute;n:</span>{{ i.t.video.titulo }} </li>
+                            <li><span>Identificador:</span> {{ i.t.video.id  }} </li>
+                            <li><span>Descripci&oacute;n de la alerta:</span>
+                            <span>El ticket enviado al autor de la producci&oacute;n ha sido caducado sin ser atentido.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-footer clearfix" style="display:block;">
+                   <a class="btn btn-sm btn-info btn-flat" href="{% url 'gestion_tickets' i.t.video.id %}">Gesti&oacute;n de ticket</a></li>
+                </div>
             </div>
-        </div>
+            {% endif %}
+
+            {% if i.tipo == 'ejecutable' %}
+            <div class="box box-warning collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Error al ejecutar la aplicaci&oacute;n: {{ i.exe }}</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <ul class="item-alerta">
+                            <li><span>Descripci&oacute;n de la alerta:</span>
+                            <span>Se ha producido un error al intentar ejecutar la aplicaci&oacute;n: {{ i.exe }}, es necesario revisar la configuraci&oacute;n del sistema.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-footer clearfix" style="display:block;">
+                   <a class="btn btn-sm btn-info btn-flat" href="{% url 'config' %}">Acceder a la configuraci&oacute;n del sistema</a></li>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if i.tipo == 'ruta' %}
+            <div class="box box-warning collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Permiso denegado sobre el directorio: {{ i.path }}</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <ul class="item-alerta">
+                            <li><span>Descripci&oacute;n de la alerta:</span>
+                            <span>Ha sido imposible acceder o crear el directorio en la ruta: {{ i.path }}, es necesario revisar la configuraci&oacute;n del sistema.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-footer clearfix" style="display:block;">
+                   <a class="btn btn-sm btn-info btn-flat" href="{% url 'config' %}">Acceder a la configuraci&oacute;n del sistema</a></li>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if i.tipo == 'disco' %}
+            <div class="box box-warning collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Espacio en disco pr&oacute;ximo a agotarse.</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <ul class="item-alerta">
+                            <li><span>Descripci&oacute;n de la alerta:</span>
+                            <span>El sistema de fichero en el que se encuentra el directorio: {{ i.path }} est&aacute; pr&oacute;ximo a quedarse sin espacio ({{ i.cap }}), es neceario revisar la configuración sistema.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-footer clearfix" style="display:block;">
+                   <a class="btn btn-sm btn-info btn-flat" href="{% url 'status' %}">Acceder a la configuraci&oacute;n del sistema</a></li>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if i.tipo == 'cron_proc' %}
+            <div class="box box-warning collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Las tareas programadas de codificaci&oacute;n est&aacute;n desactivadas.</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <ul class="item-alerta">
+                            <li><span>Descripci&oacute;n de la alerta:</span>
+                            <span>Las tareas programadas de codificaci&oacute;n est&aacute;n desactivadas, no se codificar&aacute; ning&uacute;n video hasta que se active el gestor de tareas programas del sistema (CRON). Revise la configuraci&oacute;n del sistema.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-footer clearfix" style="display:block;">
+                   <a class="btn btn-sm btn-info btn-flat" href="{% url 'status' %}">Acceder a la configuraci&oacute;n del sistema</a></li>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if i.tipo == 'cron_pub' %}
+            <div class="box box-warning collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Las tareas programadas de publicaci&oacute;n est&aacute;n desactivadas.</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <ul class="item-alerta">
+                            <li><span>Descripci&oacute;n de la alerta:</span>
+                            <span>Las tareas programadas de publicaci&oacute;n est&aacute;n desactivadas, no se publicar&aacute; ning&uacute;n video hasta que se active el gestor de tareas programas del sistema (CRON). Revise la configuraci&oacute;n del sistema.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-footer clearfix" style="display:block;">
+                   <a class="btn btn-sm btn-info btn-flat" href="{% url 'status' %}">Acceder a la configuraci&oacute;n del sistema</a></li>
+                </div>
+            </div>
+            {% endif %}
+
+            {% empty %}
+                <div class="mensaje info">No existe ninguna alerta en el sistema</div></li>
+        {% endfor %}
     </div>
-    {% endif %}
-
-    {% if i.tipo == 'token-caducado' %}
-    <div class="{{ i.tipo }}">
-        <div class="alerta">
-            <div class="alerta-header"><span class="icon-title">La producci&oacute;n con id {{ i.t.video.id }}, ha caducado su ticket.</span><span class="icon plus"></span></div>
-            <div class="alerta-content">
-                <ul class="item-alerta">
-                    <li><span class="item-alerta-title">T&iacute;tulo de la producci&oacute;n:</span>{{ i.t.video.titulo }} </li>
-                    <li><span class="item-alerta-title">Identificador:</span> {{ i.t.video.id }} </li>
-                    <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
-                    <span class="item-alerta-content">El ticket enviado al autor de la producci&oacute;n ha sido caducado sin ser atentido.</span></li>
-                </ul>           
-            </div>
-            <div class="alerta-links">
-                <ul>
-                   <li class="item-alerta-links"><a class="edit-icon" href="{% url 'gestion_tickets' i.t.video.id%}">Gesti&oacute;n de ticket</a></li>
-                </ul> 
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    {% if i.tipo == 'ejecutable' %}
-    <div class="{{ i.tipo }}">
-        <div class="alerta">
-            <div class="alerta-header"><span class="icon-title">Error al ejecutar la aplicaci&oacute;n: {{ i.exe }}</span><span class="icon plus"></span></div>
-            <div class="alerta-content">
-                <ul class="item-alerta">
-                    <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
-                    <span class="item-alerta-content">Se ha producido un error al intentar ejecutar la aplicaci&oacute;n: {{ i.exe }}, es necesario revisar la configuraci&oacute;n del sistema.</span></li>
-                </ul>           
-            </div>
-            <div class="alerta-links">
-                <ul>
-                   <li class="item-alerta-links"><a class="edit-icon" href="{% url 'config' %}">Acceder a la configuraci&oacute;n del sistema</a></li>
-                </ul> 
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    {% if i.tipo == 'ruta' %}
-    <div class="{{ i.tipo }}">
-        <div class="alerta">
-            <div class="alerta-header"><span class="icon-title">Permiso denegado sobre el directorio: {{ i.path }}</span><span class="icon plus"></span></div>
-            <div class="alerta-content">
-                <ul class="item-alerta">
-                    <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
-                    <span class="item-alerta-content">Ha sido imposible acceder o crear el directorio en la ruta: {{ i.path }}, es necesario revisar la configuraci&oacute;n del sistema.</span></li>
-                </ul>           
-            </div>
-            <div class="alerta-links">
-                <ul>
-                   <li class="item-alerta-links"><a class="edit-icon" href="{% url 'config' %}">Acceder a la configuraci&oacute;n del sistema</a></li>
-                </ul> 
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    {% if i.tipo == 'disco' %}
-    <div class="{{ i.tipo }}">
-        <div class="alerta">
-            <div class="alerta-header"><span class="icon-title">Espacio en disco pr&oacute;ximo a agotarse.</span><span class="icon plus"></span></div>
-            <div class="alerta-content">
-                <ul class="item-alerta">
-                    <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
-                    <span class="item-alerta-content">El sistema de fichero en el que se encuentra el directorio: {{ i.path }} est&aacute; pr&oacute;ximo a quedarse sin espacio ({{ i.cap }}), es neceario revisar la configuración sistema.</span></li>
-                </ul>           
-            </div>
-            <div class="alerta-links">
-                <ul>
-                   <li class="item-alerta-links"><a class="edit-icon" href="{% url 'status' %}">Acceder a la configuraci&oacute;n del sistema</a></li>
-                </ul> 
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    {% if i.tipo == 'cron_proc' %}
-    <div class="{{ i.tipo }}">
-        <div class="alerta">
-            <div class="alerta-header"><span class="icon-title">Las tareas programadas de codificaci&oacute;n est&aacute;n desactivadas.</span><span class="icon plus"></span></div>
-            <div class="alerta-content">
-                <ul class="item-alerta">
-                    <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
-                    <span class="item-alerta-content">Las tareas programadas de codificaci&oacute;n est&aacute;n desactivadas, no se codificar&aacute; ning&uacute;n video hasta que se active el gestor de tareas programas del sistema (CRON). Revise la configuraci&oacute;n del sistema.</span></li>
-                </ul>           
-            </div>
-            <div class="alerta-links">
-                <ul>
-                   <li class="item-alerta-links"><a class="edit-icon" href="{% url 'status' %}">Acceder a la configuraci&oacute;n del sistema</a></li>
-                </ul> 
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    {% if i.tipo == 'cron_pub' %}
-    <div class="{{ i.tipo }}">
-        <div class="alerta">
-            <div class="alerta-header"><span class="icon-title">Las tareas programadas de publicaci&oacute;n est&aacute;n desactivadas.</span><span class="icon plus"></span></div>
-            <div class="alerta-content">
-                <ul class="item-alerta">
-                    <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
-                    <span class="item-alerta-content">Las tareas programadas de publicaci&oacute;n est&aacute;n desactivadas, no se publicar&aacute; ning&uacute;n video hasta que se active el gestor de tareas programas del sistema (CRON). Revise la configuraci&oacute;n del sistema.</span></li>
-                </ul>           
-            </div>
-            <div class="alerta-links">
-                <ul>
-                   <li class="item-alerta-links"><a class="edit-icon" href="{% url 'status' %}">Acceder a la configuraci&oacute;n del sistema</a></li>
-                </ul> 
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    {% empty %}
-        <div class="mensaje info">No existe ninguna alerta en el sistema</div></li>
-{% endfor %}
 </div>
-
 {% endblock %}
 
 {% block section-widget %}
-            <div class="portlet">
-                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-                <div class="portlet-content info-interes">
-                    <ul> 
-                        <li class="tip">Elementos que requieren especial atenci&oacute;n por parte del operador del sistema puesto que afectan al correcto funcionamiento del mismo.</li>
-                    </ul>
-                </div>
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i class="fa fa-fw fa-info"></i></td>
+                        <td>Elementos que requieren especial atenci&oacute;n por parte del operador del sistema puesto que afectan al correcto funcionamiento del mismo.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
 
 
