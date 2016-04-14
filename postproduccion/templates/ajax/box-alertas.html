@@ -1,10 +1,24 @@
-<div class="portlet">
-    <div class="portlet-header">Alertas del sistema (Centro de monitorizaci&oacute;n)</div>
-    <div class="portlet-content" id="box-alertas">
-        <span class="ajax-loader"></span>
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Alertas del sistema (Centro de monitorizaci&oacute;n)</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive" id="box-alertas">
+            <span class="ajax-loader"></span>
+        </div>
+    </div>
+    <div class="box-footer clearfix" style="display:block;">
+       <a class="btn btn-sm btn-info btn-flat pull-right" href="{% url 'alertas' %}">Listado completo de alertas</a></li>
     </div>
 </div>
-
 <script>
 function ajax_alertas() {
     $.get("{% url 'alertas' %}", function(data) {

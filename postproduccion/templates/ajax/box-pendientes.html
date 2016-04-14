@@ -1,8 +1,23 @@
-<div class="portlet">
-    <div class="portlet-header">Producciones pendientes (Centro de monitorizaci&oacute;n)</div>
-    <div class="portlet-content" id="box-pendientes">
-        <span class="ajax-loader"></span>
-   </div> 
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Producciones pendientes (Centro de monitorizaci&oacute;n)</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive" id="box-pendientes">
+            <span class="ajax-loader"></span>
+        </div>
+    </div>
+    <div class="box-footer clearfix">
+       <a class="btn btn-sm btn-info btn-flat pull-right" href="{% url 'pendientes' %}">Listado completo de producciones pendientes</a></li>
+    </div>
 </div>
 
 <script>

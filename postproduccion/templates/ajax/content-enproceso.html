@@ -1,20 +1,26 @@
 {% if list %}
-<table id="tabla">
+<table class="table no-margin">
   <thead>
-    <th class="id">ID</th>
-    <th class="status">Estado</th>
-    <th class="date">Fecha</th>
-    <th class="respon">Responsable</th>
-    <th class="title">T&iacute;tulo</th>
+    <th>ID</th>
+    <th>Estado</th>
+    <th>Fecha</th>
+    <th>Responsable</th>
+    <th>T&iacute;tulo</th>
   </thead>
   <tbody>
     {% for video in list %}
-    <tr class="{{ video.tipo }} {%cycle 'odd' 'even' %}">
-        <td class="id">{{ video.id }}</td>
-        <td class="status">{{ video.status }}</td>
-        <td class="date">{{ video.fecha }}</td>
-        <td class="respon">{{ video.responsable }}</td>
-        <td class="title">
+    <tr>
+        <td>{{ video.id }}</td>
+        {% if video.status == 'Aceptado' %}
+            <td><span class="label label-success">{{ video.status }}</span></td>
+        {% elif video.status == 'Pendiente del usuario'%}
+            <td><span class="label label-warning">{{ video.status }}</span></td>
+        {% else %}
+            <td><span class="label label-danger">{{ video.status }}</span></td>
+        {% endif %}
+        <td>{{ video.fecha }}</td>
+        <td>{{ video.responsable }}</td>
+        <td>
         {% if video.status == 'Incompleto' %}
             <a href="{% url 'crear' video.id %}">{{ video.titulo }}</a>
         {% else %}
@@ -28,7 +34,3 @@
 {% else %}
     <div class="mensaje info">No se ha encontrado ninguna producci&oacute;n siendo procesada.</div>
 {% endif %}
-
-<ul class="portlet-bottom-link">
-    <li><a class="link-section" href="{% url 'enproceso' %}">Listado completo de producciones en proceso</a></li>
-</ul>

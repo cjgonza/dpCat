@@ -1,8 +1,23 @@
-<div class="portlet">
-    <div class="portlet-header">Producciones en proceso (Centro de monitorizaci&oacute;n)</div>
-    <div class="portlet-content" id="box-enproceso">
-        <span class="ajax-loader"></span>
-   </div> 
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Producciones en proceso (Centro de monitorizaci&oacute;n)</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive" id="box-enproceso">
+            <span class="ajax-loader"></span>
+        </div>
+    </div>
+    <div class="box-footer clearfix" style="display:block;">
+       <a class="btn btn-sm btn-info btn-flat pull-right" href="{% url 'enproceso' %}">Listado completo de producciones en proceso</a></li>
+    </div>
 </div>
 
 <script>
