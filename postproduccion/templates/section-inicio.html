@@ -5,13 +5,13 @@
 {% block section-title %}<h1>Resumen actividad del sistema</h1>{% endblock %}
 
 {% block contenido %}
-<div id="content">
-    <div class="column">
+<div id="row">
+    <div class="col-md-6">
         {% include "ajax/box-pendientes.html" %}
         {% include "ajax/box-ultimas.html" %}
         {% include "ajax/box-alertas.html" %}
     </div>
-    <div class="column">
+    <div class="col-md-6">
         {% include "ajax/box-enproceso.html" %}
     </div>
 </div>
