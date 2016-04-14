@@ -2,31 +2,49 @@
 
 {% block contenido %} 
 
-<div id="content" {% block section-class %} {% endblock %} >
-    <div id="content-left">
+<div class="row" >
+    <div class="col-md-9">
         {% block section-description %} {% endblock %}
         {% block section-content %} {% endblock %}
     </div>
  
-    <div id="content-right">
-        <div class="column">
-
-            <div class="portlet">
-                <div class="portlet-header">Opciones de monitorizaci&oacute;n</div>
-                <div class="portlet-content">
-                    <ul> 
-                        <li><a class="link" href="{% url 'enproceso' %}">Producciones en proceso</a></li>
-                        <li><a class="link" href="{% url 'pendientes' %}">Producciones con tareas pendientes</a></li>
-                        <li><a class="link" href="{% url 'alertas' %}">Alertas del sistema</a></li>
-                        <li><a class="link" href="{% url 'cola' %}">Cola de procesamiento</a></li>
-                        <li><a class="link" href="{% url 'cola_publicacion' %}">Cola de publicaci&oacute;n</a></li>
-                        <li><a class="link" href="{% url 'log' %}">Registro (log) del sistema</a></li>
-                    </ul>
+    <div class="col-md-3">
+        <div class="box box-solid box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Opciones de monitorizaci&oacute;n</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
                 </div>
             </div>
-            {% block section-widget %} {% endblock %}
-            {% block filter-widget %} {% endblock %}
+            <div class="box-body">
+                <table class="table table-condensed">
+                    <tbody>
+                    <tr>
+                        <td><a class="link" href="{% url 'enproceso' %}">Producciones en proceso</a></td>
+                    </tr>
+                    <tr>
+                        <td><a class="link" href="{% url 'pendientes' %}">Producciones con tareas pendientes</a></td>
+                    </tr>
+                    <tr>
+                        <td><a class="link" href="{% url 'alertas' %}">Alertas del sistema</a></td>
+                    </tr>
+                    <tr>
+                        <td><a class="link" href="{% url 'cola' %}">Cola de procesamiento</a></td>
+                    </tr>
+                    <tr>
+                        <td><a class="link" href="{% url 'cola_publicacion' %}">Cola de publicaci&oacute;n</a></td>
+                    </tr>
+                    <tr>
+                        <td><a class="link" href="{% url 'log' %}">Registro (log) del sistema</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        {% block section-widget %} {% endblock %}
+        {% block filter-widget %} {% endblock %}
     </div>
 </div>
 
