@@ -4,29 +4,32 @@
 {% block page-title %}Acceso al sistema{% endblock %}
 
 {% block content %}
-<div id="main-login">
-    <h1>dpCat</h1>
-    <div id="loginbox">
-        <div class="column">
-            <div class="portlet">
-                <div class="portlet-header">Acceso al sistema</div>
-                <div class="portlet-content info-interes">
-                    <form method="post" action="{% url 'django.contrib.auth.views.login' %}" class="form-nueva">
-                        <ul>
-                            {% csrf_token %}
-                            {{ form.as_ul }}
-                        </ul>
-                        <input type="submit" value="Acceder" />
-                        <input type="hidden" name="next" value="{{ next }}" />
-                    </form>
-                    <div class="bottom-links">
-                        <ul>
-                            <li><a href="#">dpCat &copy; 2012</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+<!--Falta añadir la clase form-control al input que genera el form -->
+<div class="col-md-4 col-md-offset-4 mt80">
+    <h1 id="h1dp">dpCat</h1>
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Acceso al sistema</h3>
         </div>
+            <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+                <div class="box-body">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_username">Nombre de usuario:</label>
+                        {{ form.username}}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_password">Contraseña:</label>
+                        {{ form.password }}
+                    </div>
+                    <input class="btn btn-primary pull-right" type="submit" value="Acceder" />
+                    <input class="btn btn-primary pull-right" type="hidden" name="next" value="{{ next }}" />
+                </div>
+
+                <div class="box-footer">
+                   <a href="#">dpCat &copy; 2012</a></li>
+                </div>
+            </form>
     </div>
 </div>
 {% endblock %}
