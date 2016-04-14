@@ -1,4 +1,17 @@
 /*
+Nuevos estilos dpCAT 2016
+*/
+#h1dp{
+    font: bold 45px Arial;
+    color: white;
+    text-shadow: 1px 1px 1px #111;
+}
+
+.mt80{
+    margin-top: 80px;
+}
+
+/*
 Estilos dpCAT 2011
 */
 
