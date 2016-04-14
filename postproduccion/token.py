@@ -31,8 +31,11 @@ def is_valid_token(tk_str):
 """
 Devuelve los tokens caducados.
 """
-def get_expired_tokens():
-    return Token.objects.filter(instante__lt = datetime.now() - timedelta(days = int(config.get_option('TOKEN_VALID_DAYS'))))
+def get_expired_tokens(days = None):
+    if days is None:
+        return Token.objects.filter(id__gt = 2179, instante__lt = datetime.now() - timedelta(days = int(config.get_option('TOKEN_VALID_DAYS'))))
+    else:
+        return Token.objects.filter(id__gt = 2179, instante__gt = datetime.today() - timedelta(days = days))
 
 """
 Borra los tokens caducados.
