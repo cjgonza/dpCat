@@ -540,11 +540,11 @@ def videoteca(request):
     meta_descripcion = request.GET.get('meta_descripcion')
     meta_etiqueta = request.GET.get('meta_etiqueta')
     try:
-        f_ini = datetime.datetime.strptime(request.GET.get('f_ini'), "%d/%m/%Y")
+        f_ini = datetime.datetime.strptime(request.GET.get('f_ini'), "%m/%d/%Y")
     except (ValueError, TypeError):
         f_ini = None
     try:
-        f_fin = datetime.datetime.strptime(request.GET.get('f_fin'), "%d/%m/%Y")
+        f_fin = datetime.datetime.strptime(request.GET.get('f_fin'), "%m/%d/%Y")
     except (ValueError, TypeError):
         f_fin = None
 
