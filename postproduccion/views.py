@@ -673,6 +673,11 @@ def alerts(request):
     # Añade los tokens caducados.
     for i in token.get_expired_tokens():
         lista.append({ 'tipo' : 'token-caducado', 't' : i, 'fecha' : token.get_expire_time(i) })
+    # Añade los vídeos aceptados pendientes de validación.
+    for i in InformeProduccion.objects.filter(
+            video=Video.objects.filter(status='ACE'),
+            fecha_produccion__lt = datetime.datetime.today() - datetime.timedelta(days = 15)):
+        lista.append({ 'tipo' : 'video-aceptado', 'v' : i.video , 'fecha' : i.fecha_produccion })
     # Comprueba los ejecutables.
     if not utils.avconv_version():
         lista.append({ 'tipo' : 'ejecutable', 'exe' : 'avconv', 'fecha' : datetime.datetime.min })
