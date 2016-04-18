@@ -2,16 +2,14 @@
 
 {% block contenido %} 
 
-<div id="content" {% block section-class %} {% endblock %} >
-    <div id="content-left">
+<div class="row" >
+    <div class="col-md-8">
         {% block section-description %} {% endblock %}
         {% block section-content %} {% endblock %}
     </div>
  
-    <div id="content-right">
-        <div class="column">
-            {% block section-widget %} {% endblock %}    
-        </div>
+    <div class="col-md-4">
+        {% block section-widget %} {% endblock %}
     </div>
 </div>
 
