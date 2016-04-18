@@ -11,6 +11,12 @@ Nuevos estilos dpCAT 2016
     margin-top: 80px;
 }
 
+.tip{
+    background: url(../img/icon/lightbulb.png) 0 0 no-repeat;
+    padding-left: 25px;
+    width: 25px;
+    margin-top: 25px;
+}
 /*
 Estilos dpCAT 2011
 */
