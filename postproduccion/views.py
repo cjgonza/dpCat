@@ -201,9 +201,9 @@ Lista los vídeos que están pendientes de atención por parte del operador.
 def listar_pendientes(request):
     filtro = Q(status = 'PTO') | Q(status = 'ACE') | Q(status = 'REC')
     if request.is_ajax():
-        return render_to_response("ajax/content-pendientes.html", { 'list' : listar(filtro)[:5] }, context_instance=RequestContext(request))
+        return render_to_response("ajax/content-pendientes.html", { 'list' : listar(filtro=filtro)[:5] }, context_instance=RequestContext(request))
     else:
-        return render_to_response("section-pendientes.html", { 'list' : listar(filtro) }, context_instance=RequestContext(request))
+        return render_to_response("section-pendientes.html", { 'list' : listar(filtro=filtro) }, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados.
@@ -219,9 +219,9 @@ def listar_en_proceso(request):
     op_id = get_object_or_404(User, id=operator_id) if operator_id else None
 
     if request.is_ajax():
-        return render_to_response("ajax/content-enproceso.html", { 'list' : listar(op_id)[:10] }, context_instance=RequestContext(request))
+        return render_to_response("ajax/content-enproceso.html", { 'list' : listar(operator_id=op_id)[:10] }, context_instance=RequestContext(request))
     else:
-        return render_to_response("section-enproceso.html", { 'list' : listar(op_id) , 'usuarios' : User.objects.all()}, context_instance=RequestContext(request))
+        return render_to_response("section-enproceso.html", { 'list' : listar(operator_id=op_id) , 'usuarios' : User.objects.all()}, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados que cumplan el filto dado.
@@ -540,11 +540,11 @@ def videoteca(request):
     meta_descripcion = request.GET.get('meta_descripcion')
     meta_etiqueta = request.GET.get('meta_etiqueta')
     try:
-        f_ini = datetime.datetime.strptime(request.GET.get('f_ini'), "%m/%d/%Y")
+        f_ini = datetime.datetime.strptime(request.GET.get('f_ini'), "%d/%m/%Y")
     except (ValueError, TypeError):
         f_ini = None
     try:
-        f_fin = datetime.datetime.strptime(request.GET.get('f_fin'), "%m/%d/%Y")
+        f_fin = datetime.datetime.strptime(request.GET.get('f_fin'), "%d/%m/%Y")
     except (ValueError, TypeError):
         f_fin = None
 
