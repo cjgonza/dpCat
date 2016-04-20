@@ -664,6 +664,19 @@ Muestra las alertas de la aplicación.
 @permission_required('postproduccion.video_manager')
 def alerts(request):
     lista = list()
+    tipo = {
+        'video-incompleto' : 'Video incompleto',
+        'trabajo-fail' : 'Tarea fallida',
+        'token-caducado' : 'Token caducado',
+        'video-aceptado' : 'Video sin validar',
+        'ejecutable' : 'Ejecutable',
+        'ruta' : 'Ruta',
+        'disco' : 'Disco',
+        'cron_proc' : 'Tarea programada'
+    }
+
+    tipoVideo = request.GET.get('tipoVideo')
+
     # Añade los vídeos incompletos.
     for i in Video.objects.filter(status='INC'):
         lista.append({ 'tipo' : 'video-incompleto', 'v' : i, 'fecha' : i.informeproduccion.fecha_produccion })
@@ -704,12 +717,17 @@ def alerts(request):
         lista.append({ 'tipo' : 'cron_proc', 'fecha' : datetime.datetime.min })
     if not crontab.status('publicar_video'):
         lista.append({ 'tipo' : 'cron_pub', 'fecha' : datetime.datetime.min })
+
+    # Filtrar por tipo de video
+    if tipoVideo is not None:
+        lista = [element for element in lista if element['tipo'] == tipoVideo]
     # Ordena los elementos cronológicamente
     lista = sorted(lista, key=lambda it: it['fecha'])
+
     if request.is_ajax():
         return render_to_response("ajax/content-alertas.html", { 'lista' : lista[:5] }, context_instance=RequestContext(request))
     else:
-        return render_to_response("section-alertas.html", { 'lista' : lista }, context_instance=RequestContext(request))
+        return render_to_response("section-alertas.html", { 'lista' : lista , 'tipoAlerta' : tipo}, context_instance=RequestContext(request))
 
 """
 Edita los ajustes de configuración de la aplicación.

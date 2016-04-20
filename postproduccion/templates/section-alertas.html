@@ -197,14 +197,35 @@
 {% endblock %}
 
 {% block section-widget %}
-            <div class="portlet">
-                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-                <div class="portlet-content info-interes">
-                    <ul> 
-                        <li class="tip">Elementos que requieren especial atenci&oacute;n por parte del operador del sistema puesto que afectan al correcto funcionamiento del mismo.</li>
-                    </ul>
-                </div>
-            </div>
+    <div class="portlet">
+        <div class="portlet-header">Personalizar resultados</div>
+        <div class="portlet-content">
+            <form method="GET" class="form-buscador">
+                <ul>
+                    <li class="form-nombre">Tipo:</li>
+                    <select id="tipoVideo" name="tipoVideo">
+                        {% for value,name in tipoAlerta.items %}
+                            <option value="{{value}}">{{name}}</option>
+                        {% endfor %}
+                    </select>
+                <li><hr/></li>
+                <li>
+                    <input type="submit" value="Filtrar" />
+                    <a class="reset" href="{% url 'alertas' %}">Reiniciar</a>
+                </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+
+    <div class="portlet">
+        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+        <div class="portlet-content info-interes">
+            <ul>
+                <li class="tip">Elementos que requieren especial atenci&oacute;n por parte del operador del sistema puesto que afectan al correcto funcionamiento del mismo.</li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
 
 
