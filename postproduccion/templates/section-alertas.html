@@ -73,6 +73,27 @@
     </div>
     {% endif %}
 
+    {% if i.tipo == 'video-aceptado' %}
+    <div class="{{ i.tipo }}">
+        <div class="alerta">
+            <div class="alerta-header"><span class="icon-title">La producci&oacute;n con id {{ i.v.id }} no ha sido validada.</span><span class="icon plus"></span></div>
+            <div class="alerta-content">
+                <ul class="item-alerta">
+                    <li><span class="item-alerta-title">T&iacute;tulo de la producci&oacute;n:</span>{{ i.v.titulo }} </li>
+                    <li><span class="item-alerta-title">Identificador:</span> {{ i.v.id }} </li>
+                    <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
+                    <span class="item-alerta-content">La producci&oacute;n lleva pendiente de validar más de 15 d&iacute;as. </span></li>
+                </ul>
+            </div>
+            <div class="alerta-links">
+                <ul>
+                   <li class="item-alerta-links"><a class="edit-icon" href="{% url 'estado_video' i.v.id%}">Informe de la producci&oacute;n</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     {% if i.tipo == 'ejecutable' %}
     <div class="{{ i.tipo }}">
         <div class="alerta">
@@ -176,14 +197,35 @@
 {% endblock %}
 
 {% block section-widget %}
-            <div class="portlet">
-                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-                <div class="portlet-content info-interes">
-                    <ul> 
-                        <li class="tip">Elementos que requieren especial atenci&oacute;n por parte del operador del sistema puesto que afectan al correcto funcionamiento del mismo.</li>
-                    </ul>
-                </div>
-            </div>
+    <div class="portlet">
+        <div class="portlet-header">Personalizar resultados</div>
+        <div class="portlet-content">
+            <form method="GET" class="form-buscador">
+                <ul>
+                    <li class="form-nombre">Tipo:</li>
+                    <select id="tipoVideo" name="tipoVideo">
+                        {% for value,name in tipoAlerta.items %}
+                            <option value="{{value}}">{{name}}</option>
+                        {% endfor %}
+                    </select>
+                <li><hr/></li>
+                <li>
+                    <input type="submit" value="Filtrar" />
+                    <a class="reset" href="{% url 'alertas' %}">Reiniciar</a>
+                </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+
+    <div class="portlet">
+        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+        <div class="portlet-content info-interes">
+            <ul>
+                <li class="tip">Elementos que requieren especial atenci&oacute;n por parte del operador del sistema puesto que afectan al correcto funcionamiento del mismo.</li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
 
 
