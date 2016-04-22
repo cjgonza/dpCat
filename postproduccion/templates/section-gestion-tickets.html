@@ -131,13 +131,15 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-warning pull-left" data-toggle="modal" data-target="#dialogEliminarTicket">
-                        Generar ticket
-                    </button>
                 {% else %}
                     <input class="btn btn-success pull-left" type="submit" value="Generar ticket" />
                 {% endif %}
             </form>
+            {% if token and token.valid%}
+            <button class="btn btn-warning pull-left" data-toggle="modal" data-target="#dialogEliminarTicket">
+                Generar ticket
+            </button>
+            {% endif %}
         </div>
     </div>
 </div>
