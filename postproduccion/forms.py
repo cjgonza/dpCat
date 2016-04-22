@@ -13,11 +13,24 @@ class VideoForm(ModelForm):
     class Meta:
         model = Video
         fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super(VideoForm, self).__init__(*args, **kwargs)
+        self.fields['plantilla'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['titulo'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['autor'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['email'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['tipoVideo'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['objecto_aprendizaje'].widget.attrs.update({'class' : 'minimal', 'checked' : 'checked'})
 
 class InformeCreacionForm(ModelForm):
     class Meta:
         model = InformeProduccion
         fields = ('observacion', 'aprobacion', 'fecha_grabacion')
+    def __init__(self, *args, **kwargs):
+        super(InformeCreacionForm, self).__init__(*args, **kwargs)
+        self.fields['observacion'].widget.attrs.update({'class' : 'form-control', 'rows' : '5'})
+        self.fields['aprobacion'].widget.attrs.update({'class' : 'minimal', 'checked' : 'checked'})
+        self.fields['fecha_grabacion'].widget.attrs.update({'class' : 'form-control pull-right'})
 
 class VideoEditarForm(ModelForm):
     class Meta:
@@ -42,6 +55,9 @@ class FicheroEntradaForm(ModelForm):
     class Meta:
         model = FicheroEntrada
         fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super(FicheroEntradaForm, self).__init__(*args, **kwargs)
+        self.fields['fichero'].widget.attrs.update({'class' : 'form-control'})
 
     def clean_fichero(self):
         data = self.cleaned_data['fichero']
