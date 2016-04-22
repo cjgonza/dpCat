@@ -2,46 +2,142 @@
 
 {% block page-title %}Nueva producci&oacute;n, paso 1{% endblock %}
 {% block section-class %}class = "formulario paso1" {% endblock %}
-{% block section-title %}<h1>Nueva producci&oacute;n, paso 1: Informaci&oacute;n b&aacute;sica</h1>{% endblock %}
 {% block section-description %} {% endblock %}
 
-{% block section-content %} 
-    <div class="formulario-nueva">
-        <form method="post" action="" class="form-nueva">
-            <ul>
+{% block section-content %}
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Nueva producci&oacute;n, paso 1: Informaci&oacute;n b&aacute;sica</h3>
+        </div>
+        <div class="box-body">
+            <form method="post" role="form">
                 {% csrf_token %}
-                {{ vform.as_ul }}
-                {{ iform.as_ul }}
-            </ul>
-            <hr/>
-            <input type="submit" value="Siguiente paso" />
-            <input type="reset" value="Restaurar formulario" />
-        </form>
+                <div class="form-group">
+                    <label>{{ vform.plantilla.label }}:</label>
+                    {{ vform.plantilla }}
+                </div>
+                <div class="form-group {% if vform.titulo.errors %} has-error{% endif %}">
+                    <label>
+                        {% if vform.titulo.errors %} <i class="fa fa-times-circle-o"></i> {% endif %}
+                        {{ vform.titulo.label }}:
+                    </label>
+                    {{ vform.titulo }}
+                    {% if vform.titulo.errors %} <span class="help-block">Este campo es obligatorio.</span>{% endif %}
+                </div>
+                <div class="form-group {% if vform.autor.errors %} has-error{% endif %}">
+                    <label>
+                        {% if vform.autor.errors %} <i class="fa fa-times-circle-o"></i> {% endif %}
+                        {{ vform.autor.label }}:
+                    </label>
+                    {{ vform.autor }}
+                    {% if vform.autor.errors %} <span class="help-block">Este campo es obligatorio.</span>{% endif %}
+                </div>
+                <div class="form-group {% if vform.email.errors %} has-error{% endif %}">
+                    <label>
+                        {% if vform.email.errors %} <i class="fa fa-times-circle-o"></i> {% endif %}
+                        {{ vform.email.label }}:
+                    </label>
+                    {{ vform.email }}
+                    {% if vform.email.errors %} <span class="help-block">Este campo es obligatorio.</span>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label>{{ vform.tipoVideo.label }}:</label>
+                    {{ vform.tipoVideo }}
+                </div>
+                <div class="form-group">
+                    <label>{{ vform.objecto_aprendizaje.label }}:</label>
+                    <div>
+                        {{ vform.objecto_aprendizaje }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ iform.observacion.label }}:</label>
+                    {{ iform.observacion }}
+                </div>
+                <div class="form-group">
+                    <label>{{ iform.aprobacion.label }}:</label>
+                    <div>
+                        {{ iform.aprobacion }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{ iform.fecha_grabacion.label }}:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar">
+                            </i>
+                        </div>
+                        {{ iform.fecha_grabacion }}
+                    </div>
+                </div>
+                <input class="btn btn-default" type="reset" value="Restaurar formulario" />
+                <input class="btn btn-primary pull-right" type="submit" value="Siguiente paso" />
+            </form>
+        </div>
     </div>
 {% endblock %}
 
 {% block section-widget %}
-    <div id="progreso" class="uno"></div>
-    <div class="portlet">
-        <div class="portlet-header">Paso 1 de 3: Informaci&oacute;n b&aacute;sica</div>
-        <div class="portlet-content info-interes">
-            <ul>
-                <li class="tip">Se debe incluir la informaci&oacute;n de la manera m&aacute;s precisa posible.<br/><br/>Estos datos ser&aacute;n de utilidad &uacute;nicamente para documentar el proceso de producci&oacute;n.</li>
-            </ul>
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Paso 1 de 3: Informaci&oacute;n b&aacute;sica</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i class="fa fa-fw fa-info"></i></td>
+                        <td>Se debe incluir la informaci&oacute;n de la manera m&aacute;s precisa posible. Estos datos ser&aacute;n de utilidad &uacute;nicamente para documentar el proceso de producci&oacute;n.</td>
+                    </tr>
+                <tr>
+                    <div id="progreso" class="uno"></div>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+
     {% if vform.initial.id %}
-    <div id="dialog-eliminar" title="¿Eliminar producci&oacute;n?">
-        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>La producci&oacute;n ser&aacute; eliminada de forma permanente y no podr&aacute; ser recuperada.</p>
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Acciones disponibles</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <button class="btn btn-block btn-danger btn-sm" data-toggle="modal" data-target="#dialogEliminar">
+                <i class="icon fa fa-ban"></i>
+                    Eliminar producci&oacute;n
+            </button>
+        </div>
     </div>
-   
-    <div class="portlet">
-        <div class="portlet-header">Acciones disponibles</div>
-        <div class="portlet-content">
-            <ul>
-            <li><a class="eliminar" href="{% url 'borrar' vform.initial.id %}">Eliminar producci&oacute;n</a></li>
-            </ul>
+
+    <!-- Dialogo eliminar produccion -->
+    <div class="modal modal-danger fade" id="dialogEliminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">¿Eliminar producci&oacute;n?</h4>
+                </div>
+                <div class="modal-body">
+                    La producción será eliminada de forma permanente y no podrá ser recuperada.
+                </div>
+                <div class="modal-footer">
+                    <a type="button" href="{% url 'borrar' vform.initial.id %}" class="btn btn-outline pull-left">Eliminar</a>
+                    <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
         </div>
     </div>
     {% endif %}
+
 {% endblock %}

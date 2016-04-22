@@ -2,7 +2,6 @@
 
 {% block page-title %}Nueva producci&oacute;n, paso 2{% endblock %}
 {% block section-class %}class = "formulario paso2" {% endblock %}
-{% block section-title %}<h1>Nueva producci&oacute;n, paso 2: Contenido de la producci&oacute;n</h1>{% endblock %}
 {% block section-description %} {% endblock %}
 
 {% block page-script %}
@@ -17,40 +16,101 @@
     </script>
 {% endblock %}
 
-{% block section-content %} 
-<div class="formulario-nueva">
-    <form method="post" action="" class="form-nueva">
-        {% csrf_token %}
-        <label>Selecciona el fichero de entrada</label>
-        <div id="fileTree" class="navegador"></div>
-        {{ form.as_p }}
-        <hr/>
-        <input type="submit" value="Siguiente paso" />
-        <div id="volver"><a class="volver" href="{% url 'postproduccion.views.crear' v.id %}">Anterior</a></div>
-        <input type="reset" value="Restaurar formulario" />
-    </form>
+{% block section-content %}
+
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Nueva producci&oacute;n, paso 2: Contenido de la producci&oacute;n</h3>
+    </div>
+    <div class="box-body">
+        <form method="post" role="form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Selecciona el fichero de entrada</label>
+                <div id="fileTree" class="navegador"></div>
+            </div>
+            <div class="form-group {% if form.fichero.errors %} has-error{% endif %}">
+                <label>
+                    {% if form.fichero.errors %} <i class="fa fa-times-circle-o"></i> {% endif %}
+                    {{ form.fichero.label }}:
+                </label>
+                {{ form.fichero }}
+                {% if form.fichero.errors %} <span class="help-block">Este campo es obligatorio.</span>{% endif %}
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <input class="btn btn-default" type="reset" value="Restaurar formulario"/>
+                </div>
+                <div class="col-md-4">
+                    <input class="btn btn-primary pull-right" type="submit" value="Siguiente paso" />
+                    <a type="button" href="{% url 'postproduccion.views.crear' v.id %}" class="btn btn-primary pull-left" id="volver">Anterior</a>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
+
 {% endblock %}
 
 {% block section-widget %}
-    <div id="progreso" class="dos"></div>
-    <div class="portlet">
-        <div class="portlet-header">Paso 2 de 3: Contenido de la producci&oacute;n</div>
-        <div class="portlet-content info-basica">
-            <ul> 
-                <li class="tip">Seleccione de la unidad de almacenamiento el contenido que desea incluir en la producci&oacute;n.</li>
-            </ul>
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Paso 2 de 3: Contenido de la producci&oacute;n</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i class="fa fa-fw fa-info"></i></td>
+                        <td>Seleccione de la unidad de almacenamiento el contenido que desea incluir en la producci&oacute;n.</td>
+                    </tr>
+                <tr>
+                    <div id="progreso" class="dos"></div>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <div id="dialog-eliminar" title="¿Eliminar producci&oacute;n?">
-        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>La producci&oacute;n ser&aacute; eliminada de forma permanente y no podr&aacute; ser recuperada.</p>
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Acciones disponibles</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <button class="btn btn-block btn-danger btn-sm" data-toggle="modal" data-target="#dialogEliminar">
+                <i class="icon fa fa-ban"></i>
+                    Eliminar producci&oacute;n
+            </button>
+        </div>
     </div>
-     <div class="portlet">
-        <div class="portlet-header">Acciones disponibles</div>
-        <div class="portlet-content">
-            <ul> 
-                <li><a class="eliminar" href="{% url 'borrar' v.id %}">Eliminar producci&oacute;n</a></li>
-            </ul>
+
+    <!-- Dialogo eliminar produccion -->
+    <div class="modal modal-danger fade" id="dialogEliminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">¿Eliminar producci&oacute;n?</h4>
+                </div>
+                <div class="modal-body">
+                    La producción será eliminada de forma permanente y no podrá ser recuperada.
+                </div>
+                <div class="modal-footer">
+                    <a type="button" href="{% url 'borrar' v.id %}" class="btn btn-outline pull-left">Eliminar</a>
+                    <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
