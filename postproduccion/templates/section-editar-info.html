@@ -2,20 +2,62 @@
 
 {% block current-editar %} disabled {% endblock %}
 
-{% block section-content %} 
-    <div class="formulario-nueva">
-        <form method="post" action="" class="form-nueva form-editar">
-            <h2>Informaci&oacute;n b&aacute;sica de la producci&oacute;n</h2>
-            <ul>
+{% block section-content %}
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n b&aacute;sica de la producci&oacute;n</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <form method="post" role="form">
                 {% csrf_token %}
-                {{ vform.as_ul }}
-                {{ iform.as_ul }}
-								<div id="dialog-editar-oa" title="Modificado el tipo de metadatos">
-										<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Atención, si se modifica el tipo de metadata se borrará cualquier metadata previamente guardada.</p>
-								</div>
-            </ul>
-            <hr/>
-            <input type="submit" value="Guardar" />
-        </form>
+                {%for v in vform %}
+                <div class="form-group {% if v.errors %} has-error{% endif %}">
+                    <label>
+                        {% if v.errors %} <i class="fa fa-times-circle-o"></i> {% endif %}
+                        {{ v.label }}:
+                    </label>
+                    {{ v }}
+                    {% if v.errors %} <span class="help-block">Este campo es obligatorio.</span>{% endif %}
+                </div>
+                {%endfor%}
+                {%for i in iform %}
+                <div class="form-group {% if i.errors %} has-error{% endif %}">
+                    <label>
+                        {% if i.errors %} <i class="fa fa-times-circle-o"></i> {% endif %}
+                        {{ i.label }}:
+                    </label>
+                    {{ i }}
+                    {% if i.errors %} <span class="help-block">Este campo es obligatorio.</span>{% endif %}
+                </div>
+                {%endfor%}
+                <!-- Dialogo modificarMetadata -->
+                <div class="modal modal-warning fade" id="dialogModificarMetadata" tabindex="-1" role="dialog" aria-labelledby="labelModificarMetadata">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="labelModificarMetadata">¿Est&aacute; seguro de querer continuar?</h4>
+                            </div>
+                            <div class="modal-body">
+                                ¡Atenci&oacute;n! Si se modifica el tipo de metadata se borrar&aacute; cualquier metadata previamente guardada.
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-outline pull-left" value="Guardar"/>
+                                <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <button class="btn btn-warning pull-left" data-toggle="modal" data-target="#dialogModificarMetadata">
+                Guardar
+            </button>
+        </div>
     </div>
 {% endblock %}
