@@ -1,60 +1,133 @@
 {% extends "base-2-1.html" %}
 
 {% block page-title %}Informe de producci&oacute;n{% endblock %}
-{% block page-script %}<script type="text/javascript" src="/static/jwplayer/jwplayer.js"></script>{% endblock %}
 {% block section-class %} class="informe-video"{% endblock %}
 {% block section-title %}<h1>Informe de la producci&oacute;n: {{v.titulo}}</h1>{% endblock %}
 
-
 {% block section-description %}
 
-<div id="info-menu">
-    <ul id="tab-menu">
-        <li {% block current-resumen %} {% endblock %}> <a class="resumen" href="{% url 'estado_video' v.id %}">Resumen de producci&oacute;n</a></li>
-        <li {% block current-metadata %}{% endblock %}><a class="meta" href="{% url 'definir_metadatos_oper' v.id %}">Metadata</a></li>
-        {% if v.status != 'LIS' %}<li {% block current-ticket %} {% endblock %}><a class="ticket" href="{% url 'gestion_tickets' v.id %}">Gesti&oacute;n de ticket</a></li>{% endif %}
-        {% if v.status != 'LIS' %}<li {% block current-editar %} {% endblock %}><a class="editar" href="{% url 'editar' v.id %}">Editar</a></li>{% endif %}
-    </ul>
-</div>
+    <div class="box-body">
+        <div class="col-md-3">
+            <a class="btn btn-block btn-primary btn-sm {% block current-resumen %} {% endblock %}" href="{% url 'estado_video' v.id %}">
+                <i class="icon fa fa-question-circle"></i>
+                Resumen de producci&oacute;n
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a class="btn btn-block btn-primary btn-sm {% block current-metadata %}{% endblock %}" href="{% url 'definir_metadatos_oper' v.id %}">
+                <i class="icon fa fa-clipboard"></i>
+                Metadata
+            </a>
+        </div>
+        {% if v.status != 'LIS' %}
+        <div class="col-md-3">
+            <a class="btn btn-block btn-primary btn-sm {% block current-ticket %} {% endblock %}" href="{% url 'gestion_tickets' v.id %}">
+                <i class="icon fa fa-exchange"></i>
+                Gesti&oacute;n de ticket
+            </a>
+        </div>
+        {% endif %}
+        {% if v.status != 'LIS' %}
+        <div class="col-md-3">
+            <a class="btn btn-block btn-primary btn-sm {% block current-editar %} {% endblock %}" href="{% url 'editar' v.id %}">
+                <i class="icon fa fa-pencil"></i>
+                Editar
+            </a>
+        </div>
+        {% endif %}
+    </div>
 
 {% endblock %}
 
-
-
 {% block section-widget %}
 
-     <div class="portlet">
-        <div class="portlet-header">Estado actual de la producci&oacute;n</div>
-        <div class="portlet-content">
-            <ul><li class="estado">{{ v.get_status_display }}</li></ul>
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Estado actual de la producci&oacute;n</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
         </div>
-     </div>
-
-     <div class="portlet">
-        <div class="portlet-header">Acciones disponibles</div>
-        <div class="portlet-content">
-            <ul>
-                {% if v.status == 'LIS' %}
-                    <li><a class="publicar"href="{% url 'publicar' v.id %}">Publicar producci&oacute;n</a></li>
-                {% endif %}
-                {% if v.status == 'ACE' or v.status == 'PTO' %}
-                     <div id="dialog-validar" title="¿validar producci&oacute;n?">
-                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-                      Revise todos los datos de la producción antes de continuar, este proceso es irreversible.</p>
-                    </div>
-                    <li><a class="validar"href="{% url 'validar_produccion' v.id %}">Validar producci&oacute;n</a></li>
-                {% endif %}
-                <li>
-                    <div id="dialog-eliminar" title="¿Eliminar producci&oacute;n?">
-                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>La producci&oacute;n ser&aacute; eliminada de forma permanente y no podr&aacute; ser recuperada.</p>
-                    </div>
-                <a class="eliminar" href="{% url 'borrar' v.id %}">Eliminar producci&oacute;n</a></li>
-                {% if v.status != "INC" and v.status != "DEF" and v.status != "PRV" %}
-                    <li><a class="descargar" href="{% url 'download_video' v.id %}">Descargar video</a></li>
-                {% endif %}
-            </ul>
+        <div class="box-body">
+            <div class="btn-block btn-sm" style="background:#00c0ef; color: white; text-align: center;">
+                {{ v.get_status_display }}
+            </div>
         </div>
     </div>
 
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Acciones disponibles</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            {% if v.status == 'LIS' %}
+            <a type="button" href="{% url 'publicar' v.id %}" class="btn btn-block btn-success btn-sm">
+                <i class="icon fa fa-check"></i>
+                    Publicar producci&oacute;n
+            </a>
+            {% endif %}
+            {% if v.status == 'ACE' or v.status == 'PTO' %}
+            <button class="btn btn-block btn-warning btn-sm" data-toggle="modal" data-target="#dialogValidar">
+                <i class="icon fa fa-warning"></i>
+                    Validar producci&oacute;n
+            </button>
+            {% endif %}
+            <button class="btn btn-block btn-danger btn-sm" data-toggle="modal" data-target="#dialogEliminar">
+                <i class="icon fa fa-ban"></i>
+                    Eliminar producci&oacute;n
+            </button>
+            {% if v.status != "INC" and v.status != "DEF" and v.status != "PRV" %}
+            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'download_video' v.id %}">
+                <i class="icon fa fa-link"></i>
+                    Descargar video
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Dialogo eliminar produccion -->
+    <div class="modal modal-danger fade" id="dialogEliminar" tabindex="-1" role="dialog" aria-labelledby="labelEliminar">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="labelEliminar">¿Eliminar producci&oacute;n?</h4>
+                </div>
+                <div class="modal-body">
+                    La producción será eliminada de forma permanente y no podrá ser recuperada.
+                </div>
+                <div class="modal-footer">
+                    <a type="button" href="{% url 'borrar' v.id %}" class="btn btn-outline pull-left">Eliminar</a>
+                    <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dialogo validar produccion -->
+    <div class="modal modal-warning fade" id="dialogValidar" tabindex="-1" role="dialog" aria-labelledby="labelValidar">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="labelValidar">¿Validar producci&oacute;n?</h4>
+                </div>
+                <div class="modal-body">
+                    Revise todos los datos de la producción antes de continuar, este proceso es irreversible.
+                </div>
+                <div class="modal-footer">
+                    <a type="button" href="{% url 'validar_produccion' v.id %}" class="btn btn-outline pull-left">Validar producci&oacute;n</a>
+                    <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     {% block section-widget2 %}{% endblock %}
 {% endblock %}
