@@ -45,11 +45,12 @@ class InformeEditarForm(ModelForm):
         fields = ('observacion',)
 
 class IncidenciaProduccionForm(ModelForm):
-    comentario = CharField(required = True, widget = Textarea())
-
     class Meta:
         model = IncidenciaProduccion
         fields = ('comentario',)
+    def __init__(self, *args, **kwargs):
+        super(IncidenciaProduccionForm, self).__init__(*args, **kwargs)
+        self.fields['comentario'].widget.attrs.update({'class' : 'form-control', 'rows' : '5'})
 
 class FicheroEntradaForm(ModelForm):
     class Meta:
