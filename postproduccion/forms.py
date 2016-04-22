@@ -38,11 +38,21 @@ class VideoEditarForm(ModelForm):
         fields = '__all__'
         exclude = ['plantilla']
         #fields = ('titulo', 'autor', 'email', 'objecto_aprendizaje')
+    def __init__(self, *args, **kwargs):
+        super(VideoEditarForm, self).__init__(*args, **kwargs)
+        self.fields['titulo'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['autor'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['email'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['tipoVideo'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['objecto_aprendizaje'].widget.attrs.update({'class' : 'minimal', 'checked' : 'checked'})
 
 class InformeEditarForm(ModelForm):
     class Meta:
         model = InformeProduccion
         fields = ('observacion',)
+    def __init__(self, *args, **kwargs):
+        super(InformeEditarForm, self).__init__(*args, **kwargs)
+        self.fields['observacion'].widget.attrs.update({'class' : 'form-control', 'rows' : '5'})
 
 class IncidenciaProduccionForm(ModelForm):
     class Meta:
