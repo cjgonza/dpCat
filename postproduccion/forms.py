@@ -79,11 +79,54 @@ class MetadataOAForm(ModelForm):
     class Meta:
         model = MetadataOA
         fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super(MetadataOAForm, self).__init__(*args, **kwargs)
+        self.fields['knowledge_areas'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['title'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['creator'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['keyword'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['description'].widget.attrs.update({'class' : 'form-control', 'rows' : '5'})
+        self.fields['license'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['guideline'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['contributor'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['audience'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['typical_age_range'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['source'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['language'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['ispartof'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['location'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['venue'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['temporal'].widget.attrs.update({'class' : 'form-control', 'rows' : '5'})
+        self.fields['rightsholder'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['type'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['interactivity_type'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['interactivity_level'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['learning_resource_type'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['semantic_density'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['context'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['dificulty'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['typical_learning_time'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['educational_language'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['purpose'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['unesco'].widget.attrs.update({'class' : 'form-control select2'})
 
 class MetadataGenForm(ModelForm):
     class Meta:
         model = MetadataGen
         fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super(MetadataGenForm, self).__init__(*args, **kwargs)
+        self.fields['knowledge_areas'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['title'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['creator'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['keyword'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['description'].widget.attrs.update({'class' : 'form-control', 'rows' : '5'})
+        self.fields['license'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['transcription'].widget.attrs.update({'class' : 'form-control', 'rows' : '5'})
+        self.fields['contributor'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['language'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['location'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['venue'].widget.attrs.update({'class' : 'form-control'})
 
 class ASCIIField(forms.CharField):
     def validate(self, value):
