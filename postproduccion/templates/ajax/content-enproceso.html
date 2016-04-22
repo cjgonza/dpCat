@@ -13,7 +13,7 @@
         <td>{{ video.id }}</td>
         {% if video.status == 'Aceptado' %}
             <td><span class="label label-success">{{ video.status }}</span></td>
-        {% elif video.status == 'Pendiente del usuario'%}
+        {% elif video.status == 'Pendiente del usuario' or video.status == 'Definido'%}
             <td><span class="label label-warning">{{ video.status }}</span></td>
         {% else %}
             <td><span class="label label-danger">{{ video.status }}</span></td>
