@@ -825,4 +825,16 @@ def status(request):
                 messages.success(request, 'Tareas programadas de publicación activadas')
     cron = { 'process' : crontab.status('procesar_video'), 'publish' : crontab.status('publicar_video') }
 
-    return render_to_response("section-status.html", { 'exes' : exes, 'dirs' : dirs, 'cron' : cron }, context_instance=RequestContext(request))
+    # Información de la versión
+    dpcatinfo = utils.dpcat_info()
+    version = [
+        ['Versión', dpcatinfo['version']],
+        ['Rama', dpcatinfo['branch']],
+        ['Commit', dpcatinfo['commit']],
+        ['Repositorio', dpcatinfo['url']],
+        ['Fecha', dpcatinfo['date']],
+        ['Autor', dpcatinfo['author']],
+        ['Mensaje', dpcatinfo['message']]
+    ]
+
+    return render_to_response("section-status.html", { 'exes' : exes, 'dirs' : dirs, 'cron' : cron, 'version' : version }, context_instance=RequestContext(request))

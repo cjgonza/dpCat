@@ -199,15 +199,16 @@ def dpcat_info():
     info = {}
     repo = 'https://github.com/tic-ull/dpCat/'
 
-    total = run_command('git rev-list --count HEAD').strip()
-    commit = run_command('git rev-parse --short HEAD').strip()
-    
-    info['version'] = 'r.%s.%s' %(total, commit)
-    info['branch'] = run_command('git name-rev --name-only HEAD').strip()
-    info['url'] = link + run_command('git rev-parse HEAD').strip()
-    info['date'] = run_command('git show -s --format=%ci').strip()
-    info['message'] = run_command('git show -s --format=%B').strip()
-    info['author'] = run_command('git show -s --format=%an').strip()
+    info['version'] = run_command('git tag', 'tail -1').strip()
+    info['commit'] = 'r.%s.%s' % (
+        run_command('git rev-list --count %s' % info['version']).strip(),
+        run_command('git rev-parse --short %s' % info['version']).strip()
+    )
+    info['branch'] = run_command('git branch', 'grep *', 'cut -d " " -f2').strip()
+    info['url'] = repo + run_command('git rev-parse %s' % info['version']).strip()
+    info['date'] = run_command('git show -s --format=%%ci %s' % info['version']).strip()
+    info['message'] = run_command('git show -s --format=%%B %s' % info['version']).strip()
+    info['author'] = run_command('git show -s --format=%%an %s' % info['version']).strip()
 
     return info
 
