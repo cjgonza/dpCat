@@ -88,5 +88,26 @@
   </tbody>
 </table>
 
+<h2>Versi&oacute;n</h2>
+<table id="tabla">
+  <thead>
+    <th>Propiedad</th>
+    <th>Información</th>
+  </thead>
+  <tbody>
+    {% for p in version %}
+    <tr>
+    <td>{{ p.0 }}</td>
+    {% if p.0 == 'Repositorio' %}
+        <td><a href="{{ p.1 }}">{{ p.1 }}</a></td>
+    {% else %}
+        <td>{{ p.1 }}</td>
+    {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<hr/>
+
 
 {% endblock %}

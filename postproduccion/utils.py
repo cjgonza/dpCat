@@ -110,11 +110,20 @@ def is_exec(fpath):
     return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
 """
+Ejecutar comando con posibilidad de concatenar tuberías
+"""
+def run_command(*commands):
+    p = subprocess.Popen(shlex.split(str(commands[0])), stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+    for cmd in commands[1:]:
+        prev = p
+        p = subprocess.Popen(shlex.split(str(cmd)), stdin = prev.stdout, stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+    return p.communicate()[0]
+
+"""
 Trata de localizar la ruta del ejecutable dado en el PATH
 """
 def which(fpath):
-    command = "/usr/bin/which %s" % fpath
-    return subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE).communicate()[0].strip()
+    return run_command("/usr/bin/which %s" % fpath)
 
 """
 Devuelve la versión del avconv instalado.
@@ -122,8 +131,7 @@ Devuelve la versión del avconv instalado.
 def avconv_version():
     fpath = config.get_option('AVCONV_PATH')
     if is_exec(fpath):
-        command = "%s -version" % fpath
-        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.STDOUT).communicate()[0]
+        data = run_command('%s -version' % fpath)
         try:
             return re.match('avconv version ([\.0-9]+)', data).group(1)
         except AttributeError:
@@ -135,8 +143,7 @@ Devuelve la versión del melt instalado.
 def melt_version():
     fpath = config.get_option('MELT_PATH')
     if is_exec(fpath):
-        command = "%s -version" % fpath
-        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.STDOUT).communicate()[0]
+        data = run_command('%s -version' % fpath)
         try:
             return re.search('melt ([\.0-9]+)', data).group(1)
         except AttributeError:
@@ -148,8 +155,7 @@ Devuelve la versión del mediainfo instalado.
 def mediainfo_version():
     fpath = config.get_option('MEDIAINFO_PATH')
     if is_exec(fpath):
-        command = "%s --Version" % fpath
-        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()[0]
+        data = run_command('%s --Version' % fpath)
         try:
             return re.search('(v[0-9\.]+)$', data).group(1)
         except AttributeError:
@@ -161,8 +167,7 @@ Devuelve la versión del MP4Box instalado.
 def mp4box_version():
     fpath = config.get_option('MP4BOX_PATH')
     if is_exec(fpath):
-        command = "%s -version" % fpath
-        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.STDOUT).communicate()[0]
+        data = run_command('%s -version' % fpath)
         try:
             return re.search('version (\S*)', data).group(1)
         except AttributeError:
@@ -174,8 +179,7 @@ Devuelve la versión del exiftool instalado.
 def exiftool_version():
     fpath = config.get_option('EXIFTOOL_PATH')
     if is_exec(fpath):
-        command = "%s -ver" % fpath
-        data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE, stderr = subprocess.STDOUT).communicate()[0]
+        data = run_command('%s -ver' % fpath)
         try:
             return re.search('([\.0-9]+)', data).group(1)
         except AttributeError:
@@ -185,9 +189,28 @@ def exiftool_version():
 Devuelve la información de uso del sistema de ficheros en el que se encuentra la ruta dada.
 """
 def df(fpath):
-    command = "df %s -Ph" % fpath
-    data = subprocess.Popen(shlex.split(str(command)), stdout = subprocess.PIPE).communicate()[0].strip().splitlines()[1]
+    data = run_command('df %s -Ph' % fpath).strip().splitlines()[1]
     return re.search('^.* +([\.0-9,]+[KMGTPEZY]?) +([\.0-9,]+[KMGTPEZY]?) +([\.0-9,]+[KMGTPEZY]?) +([\.0-9,]+%) +(/.*$)', data).group(1, 2, 3, 4, 5)
+
+"""
+Devuelve la información acerca de la versión actual de dpCat.
+"""
+def dpcat_info():
+    info = {}
+    repo = 'https://github.com/tic-ull/dpCat/'
+
+    info['version'] = run_command('git tag', 'tail -1').strip()
+    info['commit'] = 'r.%s.%s' % (
+        run_command('git rev-list --count %s' % info['version']).strip(),
+        run_command('git rev-parse --short %s' % info['version']).strip()
+    )
+    info['branch'] = run_command('git branch', 'grep *', 'cut -d " " -f2').strip()
+    info['url'] = repo + run_command('git rev-parse %s' % info['version']).strip()
+    info['date'] = run_command('git show -s --format=%%ci %s' % info['version']).strip()
+    info['message'] = run_command('git show -s --format=%%B %s' % info['version']).strip()
+    info['author'] = run_command('git show -s --format=%%an %s' % info['version']).strip()
+
+    return info
 
 """
 Comprueba si el directorio dado existe y es accesible. Si no existe y puede, lo creará y devolverá verdadero.
