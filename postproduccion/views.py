@@ -22,6 +22,8 @@ from postproduccion import crontab
 from postproduccion import video
 from configuracion import config
 
+from django.contrib.auth.models import User
+
 import os
 import urllib
 import datetime
@@ -29,7 +31,7 @@ import datetime
 from django.contrib.auth.decorators import permission_required
 
 '''
-login
+Login
 '''
 def login_view(request):
     if request.method == 'POST':
