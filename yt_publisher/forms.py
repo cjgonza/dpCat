@@ -6,6 +6,11 @@ class ConfigForm(forms.Form):
     client_secret = forms.CharField(label = u'API Client Secret')
     max_tasks = forms.IntegerField(label = u'Nº máximo de publicaciones simultaneas')
 
+    def __init__(self, *args, **kwargs):
+        super(ConfigForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class' : 'form-control'})
+
 class PublishingForm(forms.Form):
     title = forms.CharField(max_length = 100, label = u'Título')
     description = forms.CharField(max_length = 5000, label = u'Descripción', widget = forms.Textarea)

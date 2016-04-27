@@ -165,19 +165,19 @@ class ASCIIField(forms.CharField):
         try:
             str(value)
         except UnicodeEncodeError:
-            raise forms.ValidationError("El campo no debe contener tíldes ni caracteres especiales")
+            raise forms.ValidationError("El campo no debe contener tíldes ni caracteres especiales.")
 
 class ExecutableField(ASCIIField):
     def validate(self, value):
         super(ExecutableField, self).validate(value)
         if not is_exec(value):
-            raise forms.ValidationError("El fichero no existe o no es ejecutable")
+            raise forms.ValidationError("El fichero no existe o no es ejecutable.")
 
 class DirectoryField(ASCIIField):
     def validate(self, value):
         super(DirectoryField, self).validate(value)
         if not is_dir(value):
-            raise forms.ValidationError("El directorio no existe o no es accesible")
+            raise forms.ValidationError("El directorio no existe o no es accesible.")
 
 class TemplateField(forms.CharField):
     widget = Textarea()
@@ -205,6 +205,11 @@ class ConfigForm(Form):
     log_max_lines = forms.IntegerField(label = u'Nº máximo de líneas del registro de sistema')
     max_num_logfiles = forms.IntegerField(label = u'Nº máximo de ficheros de registro de sistema antiguos')
 
+    def __init__(self, *args, **kwargs):
+        super(ConfigForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class' : 'form-control'})
+
 class ConfigMailForm(Form):
     return_email = forms.EmailField(label = u'Dirección del remitente para envíos de correos electrónicos')
     notify_mail_subject = forms.CharField(label = u'Asunto del correo de notificación de producción realizada')
@@ -215,3 +220,8 @@ class ConfigMailForm(Form):
     validated_mail_message = TemplateField(label = u'Mensaje del correo de aviso de validación de una producción')
     published_mail_subject = forms.CharField(label = u'Asunto del correo de aviso de publicación de una producción')
     published_mail_message = TemplateField(label = u'Mensaje del correo de aviso de publicación de una producción')
+
+    def __init__(self, *args, **kwargs):
+        super(ConfigMailForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class' : 'form-control'})

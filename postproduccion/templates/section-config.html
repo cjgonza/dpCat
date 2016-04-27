@@ -2,19 +2,35 @@
 
 {% block page-title %}Configuraci&oacute;n{% endblock %}
 {% block section-class %} class = "formulario config" {% endblock %}
-{% block section-title %}<h1>Configuraci&oacute;n {% if mail %}de los correos{% else %}del sistema{% endif %}</h1>{% endblock %}
 {% block section-description %}{% endblock %}
 
-{% block section-content %} 
-    <div class="formulario-nueva">
-        <form method="post" action="" class="form-nueva">
-        <ul>
-            {% csrf_token %}
-            {{ form.as_ul }}
-            </ul>
-            <hr/>
-            <input type="submit" value="Guardar" />
-            <input type="reset" value="Restaurar formulario" />
-        </form>
+{% block section-content %}
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Configuraci&oacute;n {% if mail %}de los correos{% else %}del sistema{% endif %}</h3>
+            <div class="box-tools pull-right">
+            </div>
+        </div>
+        <div class="box-body">
+            <form method="post" role="form">
+                {% csrf_token %}
+                {%for v in form%}
+                <div class="form-group {% if v.errors %} has-error{% endif %}">
+                    <label>
+                        {% if v.errors%} <i class="fa fa-times-circle-o"></i> {% endif %}
+                        {{ v.label }}:
+                    </label>
+                    {{ v}}
+                    {% if v.errors %}
+                    {% for error in v.errors %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                {%endfor%}
+                <input class="btn btn-default" type="reset" value="Restaurar formulario" />
+                <input class="btn btn-primary pull-right" type="submit" value="Guardar" />
+            </form>
+        </div>
     </div>
 {% endblock %}

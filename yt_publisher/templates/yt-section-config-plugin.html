@@ -2,39 +2,96 @@
 
 {% block page-title %}Configuraci&oacute;n{% endblock %}
 {% block section-class %} class = "formulario config" {% endblock %}
-{% block section-title %}<h1>Configuraci&oacute;n del plugin: YouTube</h1>{% endblock %}
 
 {% block section-content %}
-    <div class="formulario-nueva">
-        <form method="post" action="" class="form-nueva">
-        <ul>
-            {% csrf_token %}
-            {{ form.as_ul }}
-            </ul>
-            <hr/>
-            <input type="submit" value="Guardar" />
-            <input type="reset" value="Restaurar formulario" />
-        </form>
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Configuraci&oacute;n del plugin: YouTube</h3>
+            <div class="box-tools pull-right">
+            </div>
+        </div>
+        <div class="box-body">
+            <form method="post" role="form">
+                {% csrf_token %}
+                {%for v in form%}
+                <div class="form-group {% if v.errors %} has-error{% endif %}">
+                    <label>
+                        {% if v.errors%} <i class="fa fa-times-circle-o"></i> {% endif %}
+                        {{ v.label }}:
+                    </label>
+                    {{ v}}
+                    {% if v.errors %}
+                    {% for error in v.errors %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                {%endfor%}
+                <input class="btn btn-default" type="reset" value="Restaurar formulario" />
+                <input class="btn btn-primary pull-right" type="submit" value="Guardar" />
+            </form>
+        </div>
     </div>
 {% endblock %}
 
 {% block section-widget2 %}
-    <div class="portlet">
-        <div class="portlet-header">Cuenta de YouTube para la publicaci&oacute;n</div>
-        <div class="portlet-content info-interes">
-            <ul>
-                {% if auth_state %}
-                <li class="tip">Actualmente existe una cuenta de YouTube asociada para la publicaci&oacute;n, todos lo v&iacute;deos ser&aacute;n publicados en esta cuenta.</li>
-                <li>
-                    <div id="dialog-eliminar" title="¿Eliminar cuenta de publicaci&oacute;n?">
-                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Si se elimina la cuenta de publicaci&oacute;n no se podrán publicar v&iacute;deos.</p>
-                    </div>
-                <a class="eliminar" href="{% url 'revoke' %}">Eliminar cuenta de publicaci&oacute;n</a></li>
-                {% else %}
-                <li class="tip">Actualmente no existe cuenta de YouTube asociada para la publicaci&oacute;n, es necesario asociar una cuenta para poder publicar.</li>
-                <li><a class="descargar" href="{% url 'authorize' %}">Asociar cuenta de publicaci&oacute;n</a></li>
-                {% endif %}
-            </ul>
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Cuenta de YouTube para la publicaci&oacute;n</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    {% if auth_state %}
+                    <tr>
+                        <td><i class="fa fa-fw fa-info"></i></td>
+                        <td>Actualmente existe una cuenta de YouTube asociada para la publicaci&oacute;n, todos lo v&iacute;deos ser&aacute;n publicados en esta cuenta.</td>
+                    </tr>
+                    <tr>
+                         <button class="btn btn-block btn-danger btn-sm" data-toggle="modal" data-target="#dialogEliminar">
+                            <i class="icon fa fa-ban"></i>
+                                Eliminar cuenta de publicaci&oacute;n
+                        </button>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td><i class="fa fa-fw fa-info"></i>Actualmente no existe cuenta de YouTube asociada para la publicaci&oacute;n, es necesario asociar una cuenta para poder publicar.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="{% url 'authorize' %}" class="btn btn-block btn-default btn-sm">
+                                <i class="icon fa fa-link"></i>
+                                    Asociar cuenta de publicaci&oacute;n
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Dialogo eliminar produccion -->
+    <div class="modal modal-danger fade" id="dialogEliminar" tabindex="-1" role="dialog" aria-labelledby="labelEliminar">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="labelEliminar">¿Eliminar cuenta de publicaci&oacute;n?</h4>
+                </div>
+                <div class="modal-body">
+                    Si se elimina la cuenta de publicaci&oacute;n no se podrán publicar v&iacute;deos.
+                </div>
+                <div class="modal-footer">
+                    <a type="button" href="{% url 'revoke' %}" class="btn btn-outline pull-left">Eliminar</a>
+                    <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

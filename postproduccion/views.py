@@ -35,19 +35,14 @@ Login
 '''
 def login_view(request):
     if request.method == 'POST':
-        print request.POST
         lform = LoginForm(data=request.POST)
         if lform.is_valid():
-            print "form vaild"
             username = request.POST['username']
             password = request.POST['password']
             user = authenticate(username=username, password=password)
-            print user
             if user is not None:
                 login(request, user)
                 return redirect('postproduccion.views.index')
-        else:
-            print lform
     else:
         lform = LoginForm()
     return render_to_response("login.html", { 'form' : lform }, context_instance=RequestContext(request))
