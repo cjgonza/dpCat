@@ -10,9 +10,10 @@ from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.contrib.auth import authenticate, login
 
 from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion, RegistroPublicacion, InformeProduccion
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm, VideoEditarForm, InformeEditarForm
+from postproduccion.forms import LoginForm, VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm, VideoEditarForm, InformeEditarForm
 from postproduccion import queue
 from postproduccion import utils
 from postproduccion import token
@@ -21,13 +22,33 @@ from postproduccion import crontab
 from postproduccion import video
 from configuracion import config
 
-from django.contrib.auth.models import User
-
 import os
 import urllib
 import datetime
 
 from django.contrib.auth.decorators import permission_required
+
+'''
+login
+'''
+def login_view(request):
+    if request.method == 'POST':
+        print request.POST
+        lform = LoginForm(data=request.POST)
+        if lform.is_valid():
+            print "form vaild"
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            print user
+            if user is not None:
+                login(request, user)
+                return redirect('postproduccion.views.index')
+        else:
+            print lform
+    else:
+        lform = LoginForm()
+    return render_to_response("login.html", { 'form' : lform }, context_instance=RequestContext(request))
 
 """
 Muestra la página inicial

@@ -11,25 +11,34 @@
         <div class="box-header with-border">
             <h3 class="box-title">Acceso al sistema</h3>
         </div>
-            <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
-                <div class="box-body">
+            <div class="box-body">
+                <form method="post">
                     {% csrf_token %}
-                    <div class="form-group">
-                        <label>{{ form.username.label }}:</label>
+                    {% if form.non_field_errors %}
+                    {% endif %}
+                    <div class="form-group {%if form.username.errors%}has-error{% endif %}">
+                        <label>
+                            {% if form.username.errors %} <i class="fa fa-times-circle-o"></i> {% endif %}
+                            {{ form.username.label }}:
+                        </label>
                         {{ form.username}}
+                        {% if form.username.errors %} <span class="help-block">Usuario incorrecto.</span>{% endif %}
                     </div>
-                    <div class="form-group">
-                        <label>{{ form.password.label }}:</label>
+                    <div class="form-group {%if form.password.errors or form.non_field_errors%}has-error{% endif %}">
+                        <label>
+                            {% if form.password.errors or form.non_field_errors%} <i class="fa fa-times-circle-o"></i> {% endif %}
+                            {{ form.password.label }}:
+                        </label>
                         {{ form.password }}
+                        {% if form.password.errors or form.non_field_errors%} <span class="help-block">Contraseña incorrecta.</span>{% endif %}
                     </div>
                     <input class="btn btn-primary pull-right" type="submit" value="Acceder" />
                     <input class="btn btn-primary pull-right" type="hidden" name="next" value="{{ next }}" />
                 </div>
-
-                <div class="box-footer">
-                   <a href="#">dpCat &copy; 2012</a></li>
-                </div>
             </form>
+            <div class="box-footer">
+               <a href="#">dpCat &copy; 2012</a></li>
+            </div>
     </div>
 </div>
 {% endblock %}

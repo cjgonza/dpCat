@@ -7,7 +7,27 @@ from postproduccion.models import Video, FicheroEntrada, MetadataOA, MetadataGen
 from postproduccion.utils import is_exec, is_dir
 from postproduccion.encoder import is_video_file
 from configuracion import config
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+
 import os
+class LoginForm(AuthenticationForm):
+    def clean(self):
+        username = password= None
+        if 'username' in self.cleaned_data.keys():
+            username = self.cleaned_data['username']
+        if 'password'  in self.cleaned_data.keys():
+            password = self.cleaned_data['password']
+        if username and password:
+            user = authenticate(username = username, password = password)
+            if not user:
+                raise forms.ValidationError('Error de login')
+        return self.cleaned_data
+    def __init__(self, *args, **kwargs):
+        super(AuthenticationForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['password'].widget.attrs.update({'class' : 'form-control'})
 
 class VideoForm(ModelForm):
     class Meta:
