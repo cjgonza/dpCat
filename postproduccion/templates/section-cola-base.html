@@ -3,75 +3,104 @@
 {% block page-title %}Centro de monitorizaci&oacute;n{% endblock %}
 {% block section-class %} {% endblock %}
 {% block section-title %}<h1>Centro de monitorizaci&oacute;n</h1>{% endblock %}
-{% block section-description %}<h2>Cola de procesamiento</h2>{% endblock %}
 
 {% block section-content %}
-<div id="contenedor"><span class="ajax-loader"></span></div>
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Cola de procesamiento</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive" id="contenedor">
+            <span class="ajax-loader"></span>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block section-widget %}
-            <div class="portlet">
-                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-                <div class="portlet-content info-interes">
-                    <ul> 
-                        <li class="tip">Esta pantalla se refresca cada segundo mostrando la informaci&oacute;n de la cola de procesamiento del sistema en tiempo real.</li>
-                    </ul>
-                </div>
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i class="fa fa-fw fa-info"></i></td>
+                        <td>Esta pantalla se refresca cada segundo mostrando la informaci&oacute;n de la cola de procesamiento del sistema en tiempo real.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
 
 {% block page-script %}
     <script type="text/javascript">
         function tablaBase() {
-            str = '<table id="tabla" class="cola">';
-            str += '<thead><th class="id">ID</th><th class="type">Informaci&oacute;n</th><th class="date">Fecha</th><th>T&iacute;tulo</th><th class="log">Log</th> </thead>';
+            str = '<table id="tabla_id" class="table no-margin">';
+            str += '<thead><th>ID</th><th>Informaci&oacute;n</th><th>Fecha</th><th>T&iacute;tulo</th><th>Log</th> </thead>';
             str += '<tbody></tbody>';
             str += '</table>';
             return str;
         }
         function creaLinea(data) {
-            str = '<td class="id">' + data['id'] + '</td>';
-            str += '<td><ul><li>Tipo: ' + data['tipo'] + '</li>';
-            str += '<li>Estado: <span>' + data['status'] + '</span><br/>';
+            str = '<td>' + data['id'] + '</td>';
+            str += '<td>Tipo: ' + data['tipo'] + '<br>';
+            str += 'Estado: <span>' + data['status'] + '</span><br>';
             if (data['progress']) {
                 str += '<div id="progressbar' + data['id'] + '"></div>';
                 str += '<div class="progressbartext">' + data['progress'] + ' %</div>';
             }
-            str += '</li></td>';
+            str += '</td>';
             if (data['comienzo'] || data['fin']) {
-                str += '<td class="date"><ul>';
+                str += '<td>';
                 if (data['comienzo']) {
-                    str += '<li>' + data['comienzo'] + ' - Inicio</li>';
+                    str += data['comienzo'] + ' - Inicio<br>';
                 }
                 if (data['fin']) {                    
-                   str += '<li>' + data['fin'] + ' - Fin</li>';
+                   str += data['fin'] + ' - Fin';
                 }
-                str +='</ul></td>';
+                str +='</td>';
             } else {
-                str += '<td class="date">&nbsp;</td>';
+                str += '<td>&nbsp;</td>';
             }
 
-            str += '<td><a class="link" href="' + data['v-url'] + '">' + data['v-titulo'] + '</a></td>';
+            str += '<td><a href="' + data['v-url'] + '">' + data['v-titulo'] + '</a></td>';
 
             if (data['logurl']) {
-                str += '<td class="log"><a class="chain" href="' + data['logurl'] +'" target="_blank">' + data['logfile'] +'</a></td>';
+                str += '<td><a href="' + data['logurl'] +'" target="_blank"><i class="icon fa fa-link"> ' + data['logfile'] +'</i></a></td>';
             } else {
-                str += '<td class="log">&nbsp;</td>';
+                str += '<td>&nbsp;</td>';
             }
             return str;
         }
 
         function actualizaTabla(data) {
             if (data.length) {
-                if (!$("#tabla").length)
+                if (!$("#tabla_id").length)
                     $("#contenedor").html(tablaBase());
             } else {
                 if (!$("#contenedor").find(".mensaje").length)
-                    $("#contenedor").html('<div class="mensaje info">No hay ning&uacute;n trabajo en la cola de procesado.</div>');
+                    $("#contenedor").html('<div class="alert alert-info alert-dismissible"><i class="icon fa fa-info"></i>No hay ning&uacute;n trabajo en la cola de procesado.</div>');
             }
 
             var cont = 0;
-            var filas = $("tbody").children();
+            var filas = $("#tabla_id tbody").children();
             for (var i = 0; i < filas.length; i++) {
                 // Borra la tarea si ya no está en la cola.
                 if (cont >= data.length) {
@@ -108,7 +137,7 @@
             }
             // Crea los nuevos elementos insertados al final de la cola.
             for (;cont < data.length; cont++) {
-                $("tbody").append('<tr>' + creaLinea(data[cont]) + '</tr>');
+                $("#tabla_id tbody").append('<tr>' + creaLinea(data[cont]) + '</tr>');
                 $('#progressbar' + data[cont]['id']).progressbar({value : data[cont]['progress']});
             }
         }
