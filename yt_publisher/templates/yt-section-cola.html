@@ -3,34 +3,85 @@
 {% block page-title %}Centro de monitorizaci&oacute;n{% endblock %}
 {% block section-class %} {% endblock %}
 {% block section-title %}<h1>Centro de monitorizaci&oacute;n</h1>{% endblock %}
-{% block section-description %}<h2>Cola de publicaci&oacute;n</h2>{% endblock %}
 
 {% block section-content %}
-<div id="contenedor"><span class="ajax-loader"></span></div>
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Cola de publicaci&oacute;n</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive" id="contenedor">
+            <span class="ajax-loader"></span>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block section-widget %}
-     <div class="portlet">
-        <div class="portlet-header">Acciones disponibles</div>
-        <div class="portlet-content">
-            <ul>
-                <li>
-                    <div id="dialog-eliminar" title="¿Pugar cola de publicaci&oacute;n?">
-                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>La informaci&oacute;n de la cola de publicaci&oacute;n ser&aacute; purgada y no podr&aacute; ser recuperada.</p>
-                    </div>
-                <a class="eliminar" href="{% url 'purgar_publicaciones' %}">Purgar cola de publicaci&oacute;n</a></li>
-            </ul>
+     <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Acciones disponibles</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <button class="btn btn-block btn-danger btn-sm" data-toggle="modal" data-target="#dialogEliminar">
+                <i class="icon fa fa-ban"></i>
+                    Purgar cola de publicaci&oacute;n
+            </button>
         </div>
     </div>
 
-            <div class="portlet">
-                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-                <div class="portlet-content info-interes">
-                    <ul>
-                        <li class="tip">Listado de producciones pendientes de publicar en sistemas externos de publicaci&oacute;n.</li>
-                    </ul>
+    <!-- Dialogo eliminar produccion -->
+    <div class="modal modal-danger fade" id="dialogEliminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">¿Pugar cola de publicaci&oacute;n?</h4>
+                </div>
+                <div class="modal-body">
+                    La informaci&oacute;n de la cola de publicaci&oacute;n ser&aacute; purgada y no podr&aacute; ser recuperada.
+                </div>
+                <div class="modal-footer">
+                    <a type="button" href="{% url 'purgar_publicaciones' %}" class="btn btn-outline pull-left">Purgar</a>
+                    <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i class="fa fa-fw fa-info"></i></td>
+                        <td>Listado de producciones pendientes de publicar en sistemas externos de publicaci&oacute;n.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
 
 {% block page-script %}
