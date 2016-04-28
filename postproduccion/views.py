@@ -625,7 +625,7 @@ def download_video(request, video_id):
 
 def stream_preview(request, tk_str):
     v = token.is_valid_token(tk_str)
-    resp = HttpResponse(utils.stream_file(v.previsualizacion.fichero), content_type='video/x-flv')
+    resp = HttpResponse(utils.stream_file(v.previsualizacion.fichero), content_type='video/mp4')
     resp['Content-Length'] = os.path.getsize(v.previsualizacion.fichero)
     return resp
 

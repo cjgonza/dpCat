@@ -1,19 +1,16 @@
 {% extends "index-public.html" %}
 
-{% block contenido %} 
+{% block contenido %}
 
-<div id="content" {% block section-class %} {% endblock %} >
-    <div id="content-left">
+<div class="row" >
+    <div class="col-md-9">
         {% block section-description %} {% endblock %}
         {% block section-content %} {% endblock %}
     </div>
- 
-    <div id="content-right">
-        <div class="column">
-            {% block section-widget %} {% endblock %}    
-        </div>
+
+    <div class="col-md-3">
+        {% block section-widget %} {% endblock %}
     </div>
 </div>
-
 {% endblock %}
 
