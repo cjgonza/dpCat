@@ -6,18 +6,32 @@
 
 {% block section-content %}
 
-<div class="mensaje error">El ticket al que intenta acceder se ha caducado.<br/><br/>El ticket solicitado no está disponible, probablemente se haya caducado, si es as&iacute;, p&oacute;ngase en contacto con el personal t&eacute;cnico para que le generen un nuevo ticket; si no es as&iacute;, verifique que la URL que ha introducido es la que recibió por correo.</div>
-
+<div class="alert alert-error alert-dismissible">
+    <i class="icon fa fa-ban"></i>
+    El ticket al que intenta acceder se ha caducado.<br/><br/>El ticket solicitado no está disponible, probablemente se haya caducado, si es as&iacute;, p&oacute;ngase en contacto con el personal t&eacute;cnico para que le generen un nuevo ticket; si no es as&iacute;, verifique que la URL que ha introducido es la que recibió por correo.
+</div>
 {% endblock %}
 
 {% block section-widget %}
-        <div class="portlet">
-            <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-            <div class="portlet-content info-interes">
-                <ul> 
-        <li class="tip">Un ticket es un enlace temporal a la previsualizaci&oacute;n de la producci&oacute;n para su aprobaci&oacute;n e introducci&oacute;n de los datos descriptivos.<br/><br/>Los tickets tienen una caducidad establecida, una vez pasado ese tiempo, si no ha sido atendido deber&aacute; solicitar la generaci&oacute;n de un nuevo ticket al personal t&eacute;cnico.</li>
-                </ul>
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
         </div>
-
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i style="font-size: 150%;" class="fa fa-fw fa-info"></i></td>
+                        <td>Un ticket es un enlace temporal a la previsualizaci&oacute;n de la producci&oacute;n para su aprobaci&oacute;n e introducci&oacute;n de los datos descriptivos.<br/><br/>Los tickets tienen una caducidad establecida, una vez pasado ese tiempo, si no ha sido atendido deber&aacute; solicitar la generaci&oacute;n de un nuevo ticket al personal t&eacute;cnico.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

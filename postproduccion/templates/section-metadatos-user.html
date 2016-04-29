@@ -6,83 +6,140 @@
 {% block section-title %}<h1>Validación de una producci&oacute;n</h1>{% endblock %}
 
 {% block section-content %}
-<div class="info-prevideo">
-    <div id="container">Cargando video ...</div>
-        <script type="text/javascript">
-            jwplayer("container").setup({
-                flashplayer: "/static/jwplayer/player.swf",
-                file: "{% url 'stream_preview' token %}",
-                height: 270,
-                width: 480
-            });
-        </script>
-</div>
 
-<h2>Informaci&oacute;n b&aacute;sica de la producci&oacute;n</h2>
-<table id="tabla" class="infobasica">
-    <thead>
-        <th class="autor">Autor</th>
-        <th class="date">Fecha</th>
-        <th class="oper">Operador</th>
-        <th class="title">T&iacute;tulo</th>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="autor">{{ v.autor }}<br/>(<a class="email" href="mailto:{{v.email}}">{{ v.email }}</a>)</td>
-            <td class="date">
-                <ul>
-                    <li>{{ v.informeproduccion.fecha_produccion|date:"G:i:s - d/m/Y" }} - Producci&oacute;n</li>
-                </ul>
-            </td>
-            <td class="oper">{{ v.informeproduccion.operador }}</td>
-            <td class="titulo">{{ v.titulo }}</td>
-        </tr>
-    </tbody>
-</table>
-
-<h2>Completar la metadata de producci&oacute;n</h2>
-<div class="formulario-nueva">
-    <form method="post" action="" class="form-nueva">
-        {% csrf_token %}
-        <ul>
-        {{ form.as_ul }}
-        </ul>
-        <hr/>
-        <ul>
-          <li><input id="accept_terms" required type="checkbox">Acepto las <a href="/static/docs/condiciones_de_uso_ullmedia.pdf" target="_blank">condiciones de uso del servicio ULLmedia</a>.</input></li>
-        </ul>
-        <div id="dialog-terminos" title="T&eacute;rminos no aceptados">
-            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Debe aceptar las condiciones de uso de ULLMedia para que la producci&oacute;n sea validada.</p>
+<div class="box-body">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-7">
+            <video width="480" height="270" controls>
+                <source src="{% url 'stream_preview' token %}" type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
         </div>
-        <input class="terminos" type="submit" value="Aprobar producci&oacute;n y enviar metadata" />
-    </form>
-</div>
+        <div class="col-md-3"></div>
+    </div>
 
+    <div style="padding:10px;"> </div>
+    <div class="row">
+        <div class="box box-solid box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Informaci&oacute;n b&aacute;sica de la producci&oacute;n</h3>
+            </div>
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table class="table no-margin">
+                        <thead>
+                            <th>Autor</th>
+                            <th>Fecha</th>
+                            <th>Operador</th>
+                            <th>T&iacute;tulo</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ v.autor }}<br/>(<a href="mailto:{{v.email}}">{{ v.email }}</a>)</td>
+                                <td>
+                                    {{ v.informeproduccion.fecha_produccion|date:"G:i:s - d/m/Y" }} - Producci&oacute;n
+                                </td>
+                                <td>{{ v.informeproduccion.operador }}</td>
+                                <td>{{ v.titulo }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding:10px;"> </div>
+    <div class="row">
+        <div class="box box-solid box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Completar la metadata de producci&oacute;n</h3>
+            </div>
+            <div class="box-body">
+                <form method="post" role="form">
+                {% csrf_token %}
+                {%for v in form%}
+                <div class="form-group {% if v.errors %} has-error{% endif %}">
+                    <label>
+                        {% if v.errors %} <i class="fa fa-times-circle-o"></i> {% endif %}
+                        {{ v.label }}:
+                    </label>
+                    {{ v}}
+                    {% if v.errors %} <span class="help-block">Este campo es obligatorio.</span>{% endif %}
+                </div>
+                {%endfor%}
+                <div class="form-group">
+                   <label>
+                       <div class="icheckbox_flat-green">
+                           <input class="flat-red" id="accept_terms" required type="checkbox"/>
+                       </div>
+                       Acepto las <a href="/static/docs/condiciones_de_uso_ullmedia.pdf" target="_blank">condiciones de uso del servicio ULLmedia</a>.
+                   </label>
+                </div>
+                <input class="btn btn-primary pull-right" id="terminos" type="submit" value="Aprobar producci&oacute;n y enviar metadata" />
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dialogo eliminar produccion -->
+    <div class="modal modal-warning fade" id="dialog-terminos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">T&eacute;rminos no aceptados</h4>
+                </div>
+                <div class="modal-body">
+                    Debe aceptar las condiciones de uso de ULLMedia para que la producci&oacute;n sea validada.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block section-widget %}
-        <div class="portlet">
-            <div class="portlet-header">Acciones disponibles</div>
-            <div class="portlet-content">
-                <ul> 
-                    <div id="dialog-aprobar" title="Aprobar producci&oacute;n">
-                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-                        Aseg&uacute;rese de haber visualizado el v&iacute;deo por completo, tenga en cuenta que este paso supone la aceptaci&oacute;n <strong>definitiva</strong> de la producci&oacute;n.
-                    </div>
-                    <li><a href="{% url 'definir_metadatos_user' token %}" class="aprobar">Aceptar e introducir metadata</a></li>
-                    <li>
-                        <a href="{% url 'rechazar_video' token %}" class="rechazar">Rechazar producci&oacute;n</a>
-                    </li>
-                </ul>
+<div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Acciones disponibles</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
         </div>
-        <div class="portlet">
-            <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-            <div class="portlet-content">
-                <ul> 
-                    <li class="tip">Ha decicido aceptar la producci&oacute;n<br/><br/>Antes de continuar debe incluir toda la metadata de la producci&oacute;n de la manera m&aacute;s precisa posible.<br/><br/>Si tiene cualquier duda o sugerencia no dude en ponerse en contacto con el operador responsable de la producci&oacute;n.</li>
-                </ul>
+        <div class="box-body">
+            <a href="{% url 'rechazar_video' token %}" class="btn btn-block btn-danger btn-sm">
+                <i class="icon fa fa-ban"></i>
+                    Rechazar producci&oacute;n
+            </a>
+        </div>
+    </div>
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
         </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i style="font-size: 150%;" class="fa fa-fw fa-info"></i></td>
+                        <td>Ha decicido aceptar la producci&oacute;n<br/><br/>Antes de continuar debe incluir toda la metadata de la producci&oacute;n de la manera m&aacute;s precisa posible.<br/><br/>Si tiene cualquier duda o sugerencia no dude en ponerse en contacto con el operador responsable de la producci&oacute;n.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
 

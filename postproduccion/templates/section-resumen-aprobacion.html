@@ -3,55 +3,72 @@
 {% block page-title %}validaci&oacute;n de una producci&oacute;n{% endblock %}
 {% block page-script %} <script type="text/javascript" src="/static/jwplayer/jwplayer.js"></script>{% endblock %}
 {% block section-class %} class="informe-video"{% endblock %}
-{% block section-title %}<h1>
-{% if aprobado %}
-    Producci&oacute;n aprobada
-{% else %}
-    Producci&oacute;n rechazada
-{% endif %}
-</h1>{% endblock %}
 
 {% block section-content %}
 
 {% if aprobado %}
-<div class="mensaje success">Produccci&oacute;n aprobada con &eacute;xito.<br/><br/>Todos los metadatos incluidos durante el proceso de aprobaci&oacute;n ser&aacute;n evaluados por el personal t&eacute;cnico responsable. Una vez concluida esta evaluaci&oacute;n se le notificar&aacute; su resultado.</div>
+<div class="alert alert-success alert-dismissible">
+    <i class="icon fa fa-check"></i>
+    Produccci&oacute;n aprobada con &eacute;xito.<br/><br/>Todos los metadatos incluidos durante el proceso de aprobaci&oacute;n ser&aacute;n evaluados por el personal t&eacute;cnico responsable. Una vez concluida esta evaluaci&oacute;n se le notificar&aacute; su resultado.
+</div>
 {% else %}
-<div class="mensaje error">Produccci&oacute;n rechazada.<br/><br/>El personal t&eacute;cnico responsable evaluar&aacute; los comentarios realizados sobre la producci&oacute;n y se pondr&aacute; en contacto con usted lo antes posible.</div>
+<div class="alert alert-error alert-dismissible">
+    <i class="icon fa fa-ban"></i>
+    Produccci&oacute;n rechazada.<br/><br/>El personal t&eacute;cnico responsable evaluar&aacute; los comentarios realizados sobre la producci&oacute;n y se pondr&aacute; en contacto con usted lo antes posible.
+</div>
 {% endif %}
 
-<h2>informaci&oacute;n b&aacute;sica de la producci&oacute;n</h2>
-<table id="tabla">
-    <thead>
-        <th class="autor">autor</th>
-        <th class="date">fecha</th>
-        <th class="oper">operador</th>
-        <th class="title">t&iacute;tulo</th>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="autor">{{ v.autor }}<br/>(<a class="email" href="mailto:{{v.email}}">{{ v.email }}</a>)</td>
-            <td class="date">
-                <ul>
-                    <li>{{ v.informeproduccion.fecha_produccion }} - Produccci&oacute;n</li>
-                </ul>
-            </td>
-            <td class="oper">{{ v.informeproduccion.operador }}</td>
-            <td class="titulo">{{ v.titulo }}</td>
-        </tr>
-    </tbody>
-</table>
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Informaci&oacute;n b&aacute;sica de la producci&oacute;n</h3>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive" id="contenedor">
+            <table class="table no-margin">
+                <thead>
+                    <th>Autor</th>
+                    <th>Fecha</th>
+                    <th>Operador</th>
+                    <th>T&iacute;tulo</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ v.autor }}<br/>(<a href="mailto:{{v.email}}">{{ v.email }}</a>)</td>
+                        <td>
+                            {{ v.informeproduccion.fecha_produccion|date:"G:i:s - d/m/Y" }} - Producci&oacute;n
+                        </td>
+                        <td>{{ v.informeproduccion.operador }}</td>
+                        <td>{{ v.titulo }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
 {% block section-widget %}
-        <div class="portlet">
-            <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-            <div class="portlet-content info-interes">
-                <ul> 
-        <li class="tip">El resultado de proceso de revisi&oacute;n y validaci&oacute;n se ha completado con &eacute;xito.<br/><br/>Si tiene cualquier duda o sugerencia no dude en ponerse en contacto con el operador responsable de la producci&oacute;n.</li>
-                </ul>
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
         </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i style="font-size: 150%;" class="fa fa-fw fa-info"></i></td>
+                        <td>El resultado de proceso de revisi&oacute;n y validaci&oacute;n se ha completado con &eacute;xito.<br/><br/>Si tiene cualquier duda o sugerencia no dude en ponerse en contacto con el operador responsable de la producci&oacute;n.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 {% endblock %}
 
