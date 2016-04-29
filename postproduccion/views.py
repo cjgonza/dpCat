@@ -439,8 +439,11 @@ def gestion_tickets(request, video_id):
             inpro.save()
             v.status = 'PTU'
             v.save()
-            token.send_custom_mail_to_user(v, inpro.comentario, request.user.first_name)
-            messages.success(request, "Ticket generado y enviado al usuario")
+            if token.send_custom_mail_to_user(v, inpro.comentario, request.user.first_name) is None:
+                messages.success(request, "Ticket generado")
+                messages.error(request, "No se ha podido enviar al usuario")
+            else:
+                messages.success(request, "Ticket generado y enviado al usuario")
             return redirect('gestion_tickets', v.id)
     else:
         form = IncidenciaProduccionForm()
@@ -458,8 +461,9 @@ def regenerar_tickets(request):
             if v.status == 'LIS': continue
             v.status = 'PTU'
             v.save()
-            token.send_custom_mail_to_user(v, ('regenerar ticket %s' % v.titulo), request.user.first_name)
-        messages.success(request, "Tickets regenerados y enviados al usuario")
+            if token.send_custom_mail_to_user(v, ('regenerar ticket %s' % v.titulo), request.user.first_name) is None:
+                messages.error(request, "No se ha podido enviar al usuario")
+        messages.success(request, "Tickets regenerados")
 
     return redirect('enproceso')
 
@@ -529,8 +533,10 @@ Envía un correo al autor notificando de que una producción se encuentra public
 @permission_required('postproduccion.video_manager')
 def notificar_publicacion(request, record_id):
     r = get_object_or_404(RegistroPublicacion, pk = record_id)
-    token.send_published_mail_to_user(r)
-    messages.success(request, u'Enviado correo de notificación de publicacion al autor')
+    if token.send_published_mail_to_user(r) is None:
+        messages.error(request, u'No se ha podido enviar la notificación al autor')
+    else:
+        messages.success(request, u'Enviado correo de notificación de publicacion al autor')
     return redirect('estado_video', r.video.id)
 
 """
