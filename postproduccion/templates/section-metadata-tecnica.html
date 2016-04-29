@@ -1,53 +1,109 @@
 {% extends "section-info-produccion.html" %}
 
 {% block current-metadata %} disabled {% endblock %}
-{% block section-content %} 
+{% block section-content %}
 
-    <h2>Metadata t&eacute;cnica</h2>
-{% if info %}
-    <table id="tabla">
-        <thead>
-            <th class="meta-param">Par&aacute;metros</th><th>valor</th>
-        </thead>
-        <tbody>
-            {% for s in info %}
-            <tr><td colspan="2" class="section">{{ s.section }}</td></tr>
-            {% for at in s.attr %}
-            <tr><td>{{ at.key }}</td><td>{{ at.value }}</td></tr>
-            {% endfor %}
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <div class="mensaje warning">La metadata t&eacute;cnica no estar&aacute; disponible hasta que se procese el v&iacute;deo.</div>
-{% endif%}
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Metadata t&eacute;cnica</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            {% if info %}
+            <table class="table table-condensed">
+                <thead>
+                    <th>Par&aacute;metros</th>
+                    <th>valor</th>
+                </thead>
+                <tbody>
+                {%for s in info%}
+                <tr>
+                    <td>{{ s.section }}</td>
+                </tr>
+                    {% for at in s.attr %}
+                    <tr>
+                        <td>{{ at.key }}</td>
+                        <td>{{ at.value }}</td>
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+            </table>
+            {% else %}
+            <div class="alert alert-warning alert-dismissible">
+                <i class="icon fa fa-warning"></i>
+                La metadata t&eacute;cnica no estar&aacute; disponible hasta que se procese el v&iacute;deo.
+            </div>
+            {% endif%}
+        </div>
+    </div>
+
 {% endblock %}
 
-{% block section-widget2 %} 
-            <div class="portlet">
-                <div class="portlet-header">Tipo de metadata</div>
-                <div class="portlet-content">
-                    <ul> 
-            <li><a class="link" href="{% url 'definir_metadatos_oper' v.id %}">Metadata principal</a></li> 
-            <li><a class="link" href="{% url 'media_info' v.id %}">Metadata t&eacute;cnica</a></li> 
-                    </ul>
-                </div>
+{% block section-widget2 %}
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Tipo de metadata</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
-            <div class="portlet">
-                <div class="portlet-header">Versi&oacute;n descargable</div>
-                <div class="portlet-content">
-                    <ul> 
-                        <li><a class="descargar" href="{% url 'download_media_info' v.id %}">Metadata t&eacute;cnica en XML</a></li> 
-                    </ul>
-                </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><a class="link" href="{% url 'definir_metadatos_oper' v.id %}">Metadata principal</a></td>
+                    </tr>
+                    <tr>
+                        <td><a class="link" href="{% url 'media_info' v.id %}">Metadata t&eacute;cnica</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Versi&oacute;n descargable</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
-            <div class="portlet">
-                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-                <div class="portlet-content info-interes">
-                    <ul> 
-            <li class="tip">La metadata t&eacute;cnica es generada de manera autom&aacute;tica por el sistema.</li>
-                    </ul>
-                </div>
+        </div>
+        <div class="box-body">
+            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'download_media_info' v.id %}">
+                <i class="icon fa fa-link"></i>
+                    Metadata t&eacute;cnica en XML
+            </a>
+        </div>
+    </div>
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i style="font-size: 150%;" class="fa fa-fw fa-info"></i></td>
+                        <td>La metadata t&eacute;cnica es generada de manera autom&aacute;tica por el sistema.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 {% endblock %}
