@@ -14,6 +14,10 @@ class VideoForm(ModelForm):
         model = Video
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        super(VideoForm, self).__init__(*args, **kwargs)
+        self.fields['plantilla'].empty_label = 'Por defecto'
+
 class InformeCreacionForm(ModelForm):
     class Meta:
         model = InformeProduccion
