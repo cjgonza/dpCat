@@ -19,4 +19,11 @@ $(document).ready(function() {
             $(".marcar-todo").prop("checked", false);
         mostrarGenerarTicket();
     });
+
+    $("#terminos").click(function(e) {
+        if (!$("#accept_terms")[0].checked) {
+            e.preventDefault();
+            $("#dialog-terminos").modal();
+        }
+    });
 });
