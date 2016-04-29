@@ -5,6 +5,7 @@
 {% block section-title %}<h1>Centro de monitorizaci&oacute;n</h1>{% endblock %}
 
 {% block section-content %}
+
 <div class="box box-solid box-primary">
     <div class="box-header with-border">
         <h3 class="box-title">Cola de procesamiento</h3>
@@ -63,8 +64,8 @@
             str += '<td>Tipo: ' + data['tipo'] + '<br>';
             str += 'Estado: <span>' + data['status'] + '</span><br>';
             if (data['progress']) {
-                str += '<div id="progressbar' + data['id'] + '"></div>';
-                str += '<div class="progressbartext">' + data['progress'] + ' %</div>';
+                str += '<div class="progress progress active">';
+                str += '<div id="progressbar' + data['id'] + '" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"></div></div>';
             }
             str += '</td>';
             if (data['comienzo'] || data['fin']) {
@@ -119,10 +120,10 @@
                     if ($(filas[i]).find('div').length)
                         $(filas[i]).find('div.progressbartext').html(data[cont]['progress']+' %</div>');
                     else {
-                        $($(filas[i]).find('li')[1]).append('<div id="progressbar' + data[cont]['id'] + '"></div>');
-                        $($(filas[i]).find('li')[1]).append('<div class="progressbartext">' + data[cont]['progress'] + ' %</div>');
+                        $($(filas[i]).find('li')[1]).append('<div class="progress progress active">');
+                        $($(filas[i]).find('li')[1]).append('<div id="progressbar' + data['id'] + '" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"></div></div>');
                     }
-                    $('#progressbar' + data[cont]['id']).progressbar({value : data[cont]['progress']});
+                    $('#progressbar' + data[cont]['id']).css("width" , data[cont]['progress']+"%");
                 } else
                     $(filas[i]).find('div').remove();
                 // Actualiza las fechas de inicio y fin.
@@ -138,7 +139,7 @@
             // Crea los nuevos elementos insertados al final de la cola.
             for (;cont < data.length; cont++) {
                 $("#tabla_id tbody").append('<tr>' + creaLinea(data[cont]) + '</tr>');
-                $('#progressbar' + data[cont]['id']).progressbar({value : data[cont]['progress']});
+                $('#progressbar' + data[cont]['id']).css("width" , data[cont]['progress']+"%");
             }
         }
 
