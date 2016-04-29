@@ -26,4 +26,25 @@ $(document).ready(function() {
             $("#dialog-terminos").modal();
         }
     });
+
+    $(function(){
+        //inicializar select2
+        $(".select2").select2();
+
+        //Date picker
+        $('#from').datepicker({
+          autoclose: true, format: 'dd/mm/yyyy'
+        });
+        $('#to').datepicker({
+          autoclose: true, format: 'dd/mm/yyyy'
+        });
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green'
+        });
+    });
 });
