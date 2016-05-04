@@ -175,6 +175,8 @@ def create_pil(video, logfile, pid_notifier = None):
     os.close(handler)
 
     # Genera el nombre del fichero de salida
+    if video.fichero:
+        utils.remove_file_path(video.fichero)
     video.fichero = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_produccion.date(), ".mp4"))
     video.save()
     utils.ensure_dir(video.fichero)
@@ -211,6 +213,8 @@ def copy_video(video, logfile):
     video.set_status('PRV')
 
     # Obtiene los nombres de ficheros origen y destino
+    if video.fichero:
+        utils.remove_file_path(video.fichero)
     src = video.ficheroentrada_set.all()[0].fichero
     dst = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_produccion.date(), os.path.splitext(src)[1]))
     video.fichero = dst
@@ -247,8 +251,14 @@ def create_preview(video, logfile, pid_notifier = None):
     src = video.fichero
     dst = os.path.join(config.get_option('PREVIEWS_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_produccion.date(), ".mp4"))
 
-    # Crea el objecto previsualización
-    pv = Previsualizacion(video = video, fichero = dst)
+    # Crea/reemplaza el objecto previsualización
+    try:
+        pv = Previsualizacion.objects.get(video=video)
+        utils.remove_file_path(pv.fichero)
+        pv.fichero = dst
+    except Previsualizacion.DoesNotExist:
+        pv = Previsualizacion(video = video, fichero = dst)
+
     pv.save()
 
     # Calcula las dimensiones de la previsualización.
