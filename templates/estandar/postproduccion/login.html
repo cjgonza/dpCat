@@ -1,0 +1,32 @@
+{% extends "postproduccion/base.html" %}
+
+{% block body-class %}login{% endblock %}
+{% block page-title %}Acceso al sistema{% endblock %}
+
+{% block content %}
+<div id="main-login">
+    <h1>dpCat</h1>
+    <div id="loginbox">
+        <div class="column">
+            <div class="portlet">
+                <div class="portlet-header">Acceso al sistema</div>
+                <div class="portlet-content info-interes">
+                    <form method="post" action="{% url 'django.contrib.auth.views.login' %}" class="form-nueva">
+                        <ul>
+                            {% csrf_token %}
+                            {{ form.as_ul }}
+                        </ul>
+                        <input type="submit" value="Acceder" />
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    </form>
+                    <div class="bottom-links">
+                        <ul>
+                            <li><a href="#">dpCat &copy; 2012</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

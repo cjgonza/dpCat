@@ -1,0 +1,20 @@
+{% extends "postproduccion/section-base-config.html" %}
+
+{% block page-title %}Configuraci&oacute;n{% endblock %}
+{% block section-class %} class = "formulario config" {% endblock %}
+{% block section-title %}<h1>Configuraci&oacute;n {% if mail %}de los correos{% else %}del sistema{% endif %}</h1>{% endblock %}
+{% block section-description %}{% endblock %}
+
+{% block section-content %} 
+    <div class="formulario-nueva">
+        <form method="post" action="" class="form-nueva">
+        <ul>
+            {% csrf_token %}
+            {{ form.as_ul }}
+            </ul>
+            <hr/>
+            <input type="submit" value="Guardar" />
+            <input type="reset" value="Restaurar formulario" />
+        </form>
+    </div>
+{% endblock %}

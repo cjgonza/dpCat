@@ -1,0 +1,21 @@
+{% extends "postproduccion/section-info-produccion.html" %}
+
+{% block current-editar %} class="current" {% endblock %}
+
+{% block section-content %} 
+    <div class="formulario-nueva">
+        <form method="post" action="" class="form-nueva form-editar">
+            <h2>Informaci&oacute;n b&aacute;sica de la producci&oacute;n</h2>
+            <ul>
+                {% csrf_token %}
+                {{ vform.as_ul }}
+                {{ iform.as_ul }}
+								<div id="dialog-editar-oa" title="Modificado el tipo de metadatos">
+										<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Atención, si se modifica el tipo de metadata se borrará cualquier metadata previamente guardada.</p>
+								</div>
+            </ul>
+            <hr/>
+            <input type="submit" value="Guardar" />
+        </form>
+    </div>
+{% endblock %}
