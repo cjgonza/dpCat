@@ -1,0 +1,203 @@
+{% extends "postproduccion/base-2-1.html" %}
+
+{% block page-title %}Videoteca{% endblock %}
+{% block section-class %} {% endblock %}
+{% block section-description %}{% endblock %}
+
+{% block section-content %} 
+{% load append_to_get %}
+
+{% if videos.object_list %}
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Videoteca</h3>
+    </div>
+    <div class="box-body">
+        <div id="videoteca_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="videoteca" class="table table-bordered table-strped dataTable" role="grid" aria-describedby="videoteca_info">
+                        <thead>
+                            <tr role="row">
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>T&iacute;tulo</th>
+                                <th>Autor/Responsable</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for video in videos.object_list %}
+                            <tr role="row" class="even">
+                                <td class="sorting_1">{{ video.id }}</td>
+                                <td>{{ video.informeproduccion.fecha_validacion|date:"d/m/Y" }}</td>
+                                <td><a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a></td>
+                                <td>{{ video.autor }}</td>
+                                <td>{{ video.tipoVideo }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                {% if videos.has_previous %}
+                <div class="col-md-2">
+                    <ul class="pagination">
+                        <li class="paginate_button previous"><a href="{% append_to_get page=videos.previous_page_number %}">Anterior</a></li>
+                    </ul>
+                </div>
+                {% endif %}
+                <div class="col-md-2" style="margin-top: 25px;">
+                    <div class="dataTables_paginate paging_simple_numbers" id="videoteca_paginate">
+                        P&aacute;gina {{ videos.number }} de {{ videos.paginator.num_pages }}.
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <ul class="pagination">
+                        {% if videos.has_next %}
+                            <li class="paginate_button next"><a href="{% append_to_get page=videos.next_page_number %}">Siguiente</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+    <div class="alert alert-info alert-dismissible">
+        <h4>
+            <i class="icon fa fa-info"></i>
+            Información
+        </h4>
+        No hay producciones en la videoteca que casen con los criterios de filtrado.
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block section-widget %}
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Personalizar resultados</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+            <form method="GET">
+                <div class="box-body">
+                    <!-- Produccion -->
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Producci&oacute;n</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>ID:</label>
+                                <input type="text" name="id" id="id" value="{{ request.GET.id }}" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>T&iacute;tulo:</label>
+                                <input type="text" name="titulo" id="titulo" value="{{ request.GET.titulo }}" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Autor:</label>
+                                <input type="text" name="autor" id="autor" value="{{ request.GET.autor }}" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Tipo:</label>
+                                <select class="form-control select2" id="tipoVideo" name="tipoVideo">
+                                    {% for value, name in tipoVideo %}
+                                        <option value="{{value}}">{{name}}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Metadatos -->
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Metadatos</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>T&iacute;tulo:</label>
+                                <input type="text" name="meta_titulo" id="meta_titulo" value="{{ request.GET.meta_titulo }}" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Autor:</label>
+                                <input type="text" name="meta_autor" id="meta_autor" value="{{ request.GET.meta_autor }}" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Descripci&oacute;n:</label>
+                                <input type="text" name="meta_descripcion" id="meta_descripcion" value="{{ request.GET.meta_descripcion }}" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Etiqueta:</label>
+                                <input type="text" name="meta_etiqueta" id="meta_etiqueta" value="{{ request.GET.meta_etiqueta }}" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Intervalo de tiempo:</label>
+                                <div class="input-group date">
+                                    <div class="input-group-addon">Inicio
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" class="form-control pull-right" id="from" name="f_ini" value="{{ request.GET.f_ini }}">
+                                    <div class="input-group-addon">Fin
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" class="form-control pull-right" id="to" name="f_fin" value="{{ request.GET.f_fin }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>N&uacute;mero de resultados por p&aacute;gina:</label>
+                                <select class="form-control select2" name="nresults">
+                                    <option{% if request.GET.nresults == '25' %} selected{% endif %}>25</option>
+                                     <option{% if request.GET.nresults == '50' %} selected{% endif %}>50</option>
+                                     <option{% if request.GET.nresults == '100' %} selected{% endif %}>100</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-default" href="{% url 'videoteca' %}">Reiniciar</a>
+                    <input class="btn btn-primary pull-right" type="submit" value="Filtrar" />
+                </div>
+            </form>
+        </div>
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i class="fa fa-fw fa-info" style="font-size: 150%;"></i></td>
+                        <td>La videoteca contiene &uacute;nicamente las producciones que han sido validadas. Puede personalizar los resultados de b&uacute;squeda mediante la combinaci&oacute;n de filtros.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

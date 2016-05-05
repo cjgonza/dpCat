@@ -1,0 +1,22 @@
+
+{% extends "postproduccion/index.html" %}
+
+{% block page-title %}Inicio{% endblock %}
+{% block section-title %}<h1>Resumen actividad del sistema</h1>{% endblock %}
+
+{% block contenido %}
+<div class="box">
+    <div class="box-body">
+        <div id="row">
+            <div class="col-md-6">
+                {% include "postproduccion/ajax/box-pendientes.html" %}
+                {% include "postproduccion/ajax/box-ultimas.html" %}
+                {% include "postproduccion/ajax/box-alertas.html" %}
+            </div>
+            <div class="col-md-6">
+                {% include "postproduccion/ajax/box-enproceso.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

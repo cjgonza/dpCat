@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mlt title="Píldora">
+
+ <!-- Productor de la imagen de fondo -->
+ <producer in="0" out="{{ data.duracion }}" id="producer_0" >
+  <property name="length" >{{ data.duracion }}</property>
+  <property name="resource" >{{ data.fondo }}</property>
+ </producer>
+
+ <!-- Lista de reproducción de la imagen de fondo -->
+ <playlist id="playlist_fondo" >
+  <entry in="0" out="{{ data.duracion }}" producer="producer_0" />
+ </playlist>
+
+ {% for video in data.videos %}
+ <!-- Productor del video #{{ forloop.counter }} -->
+ <producer in="0" out="{{ data.duracion }}" id="producer_{{ forloop.counter }}" >
+  <property name="length" >{{ data.duracion }}</property>
+  <property name="resource" >{{ video.fichero }}</property>
+ </producer>
+
+ <!-- Lista de reproducción del video #{{ forloop.counter }} -->
+ <playlist id="playlist_{{ forloop.counter }}" >
+  <entry in="0" out="{{ data.duracion }}" producer="producer_{{ forloop.counter }}" />
+ </playlist>
+ {% endfor %}
+
+ <!-- Montaje final -->
+ <tractor title="Píldora" global_feed="1" in="0" out="{{ data.duracion }}" id="maintractor" >
+
+  <!-- Listas de reproducción a usar -->
+  <track producer="playlist_fondo" />
+  {% for video in data.videos %}
+  <track producer="playlist_{{ forloop.counter }}" />
+  {% endfor %}
+  
+  {% for video in data.videos %}
+  <!-- Montaje del vídeo #{{ forloop.counter }} sobre el fondo -->
+  <transition in="0" out="{{ data.duracion }}" id="transition_{{ forloop.counter }}" >
+   <property name="a_track" >0</property>
+   <property name="b_track" >{{ forloop.counter }}</property>
+   <property name="mlt_service" >composite</property>
+   <property name="geometry" >{{ video.geom }}</property>
+  </transition>
+  {% endfor %}
+
+ </tractor>
+</mlt>

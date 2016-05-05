@@ -1,0 +1,169 @@
+{% extends "postproduccion/section-info-produccion.html" %}
+
+{% block current-ticket %} disabled {% endblock %}
+{% block section-content %} 
+<div class="box-body">
+
+    <div class="row">
+        <div class="box box-solid box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Informaci&oacute;n sobre el ticket</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                {% if token %}
+                <div class="table-responsive">
+                    <table class="table no-margin">
+                        <thead>
+                            <th>Fecha de creaci&oacute;n</th>
+                            <th>Fecha de caducidad</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ token.create_date }}</td>
+                                {% if token.valid %}
+                                <td style="background: #d5ffce;"><i class="icon fa fa-check" style="color:green;"></i>{{ token.expiration_date }}</td>
+                                {% else %}
+                                <td style="background: #FFCECE ;"><i class="icon fa fa-ban" style="color:red;"></i>{{ token.expiration_date }}</td>
+                                {% endif %}
+                            </tr>
+                            {% if token.valid %}
+                            <tr>
+                                <td><a type="button" class="btn btn-success" target="_blank" href="{{ token.url }}">Enlace a este ticket</a>
+                                <!--<td>{{ token.url }}</input></td>-->
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info alert-dismissible">
+                    <i class="icon fa fa-info"></i>
+                    No hay ticket emitido
+                </div>
+                {% endif%}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="box box-solid box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Histórico de incidencias</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                {% if v.informeproduccion.incidenciaproduccion_set.all %}
+                <div class="table-responsive">
+                    <table class="table no-margin">
+                        <thead>
+                            <th>Emisor</th>
+                            <th>Fecha</th>
+                            <th>Aceptado</th>
+                            <th>Comentario</th>
+                        </thead>
+                        <tbody>
+                            {% for inci in v.informeproduccion.incidenciaproduccion_set.all|dictsort:"fecha" %}
+                                <tr>
+                                    <td>{% if inci.emisor %}{{ inci.emisor }}{% else %}{{ v.autor }}{% endif %}</td>
+                                    <td>{{ inci.fecha|date:"G:i:s - d/m/Y" }}</td>
+                                    <td><i class="icon {% if not inci.emisor %}{{ inci.aceptado|yesno:'fa fa-check,fa fa-ban' }}{% endif %}" style="{% if not inci.emisor %}{{ inci.aceptado|yesno:'color:green,color:red' }}{% endif %}"></i></td>
+                                    <td>{% if inci.comentario %}{{ inci.comentario }}{% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info alert-dismissible">
+                    <i class="icon fa fa-info"></i>
+                    El hist&oacute;rico de incidencias esta vac&iacute;o.
+                </div>
+                {% endif%}
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Generar ticket</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <form method="post" role="form">
+                {% csrf_token %}
+                <div class="form-group {% if form.comentario.errors %} has-error{% endif %}">
+                    <label>
+                        {% if form.comentario.errors %} <i class="fa fa-times-circle-o"></i> {% endif %}
+                        {{ form.comentario.label }}:
+                    </label>
+                    {{ form.comentario }}
+                    {% if form.comentario.errors %} <span class="help-block">Este campo es obligatorio.</span>{% endif %}
+                </div>
+                {% if token and token.valid%}
+                <!-- Dialogo eliminarTicket -->
+                    <div class="modal modal-warning fade" id="dialogEliminarTicket" tabindex="-1" role="dialog" aria-labelledby="labelEliminarTicket">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="labelEliminarTicket">¿Est&aacute; seguro de querer continuar?</h4>
+                                </div>
+                                <div class="modal-body">
+                                    ¡Atenci&oacute;n! Ya hay un ticket en curso, si contin&uacute;a se anular&aacute; y se generar&aacute; otro.
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" class="btn btn-outline pull-left" value="Generar ticket"/>
+                                    <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <input class="btn btn-success pull-left" type="submit" value="Generar ticket" />
+                {% endif %}
+            </form>
+            {% if token and token.valid%}
+            <button class="btn btn-warning pull-left" data-toggle="modal" data-target="#dialogEliminarTicket">
+                Generar ticket
+            </button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block section-widget2 %}
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i class="fa fa-fw fa-info" style="font-size: 150%;"></i></td>
+                        <td>El periodo de validez de un ticket se puede configurar desde la configuraci&oacute;n del sistema, es importante dejar consumir este periodo antes de generar un nuevo ticket.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

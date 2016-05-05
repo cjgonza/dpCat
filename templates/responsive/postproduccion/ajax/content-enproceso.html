@@ -1,0 +1,36 @@
+{% if list %}
+<table class="table no-margin">
+  <thead>
+    <th>ID</th>
+    <th>Estado</th>
+    <th>Fecha</th>
+    <th>Responsable</th>
+    <th>T&iacute;tulo</th>
+  </thead>
+  <tbody>
+    {% for video in list %}
+    <tr>
+        <td>{{ video.id }}</td>
+        {% if video.status == 'Aceptado' %}
+            <td><span class="label label-success">{{ video.status }}</span></td>
+        {% elif video.status == 'Pendiente del usuario' or video.status == 'Definido'%}
+            <td><span class="label label-warning">{{ video.status }}</span></td>
+        {% else %}
+            <td><span class="label label-danger">{{ video.status }}</span></td>
+        {% endif %}
+        <td>{{ video.fecha }}</td>
+        <td>{{ video.responsable }}</td>
+        <td>
+        {% if video.status == 'Incompleto' %}
+            <a href="{% url 'crear' video.id %}">{{ video.titulo }}</a>
+        {% else %}
+            <a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a>
+        {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+    <div class="mensaje info">No se ha encontrado ninguna producci&oacute;n siendo procesada.</div>
+{% endif %}

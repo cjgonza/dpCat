@@ -10,9 +10,10 @@ from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.contrib.auth import authenticate, login
 
 from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion, RegistroPublicacion, InformeProduccion
-from postproduccion.forms import VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm, VideoEditarForm, InformeEditarForm
+from postproduccion.forms import LoginForm, VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm, VideoEditarForm, InformeEditarForm
 from postproduccion import queue
 from postproduccion import utils
 from postproduccion import token
@@ -28,6 +29,23 @@ import urllib
 import datetime
 
 from django.contrib.auth.decorators import permission_required
+
+'''
+Login
+'''
+def login_view(request):
+    if request.method == 'POST':
+        lform = LoginForm(data=request.POST)
+        if lform.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('postproduccion.views.index')
+    else:
+        lform = LoginForm()
+    return render_to_response("postproduccion/login.html", { 'form' : lform }, context_instance=RequestContext(request))
 
 """
 Muestra la página inicial
@@ -469,7 +487,7 @@ def editar_produccion(request, video_id):
     else:
         vform = VideoEditarForm(instance = v)
         iform = InformeEditarForm(instance = v.informeproduccion)
-    return  render_to_response("section-editar-info.html", { 'v' : v, 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
+    return  render_to_response("postproduccion/section-editar-info.html", { 'v' : v, 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
 
 """
 Valida una producción y la pasa a la videoteca.
@@ -646,7 +664,7 @@ def download_video(request, video_id):
 
 def stream_preview(request, tk_str):
     v = token.is_valid_token(tk_str)
-    resp = HttpResponse(utils.stream_file(v.previsualizacion.fichero), content_type='video/x-flv')
+    resp = HttpResponse(utils.stream_file(v.previsualizacion.fichero), content_type='video/mp4')
     resp['Content-Length'] = os.path.getsize(v.previsualizacion.fichero)
     return resp
 

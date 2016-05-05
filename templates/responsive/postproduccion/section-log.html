@@ -1,0 +1,126 @@
+{% extends "postproduccion/base-2-1-monitor.html" %}
+
+{% block page-title %}Centro de monitorizaci&oacute;n{% endblock %}
+{% block section-class %} {% endblock %}
+{% block section-title %}<h1>Centro de monitorizaci&oacute;n</h1>{% endblock %}
+
+{% block section-content %} 
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">{% if old %}Registro antiguo del sistema{% else %}Registro actual del sistema{% endif %}</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive" id="contenedor">
+            {% if log %}
+            <table class="table no-margin">
+              <thead>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Descripci&oacute;n</th>
+              </thead>
+              <tbody>
+                {% for item in log %}
+                <tr>
+                    <td>
+                        {% if item.status == 'info' %}
+                        <div class="btn-block btn-xs" style="color: #3c8dbc;">
+                            <i class="icon fa fa-comment-o" style="font-size: 150%;"></i>
+                            {{ item.status }}
+                        </div>
+                        {% elif item.status == 'debug' %}
+                        <div class="btn-block btn-xs" style="color: #008d4c;">
+                            <i class="icon fa fa-pencil-square-o" style="font-size: 150%;"></i>
+                            {{ item.status }}
+                        </div>
+                        {% elif item.status == 'warning' %}
+                        <div class="btn-block btn-xs" style="color: #f39c12;">
+                            <i class="icon fa fa-warning" style="font-size: 150%;"></i>
+                            {{ item.status }}
+                        </div>
+                        {% elif item.status == 'error' %}
+                        <div class="btn-block btn-xs" style="color: #dd4b39;">
+                            <i class="icon fa fa-minus-circle" style="font-size: 150%;"></i>
+                            {{ item.status }}
+                        </div>
+                        {% else %}
+                        <div class="btn-block btn-xs" style="color: #dd4b39;">
+                            <i class="icon fa fa-exclamation" style="font-size: 150%;"></i>
+                            {{ item.status }}
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td>{{ item.time }}</td>
+                    <td>{{ item.msg }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+            <div class="alert alert-info alert-dismissible">
+                <i class="icon fa fa-info"></i>
+                No existe ning&uacute;n registro que mostrar.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block section-widget %}
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">{% if old %}Registro actual{% else %}Registro antiguo{% endif %}</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            {% if old %}
+            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'log' %}">
+                <i class="icon fa fa-link"></i>
+                Acceder al registro actual del sistema.
+            </a>
+            {% else %}
+            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'oldlog' %}">
+                <i class="icon fa fa-link"></i>
+                Acceder al registro antiguo del sistema.
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i class="fa fa-fw fa-info" style="font-size: 150%;"></i></td>
+                        <td>La longitud de los mensajes de registro del sistema es configurable por el administrador.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+

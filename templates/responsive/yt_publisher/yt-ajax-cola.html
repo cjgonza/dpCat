@@ -1,0 +1,29 @@
+{% if list %}
+<table class="table no-margin">
+  <thead>
+    <th>ID</th>
+    <th>Estado</th>
+    <th>T&iacute;tulo</th>
+  </thead>
+  <tbody>
+    {% for task in list %}
+    <tr>
+        <td>{{ task.video.id }}</td>
+        <td>
+        {% if task.logfile %}
+            Error (<a href="{{ MEDIA_URL}}{{ task.logfile }}" target="_blank">Log</a>)
+        {% else %}
+            {{ task.get_status_display }}
+        {% endif %}
+        </td>
+        <td><a href="{% url 'estado_video' task.video.id %}">{{ task.video.titulo }}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+    <div class="alert alert-info alert-dismissible">
+        <i class="icon fa fa-info"></i>
+        No hay ninguna producci&oacute;n en la cola de publicaci&oacute;n.
+    </div>
+{% endif %}
