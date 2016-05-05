@@ -1,0 +1,34 @@
+{% extends "postproduccion/index.html" %}
+
+{% block contenido %} 
+
+<div id="content" {% block section-class %} {% endblock %} >
+    <div id="content-left">
+        {% block section-description %} {% endblock %}
+        {% block section-content %} {% endblock %}
+    </div>
+ 
+    <div id="content-right">
+        <div class="column">
+
+            <div class="portlet">
+                <div class="portlet-header">Opciones de monitorizaci&oacute;n</div>
+                <div class="portlet-content">
+                    <ul> 
+                        <li><a class="link" href="{% url 'enproceso' %}">Producciones en proceso</a></li>
+                        <li><a class="link" href="{% url 'pendientes' %}">Producciones con tareas pendientes</a></li>
+                        <li><a class="link" href="{% url 'alertas' %}">Alertas del sistema</a></li>
+                        <li><a class="link" href="{% url 'cola' %}">Cola de procesamiento</a></li>
+                        <li><a class="link" href="{% url 'cola_publicacion' %}">Cola de publicaci&oacute;n</a></li>
+                        <li><a class="link" href="{% url 'log' %}">Registro (log) del sistema</a></li>
+                    </ul>
+                </div>
+            </div>
+            {% block section-widget %} {% endblock %}
+            {% block filter-widget %} {% endblock %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

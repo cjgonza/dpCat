@@ -1,0 +1,28 @@
+{% extends "postproduccion/base-2-1.html" %}
+
+{% block page-title %}Configuraci&oacute;n{% endblock %}
+{% block section-description %}{% endblock %}
+
+{% block section-content %} {% endblock %}
+
+{% block section-widget %}
+
+            <div class="portlet">
+                <div class="portlet-header">Detalles de configuraci&oacute;n</div>
+                <div class="portlet-content">
+                    <ul> 
+                <li><a class="link" href="{% url 'config' %}">Configuraci&oacute;n del sistema</a></li>
+                <li><a class="link" href="{% url 'config_mail' %}">Configuraci&oacute;n de los correos</a></li>
+                <li><a class="link" href="{% url 'config_plugin' %}">Configuraci&oacute;n del plugin de publicaci&oacute;n</a></li> 
+                <li><a class="link" href="{% url 'status' %}">Ver el estado del sistema</a></li>
+                    </ul>
+                </div>
+            </div>
+
+    {% block section-widget2 %}{% endblock %}
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,108 @@
+{% extends "postproduccion/base-2-1.html" %}
+
+{% block page-title %}Videoteca{% endblock %}
+{% block section-class %} {% endblock %}
+{% block section-title %}<h1>Videoteca</h1>{% endblock %}
+{% block section-description %}<h2>Estad&iacute;sticas</h2>{% endblock %}
+
+
+{% block section-content %} 
+{% if stats %}
+<table id="tabla">
+    <thead>
+        <th class="meta-param">Propiedad</th><th>Informaci&oacute;n</th>
+    </thead>
+    <tbody>
+        <tr><td colspan="2" class="section">Producciones</td></tr>
+        {% for element in stats.n_prod %}
+            <tr><td>{{ element.0 }}</td><td>{{ element.1 }}</td></tr>
+        {% endfor %}
+        <tr><td colspan="2" class="section">Tiempo de grabaci&oacute;n</td></tr>
+        {% for element in stats.duration %}
+            <tr><td>{{ element.0 }}</td><td>{{ element.1 }}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <div class="mensaje info">No hay estad&iacute;sticas con los criterios de filtrado.</div>
+{% endif %}
+{% endblock %}
+
+{% block section-widget %}
+    <div class="portlet">
+        <div class="portlet-header">Opciones de la videoteca</div>
+        <div class="portlet-content">
+            <ul> 
+                <li><a class="link" href="{% url 'videoteca' %}">Producciones</a></li>
+                <li><a class="link" href="{% url 'estadisticas' %}">Estad&iacute;sticas</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="portlet">
+        <div class="portlet-header">Personalizar resultados</div>
+        <div class="portlet-content">
+            <form method="GET" class="form-buscador">
+                <ul>
+                <li class="form-nombre">Intervalo de tiempo:</li>
+                <li>
+                    <ul>
+                        <li class="form-nombre">Inicio</li>
+                        <li><input type="text" id="from" name="f_ini" value="{{ request.GET.f_ini }}" /></li>
+                        <li class="form-nombre">Fin</li>
+                        <li><input type="text" id="to" name="f_fin" value="{{ request.GET.f_fin }}" /></li>
+                    </ul>
+                </li>
+                <li><hr/></li>
+                <li>
+                    <input type="submit" value="Filtrar" />
+                    <a class="reset" href="{% url 'estadisticas' %}">Reiniciar</a>
+                </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+
+    <div class="portlet">
+        <div class="portlet-header">Acciones disponibles</div>
+        <div class="portlet-content">
+            <ul>
+                <li><a class="imprimir" onclick="imprimir('#content-left')">Imprimir</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="portlet">
+        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+        <div class="portlet-content info-interes">
+            <ul> 
+                <li class="tip">Mostrar informaci&oacute;n acerca de las producciones realizadas.</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-script %}
+<script type="text/javascript">
+function imprimir(data) {
+    // Escribir información
+    var mywindow = window.open('', 'dpCat', 'height=400,width=600');
+    mywindow.document.write('<html><head><title>dpCat Estad&iacute;sticas</title>');
+    mywindow.document.write('<link rel="stylesheet" href="/static/css/reset.css" type="text/css" />');
+    mywindow.document.write('<link rel="stylesheet" href="/static/css/jquery-ui.css" type="text/css" />');
+    mywindow.document.write('<link rel="stylesheet" href="/static/css/base.css" type="text/css" />');
+    mywindow.document.write('</head><body>');
+    mywindow.document.write($(data).html());
+    mywindow.document.write('</body></html>');
+
+    mywindow.document.close(); // IE >= 10
+    mywindow.focus(); // IE >= 10
+
+    // Imprimir
+    mywindow.print();
+    mywindow.close();
+
+    return true;
+}
+</script
+{% endblock %}

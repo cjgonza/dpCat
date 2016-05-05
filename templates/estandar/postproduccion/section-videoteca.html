@@ -1,0 +1,131 @@
+{% extends "postproduccion/base-2-1.html" %}
+
+{% block page-title %}Videoteca{% endblock %}
+{% block section-class %} {% endblock %}
+{% block section-title %}<h1>Videoteca</h1>{% endblock %}
+{% block section-description %}<h2>Producciones</h2>{% endblock %}
+
+{% block section-content %} 
+{% load append_to_get %}
+
+{% if videos.object_list %}
+<table id="tabla">
+  <thead>
+    <th class="id">ID</th>
+    <th class="date">Fecha</th>
+    <th class="title">T&iacute;tulo</th>
+    <th class="author">Autor/Responsable</th>
+    <th class="author">Tipo</th>
+  </thead>
+  <tbody>
+    {% for video in videos.object_list %}
+    <tr class="{%cycle 'odd' 'even' %}">
+        <td class="id">{{ video.id }}</td>
+        <td class="date">{{ video.informeproduccion.fecha_validacion|date:"d/m/Y" }}</td>
+        <td class="title"><a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a></td>
+        <td class="author">{{ video.autor }}</td>
+        <td class="tipoVideo">{{ video.tipoVideo }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if videos.has_previous %}
+            <a href="{% append_to_get page=videos.previous_page_number %}">anterior</a>
+        {% endif %}
+
+        <span class="current">
+            P&aacute;gina {{ videos.number }} de {{ videos.paginator.num_pages }}.
+        </span>
+
+        {% if videos.has_next %}
+            <a href="{% append_to_get page=videos.next_page_number %}">siguiente</a>
+        {% endif %}
+    </span>
+</div>
+{% else %}
+    <div class="mensaje info">No hay producciones en la videoteca que casen con los criterios de filtrado.</div>
+{% endif %}
+
+{% endblock %}
+
+{% block section-widget %}
+    <div class="portlet">
+        <div class="portlet-header">Opciones de la videoteca</div>
+        <div class="portlet-content">
+            <ul>
+                <li><a class="link" href="{% url 'videoteca' %}">Producciones</a></li>
+                <li><a class="link" href="{% url 'estadisticas' %}">Estad&iacute;sticas</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="portlet">
+        <div class="portlet-header">Personalizar resultados</div>
+        <div class="portlet-content">
+            <form method="GET" class="form-buscador">
+                <ul>
+                <li class="form-titulo">Producci&oacute;n</li>
+                <li class="form-nombre">ID:</li>
+                <li><input type="text" name="id" value="{{ request.GET.id }}" /></li>
+                <li class="form-nombre">T&iacute;tulo:</li>
+                <li><input type="text" name="titulo" value="{{ request.GET.titulo }}" /></li>
+                <li class="form-nombre">Autor:</li>
+                <li><input type="text" name="autor" value="{{ request.GET.autor }}" /></li>
+
+                <li class="form-nombre">Tipo:</li>
+                <select id="tipoVideo" name="tipoVideo">
+                    {% for value, name in tipoVideo %}
+                        <option value="{{value}}">{{name}}</option>
+                    {% endfor %}
+                </select>
+
+
+                <li class="form-titulo">Metadatos</li>
+                <li class="form-nombre">T&iacute;tulo:</li>
+                <li><input type="text" name="meta_titulo" value="{{ request.GET.meta_titulo }}" /></li>
+                <li class="form-nombre">Autor:</li>
+                <li><input type="text" name="meta_autor" value="{{ request.GET.meta_autor }}" /></li>
+                <li class="form-nombre">Descripci&oacute;n:</li>
+                <li><input type="text" name="meta_descripcion" value="{{ request.GET.meta_descripcion }}" /></li>
+                <li class="form-nombre">Etiqueta:</li>
+                <li><input type="text" name="meta_etiqueta" value="{{ request.GET.meta_etiqueta }}" /></li>
+                <li><hr /></li>
+                <li class="form-nombre">Intervalo de tiempo:</li>
+                <li>
+                    <ul>
+                        <li class="form-nombre">Inicio</li>
+                        <li><input type="text" id="from" name="f_ini" value="{{ request.GET.f_ini }}" /></li>
+                        <li class="form-nombre">Fin</li>
+                        <li><input type="text" id="to" name="f_fin" value="{{ request.GET.f_fin }}" /></li>
+                    </ul>
+                </li>
+                <li class="form-nombre">N&uacute;mero de resultados por p&aacute;gina:</li>
+                <li>
+                    <select name="nresults">
+                     <option{% if request.GET.nresults == '25' %} selected{% endif %}>25</option>
+                     <option{% if request.GET.nresults == '50' %} selected{% endif %}>50</option>
+                     <option{% if request.GET.nresults == '100' %} selected{% endif %}>100</option>
+                    </select>
+                </li>
+                <li><hr/></li>
+                <li>
+                    <input type="submit" value="Filtrar" />
+                    <a class="reset" href="{% url 'videoteca' %}">Reiniciar</a>
+                </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+
+    <div class="portlet">
+        <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
+        <div class="portlet-content info-interes">
+            <ul> 
+                <li class="tip">La videoteca contiene &uacute;nicamente las producciones que han sido validadas.<br/><br/>Puede personalizar los resultados de b&uacute;squeda mediante la combinaci&oacute;n de filtros.</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
