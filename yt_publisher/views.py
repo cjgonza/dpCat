@@ -43,7 +43,7 @@ def config_plugin(request):
             initial_data[i] = config.get_option("YT_PUBLISHER_%s" % i.upper())
         form = ConfigForm(initial = initial_data)
     auth_state = Storage().get() is not None
-    return render_to_response("yt-section-config-plugin.html", { 'form' : form, 'auth_state' : auth_state }, context_instance=RequestContext(request))
+    return render_to_response("yt_publisher/yt-section-config-plugin.html", { 'form' : form, 'auth_state' : auth_state }, context_instance=RequestContext(request))
 
 
 """
@@ -107,7 +107,7 @@ def publicar(request, video_id):
         except Error as e:
             return error_handler(e, request)
 
-    return render_to_response("yt-section-publish.html", { 'form' : form, 'new_form' : new_form, 'add_form' : add_form }, context_instance=RequestContext(request))
+    return render_to_response("yt_publisher/yt-section-publish.html", { 'form' : form, 'new_form' : new_form, 'add_form' : add_form }, context_instance=RequestContext(request))
 
 """
 Callback para la autorización OAuth2 de YouTube.
@@ -138,14 +138,14 @@ Muestra la cola de publicación.
 """
 @permission_required('postproduccion.video_manager')
 def cola_publicacion(request):
-    return render_to_response("yt-section-cola.html", context_instance=RequestContext(request))
+    return render_to_response("yt_publisher/yt-section-cola.html", context_instance=RequestContext(request))
 
 """
 Contenido de la cola de publicación.
 """
 @permission_required('postproduccion.video_manager')
 def contenido_cola_publicacion(request):
-    return render_to_response("yt-ajax-cola.html", { 'list' : Publicacion.objects.order_by('id') }, context_instance=RequestContext(request))
+    return render_to_response("yt_publisher/yt-ajax-cola.html", { 'list' : Publicacion.objects.order_by('id') }, context_instance=RequestContext(request))
 
 """
 Purga las publicaciones erroneas
@@ -193,4 +193,4 @@ def feed(request):
 
         items.append(item)
 
-    return render_to_response("yt-feed.html", { 'channel' :  channel, 'feed' : feed, 'items' : items }, context_instance=RequestContext(request))
+    return render_to_response("yt_publisher/yt-feed.html", { 'channel' :  channel, 'feed' : feed, 'items' : items }, context_instance=RequestContext(request))

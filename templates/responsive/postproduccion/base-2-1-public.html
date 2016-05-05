@@ -1,0 +1,16 @@
+{% extends "postproduccion/index-public.html" %}
+
+{% block contenido %}
+
+<div class="row" >
+    <div class="col-md-9">
+        {% block section-description %} {% endblock %}
+        {% block section-content %} {% endblock %}
+    </div>
+
+    <div class="col-md-3">
+        {% block section-widget %} {% endblock %}
+    </div>
+</div>
+{% endblock %}
+

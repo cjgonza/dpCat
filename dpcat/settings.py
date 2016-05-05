@@ -82,11 +82,23 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'dpcat.urls'
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join('templates/responsive'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.core.context_processors.media',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -102,13 +114,6 @@ INSTALLED_APPS = (
     'configuracion',
     'postproduccion',
     'yt_publisher',
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.request',
-    'django.core.context_processors.media',
-    'django.contrib.messages.context_processors.messages',
 )
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
