@@ -7,18 +7,13 @@
 <div class="box box-solid box-primary">
     <div class="box-header with-border">
         <h3 class="box-title">Alertas del sistema</h3>
-        <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-            </button>
-        </div>
     </div>
     <div class="box-body">
         {% for i in lista %}
             {% if i.tipo == 'video-incompleto' %}
             <div class="box box-warning collapsed-box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Producci&oacute;n con id {{ i.v.id }}, esta incompleta.</h3>
+                    <h4 class="box-title">Producci&oacute;n con id {{ i.v.id }}, esta incompleta.</h4>
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
                             <i class="fa fa-plus"></i>
@@ -99,6 +94,35 @@
                 </div>
                 <div class="box-footer clearfix" style="display:block;">
                    <a class="btn btn-sm btn-primary btn-flat" href="{% url 'gestion_tickets' i.t.video.id %}">Gesti&oacute;n de ticket</a></li>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if i.tipo == 'video-aceptado' %}
+            <div class="box box-warning collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">La producci&oacute;n con id {{ i.v.id }} no ha sido validada.</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <ul class="item-alerta">
+                            <li><span>T&iacute;tulo de la producci&oacute;n:</span>{{ i.t.video.titulo }} </li>
+                            <li><span>Identificador:</span> {{ i.t.video.id  }} </li>
+                            <li><span>Descripci&oacute;n de la alerta:</span>
+                            <span>La producci&oacute;n lleva pendiente de validar más de 15 d&iacute;as.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-footer clearfix" style="display:block;">
+                   <a class="btn btn-sm btn-primary btn-flat" href="{% url 'estado_video' i.v.id %}">Gesti&oacute;n de ticket</a></li>
                 </div>
             </div>
             {% endif %}
@@ -239,13 +263,46 @@
             {% endif %}
 
             {% empty %}
-                <div class="mensaje info">No existe ninguna alerta en el sistema</div></li>
+            <div class="alert alert-info alert-dismissible">
+                <h4>
+                    <i class="icon fa fa-info"></i>
+                    Información
+                </h4>
+                No existe ninguna alerta en el sistema.
+            </div>
         {% endfor %}
     </div>
 </div>
 {% endblock %}
 
 {% block section-widget %}
+
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Personalizar resultados</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <form method="GET">
+            <div class="box-body">
+                <div class="form-group">
+                    <label>Tipo:</label>
+                    <select class="form-control select2" id="tipoVideo" name="tipoVideo">
+                        {% for value, name in tipoAlerta.items %}
+                            <option value="{{value}}">{{name}}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <a class="btn btn-default" href="{% url 'alertas' %}">Reiniciar</a>
+                <input class="btn btn-primary pull-right" type="submit" value="Filtrar" />
+            </div>
+        </form>
+    </div>
+
     <div class="box box-solid box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>

@@ -79,6 +79,28 @@
 {% block section-widget %}
     <div class="box box-solid box-primary">
         <div class="box-header with-border">
+            <h3 class="box-title">Opciones de la videoteca</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><a class="link" href="{% url 'videoteca' %}">Producciones</a></td>
+                    </tr>
+                    <tr>
+                        <td><a class="link" href="{% url 'estadisticas' %}">Estad&iacute;sticas</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
             <h3 class="box-title">Personalizar resultados</h3>
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -86,99 +108,99 @@
                 </button>
             </div>
         </div>
-            <form method="GET">
-                <div class="box-body">
-                    <!-- Produccion -->
-                    <div class="box box-solid box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Producci&oacute;n</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label>ID:</label>
-                                <input type="text" name="id" id="id" value="{{ request.GET.id }}" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>T&iacute;tulo:</label>
-                                <input type="text" name="titulo" id="titulo" value="{{ request.GET.titulo }}" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Autor:</label>
-                                <input type="text" name="autor" id="autor" value="{{ request.GET.autor }}" class="form-control">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Tipo:</label>
-                                <select class="form-control select2" id="tipoVideo" name="tipoVideo">
-                                    {% for value, name in tipoVideo %}
-                                        <option value="{{value}}">{{name}}</option>
-                                    {% endfor %}
-                                </select>
-
-                            </div>
-
+        <form method="GET">
+            <div class="box-body">
+                <!-- Produccion -->
+                <div class="box box-solid box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Producci&oacute;n</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
                         </div>
                     </div>
-                    <!-- Metadatos -->
-                    <div class="box box-solid box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Metadatos</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>ID:</label>
+                            <input type="text" name="id" id="id" value="{{ request.GET.id }}" class="form-control">
                         </div>
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label>T&iacute;tulo:</label>
-                                <input type="text" name="meta_titulo" id="meta_titulo" value="{{ request.GET.meta_titulo }}" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Autor:</label>
-                                <input type="text" name="meta_autor" id="meta_autor" value="{{ request.GET.meta_autor }}" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Descripci&oacute;n:</label>
-                                <input type="text" name="meta_descripcion" id="meta_descripcion" value="{{ request.GET.meta_descripcion }}" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Etiqueta:</label>
-                                <input type="text" name="meta_etiqueta" id="meta_etiqueta" value="{{ request.GET.meta_etiqueta }}" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Intervalo de tiempo:</label>
-                                <div class="input-group date">
-                                    <div class="input-group-addon">Inicio
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <input type="text" class="form-control pull-right" id="from" name="f_ini" value="{{ request.GET.f_ini }}">
-                                    <div class="input-group-addon">Fin
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <input type="text" class="form-control pull-right" id="to" name="f_fin" value="{{ request.GET.f_fin }}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>N&uacute;mero de resultados por p&aacute;gina:</label>
-                                <select class="form-control select2" name="nresults">
-                                    <option{% if request.GET.nresults == '25' %} selected{% endif %}>25</option>
-                                     <option{% if request.GET.nresults == '50' %} selected{% endif %}>50</option>
-                                     <option{% if request.GET.nresults == '100' %} selected{% endif %}>100</option>
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <label>T&iacute;tulo:</label>
+                            <input type="text" name="titulo" id="titulo" value="{{ request.GET.titulo }}" class="form-control">
                         </div>
+                        <div class="form-group">
+                            <label>Autor:</label>
+                            <input type="text" name="autor" id="autor" value="{{ request.GET.autor }}" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tipo:</label>
+                            <select class="form-control select2" id="tipoVideo" name="tipoVideo">
+                                {% for value, name in tipoVideo %}
+                                    <option value="{{value}}">{{name}}</option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+
                     </div>
-                    <a class="btn btn-default" href="{% url 'videoteca' %}">Reiniciar</a>
-                    <input class="btn btn-primary pull-right" type="submit" value="Filtrar" />
                 </div>
-            </form>
-        </div>
+                <!-- Metadatos -->
+                <div class="box box-solid box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Metadatos</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>T&iacute;tulo:</label>
+                            <input type="text" name="meta_titulo" id="meta_titulo" value="{{ request.GET.meta_titulo }}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Autor:</label>
+                            <input type="text" name="meta_autor" id="meta_autor" value="{{ request.GET.meta_autor }}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Descripci&oacute;n:</label>
+                            <input type="text" name="meta_descripcion" id="meta_descripcion" value="{{ request.GET.meta_descripcion }}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Etiqueta:</label>
+                            <input type="text" name="meta_etiqueta" id="meta_etiqueta" value="{{ request.GET.meta_etiqueta }}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Intervalo de tiempo:</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">Inicio
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="from" name="f_ini" value="{{ request.GET.f_ini }}">
+                                <div class="input-group-addon">Fin
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="to" name="f_fin" value="{{ request.GET.f_fin }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>N&uacute;mero de resultados por p&aacute;gina:</label>
+                            <select class="form-control select2" name="nresults">
+                                <option{% if request.GET.nresults == '25' %} selected{% endif %}>25</option>
+                                 <option{% if request.GET.nresults == '50' %} selected{% endif %}>50</option>
+                                 <option{% if request.GET.nresults == '100' %} selected{% endif %}>100</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <a class="btn btn-default" href="{% url 'videoteca' %}">Reiniciar</a>
+                <input class="btn btn-primary pull-right" type="submit" value="Filtrar" />
+            </div>
+        </form>
+    </div>
 
     <div class="box box-solid box-primary">
         <div class="box-header with-border">

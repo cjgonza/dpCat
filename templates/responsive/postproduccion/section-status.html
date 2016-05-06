@@ -1,4 +1,4 @@
-{% extends "section-base-config.html" %}
+{% extends "postproduccion/section-base-config.html" %}
 
 {% block page-title %}Configuraci&oacute;n{% endblock %}
 {% block section-class %} class = "status" {% endblock %}
@@ -130,6 +130,39 @@
                         </td>
                     </tr>
                 </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Versi&oacute;n</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive">
+            <table class="table no-margin">
+                <thead>
+                    <th>Propiedad</th>
+                    <th>Información</th>
+                  </thead>
+                  <tbody>
+                    {% for p in version %}
+                    <tr>
+                    <td>{{ p.0 }}</td>
+                    {% if p.0 == 'Repositorio' %}
+                        <td><a href="{{ p.1 }}">{{ p.1 }}</a></td>
+                    {% else %}
+                        <td>{{ p.1 }}</td>
+                    {% endif %}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
             </table>
         </div>
     </div>

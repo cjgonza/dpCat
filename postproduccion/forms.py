@@ -36,15 +36,12 @@ class VideoForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(VideoForm, self).__init__(*args, **kwargs)
         self.fields['plantilla'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['plantilla'].empty_label = 'Por defecto'
         self.fields['titulo'].widget.attrs.update({'class' : 'form-control'})
         self.fields['autor'].widget.attrs.update({'class' : 'form-control'})
         self.fields['email'].widget.attrs.update({'class' : 'form-control'})
         self.fields['tipoVideo'].widget.attrs.update({'class' : 'form-control select2'})
         self.fields['objecto_aprendizaje'].widget.attrs.update({'class' : 'minimal', 'checked' : 'checked'})
-
-    def __init__(self, *args, **kwargs):
-        super(VideoForm, self).__init__(*args, **kwargs)
-        self.fields['plantilla'].empty_label = 'Por defecto'
 
 class InformeCreacionForm(ModelForm):
     class Meta:

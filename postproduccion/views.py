@@ -628,22 +628,13 @@ def estadisticas(request):
 
     # Estadisticas
     n_prod = [
-        ['Producciones realizadas', videos.count()],
-        ['Producciones validadas', videos.filter(status='LIS').count()],
-        ['Pildoras', videos.exclude(plantilla=None).count()],
-        ['Producciones propias', videos.filter(plantilla=None).count()]
+        ['Producciones realizadas', videos.count(), video.get_duration(videos)],
+        ['Producciones validadas', videos.filter(status='LIS').count(), video.get_duration(videos.filter(status='LIS'))],
+        ['Pildoras', videos.exclude(plantilla=None).count(), video.get_duration(videos.exclude(plantilla=None))],
+        ['Producciones propias', videos.filter(plantilla=None).count(), video.get_duration(videos.filter(plantilla=None))]
     ]
 
-    duration = [
-        ['Producciones realizadas', video.get_duration(videos)],
-        ['Producciones validadas', video.get_duration(videos.filter(status='LIS'))],
-        ['Pildoras', video.get_duration(videos.exclude(plantilla=None))],
-        ['Producciones propias', video.get_duration(videos.filter(plantilla=None))]
-    ]
-
-    stats = { 'n_prod': n_prod, 'duration': duration }
-
-    return render_to_response("postproduccion/section-estadisticas.html", { 'stats': stats }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-estadisticas.html", { 'stats': n_prod }, context_instance=RequestContext(request))
 
 #######
 
