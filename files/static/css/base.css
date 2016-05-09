@@ -1,4 +1,23 @@
 /*
+Nuevos estilos dpCAT 2016
+*/
+#h1dp{
+    font: bold 45px Arial;
+    color: white;
+    text-shadow: 1px 1px 1px #111;
+}
+
+.mt80{
+    margin-top: 80px;
+}
+
+.tip{
+    background: url(../img/icon/lightbulb.png) 0 0 no-repeat;
+    padding-left: 25px;
+    width: 25px;
+    margin-top: 25px;
+}
+/*
 Estilos dpCAT 2011
 */
 

@@ -1,0 +1,33 @@
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Producciones pendientes (Centro de monitorizaci&oacute;n)</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive" id="box-pendientes">
+            <span class="ajax-loader"></span>
+        </div>
+    </div>
+    <div class="box-footer clearfix">
+       <a class="btn btn-sm btn-primary btn-flat pull-right" href="{% url 'pendientes' %}">Listado completo de producciones pendientes</a></li>
+    </div>
+</div>
+
+<script>
+function ajax_pendientes() {
+    $.get("{% url 'pendientes' %}", function(data) {
+        $("#box-pendientes").html(data);
+    }).complete(function() { setTimeout("ajax_pendientes();", 300000); });
+}
+
+$(document).ready(function() {
+    ajax_pendientes();
+});
+</script>

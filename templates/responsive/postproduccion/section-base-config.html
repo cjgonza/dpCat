@@ -1,0 +1,65 @@
+{% extends "postproduccion/base-2-1.html" %}
+
+{% block page-title %}Configuraci&oacute;n{% endblock %}
+{% block section-description %}{% endblock %}
+
+{% block section-content %} {% endblock %}
+
+{% block section-widget %}
+
+    <div class="box box-solid box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Detalles de configuraci&oacute;n</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <table class="table table-condensed">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'config' %}" style="text-align: left;">
+                                <i class="icon fa fa-gears"></i>
+                                Configuraci&oacute;n del sistema
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'config_mail' %}" style="text-align: left;">
+                                <i class="icon fa fa-envelope"></i>
+                                Configuraci&oacute;n de los correos
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'config_plugin' %}" style="text-align: left;">
+                                <i class="icon fa fa-wrench"></i>
+                                Configuraci&oacute;n del plugin de publicaci&oacute;n
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'status' %}" style="text-align: left;">
+                                <i class="icon fa fa-heartbeat"></i>
+                                Ver el estado del sistema
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    {% block section-widget2 %}{% endblock %}
+{% endblock %}
+
+
+
+
+

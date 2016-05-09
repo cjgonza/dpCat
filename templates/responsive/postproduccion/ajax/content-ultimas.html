@@ -1,0 +1,22 @@
+{% if videos %}
+<table class="table no-margin">
+  <thead>
+    <th>ID</th>
+    <th>Fecha</th>
+    <th>T&iacute;tulo</th>
+    <th>Autor/Responsable</th>
+  </thead>
+  <tbody>
+    {% for video in videos %}
+    <tr>
+        <td>{{ video.id }}</td>
+        <td>{{ video.informeproduccion.fecha_validacion|date:"d/m/Y" }}</td>
+        <td><a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a></td>
+        <td>{{ video.autor }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+    <div class="mensaje info">No hay ning&uacute;n elemento que mostrar.</div></td>
+{% endif %}

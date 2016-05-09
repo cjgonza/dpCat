@@ -1,0 +1,170 @@
+{% extends "postproduccion/section-base-config.html" %}
+
+{% block page-title %}Configuraci&oacute;n{% endblock %}
+{% block section-class %} class = "status" {% endblock %}
+{% block section-title %}<h1>Estado del sistema</h1>{% endblock %}
+{% block section-description %} {% endblock %}
+
+{% block section-content %}
+
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Programas externos</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive">
+            <table class="table no-margin">
+              <thead>
+                  <th>Programa</th>
+                  <th>Ruta</th>
+                  <th>Estado</th>
+                  <th>Versi&oacute;n detectada</th>
+              </thead>
+              <tbody>
+                  {% for key, value in exes.items %}
+                  <tr>
+                      <td>{{ key }}</td>
+                      <td>{{ value.path }}</td>
+                      <td>
+                        <i class="icon {{ value.status|yesno:'fa fa-check,fa fa-ban' }}" style="{{ value.status|yesno:'color:green,color:red' }}"></i>&nbsp;
+                      </td>
+                      <td>{% if value.status %}{{ value.version }}{% else %} - {% endif %}</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Directorios</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive">
+            <table class="table no-margin">
+              <thead>
+                  <th>Directorio</th>
+                  <th>Ruta</th>
+                  <th>Estado</th>
+                  <th>Sistema de ficheros</th>
+                  <th>Tama&ntilde;o total</th>
+                  <th>Usado</th>
+                  <th>Libre</th>
+                  <th>Ocupaci&oacute;n</th>
+              </thead>
+              <tbody>
+                {% for key, value in dirs.items %}
+                <tr>
+                    <td>{% ifequal key 'input' %}Fuentes{% endifequal %}{% ifequal key 'library' %}Videoteca{% endifequal %}{% ifequal key 'previews' %}Previsualizaciones{% endifequal %}</td>
+                    <td>{{ value.path }}</td>
+                    <td>
+                        <i class="icon {{ value.info|yesno:'fa fa-check,fa fa-ban' }}" style="{{ value.info|yesno:'color:green,color:red' }}"></i>&nbsp;
+                    </td> <!-- Lo mismo que arriba -->
+                    <td>{% if value.info %}{{ value.info.mount }}{% endif %}</td>
+                    <td>{% if value.info %}{{ value.info.total }}{% endif %}</td>
+                    <td>{% if value.info %}{{ value.info.used }}{% endif %}</td>
+                    <td>{% if value.info %}{{ value.info.left }}{% endif %}</td>
+                    <td>{% if value.info %}{{ value.info.perc }}{% endif %}</td>
+                <tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Tareas Programadas</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive">
+            <table class="table no-margin">
+                <thead>
+                    <th>Tarea</th>
+                    <th>Estado</th>
+                    <th>Acci&oacute;n</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Codificaci&oacute;n de v&iacute;deos</td>
+                        <td>
+                            <i class="icon {{ cron.process|yesno:'fa fa-check,fa fa-ban' }}" style="{{ cron.process|yesno:'color:green,color:red' }}"></i>&nbsp;
+                        </td>
+                        <td>
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="status_process" value="{{ cron.process|yesno:'1,0' }}" />
+                                <input class="btn btn-block {{ cron.process|yesno:'btn-danger,btn-success' }} btn-sm" type="submit" value="{{ cron.process|yesno:'Desactivar,Activar' }}" />
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Publicaci&oacute;n de v&iacute;deos</td>
+                        <td>
+                            <i class="icon {{ cron.publish|yesno:'fa fa-check,fa fa-ban' }}" style="{{ cron.publish|yesno:'color:green,color:red' }}"></i>&nbsp;
+                        </td>
+                        <td>
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="status_publish" value="{{ cron.publish|yesno:'1,0' }}" />
+                                <input class="btn btn-block {{ cron.publish|yesno:'btn-danger,btn-success' }} btn-sm" type="submit" value="{{ cron.publish|yesno:'Desactivar,Activar' }}" />
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Versi&oacute;n</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive">
+            <table class="table no-margin">
+                <thead>
+                    <th>Propiedad</th>
+                    <th>Información</th>
+                  </thead>
+                  <tbody>
+                    {% for p in version %}
+                    <tr>
+                    <td>{{ p.0 }}</td>
+                    {% if p.0 == 'Repositorio' %}
+                        <td><a href="{{ p.1 }}">{{ p.1 }}</a></td>
+                    {% else %}
+                        <td>{{ p.1 }}</td>
+                    {% endif %}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "postproduccion/index.html" %}
+
+{% block contenido %} 
+
+<div class="row" >
+    <div class="col-md-9">
+        {% block section-description %} {% endblock %}
+        {% block section-content %} {% endblock %}
+    </div>
+ 
+    <div class="col-md-3">
+        <div class="box box-solid box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Opciones de monitorizaci&oacute;n</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <table class="table table-condensed">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'enproceso' %}" style="text-align: left;">
+                                <i class="icon fa fa-video-camera"></i>
+                                Producciones en proceso
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'pendientes' %}" style="text-align: left;">
+                                <i class="icon fa fa-video-camera"></i>
+                                Producciones con tareas pendientes
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'alertas' %}" style="text-align: left;">
+                                <i class="icon fa fa-warning"></i>
+                                Alertas del sistema
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'cola' %}" style="text-align: left;">
+                                <i class="icon fa fa-list"></i>
+                                Cola de procesamiento
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'cola_publicacion' %}" style="text-align: left;">
+                                <i class="icon fa fa-list"></i>
+                                Cola de publicaci&oacute;n
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'log' %}" style="text-align: left;">
+                                <i class="icon fa fa-file-text"></i>
+                                Registro (log) del sistema
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% block section-widget %} {% endblock %}
+        {% block filter-widget %} {% endblock %}
+    </div>
+</div>
+
+{% endblock %}
+

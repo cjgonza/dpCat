@@ -1,0 +1,77 @@
+{% extends "postproduccion/base-2-1-public.html" %}
+
+{% block page-title %}validaci&oacute;n de una producci&oacute;n{% endblock %}
+{% block page-script %} <script type="text/javascript" src="/static/jwplayer/jwplayer.js"></script>{% endblock %}
+{% block section-class %} class="informe-video"{% endblock %}
+
+{% block section-content %}
+
+{% if aprobado %}
+<div class="alert alert-success alert-dismissible">
+    <i class="icon fa fa-check"></i>
+    Produccci&oacute;n aprobada con &eacute;xito.<br/><br/>Todos los metadatos incluidos durante el proceso de aprobaci&oacute;n ser&aacute;n evaluados por el personal t&eacute;cnico responsable. Una vez concluida esta evaluaci&oacute;n se le notificar&aacute; su resultado.
+</div>
+{% else %}
+<div class="alert alert-error alert-dismissible">
+    <i class="icon fa fa-ban"></i>
+    Produccci&oacute;n rechazada.<br/><br/>El personal t&eacute;cnico responsable evaluar&aacute; los comentarios realizados sobre la producci&oacute;n y se pondr&aacute; en contacto con usted lo antes posible.
+</div>
+{% endif %}
+
+<div class="box box-solid box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Informaci&oacute;n b&aacute;sica de la producci&oacute;n</h3>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive" id="contenedor">
+            <table class="table no-margin">
+                <thead>
+                    <th>Autor</th>
+                    <th>Fecha</th>
+                    <th>Operador</th>
+                    <th>T&iacute;tulo</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ v.autor }}<br/>(<a href="mailto:{{v.email}}">{{ v.email }}</a>)</td>
+                        <td>
+                            {{ v.informeproduccion.fecha_produccion|date:"G:i:s - d/m/Y" }} - Producci&oacute;n
+                        </td>
+                        <td>{{ v.informeproduccion.operador }}</td>
+                        <td>{{ v.titulo }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block section-widget %}
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i style="font-size: 150%;" class="fa fa-fw fa-info"></i></td>
+                        <td>El resultado de proceso de revisi&oacute;n y validaci&oacute;n se ha completado con &eacute;xito.<br/><br/>Si tiene cualquier duda o sugerencia no dude en ponerse en contacto con el operador responsable de la producci&oacute;n.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+
