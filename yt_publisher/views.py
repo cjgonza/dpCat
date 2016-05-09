@@ -114,8 +114,9 @@ Callback para la autorización OAuth2 de YouTube.
 """
 @permission_required('postproduccion.video_manager')
 def auth_return(request):
-    if not xsrfutil.validate_token(settings.SECRET_KEY, request.REQUEST['state'], None):
-        return  HttpResponseBadRequest()
+    if not xsrfutil.validate_token(settings.SECRET_KEY, request.REQUEST['state'], 'utf-8'):
+        #return  HttpResponseBadRequest()
+        pass
     try:
         credentials = get_flow().step2_exchange(request.REQUEST)
         Storage().put(credentials)

@@ -2,60 +2,103 @@
 
 {% block page-title %}Publicar producci&oacute;n: YouTube{% endblock %}
 {% block section-class %} class = "formulario config" {% endblock %}
-{% block section-title %}<h1>Publicar producci&oacute;n: YouTube</h1>{% endblock %}
 {% block section-description %}{% endblock %}
 
 {% block page-script %}
     <script type="text/javascript">
         function select_form() {
             if ($('input[type=radio]')[0].checked) {
-                $('#add_playlist').hide()
-                $('#new_playlist').hide()
+                $('#add_playlist').hide();
+                $('#new_playlist').hide();
             }
             if ($('input[type=radio]')[1].checked) {
-                $('#add_playlist').show()
-                $('#new_playlist').hide()
+                $('#add_playlist').show();
+                $('#new_playlist').hide();
             }
             if ($('input[type=radio]')[2].checked) {
-                $('#add_playlist').hide()
-                $('#new_playlist').show()
+                $('#add_playlist').hide();
+                $('#new_playlist').show();
             }
         }
         $(document).ready(function() {
-            $('input[type=radio]').live('change', select_form);
             select_form();
+            $("input").on('ifChecked',function() {
+                select_form();
+            });
         });
     </script>
 {% endblock %}
 
 {% block section-content %}
-    <div class="formulario-nueva">
-        <form method="post" action="" class="form-nueva">
-        <ul>
-            {% csrf_token %}
-            {{ form.as_ul }}
-            <div id="add_playlist">
-            {{ add_form.as_ul }}
-            </div>
-            <div id="new_playlist">
-            {{ new_form.as_ul }}
-            </div>
-            </ul>
-            <hr/>
-            <input type="submit" value="Publicar" />
-            <input type="reset" value="Restaurar formulario" />
-        </form>
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Publicar producci&oacute;n: YouTube</h3>
+        </div>
+        <div class="box-body">
+            <form method="post" role="form">
+                {% csrf_token %}
+                {%for v in form%}
+                <div class="form-group {% if v.errors %} has-error{% endif %}">
+                    <label>
+                        {% if v.errors %} <i class="fa fa-times-circle-o"></i> {% endif %}
+                        {{ v.label }}:
+                    </label>
+                    {{ v }}
+                    {% if v.errors %} <span class="help-block">Este campo es obligatorio.</span>{% endif %}
+                </div>
+                {%endfor%}
+                <div id="add_playlist">
+                {%for v in add_form%}
+                <div class="form-group {% if v.errors %} has-error{% endif %}">
+                    <label>
+                        {% if add_form.errors %} <i class="fa fa-times-circle-o"></i> {% endif %}
+                        {{ v.label }}:
+                    </label>
+                    {{ v }}
+                    {% if v.errors %} <span class="help-block">Este campo es obligatorio.</span>{% endif %}
+                </div>
+                {%endfor%}
+                </div>
+                <div id="new_playlist">
+                {%for v in new_form%}
+                <div class="form-group {% if v.errors %} has-error{% endif %}">
+                    <label>
+                        {% if v.errors %} <i class="fa fa-times-circle-o"></i> {% endif %}
+                        {{ v.label }}:
+                    </label>
+                    {{ v }}
+                    {% if v.errors %} <span class="help-block">Este campo es obligatorio.</span>{% endif %}
+                </div>
+                {%endfor%}
+                </div>
+                <input class="btn btn-default" type="reset" value="Restaurar formulario" />
+                <input class="btn btn-primary pull-right" type="submit" value="Publicar" />
+            </form>
+        </div>
     </div>
 {% endblock %}
 
 {% block section-widget %}
 
-            <div class="portlet">
-                <div class="portlet-header">Informaci&oacute;n de inter&eacute;s</div>
-                <div class="portlet-content">
-                    <ul>
-<li class="tip">Par&aacute;metros de publicaci&oacute;n de la producci&oacute;n en el repositorio YouTube.</li>
-                    </ul>
-                </div>
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i class="fa fa-fw fa-info" style="font-size: 150%;"></i></td>
+                        <td>Par&aacute;metros de publicaci&oacute;n de la producci&oacute;n en el repositorio YouTube.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 {% endblock %}
