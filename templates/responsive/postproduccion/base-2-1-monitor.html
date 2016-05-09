@@ -22,22 +22,52 @@
                 <table class="table table-condensed">
                     <tbody>
                     <tr>
-                        <td><a class="link" href="{% url 'enproceso' %}">Producciones en proceso</a></td>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'enproceso' %}" style="text-align: left;">
+                                <i class="icon fa fa-video-camera"></i>
+                                Producciones en proceso
+                            </a>
+                        </td>
                     </tr>
                     <tr>
-                        <td><a class="link" href="{% url 'pendientes' %}">Producciones con tareas pendientes</a></td>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'pendientes' %}" style="text-align: left;">
+                                <i class="icon fa fa-video-camera"></i>
+                                Producciones con tareas pendientes
+                            </a>
+                        </td>
                     </tr>
                     <tr>
-                        <td><a class="link" href="{% url 'alertas' %}">Alertas del sistema</a></td>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'alertas' %}" style="text-align: left;">
+                                <i class="icon fa fa-warning"></i>
+                                Alertas del sistema
+                            </a>
+                        </td>
                     </tr>
                     <tr>
-                        <td><a class="link" href="{% url 'cola' %}">Cola de procesamiento</a></td>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'cola' %}" style="text-align: left;">
+                                <i class="icon fa fa-list"></i>
+                                Cola de procesamiento
+                            </a>
+                        </td>
                     </tr>
                     <tr>
-                        <td><a class="link" href="{% url 'cola_publicacion' %}">Cola de publicaci&oacute;n</a></td>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'cola_publicacion' %}" style="text-align: left;">
+                                <i class="icon fa fa-list"></i>
+                                Cola de publicaci&oacute;n
+                            </a>
+                        </td>
                     </tr>
                     <tr>
-                        <td><a class="link" href="{% url 'log' %}">Registro (log) del sistema</a></td>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'log' %}" style="text-align: left;">
+                                <i class="icon fa fa-file-text"></i>
+                                Registro (log) del sistema
+                            </a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

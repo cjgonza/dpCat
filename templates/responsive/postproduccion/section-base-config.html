@@ -20,16 +20,36 @@
                 <table class="table table-condensed">
                     <tbody>
                     <tr>
-                        <td><a class="link" href="{% url 'config' %}">Configuraci&oacute;n del sistema</a></td>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'config' %}" style="text-align: left;">
+                                <i class="icon fa fa-gears"></i>
+                                Configuraci&oacute;n del sistema
+                            </a>
+                        </td>
                     </tr>
                     <tr>
-                        <td><a class="link" href="{% url 'config_mail' %}">Configuraci&oacute;n de los correos</a></td>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'config_mail' %}" style="text-align: left;">
+                                <i class="icon fa fa-envelope"></i>
+                                Configuraci&oacute;n de los correos
+                            </a>
+                        </td>
                     </tr>
                     <tr>
-                        <td><a class="link" href="{% url 'config_plugin' %}">Configuraci&oacute;n del plugin de publicaci&oacute;n</a></td>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'config_plugin' %}" style="text-align: left;">
+                                <i class="icon fa fa-wrench"></i>
+                                Configuraci&oacute;n del plugin de publicaci&oacute;n
+                            </a>
+                        </td>
                     </tr>
                     <tr>
-                        <td><a class="link" href="{% url 'status' %}">Ver el estado del sistema</a></td>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'status' %}" style="text-align: left;">
+                                <i class="icon fa fa-heartbeat"></i>
+                                Ver el estado del sistema
+                            </a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

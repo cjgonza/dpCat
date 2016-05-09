@@ -81,7 +81,14 @@
             <table class="table table-condensed">
                 <tbody>
                 {% for usuario in usuarios %}
-                    <tr><td><a href="/postproduccion/enproceso/?operator_id={{ usuario.id }}">{{ usuario.username }}</a></td></tr>
+                    <tr>
+                        <td>
+                            <a href="/postproduccion/enproceso/?operator_id={{ usuario.id }}">
+                                <i class="icon fa fa-user"></i>
+                                {{ usuario.username }}
+                            </a>
+                        </td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
