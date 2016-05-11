@@ -82,7 +82,7 @@ def crear(request, video_id = None):
 Muestra el formulario para seleccionar el fichero de entrada.
 """
 @permission_required('postproduccion.video_manager')
-def _fichero_entrada_simple(request, v):
+def _fichero_entrada_simple(request, v, type = None):
     if request.method == 'POST':
         form = FicheroEntradaForm(request.POST, instance = v.ficheroentrada_set.all()[0]) if v.ficheroentrada_set.count() else FicheroEntradaForm(request.POST)
         if form.is_valid():
@@ -90,7 +90,13 @@ def _fichero_entrada_simple(request, v):
             fe.video = v
             fe.fichero = os.path.normpath(config.get_option('VIDEO_INPUT_PATH') + fe.fichero)
             fe.save()
-            return redirect('postproduccion.views.resumen_video', v.id)
+            if type == 'reemplazar_video':
+                queue.enqueue_copy(v)
+                v.set_status('DEF')
+                messages.success(request, "Vídeo reemplazado y encolado para su procesado")
+                return redirect('postproduccion.views.estado_video', v.id)
+            else:
+                return redirect('postproduccion.views.resumen_video', v.id)
     else:
         if  v.ficheroentrada_set.count():
             fe = v.ficheroentrada_set.all()[0]
@@ -98,18 +104,23 @@ def _fichero_entrada_simple(request, v):
             form = FicheroEntradaForm(instance = fe)
         else:
             form = FicheroEntradaForm()
-    return render_to_response("postproduccion/section-nueva-paso2-fichero.html", { 'v' : v, 'form' : form }, context_instance=RequestContext(request))
+
+    if type == 'reemplazar_video':
+        return render_to_response("postproduccion/section-reemplazar-video.html", { 'v' : v, 'form' : form }, context_instance=RequestContext(request))
+    else:
+        return render_to_response("postproduccion/section-nueva-paso2-fichero.html", { 'v' : v, 'form' : form }, context_instance=RequestContext(request))
 
 """
 Muestra el formulario para seleccionar los ficheros de entrada.
 """
 @permission_required('postproduccion.video_manager')
-def _fichero_entrada_multiple(request, v):
+def _fichero_entrada_multiple(request, v, type = None):
     n = v.plantilla.tipovideo_set.count()
     FicheroEntradaFormSet = inlineformset_factory(Video, FicheroEntrada, formset = RequiredBaseInlineFormSet, form = FicheroEntradaForm, extra = n, max_num = n, can_delete = False)
     tipos = v.plantilla.tipovideo_set.all().order_by('id')
     if request.method == 'POST':
-        formset = FicheroEntradaFormSet(request.POST, instance = v)
+        formset = FicheroEntradaFormSet(request.POST, instance = v) if v.ficheroentrada_set.count() else FicheroEntradaFormSet(request.POST)
+        print "previo"
         if formset.is_valid():
             instances = formset.save(commit = False)
             for i in range(n):
@@ -117,7 +128,13 @@ def _fichero_entrada_multiple(request, v):
                 instances[i].video = v
                 instances[i].tipo = tipos[i]
                 instances[i].save()
-            return redirect('postproduccion.views.resumen_video', v.id)
+            if type == 'reemplazar_video':
+                queue.enqueue_pil(v)
+                v.set_status('DEF')
+                messages.success(request, "Vídeo reemplazado y encolado para su procesado")
+                return redirect('postproduccion.views.estado_video', v.id)
+            else:
+                return redirect('postproduccion.views.resumen_video', v.id)
     else:
         formset = FicheroEntradaFormSet(instance = v)
 
@@ -125,7 +142,11 @@ def _fichero_entrada_multiple(request, v):
         formset.forms[i].titulo = tipos[i].nombre
         if formset.forms[i].initial:
             formset.forms[i].initial['fichero'] = os.path.join('/', os.path.relpath(formset.forms[i].initial['fichero'], config.get_option('VIDEO_INPUT_PATH')))
-    return render_to_response("postproduccion/section-nueva-paso2-ficheros.html", { 'v' : v, 'formset' : formset }, context_instance=RequestContext(request))
+
+    if type == 'reemplazar_video':
+        return render_to_response("postproduccion/section-reemplazar-videos.html", { 'v' : v, 'formset' : formset }, context_instance=RequestContext(request))
+    else:
+        return render_to_response("postproduccion/section-nueva-paso2-ficheros.html", { 'v' : v, 'formset' : formset }, context_instance=RequestContext(request))
 
 """
 Llama al método privado adecuado para insertar los ficheros de entrada según
@@ -353,6 +374,16 @@ def rechazar_video(request, tk_str):
         form = IncidenciaProduccionForm()
     return render_to_response("postproduccion/section-rechazar-produccion.html", { 'v' : v, 'form' : form, 'token' : tk_str }, context_instance=RequestContext(request))
 
+#######
+# Vistas para reemplazar un video de una producción existente
+#######
+@permission_required('postproduccion.video_manager')
+def reemplazar_video(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    if v.plantilla:
+        return _fichero_entrada_multiple(request, v, type = 'reemplazar_video')
+    else:
+        return _fichero_entrada_simple(request, v, type = 'reemplazar_video')
 
 #######
 # Vistas para mostrar la información de una producción.
