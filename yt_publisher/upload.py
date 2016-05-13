@@ -47,6 +47,13 @@ def publish(task):
     task.set_status('EXE') # esto se debería hacer desde fuera en caso de multithread.
     v = task.video
     d = json.loads(task.data)
+    license = 'youtube'
+
+    try:
+        if v.metadataoa.license in ('MD','SA','ND'):
+            license = 'creativeCommon'
+    except:
+        pass
 
     body = dict(
         snippet = dict(
@@ -56,6 +63,7 @@ def publish(task):
             categoryId = PUBLICATION_CATEGORY
         ),
         status = dict(
+            license = license,
             privacyStatus = PRIVACY_STATUS
         )
     )
