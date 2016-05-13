@@ -47,5 +47,14 @@ $(document).ready(function() {
         $('input[type="checkbox"].flat-red').iCheck({
           checkboxClass: 'icheckbox_flat-green'
         });
+
+        $('#example').DataTable({
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": false,
+            "autoWidth": false
+        });
     });
 });

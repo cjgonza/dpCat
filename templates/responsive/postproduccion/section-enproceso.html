@@ -16,41 +16,43 @@
         <form method="post" action="{% url 'regenerar_tickets' %}" class="form-nueva" id="formgenerarticket" name="formgenerarticket">
             {% csrf_token %}
             <div class="box-body">
-                <table class="table table-bordered table-strped dataTable">
-                  <thead>
-                    <th><input type="checkbox" class="marcar-todo" name="tickets" value=""></th>
-                    <th>ID</th>
-                    <th>Estado</th>
-                    <th>Operador</th>
-                    <th>Fecha</th>
-                    <th>Responsable</th>
-                    <th>T&iacute;tulo</th>
-                  </thead>
-                  <tbody>
-                    {% for video in list %}
-                    <tr>
-                        <td><input type="checkbox" class="checkbox-ticket" name="ticket" value="{{video.id}}" id="{{video.id}}"></td>
-                        <td>{{ video.id }}</td>
-                        {% if video.status == 'Aceptado' %}
-                            <td><span class="label label-success">{{ video.status }}</span></td>
-                        {% elif video.status == 'Pendiente del usuario' or video.status == 'Definido'%}
-                            <td><span class="label label-warning">{{ video.status }}</span></td>
-                        {% else %}
-                            <td><span class="label label-danger">{{ video.status }}</span></td>
-                        {% endif %}
-                        <td>{{ video.operador }}</td>
-                        <td>{{ video.fecha }}</td>
-                        <td>{{ video.responsable }}</td>
-                        <td>
-                        {% if video.status == 'Incompleto' %}
-                            <a href="{% url 'crear' video.id %}">{{ video.titulo }}</a>
-                        {% else %}
-                            <a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a>
-                        {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
+                <table id="example" class="table table-bordered table-hover dataTable">
+                    <thead>
+                        <tr role="row">
+                            <th><input type="checkbox" class="marcar-todo" name="tickets" value=""></th>
+                            <th>ID</th>
+                            <th>Estado</th>
+                            <th>Operador</th>
+                            <th>Fecha</th>
+                            <th>Responsable</th>
+                            <th>T&iacute;tulo</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for video in list %}
+                        <tr role="row">
+                            <td><input type="checkbox" class="checkbox-ticket" name="ticket" value="{{video.id}}" id="{{video.id}}"></td>
+                            <td>{{ video.id }}</td>
+                            {% if video.status == 'Aceptado' %}
+                                <td><span class="label label-success">{{ video.status }}</span></td>
+                            {% elif video.status == 'Pendiente del usuario' or video.status == 'Definido'%}
+                                <td><span class="label label-warning">{{ video.status }}</span></td>
+                            {% else %}
+                                <td><span class="label label-danger">{{ video.status }}</span></td>
+                            {% endif %}
+                            <td>{{ video.operador }}</td>
+                            <td>{{ video.fecha }}</td>
+                            <td>{{ video.responsable }}</td>
+                            <td>
+                            {% if video.status == 'Incompleto' %}
+                                <a href="{% url 'crear' video.id %}">{{ video.titulo }}</a>
+                            {% else %}
+                                <a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a>
+                            {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
                 </table>
                 <input class="btn btn-primary" type="submit" id="generar-ticket" value="Generar ticket"/>
             </div>
