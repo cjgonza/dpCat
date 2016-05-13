@@ -12,14 +12,16 @@
     <div class="box-body">
         <div class="table-responsive" id="box-pendientes">
             {% if list %}
-            <table class="table no-margin">
+            <table id="example" class="table table-bordered table-hover dataTable">
               <thead>
-                <th>ID</th>
-                <th>Estado</th>
-                <th>Operador</th>
-                <th>Fecha</th>
-                <th>Responsable</th>
-                <th>T&iacute;tulo</th>
+                  <tr role="row">
+                    <th>ID</th>
+                    <th>Estado</th>
+                    <th>Operador</th>
+                    <th>Fecha</th>
+                    <th>Responsable</th>
+                    <th>T&iacute;tulo</th>
+                  </tr>
               </thead>
               <tbody>
                 {% for video in list %}
