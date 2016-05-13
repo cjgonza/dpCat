@@ -52,7 +52,11 @@
         </div>
         <div class="box-body">
             <div class="btn-block btn-sm" style="background:#00c0ef; color: white; text-align: center;">
-                {{ v.get_status_display }}
+                {% if pub %}
+                    Publicado
+                {% else %}
+                    {{ v.get_status_display }}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -67,7 +71,7 @@
             </div>
         </div>
         <div class="box-body">
-            {% if v.status == 'LIS' %}
+            {% if not pub %}
             <a type="button" href="{% url 'publicar' v.id %}" class="btn btn-block btn-success btn-sm">
                 <i class="icon fa fa-youtube-play"></i>
                     Publicar producci&oacute;n
