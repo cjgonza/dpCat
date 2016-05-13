@@ -82,7 +82,7 @@ def crear(request, video_id = None):
 Muestra el formulario para seleccionar el fichero de entrada.
 """
 @permission_required('postproduccion.video_manager')
-def _fichero_entrada_simple(request, v):
+def _fichero_entrada_simple(request, v, type = None):
     if request.method == 'POST':
         form = FicheroEntradaForm(request.POST, instance = v.ficheroentrada_set.all()[0]) if v.ficheroentrada_set.count() else FicheroEntradaForm(request.POST)
         if form.is_valid():
@@ -90,7 +90,13 @@ def _fichero_entrada_simple(request, v):
             fe.video = v
             fe.fichero = os.path.normpath(config.get_option('VIDEO_INPUT_PATH') + fe.fichero)
             fe.save()
-            return redirect('postproduccion.views.resumen_video', v.id)
+            if type == 'reemplazar_video':
+                queue.enqueue_copy(v)
+                v.set_status('DEF')
+                messages.success(request, "Vídeo reemplazado y encolado para su procesado")
+                return redirect('postproduccion.views.estado_video', v.id)
+            else:
+                return redirect('postproduccion.views.resumen_video', v.id)
     else:
         if  v.ficheroentrada_set.count():
             fe = v.ficheroentrada_set.all()[0]
@@ -98,18 +104,23 @@ def _fichero_entrada_simple(request, v):
             form = FicheroEntradaForm(instance = fe)
         else:
             form = FicheroEntradaForm()
-    return render_to_response("postproduccion/section-nueva-paso2-fichero.html", { 'v' : v, 'form' : form }, context_instance=RequestContext(request))
+
+    if type == 'reemplazar_video':
+        return render_to_response("postproduccion/section-reemplazar-video.html", { 'v' : v, 'form' : form }, context_instance=RequestContext(request))
+    else:
+        return render_to_response("postproduccion/section-nueva-paso2-fichero.html", { 'v' : v, 'form' : form }, context_instance=RequestContext(request))
 
 """
 Muestra el formulario para seleccionar los ficheros de entrada.
 """
 @permission_required('postproduccion.video_manager')
-def _fichero_entrada_multiple(request, v):
+def _fichero_entrada_multiple(request, v, type = None):
     n = v.plantilla.tipovideo_set.count()
     FicheroEntradaFormSet = inlineformset_factory(Video, FicheroEntrada, formset = RequiredBaseInlineFormSet, form = FicheroEntradaForm, extra = n, max_num = n, can_delete = False)
     tipos = v.plantilla.tipovideo_set.all().order_by('id')
     if request.method == 'POST':
-        formset = FicheroEntradaFormSet(request.POST, instance = v)
+        formset = FicheroEntradaFormSet(request.POST, instance = v) if v.ficheroentrada_set.count() else FicheroEntradaFormSet(request.POST)
+        print "previo"
         if formset.is_valid():
             instances = formset.save(commit = False)
             for i in range(n):
@@ -117,7 +128,13 @@ def _fichero_entrada_multiple(request, v):
                 instances[i].video = v
                 instances[i].tipo = tipos[i]
                 instances[i].save()
-            return redirect('postproduccion.views.resumen_video', v.id)
+            if type == 'reemplazar_video':
+                queue.enqueue_pil(v)
+                v.set_status('DEF')
+                messages.success(request, "Vídeo reemplazado y encolado para su procesado")
+                return redirect('postproduccion.views.estado_video', v.id)
+            else:
+                return redirect('postproduccion.views.resumen_video', v.id)
     else:
         formset = FicheroEntradaFormSet(instance = v)
 
@@ -125,7 +142,11 @@ def _fichero_entrada_multiple(request, v):
         formset.forms[i].titulo = tipos[i].nombre
         if formset.forms[i].initial:
             formset.forms[i].initial['fichero'] = os.path.join('/', os.path.relpath(formset.forms[i].initial['fichero'], config.get_option('VIDEO_INPUT_PATH')))
-    return render_to_response("postproduccion/section-nueva-paso2-ficheros.html", { 'v' : v, 'formset' : formset }, context_instance=RequestContext(request))
+
+    if type == 'reemplazar_video':
+        return render_to_response("postproduccion/section-reemplazar-videos.html", { 'v' : v, 'formset' : formset }, context_instance=RequestContext(request))
+    else:
+        return render_to_response("postproduccion/section-nueva-paso2-ficheros.html", { 'v' : v, 'formset' : formset }, context_instance=RequestContext(request))
 
 """
 Llama al método privado adecuado para insertar los ficheros de entrada según
@@ -353,6 +374,16 @@ def rechazar_video(request, tk_str):
         form = IncidenciaProduccionForm()
     return render_to_response("postproduccion/section-rechazar-produccion.html", { 'v' : v, 'form' : form, 'token' : tk_str }, context_instance=RequestContext(request))
 
+#######
+# Vistas para reemplazar un video de una producción existente
+#######
+@permission_required('postproduccion.video_manager')
+def reemplazar_video(request, video_id):
+    v = get_object_or_404(Video, pk=video_id)
+    if v.plantilla:
+        return _fichero_entrada_multiple(request, v, type = 'reemplazar_video')
+    else:
+        return _fichero_entrada_simple(request, v, type = 'reemplazar_video')
 
 #######
 # Vistas para mostrar la información de una producción.
@@ -439,8 +470,11 @@ def gestion_tickets(request, video_id):
             inpro.save()
             v.status = 'PTU'
             v.save()
-            token.send_custom_mail_to_user(v, inpro.comentario, request.user.first_name)
-            messages.success(request, "Ticket generado y enviado al usuario")
+            if token.send_custom_mail_to_user(v, inpro.comentario, request.user.first_name) is None:
+                messages.success(request, "Ticket generado")
+                messages.error(request, "No se ha podido enviar al usuario")
+            else:
+                messages.success(request, "Ticket generado y enviado al usuario")
             return redirect('gestion_tickets', v.id)
     else:
         form = IncidenciaProduccionForm()
@@ -458,8 +492,9 @@ def regenerar_tickets(request):
             if v.status == 'LIS': continue
             v.status = 'PTU'
             v.save()
-            token.send_custom_mail_to_user(v, ('regenerar ticket %s' % v.titulo), request.user.first_name)
-        messages.success(request, "Tickets regenerados y enviados al usuario")
+            if token.send_custom_mail_to_user(v, ('regenerar ticket %s' % v.titulo), request.user.first_name) is None:
+                messages.error(request, "No se ha podido enviar al usuario")
+        messages.success(request, "Tickets regenerados")
 
     return redirect('enproceso')
 
@@ -529,8 +564,10 @@ Envía un correo al autor notificando de que una producción se encuentra public
 @permission_required('postproduccion.video_manager')
 def notificar_publicacion(request, record_id):
     r = get_object_or_404(RegistroPublicacion, pk = record_id)
-    token.send_published_mail_to_user(r)
-    messages.success(request, u'Enviado correo de notificación de publicacion al autor')
+    if token.send_published_mail_to_user(r) is None:
+        messages.error(request, u'No se ha podido enviar la notificación al autor')
+    else:
+        messages.success(request, u'Enviado correo de notificación de publicacion al autor')
     return redirect('estado_video', r.video.id)
 
 """

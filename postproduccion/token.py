@@ -97,7 +97,10 @@ Envía un correo al usuario para solicitar la aprobación y los metadatos de un 
 """
 def send_mail_to_user(v):
     v = create_token(v)
-    send_mail(config.get_option('NOTIFY_MAIL_SUBJECT'), generate_mail_message(v), config.get_option('RETURN_EMAIL'), [v.email])
+    try:
+        send_mail(config.get_option('NOTIFY_MAIL_SUBJECT'), generate_mail_message(v), config.get_option('RETURN_EMAIL'), [v.email])
+    except:
+        return None
     return v
 
 """
@@ -122,7 +125,10 @@ Envía un correo personalizado al usuario para solicitar la aprobación y los me
 """
 def send_custom_mail_to_user(v, texto, operador):
     v = create_token(v)
-    send_mail(config.get_option('CUSTOM_MAIL_SUBJECT'), generate_custom_mail_message(v, texto, operador), config.get_option('RETURN_EMAIL'), [v.email])
+    try:
+        send_mail(config.get_option('CUSTOM_MAIL_SUBJECT'), generate_custom_mail_message(v, texto, operador), config.get_option('RETURN_EMAIL'), [v.email])
+    except:
+        return None
     return v
 
 """
@@ -142,7 +148,10 @@ def generate_validation_mail_message(v, operador):
 Envía un correo para avisar al usuario de que su producción ya ha sido validada.
 """
 def send_validation_mail_to_user(v, operador):
-    send_mail(config.get_option('VALIDATED_MAIL_SUBJECT'), generate_validation_mail_message(v, operador), config.get_option('RETURN_EMAIL'), [v.email])
+    try:
+        send_mail(config.get_option('VALIDATED_MAIL_SUBJECT'), generate_validation_mail_message(v, operador), config.get_option('RETURN_EMAIL'), [v.email])
+    except:
+        return None
     return v
 
 """
@@ -162,4 +171,8 @@ def generate_published_mail_message(r):
 Envía un correo para avisar al usuario de que su producción ya ha sido publicada.
 """
 def send_published_mail_to_user(r):
-    send_mail(config.get_option('PUBLISHED_MAIL_SUBJECT'), generate_published_mail_message(r), config.get_option('RETURN_EMAIL'), [r.video.email])
+    try:
+        send_mail(config.get_option('PUBLISHED_MAIL_SUBJECT'), generate_published_mail_message(r), config.get_option('RETURN_EMAIL'), [r.video.email])
+    except:
+        return None
+    return True

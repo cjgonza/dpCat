@@ -69,13 +69,13 @@
         <div class="box-body">
             {% if v.status == 'LIS' %}
             <a type="button" href="{% url 'publicar' v.id %}" class="btn btn-block btn-success btn-sm">
-                <i class="icon fa fa-check"></i>
+                <i class="icon fa fa-youtube-play"></i>
                     Publicar producci&oacute;n
             </a>
             {% endif %}
             {% if v.status == 'ACE' or v.status == 'PTO' %}
             <button class="btn btn-block btn-warning btn-sm" data-toggle="modal" data-target="#dialogValidar">
-                <i class="icon fa fa-warning"></i>
+                <i class="icon fa fa-check"></i>
                     Validar producci&oacute;n
             </button>
             {% endif %}
@@ -83,6 +83,12 @@
                 <i class="icon fa fa-ban"></i>
                     Eliminar producci&oacute;n
             </button>
+            {% if v.status != 'LIS' %}
+            <button class="btn btn-block btn-warning btn-sm" data-toggle="modal" data-target="#dialogReemplazar">
+                <i class="icon fa fa-repeat"></i>
+                Reemplazar v&iacute;deo
+            </button>
+            {% endif %}
             {% if v.status != "INC" and v.status != "DEF" and v.status != "PRV" %}
             <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'download_video' v.id %}">
                 <i class="icon fa fa-link"></i>
@@ -129,5 +135,24 @@
             </div>
         </div>
     </div>
+
+    <!-- Dialogo validar produccion -->
+    <div class="modal modal-warning fade" id="dialogReemplazar" tabindex="-1" role="dialog" aria-labelledby="labelReemplazar">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="labelValidar">¿Reemplazar v&iacute;deo?</h4>
+                </div>
+                <div class="modal-body">
+                    El vídeo actual será sustituido por uno nuevo y no podrá ser recuperado.
+                </div>
+                <div class="modal-footer">
+                    <a type="button" href="{% url 'reemplazar_video' v.id %}" class="btn btn-outline pull-left">Reemplazar v&iacute;deo</a>
+                    <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>    
     {% block section-widget2 %}{% endblock %}
 {% endblock %}
