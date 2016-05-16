@@ -20,6 +20,7 @@
                         <thead>
                             <tr role="row">
                                 <th>ID</th>
+                                <th>Estado</th>
                                 <th>Fecha</th>
                                 <th>T&iacute;tulo</th>
                                 <th>Autor/Responsable</th>
@@ -30,6 +31,11 @@
                             {% for video in videos.object_list %}
                             <tr role="row" class="even">
                                 <td class="sorting_1">{{ video.id }}</td>
+                                {% if video.id in pub %}
+                                    <td><span class="label label-success">Publicado</span></td>
+                                {% else %}
+                                    <td><span class="label label-warning">Listo</span></td>
+                                {% endif %}
                                 <td>{{ video.informeproduccion.fecha_validacion|date:"d/m/Y" }}</td>
                                 <td><a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a></td>
                                 <td>{{ video.autor }}</td>

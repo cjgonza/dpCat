@@ -588,6 +588,7 @@ Muestra la videoteca.
 @permission_required('postproduccion.video_manager')
 def videoteca(request):
     video_list = Video.objects.filter(status = 'LIS').order_by('-informeproduccion__fecha_validacion')
+    publicados = RegistroPublicacion.objects.all().values_list('video', flat= True)
 
     autor = request.GET.get('autor')
     titulo = request.GET.get('titulo')
@@ -643,7 +644,7 @@ def videoteca(request):
     except (EmptyPage, InvalidPage):
         videos = paginator.page(paginator.num_pages)
 
-    return render_to_response("postproduccion/section-videoteca.html", { 'videos' : videos, 'tipoVideo' : Video.VIDEO_TYPE }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-videoteca.html", { 'videos' : videos, 'pub' : publicados, 'tipoVideo' : Video.VIDEO_TYPE }, context_instance=RequestContext(request))
 
 """
 Mostrar estadísticas de la videoteca
