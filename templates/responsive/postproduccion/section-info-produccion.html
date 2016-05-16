@@ -71,7 +71,7 @@
             </div>
         </div>
         <div class="box-body">
-            {% if not pub %}
+            {% if not pub and v.status == 'LIS' %}
             <a type="button" href="{% url 'publicar' v.id %}" class="btn btn-block btn-success btn-sm">
                 <i class="icon fa fa-youtube-play"></i>
                     Publicar producci&oacute;n
