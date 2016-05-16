@@ -33,7 +33,9 @@
                             </tr>
                             {% if token.valid %}
                             <tr>
-                                <td><a type="button" class="btn btn-success" target="_blank" href="{{ token.url }}">Enlace a este ticket</a>
+                                <td>
+                                    <a id="ticket_link" type="button" class="btn btn-success" target="_blank" href="{{ token.url }}">Enlace a este ticket</a>
+                                    <button id="link_to_cb" class="btn btn-default"><i class="icon fa fa-clipboard"></i> Copiar enlace</button>
                                 <!--<td>{{ token.url }}</input></td>-->
                             </tr>
                             {% endif %}
