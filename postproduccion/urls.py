@@ -3,8 +3,11 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('postproduccion.views',
     url(r'^$', 'index', name ="index"),
+    url(r'^nueva/$', 'nueva', name = "nueva"),
     url(r'^crear/$', 'crear', name = "crear"),
     url(r'^crear/(?P<video_id>\d+)/$', 'crear', name = "crear"),
+    url(r'^add_coleccion/$', 'add_coleccion', name = "add_coleccion"),
+    url(r'^crear_coleccion/$', 'crear_coleccion', name = "crear_coleccion"),
     (r'^fichero_entrada/(?P<video_id>\d+)/$', 'fichero_entrada'),
     (r'^resumen_video/(?P<video_id>\d+)/$', 'resumen_video'),
     (r'^dirlist/$', 'dirlist'),

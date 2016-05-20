@@ -12,8 +12,8 @@ from django.contrib import messages
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.contrib.auth import authenticate, login
 
-from postproduccion.models import Video, Cola, FicheroEntrada, IncidenciaProduccion, RegistroPublicacion, InformeProduccion
-from postproduccion.forms import LoginForm, VideoForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm, VideoEditarForm, InformeEditarForm
+from postproduccion.models import Coleccion, Video, Cola, FicheroEntrada, IncidenciaProduccion, RegistroPublicacion, InformeProduccion, PlantillaFDV
+from postproduccion.forms import LoginForm, VideoForm, AddColeccionForm, CrearColeccionForm, FicheroEntradaForm, RequiredBaseInlineFormSet, MetadataOAForm, MetadataGenForm, InformeCreacionForm, ConfigForm, ConfigMailForm, IncidenciaProduccionForm, VideoEditarForm, InformeEditarForm
 from postproduccion import queue
 from postproduccion import utils
 from postproduccion import token
@@ -55,6 +55,12 @@ def index(request):
     utils.set_default_settings() # Fija la configuración por defecto si no existía configuración previa.
     return render_to_response("postproduccion/section-inicio.html", { }, context_instance=RequestContext(request))
 
+"""
+Crear nueva producción individual o como colección
+"""
+@permission_required('postproduccion.video_manager')
+def nueva(request):
+    return render_to_response("postproduccion/section-nueva.html", { }, context_instance=RequestContext(request))
 
 """
 Muestra el formulario para insertar un nuevo proyecto de vídeo.
@@ -77,6 +83,50 @@ def crear(request, video_id = None):
         iform = InformeCreacionForm(instance = v.informeproduccion) if v else InformeCreacionForm(initial = { 'fecha_grabacion' : datetime.datetime.now() })
     return render_to_response("postproduccion/section-nueva-paso1.html", { 'vform' : vform, 'iform' : iform }, context_instance=RequestContext(request))
 
+"""
+Muestra el formulario para insertar una producción en una colección existente.
+"""
+@permission_required('postproduccion.video_manager')
+def add_coleccion(request):
+    if request.method == 'POST':
+        aform = AddColeccionForm(request.POST)
+        iform = InformeCreacionForm(request.POST)
+        if aform.is_valid():
+            c = get_object_or_404(Coleccion, pk = aform.data['coleccion'])
+            v = Video(
+                titulo = aform.data['video'],
+                plantilla = PlantillaFDV.objects.get(pk=aform.data['plantilla']) if aform.data['plantilla'] else None,
+                coleccion = c,
+                autor = c.autor,
+                email = c.email,
+                tipoVideo = c.tipoVideo,
+                objecto_aprendizaje = c.objecto_aprendizaje
+            )
+            v.save()
+            i = iform.save(commit = False)
+            i.video = v
+            i.operador = request.user
+            i.save()
+            return redirect('postproduccion.views.fichero_entrada', v.id)
+    else:
+        aform = AddColeccionForm()
+        iform = InformeCreacionForm(initial = { 'fecha_grabacion' : datetime.datetime.now() })
+    return render_to_response("postproduccion/section-add-coleccion.html", { 'aform' : aform, 'iform' : iform }, context_instance=RequestContext(request))
+
+"""
+Muestra el formulario para crear una nueva colección.
+"""
+@permission_required('postproduccion.video_manager')
+def crear_coleccion(request):
+    if request.method == 'POST':
+        cform = CrearColeccionForm(request.POST)
+        if cform.is_valid():
+            c = cform.save()
+            messages.success(request, "Colección creada con éxito")
+            return redirect('postproduccion.views.add_coleccion')
+    else:
+        cform = CrearColeccionForm(initial = { 'fecha' : datetime.datetime.now() })
+    return render_to_response("postproduccion/section-nueva-coleccion.html", { 'cform' : cform }, context_instance=RequestContext(request))
 
 """
 Muestra el formulario para seleccionar el fichero de entrada.
