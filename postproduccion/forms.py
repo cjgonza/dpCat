@@ -33,6 +33,7 @@ class VideoForm(ModelForm):
     class Meta:
         model = Video
         fields = '__all__'
+        exclude = ['archivado']
     def __init__(self, *args, **kwargs):
         super(VideoForm, self).__init__(*args, **kwargs)
         self.fields['plantilla'].widget.attrs.update({'class' : 'form-control select2'})
