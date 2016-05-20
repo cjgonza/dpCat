@@ -13,7 +13,7 @@
             <div class="box-tools pull-right">
             </div>
         </div>
-        <form method="post" action="{% url 'regenerar_tickets' %}" class="form-nueva" id="formgenerarticket" name="formgenerarticket">
+        <form method="post" action="" class="form-nueva" id="formgenerarticket" name="formgenerarticket">
             {% csrf_token %}
             <div class="box-body">
                 <table id="example" class="table table-bordered table-hover dataTable">
@@ -33,12 +33,16 @@
                         <tr role="row">
                             <td><input type="checkbox" class="checkbox-ticket" name="ticket" value="{{video.id}}" id="{{video.id}}"></td>
                             <td>{{ video.id }}</td>
-                            {% if video.status == 'Aceptado' %}
-                                <td><span class="label label-success">{{ video.status }}</span></td>
-                            {% elif video.status == 'Pendiente del usuario' or video.status == 'Definido'%}
-                                <td><span class="label label-warning">{{ video.status }}</span></td>
+                            {% if video.archivado == True %}
+                                <td><span class="label label-default">Archivado</span></td>
                             {% else %}
-                                <td><span class="label label-danger">{{ video.status }}</span></td>
+                                {% if video.status == 'Aceptado' %}
+                                    <td><span class="label label-success">{{ video.status }}</span></td>
+                                {% elif video.status == 'Pendiente del usuario' or video.status == 'Definido'%}
+                                    <td><span class="label label-warning">{{ video.status }}</span></td>
+                                {% else %}
+                                    <td><span class="label label-danger">{{ video.status }}</span></td>
+                                {% endif %}
                             {% endif %}
                             <td>{{ video.operador }}</td>
                             <td>{{ video.fecha }}</td>
@@ -54,7 +58,8 @@
                         {% endfor %}
                       </tbody>
                 </table>
-                <input class="btn btn-primary" type="submit" id="generar-ticket" value="Generar ticket"/>
+                <input id="generar-ticket" class="btn btn-primary" type="button" onclick="this.form.action='{% url 'regenerar_tickets' %}'; this.form.submit(); return false;" value="Generar ticket">
+                <input id="archivar" class="btn btn-primary" type="button" onclick="this.form.action='{% url 'archivar_desarchivar' %}'; this.form.submit(); return false;" value="Archivar/Desarchivar">
             </div>
         </form>
     </div>
@@ -72,7 +77,7 @@
 {% block filter-widget %}
     <div class="box box-solid box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">Filtrar por operador:</h3>
+            <h3 class="box-title">Filtrar:</h3>
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
                     <i class="fa fa-minus"></i>
@@ -80,20 +85,24 @@
             </div>
         </div>
         <div class="box-body">
-            <table class="table table-condensed">
-                <tbody>
-                {% for usuario in usuarios %}
-                    <tr>
-                        <td>
-                            <a href="/postproduccion/enproceso/?operator_id={{ usuario.id }}">
-                                <i class="icon fa fa-user"></i>
-                                {{ usuario.username }}
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            <form method="GET">
+                <div class="form-group">
+                    <label>Operador:</label>
+                    <select class="form-control select2" id="operator_id" name="operator_id"">
+                        <option value="">Todos los operadores</option>
+                        {% for usuario in usuarios %}
+                            <option value="{{usuario.id}}">{{usuario.username}}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="form-group">
+                    <label>Mostrar archivados:</label>
+                    <input type="checkbox" class="minimal" id="archivados" name="archivados">
+                </div>
+                <a class="btn btn-default" href="{% url 'enproceso' %}">Reiniciar</a>
+                <input class="btn btn-primary pull-right" type="submit" value="Filtrar" />
+            </form>
         </div>
     </div>
 {% endblock %}
