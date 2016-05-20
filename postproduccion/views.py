@@ -249,34 +249,36 @@ Lista los vídeos que están siendo procesados.
 """
 @permission_required('postproduccion.video_manager')
 def listar_en_proceso(request):
-    #comprueba si se está filtrando por operador o no
-    if (request.GET.get('operator_id', '') != None):
-        operator_id = request.GET.get('operator_id', '')
-    else:
-        operator_id = None
-    #si no existe operador devuelve un 404
+    operator_id = request.GET.get('operator_id')
+    archivados = request.GET.get('archivados')
+
     op_id = get_object_or_404(User, id=operator_id) if operator_id else None
 
     if request.is_ajax():
-        return render_to_response("postproduccion/ajax/content-enproceso.html", { 'list' : listar(operator_id=op_id)[:10] }, context_instance=RequestContext(request))
+        return render_to_response("postproduccion/ajax/content-enproceso.html", { 'list' : listar(archivados, operator_id=op_id)[:10] }, context_instance=RequestContext(request))
     else:
-        return render_to_response("postproduccion/section-enproceso.html", { 'list' : listar(operator_id=op_id) , 'usuarios' : User.objects.all()}, context_instance=RequestContext(request))
+        return render_to_response("postproduccion/section-enproceso.html", { 'list' : listar(archivados, operator_id=op_id) , 'usuarios' : User.objects.all()}, context_instance=RequestContext(request))
 
 """
 Lista los vídeos que están siendo procesados que cumplan el filto dado.
 """
-def listar(operator_id = None, filtro = None):
+def listar(archivados = None, operator_id = None, filtro = None):
     data = list()
     if operator_id:#si se esta filtrando por operador hay que coger los videos desde imforme de produccion
         informes_produccion = InformeProduccion.objects.filter(operador = operator_id).exclude(video__status = 'LIS').filter(id__gt = 2179)
+        if archivados == None:
+            informes_produccion = informes_produccion.exclude(video__archivado = True)
         for v in informes_produccion.order_by('pk'):
             data.append(get_linea(v.video))
     else:#si no listamos todos los videos
         videolist = Video.objects.exclude(status = 'LIS').filter(id__gt = 2179)
+        if archivados == None:
+            videolist = videolist.exclude(archivado = True)
         videolist = videolist.filter(filtro) if filtro else videolist
         for v in videolist.order_by('pk'):
             data.append(get_linea(v))
     return data
+
 '''
 Contruye una entrada con los datos de un video que toma como argumento
 '''
@@ -289,6 +291,7 @@ def get_linea(video):
     linea['responsable'] = video.autor
     linea['tipo'] = video.status.lower()
     linea['status'] = dict(Video.VIDEO_STATUS)[video.status]
+    linea['archivado'] = video.archivado
     return linea
 
 """
@@ -496,6 +499,24 @@ def regenerar_tickets(request):
             if token.send_custom_mail_to_user(v, ('regenerar ticket %s' % v.titulo), request.user.first_name) is None:
                 messages.error(request, "No se ha podido enviar al usuario")
         messages.success(request, "Tickets regenerados")
+
+    return redirect('enproceso')
+"""
+Archivar/desarchivar videos mediante checkbox
+"""
+@permission_required('postproduccion.video_manager')
+def archivar_desarchivar(request):
+    if request.method == 'POST':
+        videos = Video.objects.filter(pk__in=request.POST.getlist('ticket'))
+        for v in videos:
+            if v.archivado == True:
+                v.archivado = False
+                v.save()
+            else:
+                v.archivado = True
+                v.save()
+
+        messages.success(request, "Prceso de archivado realizado correctamente")
 
     return redirect('enproceso')
 
