@@ -1,10 +1,13 @@
 $(document).ready(function() {
 // Checkbox generación de ticket
     function mostrarGenerarTicket() {
-        if ($("input:checkbox:checked").length == 0)
+        if ($("input:checkbox:checked").length == 0){
             $("#generar-ticket").hide();
-        else
+            $("#archivar").hide();
+        }else{
             $("#generar-ticket").show();
+            $("#archivar").show();
+        }
     }
 
     mostrarGenerarTicket();

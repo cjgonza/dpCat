@@ -67,6 +67,8 @@ class Video(models.Model):
 
     objecto_aprendizaje = models.BooleanField(default = True, verbose_name = u'Objeto de aprendizaje')
 
+    archivado = models.BooleanField(default = False, verbose_name = u'Archivar')
+
     def __unicode__(self):
         return self.titulo
 

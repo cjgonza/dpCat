@@ -58,10 +58,20 @@
             <table class="table table-condensed">
                 <tbody>
                     <tr>
-                        <td><a class="link" href="{% url 'definir_metadatos_oper' v.id %}">Metadata principal</a></td>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'definir_metadatos_oper' v.id %}">
+                                <i class="icon fa fa-file-text"></i>
+                                Metadata principal
+                            </a>
+                        </td>
                     </tr>
                     <tr>
-                        <td><a class="link" href="{% url 'media_info' v.id %}">Metadata t&eacute;cnica</a></td>
+                        <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'media_info' v.id %}">
+                                <i class="icon fa fa-file-text"></i>
+                                Metadata t&eacute;cnica
+                            </a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
