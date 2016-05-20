@@ -1,0 +1,75 @@
+{% extends "postproduccion/base-2-1.html" %}
+
+{% block page-title %}Nueva producción{% endblock %}
+{% block section-class %}class = "formulario paso1" {% endblock %}
+{% block section-description %} {% endblock %}
+
+{% block section-content %}
+    <div class="row">
+        <div class="col-lg-4 col-xs-6">
+            <a href="{% url 'crear' %}" class="small-box-footer">
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3>Crear</h3>
+                        <h4>nueva producci&oacute;n</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-video-camera" style="padding-top: 0.05em;"></i>
+                    </div>
+                    <h5 class="small-box-footer">Producci&oacute;n sin colecci&oacute;n asociada</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-4 col-xs-6">
+            <a href="{% url 'add_coleccion' %}" class="small-box-footer">
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3>A&ntilde;adir</h3>
+                        <h4>nueva producci&oacute;n a colecci&oacute;n</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-folder" style="padding-top: 0.1em;"></i>
+                    </div>
+                    <h5 class="small-box-footer">Producci&oacute;n asociada a una colecci&oacute;n</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-4 col-xs-6">
+            <a href="{% url 'crear_coleccion' %}" class="small-box-footer">
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3>Crear</h3>
+                        <h4>nueva colecci&oacute;n</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-folder" style="padding-top: 0.1em;"></i>
+                    </div>
+                    <h5 class="small-box-footer">Definir una nueva colecci&oacute;n</h5>
+                </div>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block section-widget %}
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i class="fa fa-fw fa-info" style="font-size: 150%;"></i></td>
+                        <td>Es recomendable a&ntilde;adir producciones a una colecci&oacute;n existente cuando la informaci&oacute;n del responsable/evento es la misma.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

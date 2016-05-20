@@ -1,0 +1,63 @@
+{% extends "postproduccion/base-2-1.html" %}
+
+{% block page-title %}Nueva colecci&oacute;n{% endblock %}
+{% block section-class %}class = "formulario paso1" {% endblock %}
+{% block section-description %} {% endblock %}
+
+{% block section-content %}
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Nueva colecci&oacute;n: Informaci&oacute;n b&aacute;sica</h3>
+        </div>
+        <div class="box-body">
+            <form method="post" role="form">
+                {% csrf_token %}
+                {%for c in cform%}
+                <div class="form-group {% if c.errors %} has-error{% endif %}">
+                    <label>
+                        {% if c.errors %} <i class="fa fa-times-circle-o"></i> {% endif %}
+                        {{ c.label }}:
+                    </label>
+                    {%if c.label == 'Fecha de creación'%}
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar">
+                            </i>
+                        </div>
+                        {{ c }}
+                    </div>
+                    {%else%}
+                    {{c}}
+                    {%endif%}
+                    {% if c.errors %} <span class="help-block">Este campo es obligatorio.</span>{% endif %}
+                </div>
+                {%endfor%}
+                <a type="button" href="{% url 'nueva' %}" class="btn btn-primary pull-left" id="volver">Volver</a>
+                <input class="btn btn-primary pull-right" type="submit" value="Crear" />
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block section-widget %}
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Informaci&oacute;n de inter&eacute;s</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <td><i class="fa fa-fw fa-info" style="font-size: 150%;"></i></td>
+                        <td>Crear una colección permite agrupar un conjunto de producciones que comparten los mismos datos del responsable/evento.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
