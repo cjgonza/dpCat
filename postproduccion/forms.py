@@ -3,7 +3,7 @@ from django import forms
 from django.forms import ModelForm, CharField, Textarea, widgets, Form, ValidationError
 from django.forms.models import BaseInlineFormSet
 from django.template import Template, TemplateSyntaxError
-from postproduccion.models import Video, FicheroEntrada, MetadataOA, MetadataGen, InformeProduccion, IncidenciaProduccion
+from postproduccion.models import Coleccion, Video, FicheroEntrada, MetadataOA, MetadataGen, InformeProduccion, IncidenciaProduccion, PlantillaFDV
 from postproduccion.utils import is_exec, is_dir
 from postproduccion.encoder import is_video_file
 from configuracion import config
@@ -33,7 +33,7 @@ class VideoForm(ModelForm):
     class Meta:
         model = Video
         fields = '__all__'
-        exclude = ['archivado']
+        exclude = ['archivado', 'coleccion']
     def __init__(self, *args, **kwargs):
         super(VideoForm, self).__init__(*args, **kwargs)
         self.fields['plantilla'].widget.attrs.update({'class' : 'form-control select2'})
