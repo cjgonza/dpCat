@@ -488,6 +488,15 @@ def estado_video(request, video_id):
     return render_to_response("postproduccion/section-resumen-produccion.html", { 'v' : v, 'pub' : pub }, context_instance=RequestContext(request))
 
 """
+Vista que muestra el estado e información de una colección.
+"""
+@permission_required('postproduccion.video_manager')
+def estado_coleccion(request, coleccion_id):
+    c = get_object_or_404(Coleccion, pk = coleccion_id)
+    pub = RegistroPublicacion.objects.filter(video__in = c.video_set.all()).values_list('video', flat= True)
+    return render_to_response("postproduccion/section-resumen-coleccion.html", { 'c' : c, 'pub' : pub }, context_instance=RequestContext(request))
+
+"""
 Muestra la información técnica del vídeo
 """
 @permission_required('postproduccion.video_manager')
@@ -628,6 +637,16 @@ def borrar_produccion(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
     v.delete()
     messages.success(request, 'Producción eliminada con éxito.')
+    return redirect('postproduccion.views.index')
+
+"""
+Borra una colección
+"""
+@permission_required('postproduccion.video_manager')
+def borrar_coleccion(request, coleccion_id):
+    c = get_object_or_404(Coleccion, pk=coleccion_id)
+    c.delete()
+    messages.success(request, 'Colección eliminada con éxito.')
     return redirect('postproduccion.views.index')
 
 """
