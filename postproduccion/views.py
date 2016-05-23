@@ -731,6 +731,67 @@ def videoteca(request):
     )
 
 """
+Mostrar colecciones existentes en dpCat
+"""
+@permission_required('postproduccion.video_manager')
+def colecciones(request):
+    colecciones = Coleccion.objects.all().order_by('-fecha')
+
+    cid = request.GET.get('id')
+    titulo = request.GET.get('titulo')
+    autor = request.GET.get('autor')
+    email = request.GET.get('email')
+    tipoVideoSearch = request.GET.get('tipoVideo')
+
+    try:
+        f_ini = datetime.datetime.strptime(request.GET.get('f_ini'), "%d/%m/%Y")
+    except (ValueError, TypeError):
+        f_ini = None
+    try:
+        f_fin = datetime.datetime.strptime(request.GET.get('f_fin'), "%d/%m/%Y")
+    except (ValueError, TypeError):
+        f_fin = None
+
+    if cid:
+        colecciones = colecciones.filter(pk = cid)
+    if titulo:
+        colecciones = colecciones.filter(titulo__icontains = titulo)
+    if autor:
+        colecciones = colecciones.filter(autor__icontains = autor)
+    if email:
+        colecciones = colecciones.filter(email__icontains = email)
+    if tipoVideoSearch and tipoVideoSearch != 'UNK':
+        colecciones = colecciones.filter(tipoVideo = tipoVideoSearch)
+
+    colecciones = colecciones.filter(fecha__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
+
+    try:
+        nresults = int(request.GET.get('nresults', 25))
+    except ValueError:
+        nresults = 25
+
+    paginator = Paginator(colecciones, nresults)
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    try:
+        colecciones = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        colecciones = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        "postproduccion/section-colecciones.html",
+        {
+            'colecciones' : colecciones,
+            'tipoVideo' : Coleccion.VIDEO_TYPE
+        },
+        context_instance=RequestContext(request)
+    )
+
+"""
 Mostrar estadísticas de la videoteca
 """
 @permission_required('postproduccion.video_manager')
