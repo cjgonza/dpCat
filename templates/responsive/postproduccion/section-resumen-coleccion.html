@@ -1,0 +1,146 @@
+{% extends "postproduccion/base-2-1.html" %}
+
+{% block current-resumen %} disabled {% endblock %}
+{% block page-title %}Informe de colecci&oacute;n{% endblock %}
+{% block section-class %} class="informe-video"{% endblock %}
+{% block section-title %}<h1>Informe de la colecci&oacute;n: {{c.titulo}}</h1>{% endblock %}
+
+
+{% block section-content %}
+<div class="box-body">
+    <div class="row">
+        <div class="box box-solid box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Informaci&oacute;n b&aacute;sica de la colecci&oacute;n</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table class="table no-margin">
+                        <thead>
+                            <th>Fecha</th>
+                            <th>T&iacute;tulo</th>
+                            <th>Autor</th>
+                            <th>Email</th>
+                            <th>Tipo</th>
+                            <th>OA</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ c.fecha|date:"G:i:s - d/m/Y" }}</td>
+                                <td>{{ c.titulo }}</td>
+                                <td>{{ c.autor }}</td>
+                                <td><a href="mailto:{{c.email}}">{{ c.email }}</a></td>
+                                <td>{{ c.tipoVideo }}</td>
+                                <td><i class="icon {{ c.objecto_aprendizaje|yesno:'fa fa-check,fa fa-ban' }}" style="{{ c.objecto_aprendizaje|yesno:'color:green,color:red'}}"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if c.video_set.all %}
+    <div class="row">
+        <div class="box box-solid box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Producciones asociada a la colecci&oacute;n</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table id="example" class="table table-bordered table-hover dataTable">
+                        <thead>
+                            <th>ID</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Operador</th>
+                            <th>T&iacute;tulo</th>
+                            <th>Observaci&oacute;n</th>
+                        </thead>
+                        <tbody>
+                            {% for v in c.video_set.all %}
+                            <tr>
+                                <td>{{ v.id }}</td>
+                                {% if v.id in pub %}
+                                    <td><span class="label label-success">{{ v.get_status_display }}</span></td>
+                                {% elif v.status == 'LIS' or v.status == 'ACE'%}
+                                    <td><span class="label label-warning">{{ v.get_status_display }}</span></td>
+                                {% else %}
+                                    <td><span class="label label-danger">{{ v.get_status_display }}</span></td>
+                                {% endif %}
+                                <td>{{ v.informeproduccion.fecha_grabacion|date:"G:i:s - d/m/Y" }} - Grabaci&oacute;n
+                                <br>{{ v.informeproduccion.fecha_produccion|date:"G:i:s - d/m/Y" }} - Producci&oacute;n
+                                {% if v.informeproduccion.fecha_validacion %}
+                                <br>{{ v.informeproduccion.fecha_validacion|date:"G:i:s - d/m/Y" }} - Validaci&oacute;n
+                                {% endif%}</td>
+                                <td>{{ v.informeproduccion.operador }}</td>
+                                <td><a href="{% url 'estado_video' v.id %}">{{ v.titulo }}</a></td>
+                                <td>{{ v.informeproduccion.observacion }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+        <div class="alert alert-info alert-dismissible">
+            <h4>
+                <i class="icon fa fa-info"></i>
+                Información
+            </h4>
+            No se ha encontrado ninguna producci&oacute;n asociada a la colecci&oacute;n.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block section-widget %}
+    <div style="padding:5px;"> </div>
+    <div class="box box-solid box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Acciones disponibles</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <button class="btn btn-block btn-danger btn-sm" data-toggle="modal" data-target="#dialogEliminar">
+                <i class="icon fa fa-ban"></i>
+                    Eliminar colecci&oacute;n
+            </button>
+        </div>
+    </div>
+
+    <!-- Dialogo eliminar coleccion -->
+    <div class="modal modal-danger fade" id="dialogEliminar" tabindex="-1" role="dialog" aria-labelledby="labelEliminar">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="labelEliminar">¿Eliminar colecci&oacute;n?</h4>
+                </div>
+                <div class="modal-body">
+                    La colección y todas sus producciones serán eliminadas de forma permanente, y no podrán ser recuperadas.
+                </div>
+                <div class="modal-footer">
+                    <a type="button" href="{% url 'borrar_coleccion' c.id %}" class="btn btn-outline pull-left">Eliminar</a>
+                    <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block section-widget2 %}{% endblock %}
+{% endblock %}

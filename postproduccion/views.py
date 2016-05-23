@@ -488,6 +488,15 @@ def estado_video(request, video_id):
     return render_to_response("postproduccion/section-resumen-produccion.html", { 'v' : v, 'pub' : pub }, context_instance=RequestContext(request))
 
 """
+Vista que muestra el estado e información de una colección.
+"""
+@permission_required('postproduccion.video_manager')
+def estado_coleccion(request, coleccion_id):
+    c = get_object_or_404(Coleccion, pk = coleccion_id)
+    pub = RegistroPublicacion.objects.filter(video__in = c.video_set.all()).values_list('video', flat= True)
+    return render_to_response("postproduccion/section-resumen-coleccion.html", { 'c' : c, 'pub' : pub }, context_instance=RequestContext(request))
+
+"""
 Muestra la información técnica del vídeo
 """
 @permission_required('postproduccion.video_manager')
@@ -631,6 +640,16 @@ def borrar_produccion(request, video_id):
     return redirect('postproduccion.views.index')
 
 """
+Borra una colección
+"""
+@permission_required('postproduccion.video_manager')
+def borrar_coleccion(request, coleccion_id):
+    c = get_object_or_404(Coleccion, pk=coleccion_id)
+    c.delete()
+    messages.success(request, 'Colección eliminada con éxito.')
+    return redirect('postproduccion.views.index')
+
+"""
 Envía un correo al autor notificando de que una producción se encuentra publicada.
 """
 @permission_required('postproduccion.video_manager')
@@ -659,12 +678,14 @@ Muestra la videoteca.
 @permission_required('postproduccion.video_manager')
 def videoteca(request):
     video_list = Video.objects.filter(status = 'LIS').order_by('-informeproduccion__fecha_validacion')
+    colecciones = Coleccion.objects.all()
     publicados = RegistroPublicacion.objects.all().values_list('video', flat= True)
 
     autor = request.GET.get('autor')
     titulo = request.GET.get('titulo')
     vid = request.GET.get('id')
     tipoVideoSearch = request.GET.get('tipoVideo')
+    coleccionSearch = request.GET.get('coleccion')
     meta_titulo = request.GET.get('meta_titulo')
     meta_autor = request.GET.get('meta_autor')
     meta_descripcion = request.GET.get('meta_descripcion')
@@ -694,6 +715,8 @@ def videoteca(request):
         video_list = video_list.filter(Q(metadatagen__keyword__icontains=meta_etiqueta) | Q(metadataoa__keyword__icontains=meta_etiqueta))
     if tipoVideoSearch and tipoVideoSearch != 'UNK':
         video_list = video_list.filter(tipoVideo = tipoVideoSearch)
+    if coleccionSearch and coleccionSearch != '0':
+        video_list = video_list.filter(coleccion = Coleccion.objects.get(pk = coleccionSearch))
 
     video_list = video_list.filter(informeproduccion__fecha_validacion__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
 
@@ -715,7 +738,77 @@ def videoteca(request):
     except (EmptyPage, InvalidPage):
         videos = paginator.page(paginator.num_pages)
 
-    return render_to_response("postproduccion/section-videoteca.html", { 'videos' : videos, 'pub' : publicados, 'tipoVideo' : Video.VIDEO_TYPE }, context_instance=RequestContext(request))
+    return render_to_response(
+        "postproduccion/section-videoteca.html",
+        {
+            'videos' : videos,
+            'pub' : publicados,
+            'tipoVideo' : Video.VIDEO_TYPE,
+            'colecciones': colecciones
+        },
+        context_instance=RequestContext(request)
+    )
+
+"""
+Mostrar colecciones existentes en dpCat
+"""
+@permission_required('postproduccion.video_manager')
+def colecciones(request):
+    colecciones = Coleccion.objects.all().order_by('-fecha')
+
+    cid = request.GET.get('id')
+    titulo = request.GET.get('titulo')
+    autor = request.GET.get('autor')
+    email = request.GET.get('email')
+    tipoVideoSearch = request.GET.get('tipoVideo')
+
+    try:
+        f_ini = datetime.datetime.strptime(request.GET.get('f_ini'), "%d/%m/%Y")
+    except (ValueError, TypeError):
+        f_ini = None
+    try:
+        f_fin = datetime.datetime.strptime(request.GET.get('f_fin'), "%d/%m/%Y")
+    except (ValueError, TypeError):
+        f_fin = None
+
+    if cid:
+        colecciones = colecciones.filter(pk = cid)
+    if titulo:
+        colecciones = colecciones.filter(titulo__icontains = titulo)
+    if autor:
+        colecciones = colecciones.filter(autor__icontains = autor)
+    if email:
+        colecciones = colecciones.filter(email__icontains = email)
+    if tipoVideoSearch and tipoVideoSearch != 'UNK':
+        colecciones = colecciones.filter(tipoVideo = tipoVideoSearch)
+
+    colecciones = colecciones.filter(fecha__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
+
+    try:
+        nresults = int(request.GET.get('nresults', 25))
+    except ValueError:
+        nresults = 25
+
+    paginator = Paginator(colecciones, nresults)
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    try:
+        colecciones = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        colecciones = paginator.page(paginator.num_pages)
+
+    return render_to_response(
+        "postproduccion/section-colecciones.html",
+        {
+            'colecciones' : colecciones,
+            'tipoVideo' : Coleccion.VIDEO_TYPE
+        },
+        context_instance=RequestContext(request)
+    )
 
 """
 Mostrar estadísticas de la videoteca

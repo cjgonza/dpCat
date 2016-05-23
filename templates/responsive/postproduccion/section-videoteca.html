@@ -105,6 +105,14 @@
                     </tr>
                     <tr>
                         <td>
+                            <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'colecciones' %}">
+                                <i class="icon fa fa-folder"></i>
+                                Colecciones
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <a type="button" class="btn btn-block btn-default btn-sm" href="{% url 'estadisticas' %}">
                                 <i class="icon fa fa-area-chart"></i>
                                 Estad&iacute;sticas
@@ -157,7 +165,16 @@
                                     <option value="{{value}}">{{name}}</option>
                                 {% endfor %}
                             </select>
+                        </div>
 
+                        <div class="form-group">
+                            <label>Colecci&oacute;n:</label>
+                            <select class="form-control select2" id="coleccion" name="coleccion">
+                                <option value="0">Sin definir</option>
+                                {% for c in colecciones %}
+                                    <option value="{{c.id}}">{{c.titulo}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
 
                     </div>
