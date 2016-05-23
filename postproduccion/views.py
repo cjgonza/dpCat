@@ -659,12 +659,14 @@ Muestra la videoteca.
 @permission_required('postproduccion.video_manager')
 def videoteca(request):
     video_list = Video.objects.filter(status = 'LIS').order_by('-informeproduccion__fecha_validacion')
+    colecciones = Coleccion.objects.all()
     publicados = RegistroPublicacion.objects.all().values_list('video', flat= True)
 
     autor = request.GET.get('autor')
     titulo = request.GET.get('titulo')
     vid = request.GET.get('id')
     tipoVideoSearch = request.GET.get('tipoVideo')
+    coleccionSearch = request.GET.get('coleccion')
     meta_titulo = request.GET.get('meta_titulo')
     meta_autor = request.GET.get('meta_autor')
     meta_descripcion = request.GET.get('meta_descripcion')
@@ -694,6 +696,8 @@ def videoteca(request):
         video_list = video_list.filter(Q(metadatagen__keyword__icontains=meta_etiqueta) | Q(metadataoa__keyword__icontains=meta_etiqueta))
     if tipoVideoSearch and tipoVideoSearch != 'UNK':
         video_list = video_list.filter(tipoVideo = tipoVideoSearch)
+    if coleccionSearch and coleccionSearch != '0':
+        video_list = video_list.filter(coleccion = Coleccion.objects.get(pk = coleccionSearch))
 
     video_list = video_list.filter(informeproduccion__fecha_validacion__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
 
@@ -715,7 +719,16 @@ def videoteca(request):
     except (EmptyPage, InvalidPage):
         videos = paginator.page(paginator.num_pages)
 
-    return render_to_response("postproduccion/section-videoteca.html", { 'videos' : videos, 'pub' : publicados, 'tipoVideo' : Video.VIDEO_TYPE }, context_instance=RequestContext(request))
+    return render_to_response(
+        "postproduccion/section-videoteca.html",
+        {
+            'videos' : videos,
+            'pub' : publicados,
+            'tipoVideo' : Video.VIDEO_TYPE,
+            'colecciones': colecciones
+        },
+        context_instance=RequestContext(request)
+    )
 
 """
 Mostrar estadísticas de la videoteca
