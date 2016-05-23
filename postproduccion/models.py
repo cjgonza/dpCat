@@ -32,6 +32,27 @@ class TipoVideo(models.Model):
     def __unicode__(self):
         return self.nombre
 
+class Coleccion(models.Model):
+    VIDEO_TYPE = (
+        ('UNK', u'Sin definir'),
+        ('PIL', u'Píldora formativa'),
+        ('VID', u'Videotutoriales'),
+        ('EDU', u'Vídeos Educativos'),
+        ('EVE', u'Grabación de Eventos'),
+        ('OTR', u'Otros'),
+    )
+
+    titulo = models.CharField(max_length = 100, verbose_name = u'Título de Colección')
+
+    autor = models.CharField(max_length = 255, default = "", verbose_name = u'Responsable')
+    email = models.EmailField(default = "", verbose_name = u'Email del responsable')
+    tipoVideo = models.CharField(verbose_name="Tipo Producción", max_length = 3, choices = VIDEO_TYPE, default = 'UNK')
+    objecto_aprendizaje = models.BooleanField(default = True, verbose_name = u'Objeto de aprendizaje')
+    fecha = models.DateTimeField(null = True, blank = True, verbose_name = u'Fecha de creación')
+
+    def __unicode__(self):
+        return self.titulo
+
 class Video(models.Model):
     VIDEO_STATUS = (
         ('INC', u'Incompleto'),                  # Creado pero sin ficheros de entrada.
@@ -58,6 +79,7 @@ class Video(models.Model):
     fichero = models.CharField(max_length = 255, editable = False)
     status = models.CharField(max_length = 3, choices = VIDEO_STATUS, editable = False, default = 'INC')
     plantilla = models.ForeignKey(PlantillaFDV, null = True, blank = True)
+    coleccion = models.ForeignKey(Coleccion, null = True, blank = True)
 
     titulo = models.CharField(max_length = 100)
     autor = models.CharField(max_length = 255, verbose_name = u'Responsable')

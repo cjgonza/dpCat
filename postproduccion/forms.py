@@ -3,7 +3,7 @@ from django import forms
 from django.forms import ModelForm, CharField, Textarea, widgets, Form, ValidationError
 from django.forms.models import BaseInlineFormSet
 from django.template import Template, TemplateSyntaxError
-from postproduccion.models import Video, FicheroEntrada, MetadataOA, MetadataGen, InformeProduccion, IncidenciaProduccion
+from postproduccion.models import Coleccion, Video, FicheroEntrada, MetadataOA, MetadataGen, InformeProduccion, IncidenciaProduccion, PlantillaFDV
 from postproduccion.utils import is_exec, is_dir
 from postproduccion.encoder import is_video_file
 from configuracion import config
@@ -33,7 +33,7 @@ class VideoForm(ModelForm):
     class Meta:
         model = Video
         fields = '__all__'
-        exclude = ['archivado']
+        exclude = ['archivado', 'coleccion']
     def __init__(self, *args, **kwargs):
         super(VideoForm, self).__init__(*args, **kwargs)
         self.fields['plantilla'].widget.attrs.update({'class' : 'form-control select2'})
@@ -43,6 +43,30 @@ class VideoForm(ModelForm):
         self.fields['email'].widget.attrs.update({'class' : 'form-control'})
         self.fields['tipoVideo'].widget.attrs.update({'class' : 'form-control select2'})
         self.fields['objecto_aprendizaje'].widget.attrs.update({'class' : 'minimal', 'checked' : 'checked'})
+
+class CrearColeccionForm(ModelForm):
+    class Meta:
+        model = Coleccion
+        fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super(CrearColeccionForm, self).__init__(*args, **kwargs)
+        self.fields['titulo'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['autor'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['email'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['tipoVideo'].widget.attrs.update({'class' : 'form-control select2'})
+        self.fields['objecto_aprendizaje'].widget.attrs.update({'class' : 'minimal', 'checked' : 'checked'})
+        self.fields['fecha'].widget.attrs.update({'class' : 'form-control pull-right'})
+
+class AddColeccionForm(forms.Form):
+    plantilla = forms.ModelChoiceField(queryset=PlantillaFDV.objects.all(), label = u'Plantilla', required = False)
+    plantilla.widget.attrs.update({'class' : 'form-control select2'})
+    plantilla.empty_label = 'Por defecto'
+
+    video = forms.CharField(label = u'Título de producción')
+    video.widget.attrs.update({'class' : 'form-control'})
+
+    coleccion = forms.ModelChoiceField(queryset=Coleccion.objects.all(), label = u'Colección')
+    coleccion.widget.attrs.update({'class' : 'form-control select2'})
 
 class InformeCreacionForm(ModelForm):
     class Meta:
