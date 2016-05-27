@@ -17,6 +17,8 @@ DATABASES = {
     }
 }
 
+ALLOWED_HOSTS = []
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -115,6 +117,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 try:
-    from settings_produccion import *
+    from settings_local import *
 except ImportError:
     pass
