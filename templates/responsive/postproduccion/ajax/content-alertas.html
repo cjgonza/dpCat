@@ -86,27 +86,36 @@
         </div>
     </div>
     {% endif %}
-     <!--
+
     {% if i.tipo == 'video-aceptado' %}
-    <div class="{{ i.tipo }}">
-        <div class="alerta">
-            <div class="alerta-header"><span class="icon-title">La producci&oacute;n con id {{ i.v.id }} no ha sido validada.</span><span class="icon plus"></span></div>
-            <div class="alerta-content">
-                <ul class="item-alerta">
-                    <li><span class="item-alerta-title">T&iacute;tulo de la producci&oacute;n:</span>{{ i.v.titulo }} </li>
-                    <li><span class="item-alerta-title">Identificador:</span> {{ i.v.id }} </li>
-                    <li><span class="item-alerta-title">Descripci&oacute;n de la alerta:</span>
-                    <span class="item-alerta-content">La producci&oacute;n lleva pendiente de validar más de 15 d&iacute;as. </span></li>
-                </ul>
+    <div class="box box-warning collapsed-box">
+        <div class="box-header with-border">
+            <h3 class="box-title">La producci&oacute;n con id {{ i.v.id }} no ha sido validada.</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove">
+                    <i class="fa fa-times"></i>
+                </button>
             </div>
-            <div class="alerta-links">
-                <ul>
-                   <li class="item-alerta-links"><a class="edit-icon" href="{% url 'estado_video' i.v.id%}">Informe de la producci&oacute;n</a></li>
+        </div>
+        <div class="box-body">
+            <div class="table-responsive">
+                <ul class="item-alerta">
+                    <li><span>T&iacute;tulo de la producci&oacute;n:</span>{{ i.v.titulo }} </li>
+                    <li><span>Identificador:</span> {{ i.v.id  }} </li>
+                    <li><span>Descripci&oacute;n de la alerta:</span>
+                    <span>La producci&oacute;n lleva pendiente de validar más de 15 d&iacute;as.</span></li>
                 </ul>
             </div>
         </div>
+        <div class="box-footer clearfix" style="display:block;">
+           <a class="btn btn-sm btn-primary btn-flat" href="{% url 'estado_video' i.v.id %}">Informe de la producci&oacute;n</a></li>
+        </div>
     </div>
-    {% endif %}-->
+    {% endif %}
+
     {% if i.tipo == 'ejecutable' %}
     <div class="box box-warning collapsed-box">
         <div class="box-header with-border">
@@ -243,5 +252,7 @@
     {% endif %}
 
     {% empty %}
-        <div class="mensaje info">No existe ninguna alerta en el sistema</div></li>
+        <div class="alert alert-info alert-dismissible">
+            <i class="icon fa fa-info"></i>No existe ninguna alerta en el sistema
+        </div>
 {% endfor %}

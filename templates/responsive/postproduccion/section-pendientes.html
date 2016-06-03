@@ -16,26 +16,26 @@
               <thead>
                   <tr role="row">
                     <th>ID</th>
-                    <th>Estado</th>
-                    <th>Operador</th>
                     <th>Fecha</th>
-                    <th>Responsable</th>
+                    <th>Operador</th>
+                    <th>Autor/Responsable</th>
                     <th>T&iacute;tulo</th>
+                    <th>Estado</th>
                   </tr>
               </thead>
               <tbody>
                 {% for video in list %}
                 <tr>
                     <td>{{ video.id }}</td>
+                    <td>{{ video.fecha }}</td>
+                    <td>{{ video.operador }}</td>
+                    <td>{{ video.responsable }}</td>
+                    <td><a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a></td>
                     {% if video.status == 'Aceptado' %}
                         <td><span class="label label-success">{{ video.status }}</span></td>
                     {% else %}
                         <td><span class="label label-danger">{{ video.status }}</span></td>
                     {% endif %}
-                    <td>{{ video.operador }}</td>
-                    <td>{{ video.fecha }}</td>
-                    <td>{{ video.responsable }}</td>
-                    <td><a href="{% url 'estado_video' video.id %}">{{ video.titulo }}</a></td>
                 </tr>
                 {% endfor %}
               </tbody>

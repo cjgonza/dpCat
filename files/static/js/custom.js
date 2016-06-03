@@ -12,16 +12,22 @@ $(document).ready(function() {
 
     mostrarGenerarTicket();
 
-    $(".marcar-todo").click(function() {
-        $(".checkbox-ticket").not(this).prop("checked", this.checked);
+    $("#marcar-todo").on('ifChecked', function() {
+        $(".minimal").iCheck("check");
+        mostrarGenerarTicket();
+    });
+    $("#marcar-todo").on('ifUnchecked', function() {
+        $(".minimal").iCheck("uncheck");
         mostrarGenerarTicket();
     });
 
-    $(".checkbox-ticket").click(function() {
-        if (!this.checked)
-            $(".marcar-todo").prop("checked", false);
+    $(".minimal").on('ifUnchecked', function() {
         mostrarGenerarTicket();
     });
+    $(".minimal").on('ifChecked', function() {
+        mostrarGenerarTicket();
+    });
+
 
     $("#terminos").click(function(e) {
         if (!$("#accept_terms")[0].checked) {
@@ -50,14 +56,71 @@ $(document).ready(function() {
         $('input[type="checkbox"].flat-red').iCheck({
           checkboxClass: 'icheckbox_flat-green'
         });
-
-        $('#example').DataTable({
-            "paging": false,
+        //inicializar paametros de datatable
+        $('#table_enproceso').DataTable({
+            "paging": true,
+            "pageLength": 25,
             "lengthChange": false,
-            "searching": false,
+            "searching": true,
             "ordering": true,
-            "info": false,
-            "autoWidth": false
+            "info": true,
+            "autoWidth": false,
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ resultados",
+                "emptyTable": "No hay resultados que mostrar",
+                "info": "Página _PAGE_ de _PAGES_",
+                "infoEmpty":  "Página _PAGE_ de _PAGES_",
+                "search":     "Buscar:",
+                "zeroRecords":    "No hay resultados que concuerden con la búsqueda",
+                "infoFiltered":   "",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Último",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                },
+            },
+            "columns": [
+               { "orderDataType": "dom-checkbox" },
+               null,
+               { "type": 'date-eu', "targets": 0 },
+               null,
+               null,
+               null,
+               null
+             ]
+        });
+        //inicializar paametros de datatable
+        $('#table_videoteca').DataTable({
+            "paging": true,
+            "pageLength": 25,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "language": {
+                "lengthMenu": "   Mostrar _MENU_ resultados",
+                "emptyTable":     "No hay resultados que mostrar",
+                "infoEmpty":      "Página _PAGE_ de _PAGES_",
+                "info":           "Página _PAGE_ de _PAGES_",
+                "search":         "Buscar:",
+                "zeroRecords":    "No hay resultados que concuerden con la búsqueda",
+                "infoFiltered":   "",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Último",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                },
+            },
+            "columns": [
+               null,
+               { "type": 'date-eu', "targets": 0 },
+               null,
+               null,
+               null
+             ]
         });
 
         //copiar enlace al ticket al portapapeles
