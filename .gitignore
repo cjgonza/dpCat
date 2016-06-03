@@ -5,3 +5,4 @@ settings_local.py
 settings_produccion.py
 files/logs/*
 files/plantillas/*
+dpcat/wsgi.py
