@@ -449,6 +449,7 @@ Vista para que el operador rellene los metadatos de un vídeo.
 def definir_metadatos_oper(request, video_id):
 
     v = get_object_or_404(Video, pk=video_id)
+    pub = RegistroPublicacion.objects.filter(video__id=v.id)
 
     if v.objecto_aprendizaje:
         MetadataForm = MetadataOAForm
@@ -475,7 +476,7 @@ def definir_metadatos_oper(request, video_id):
     else:
         form = MetadataForm(instance = getattr(v, metadataField)) if hasattr(v, metadataField) else MetadataForm(initial = initial_data)
 
-    return render_to_response("postproduccion/section-metadatos-oper.html", { 'form' : form, 'v' : v }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-metadatos-oper.html", { 'form' : form, 'v' : v, 'pub' : pub}, context_instance=RequestContext(request))
 
 
 """
@@ -502,8 +503,9 @@ Muestra la información técnica del vídeo
 @permission_required('postproduccion.video_manager')
 def media_info(request, video_id):
     v = get_object_or_404(Video, pk=video_id)
+    pub = RegistroPublicacion.objects.filter(video__id=v.id)
     info = video.parse_mediainfo(v.tecdata.txt_data) if hasattr(v, 'tecdata') else None
-    return render_to_response("postproduccion/section-metadata-tecnica.html", { 'v' : v, 'info' : info }, context_instance=RequestContext(request))
+    return render_to_response("postproduccion/section-metadata-tecnica.html", { 'v' : v, 'info' : info, 'pub' : pub}, context_instance=RequestContext(request))
 
 """
 Devuelve la información técnica del vídeo en XML para su descarga.
