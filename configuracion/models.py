@@ -1,7 +1,8 @@
-#coding: utf-8
+# coding: utf-8
 from django.db import models
 
 # Create your models here.
+
 
 class Settings(models.Model):
     clave = models.CharField(max_length=30, unique=True)
@@ -13,4 +14,3 @@ class Settings(models.Model):
 
     def __unicode__(self):
         return self.clave
-
