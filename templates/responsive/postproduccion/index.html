@@ -8,7 +8,10 @@
   <header class="main-header">
 
     <!-- Logo -->
-    <a class="logo" title="Ir a Inicio" href="{% url 'index' %}">dpCat</a>
+    <a title="Ir a Inicio" href="{% url 'index' %}" class="logo">
+        <span class="logo-mini"><b>dp</b>C</span>
+        <span class="logo-lg"><b>dp</b>Cat</span>
+    </a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -48,34 +51,14 @@
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
-      <!-- search form (Optional) -->
-      <!--<form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>-->
-      <!-- /.search form -->
-
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">Men&uacute;</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="{% url 'index' %}"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
+        <li><a href="{% url 'index' %}"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
         <li><a href="{% url 'videoteca' %}"><i class="fa fa-database"></i> <span>Videoteca</span></a></li>
         <li><a href="{% url 'enproceso' %}"><i class="fa fa-laptop"></i> <span>Centro de monitorizaci&oacute;n</span></a></li>
         <li><a href="{% url 'nueva' %}"><i class="fa fa-video-camera"></i> <span>Nueva producci&oacute;n</span></a></li>
-        <!--<li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
-          <ul class="treeview-menu">
-            <li><a href="#">Link in level 2</a></li>
-            <li><a href="#">Link in level 2</a></li>
-          </ul>
-        </li>-->
       </ul>
       <!-- /.sidebar-menu -->
     </section>

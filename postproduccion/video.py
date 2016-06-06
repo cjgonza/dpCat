@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
-from postproduccion.encoder import get_file_info, encode_mixed_video, encode_preview, get_video_duration, make_streamable, embed_metadata
+from postproduccion.encoder import get_file_info, encode_mixed_video
+from postproduccion.encoder import encode_preview, get_video_duration
+from postproduccion.encoder import make_streamable, embed_metadata
 from django.db.models import Sum
 from postproduccion.models import TecData, Previsualizacion
 from configuracion import config
@@ -16,10 +18,11 @@ from StringIO import StringIO
 import datetime
 
 
-"""
-Renderiza el fichero de configuración del MELT para la codificación de una píldora
-"""
 def get_fdv_template(v):
+    """
+    Renderiza el fichero de configuración del MELT
+    para la codificación de una píldora
+    """
     data = dict()
     data['fondo'] = v.plantilla.fondo.path
 
@@ -36,74 +39,92 @@ def get_fdv_template(v):
             i.tipo.mix
         )
         duracion.append(get_video_duration(i.fichero))
-        
+
         videos.append(fe)
     data['videos'] = videos
     data['duracion'] = min(duracion) * 25
 
-    return render_to_response('postproduccion/get_fdv_template.mlt', { 'data' : data })
+    return render_to_response(
+        'postproduccion/get_fdv_template.mlt',
+        {'data': data}
+    )
 
-"""
-"""
+
 def generate_tecdata(v):
+    """
+    """
     try:
         t = v.tecdata
     except TecData.DoesNotExist:
-        t = TecData(video = v)
+        t = TecData(video=v)
         t.save()
 
     [t.xml_data, t.txt_data] = get_file_info(v.fichero)
     t.duration = get_video_duration(v.fichero)
     t.save()
 
-"""
-"""
+
 def get_tec_data(xmlstring):
+    """
+    """
     dom = parseString(xmlstring.encode('utf-8'))
     unparse_width = dom.getElementsByTagName('Width')[0].firstChild.data
     unparse_height = dom.getElementsByTagName('Height')[0].firstChild.data
-    unparse_ratio = dom.getElementsByTagName('Display_aspect_ratio')[0].firstChild.data
+    unparse_ratio = dom.getElementsByTagName(
+        'Display_aspect_ratio'
+    )[0].firstChild.data
 
-    width = int(str(unparse_width).translate(None, string.letters +  string.whitespace))
-    height = int(str(unparse_height).translate(None, string.letters +  string.whitespace))
+    width = int(str(unparse_width).translate(
+        None,
+        string.letters + string.whitespace
+    ))
+    height = int(str(unparse_height).translate(
+        None,
+        string.letters + string.whitespace
+    ))
 
     if ':' in unparse_ratio:
         [rw, rh] = unparse_ratio.split(':')
-        ratio = float(rw)  / float(rh)
+        ratio = float(rw) / float(rh)
     else:
         ratio = float(unparse_ratio)
 
     return [width, height, ratio]
 
-"""
-Obtener duracion de vídeos a partir de la información técnica
-"""
+
 def get_duration(v):
+    """
+    Obtener duracion de vídeos a partir de la información técnica
+    """
     t = TecData.objects.filter(video=v).aggregate(Sum('duration'))
     if t['duration__sum'] is None:
         return 0
     else:
-        return datetime.timedelta(seconds = t['duration__sum'])
+        return datetime.timedelta(seconds=t['duration__sum'])
 
-"""
-"""
+
 def parse_mediainfo(mediadata):
+    """
+    """
     mediainfo = list()
     for section in mediadata.split('\n\n'):
         if len(section) > 1:
             lines = section.split('\n')
             titulo = lines[0]
-            sect = { 'section' : lines[0], 'attr' : list() }
+            sect = {'section': lines[0], 'attr': list()}
             for attr in lines[1:]:
-                sect['attr'].append({ 'key' : attr[:33].strip(), 'value' : attr[34:].strip() })
+                sect['attr'].append({
+                    'key': attr[:33].strip(),
+                    'value': attr[34:].strip()
+                })
             mediainfo.append(sect)
     return mediainfo
 
-"""
-Devolver metada del video para incrustarla en el video
-"""
-def get_metadata(v):
 
+def get_metadata(v):
+    """
+    Devolver metada del video para incrustarla en el video
+    """
     str_metadata = ''
 
     if v.objecto_aprendizaje:
@@ -124,11 +145,13 @@ def get_metadata(v):
             value = getattr(metadata, f.name)
 
         if value.__class__ == unicode:
-            str_metadata += "-XMP:%s='%s' " % (f.name, utils.normalize_string(value))
+            str_metadata += "-XMP:%s='%s' " % \
+                (f.name, utils.normalize_string(value))
         elif value.__class__ in (str, datetime.datetime):
             str_metadata += "-XMP:%s='%s' " % (f.name, value)
 
     return str_metadata
+
 
 def calculate_preview_size(v):
     [width, height, ratio] = get_tec_data(v.tecdata.xml_data)
@@ -143,7 +166,7 @@ def calculate_preview_size(v):
             height = width / ratio
         except ZeroDivisionError:
             pass
-    
+
     # Reduce el ancho
     if width > max_width:
         r = max_width / width
@@ -160,12 +183,16 @@ def calculate_preview_size(v):
     width = int((width + 1) / 2) * 2
     height = int((height + 1) / 2) * 2
 
-    return dict({'width' : width, 'height' : height, 'ratio' : ratio})
+    return dict({
+        'width': width,
+        'height': height,
+        'ratio': ratio
+    })
 
-"""
 
-"""
-def create_pil(video, logfile, pid_notifier = None):
+def create_pil(video, logfile, pid_notifier=None):
+    """
+    """
     # Actualiza el estado del vídeo
     video.set_status('PRV')
 
@@ -177,7 +204,14 @@ def create_pil(video, logfile, pid_notifier = None):
     # Genera el nombre del fichero de salida
     if video.fichero:
         utils.remove_file_path(video.fichero)
-    video.fichero = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_produccion.date(), ".mp4"))
+    video.fichero = os.path.join(
+        config.get_option('VIDEO_LIBRARY_PATH'),
+        utils.generate_safe_filename(
+            video.titulo,
+            video.informeproduccion.fecha_produccion.date(),
+            ".mp4"
+        )
+    )
     video.save()
     utils.ensure_dir(video.fichero)
 
@@ -205,8 +239,9 @@ def create_pil(video, logfile, pid_notifier = None):
         video.set_status('COM')
     else:
         video.set_status('PTO')
-    
+
     return True
+
 
 def copy_video(video, logfile):
     # Actualiza el estado del vídeo
@@ -216,7 +251,14 @@ def copy_video(video, logfile):
     if video.fichero:
         utils.remove_file_path(video.fichero)
     src = video.ficheroentrada_set.all()[0].fichero
-    dst = os.path.join(config.get_option('VIDEO_LIBRARY_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_produccion.date(), os.path.splitext(src)[1]))
+    dst = os.path.join(
+        config.get_option('VIDEO_LIBRARY_PATH'),
+        utils.generate_safe_filename(
+            video.titulo,
+            video.informeproduccion.fecha_produccion.date(),
+            os.path.splitext(src)[1]
+        )
+    )
     video.fichero = dst
     video.save()
 
@@ -243,13 +285,21 @@ def copy_video(video, logfile):
 
     return True
 
-def create_preview(video, logfile, pid_notifier = None):
+
+def create_preview(video, logfile, pid_notifier=None):
     # Actualiza el estado del vídeo
     video.set_status('PRP')
 
     # Obtiene los nombres de ficheros origen y destino
     src = video.fichero
-    dst = os.path.join(config.get_option('PREVIEWS_PATH'), utils.generate_safe_filename(video.titulo, video.informeproduccion.fecha_produccion.date(), ".mp4"))
+    dst = os.path.join(
+        config.get_option('PREVIEWS_PATH'),
+        utils.generate_safe_filename(
+            video.titulo,
+            video.informeproduccion.fecha_produccion.date(),
+            ".mp4"
+        )
+    )
 
     # Crea/reemplaza el objecto previsualización
     try:
@@ -257,7 +307,7 @@ def create_preview(video, logfile, pid_notifier = None):
         utils.remove_file_path(pv.fichero)
         pv.fichero = dst
     except Previsualizacion.DoesNotExist:
-        pv = Previsualizacion(video = video, fichero = dst)
+        pv = Previsualizacion(video=video, fichero=dst)
 
     pv.save()
 
@@ -278,10 +328,11 @@ def create_preview(video, logfile, pid_notifier = None):
     video.set_status('PTU')
     return True
 
-"""
-Añadir toda la metadata al video
-"""
+
 def add_metadata(video):
+    """
+    Añadir toda la metadata al video
+    """
     # Obtener metadata
     metadata = get_metadata(video)
 
