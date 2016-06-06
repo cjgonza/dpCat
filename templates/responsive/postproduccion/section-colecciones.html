@@ -7,74 +7,40 @@
 {% block section-content %} 
 {% load append_to_get %}
 
-{% if colecciones %}
+
 <div class="box box-solid box-primary">
     <div class="box-header with-border">
         <h3 class="box-title">Colecciones</h3>
     </div>
     <div class="box-body">
-        <div id="videoteca_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-            <div class="row">
-                <div class="col-md-12">
-                    <table id="videoteca" class="table table-bordered table-strped dataTable" role="grid" aria-describedby="videoteca_info">
-                        <thead>
-                            <tr role="row">
-                                <th>ID</th>
-                                <th>Fecha</th>
-                                <th>T&iacute;tulo</th>
-                                <th>Autor/Responsable</th>
-                                <th>Email</th>
-                                <th>Tipo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for coleccion in colecciones %}
-                            <tr role="row" class="even">
-                                <td class="sorting_1">{{ coleccion.id }}</td>
-                                <td>{{ coleccion.fecha|date:"d/m/Y" }}</td>
-                                <td><a href="{% url 'estado_coleccion' coleccion.id %}">{{ coleccion.titulo }}</a></td>
-                                <td>{{ coleccion.autor }}</td>
-                                <td>{{ coleccion.email }}</td>
-                                <td>{{ coleccion.tipoVideo }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="row">
-                {% if colecciones.has_previous %}
-                <div class="col-md-2">
-                    <ul class="pagination">
-                        <li class="paginate_button previous"><a href="{% append_to_get page=videos.previous_page_number %}">Anterior</a></li>
-                    </ul>
-                </div>
-                {% endif %}
-                <div class="col-md-2" style="margin-top: 25px;">
-                    <div class="dataTables_paginate paging_simple_numbers" id="colecciones_paginate">
-                        P&aacute;gina {{ colecciones.number }} de {{ colecciones.paginator.num_pages }}.
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <ul class="pagination">
-                        {% if colecciones.has_next %}
-                            <li class="paginate_button next"><a href="{% append_to_get page=colecciones.next_page_number %}">Siguiente</a></li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <table id="table_videoteca" class="table table-bordered table-hover dataTable">
+            <thead>
+                <tr role="row">
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>T&iacute;tulo</th>
+                    <th>Autor/Responsable</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if colecciones %}
+                {% for coleccion in colecciones %}
+                <tr role="row" class="even">
+                    <td>{{ coleccion.id }}</td>
+                    <td>{{ coleccion.fecha|date:"d/m/Y" }}</td>
+                    <td><a href="{% url 'estado_coleccion' coleccion.id %}">{{ coleccion.titulo }}</a></td>
+                    <td>{{ coleccion.autor }}</td>
+                    <td>{{ coleccion.email }}</td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+
     </div>
 </div>
-{% else %}
-    <div class="alert alert-info alert-dismissible">
-        <h4>
-            <i class="icon fa fa-info"></i>
-            Información
-        </h4>
-        No hay colecciones en la videoteca que casen con los criterios de filtrado.
-    </div>
-{% endif %}
+
 
 {% endblock %}
 
@@ -168,14 +134,6 @@
                             <input type="text" class="form-control pull-right" id="to" name="f_fin" value="{{ request.GET.f_fin }}">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>N&uacute;mero de resultados por p&aacute;gina:</label>
-                        <select class="form-control select2" name="nresults">
-                            <option{% if request.GET.nresults == '25' %} selected{% endif %}>25</option>
-                             <option{% if request.GET.nresults == '50' %} selected{% endif %}>50</option>
-                             <option{% if request.GET.nresults == '100' %} selected{% endif %}>100</option>
-                        </select>
-                    </div>                        
                 </div>
                 <a class="btn btn-default" href="{% url 'colecciones' %}">Reiniciar</a>
                 <input class="btn btn-primary pull-right" type="submit" value="Filtrar" />

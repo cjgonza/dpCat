@@ -24,6 +24,8 @@ from configuracion import config
 
 from django.contrib.auth.models import User
 
+from datetime import timedelta
+
 import os
 import urllib
 import datetime
@@ -718,30 +720,14 @@ def videoteca(request):
     if coleccionSearch and coleccionSearch != '0':
         video_list = video_list.filter(coleccion = Coleccion.objects.get(pk = coleccionSearch))
 
-    video_list = video_list.filter(informeproduccion__fecha_validacion__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
-
-
-    try:
-        nresults = int(request.GET.get('nresults', 25))
-    except ValueError:
-        nresults = 25
-
-    paginator = Paginator(video_list, nresults)
-
-    try:
-        page = int(request.GET.get('page', '1'))
-    except ValueError:
-        page = 1
-
-    try:
-        videos = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        videos = paginator.page(paginator.num_pages)
+    video_list = video_list.filter(informeproduccion__fecha_validacion__range = (f_ini or datetime.datetime.now().date() - timedelta(days=30), f_fin or datetime.date.max))
+    rango_fechas = "resultados del " + (f_ini or datetime.datetime.now().date() - timedelta(days=30)).strftime("%d/%m/%Y") + " al " + (f_fin or datetime.datetime.now().date()).strftime("%d/%m/%Y")
 
     return render_to_response(
         "postproduccion/section-videoteca.html",
         {
-            'videos' : videos,
+            'box_header' : rango_fechas,
+            'videos' : video_list,
             'pub' : publicados,
             'tipoVideo' : Video.VIDEO_TYPE,
             'colecciones': colecciones
@@ -783,23 +769,6 @@ def colecciones(request):
         colecciones = colecciones.filter(tipoVideo = tipoVideoSearch)
 
     colecciones = colecciones.filter(fecha__range = (f_ini or datetime.date.min, f_fin or datetime.date.max))
-
-    try:
-        nresults = int(request.GET.get('nresults', 25))
-    except ValueError:
-        nresults = 25
-
-    paginator = Paginator(colecciones, nresults)
-
-    try:
-        page = int(request.GET.get('page', '1'))
-    except ValueError:
-        page = 1
-
-    try:
-        colecciones = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        colecciones = paginator.page(paginator.num_pages)
 
     return render_to_response(
         "postproduccion/section-colecciones.html",
