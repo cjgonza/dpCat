@@ -122,6 +122,19 @@ $(document).ready(function() {
                null
              ]
         });
+        //inicializar paametros de datatable
+        $('#table_stats').DataTable({
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": false,
+            "info": false,
+            "autoWidth": false,
+            "language": {
+                "emptyTable":     "No hay estadísticas con los criterios de filtrado",
+                "zeroRecords":    "No hay resultados que concuerden con la búsqueda"
+            }
+        });
 
         //copiar enlace al ticket al portapapeles
         $('#link_to_cb').click(function(){
