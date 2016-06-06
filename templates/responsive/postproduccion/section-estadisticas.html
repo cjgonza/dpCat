@@ -5,19 +5,20 @@
 {% block section-title %}<h1>Videoteca</h1>{% endblock %}
 
 {% block section-content %} 
-{% if stats.0.1 %}
+
     <div class="box box-solid box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">Estad&iacute;sticas</h3>
         </div>
         <div class="box-body">
-            <table class="table table-condensed">
+            <table id="table_stats" class="table table-bordered table-hover dataTable">
                 <thead>
                     <th>Propiedad</th>
-                    <th>Informaci&oacute;n</th>
+                    <th>Cantidad</th>
                     <th>Tiempo de grabaci&oacute;n</th>
                 </thead>
                 <tbody>
+                {% if stats.0.1 %}
                     {% for element in stats %}
                         <tr>
                             <td>{{ element.0 }}</td>
@@ -25,19 +26,20 @@
                             <td>{{ element.2 }}</td>
                         </tr>
                     {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
+            <div class="row">
+                <div id="prodCol" class="col-md-6">
+                <canvas id="prodChart"></canvas>
+            </div>
+            <div id="valCol" class="col-md-6">
+                <canvas id="valChart"></canvas>
+            </div>
+            </div>
         </div>
     </div>
-{% else %}
-    <div class="alert alert-info alert-dismissible">
-        <h4>
-            <i class="icon fa fa-info"></i>
-            Información
-        </h4>
-        No hay estad&iacute;sticas con los criterios de filtrado.
-    </div>
-{% endif %}
+
 {% endblock %}
 
 {% block section-widget %}
@@ -171,5 +173,107 @@ function imprimir(data) {
 
     return true;
 }
+$(function(){
+    //-------------
+    //- Producciones/pildoras -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    var pieChartCanvas = $("#prodChart").get(0).getContext("2d");
+    var pieChart = new Chart(pieChartCanvas);
+    var PieData = [
+      {
+        value: {{ stats.2.1}},
+        color: "#00a65a",
+        highlight: "#00a65a",
+        label: "{{ stats.2.0}}"
+      },
+      {
+        value: {{ stats.3.1}},
+        color: "#3c8dbc",
+        highlight: "#3c8dbc",
+        label: "{{ stats.3.0}}"
+      }
+    ];
+    var pieOptions = {
+      //Boolean - Whether we should show a stroke on each segment
+      segmentShowStroke: true,
+      //String - The colour of each segment stroke
+      segmentStrokeColor: "#fff",
+      //Number - The width of each segment stroke
+      segmentStrokeWidth: 2,
+      //Number - The percentage of the chart that we cut out of the middle
+      percentageInnerCutout: 50, // This is 0 for Pie charts
+      //Number - Amount of animation steps
+      animationSteps: 100,
+      //String - Animation easing effect
+      animationEasing: "easeOutBounce",
+      //Boolean - Whether we animate the rotation of the Doughnut
+      animateRotate: true,
+      //Boolean - Whether we animate scaling the Doughnut from the centre
+      animateScale: false,
+      //Boolean - whether to make the chart responsive to window resizing
+      responsive: true,
+      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+      maintainAspectRatio: true,
+      //String - A legend template
+      legendTemplate: "<div class=\"row\"><div class=\"col-md-12\"><i class=\"fa fa-circle\" style=\"color: #00a65a;\"></i> {{ stats.2.0}}</div></div><div class=\"row\"><div class=\"col-md-12\"><i class=\"fa fa-circle\" style=\"color: #3c8dbc;\"></i> {{ stats.3.0}}</div></div>"
+    };
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    var prodC = pieChart.Doughnut(PieData, pieOptions);
+    var legend = prodC.generateLegend();
+    $('#prodCol').append(legend);
+
+    //-------------
+    //- Realizadas/validadas -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    var pieChartCanvas = $("#valChart").get(0).getContext("2d");
+    var pieChart = new Chart(pieChartCanvas);
+    var novalidadas = {{ stats.0.1 }} - {{ stats.1.1}}
+    var PieData = [
+      {
+        value: {{ stats.1.1}},
+        color: "#3c8dbc",
+        highlight: "#3c8dbc",
+        label: "{{ stats.1.0}}"
+      },
+      {
+        value: novalidadas,
+        color: "#f56954",
+        highlight: "#f56954",
+        label: "Producciones no validadas"
+      }
+    ];
+    var pieOptions = {
+      //Boolean - Whether we should show a stroke on each segment
+      segmentShowStroke: true,
+      //String - The colour of each segment stroke
+      segmentStrokeColor: "#fff",
+      //Number - The width of each segment stroke
+      segmentStrokeWidth: 2,
+      //Number - The percentage of the chart that we cut out of the middle
+      percentageInnerCutout: 50, // This is 0 for Pie charts
+      //Number - Amount of animation steps
+      animationSteps: 100,
+      //String - Animation easing effect
+      animationEasing: "easeOutBounce",
+      //Boolean - Whether we animate the rotation of the Doughnut
+      animateRotate: true,
+      //Boolean - Whether we animate scaling the Doughnut from the centre
+      animateScale: false,
+      //Boolean - whether to make the chart responsive to window resizing
+      responsive: true,
+      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+      maintainAspectRatio: true,
+      //String - A legend template
+      legendTemplate: "<div class=\"row\"><div class=\"col-md-12\"><i class=\"fa fa-circle\" style=\"color: #3c8dbc;\"></i> {{ stats.1.0 }}</div></div><div class=\"row\"><div class=\"col-md-12\"><i class=\"fa fa-circle\" style=\"color: #f56954;\"></i> Producciones no validadas</div></div>"
+    };
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    var valC = pieChart.Doughnut(PieData, pieOptions);
+    var legend = valC.generateLegend();
+    $('#valCol').append(legend);
+});
 </script>
 {% endblock %}
