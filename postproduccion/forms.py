@@ -26,6 +26,7 @@ class LoginForm(AuthenticationForm):
         return self.cleaned_data
     def __init__(self, *args, **kwargs):
         super(AuthenticationForm, self).__init__(*args, **kwargs)
+        self.fields['username'].label = 'Usuario'
         self.fields['username'].widget.attrs.update({'class' : 'form-control'})
         self.fields['password'].widget.attrs.update({'class' : 'form-control'})
 

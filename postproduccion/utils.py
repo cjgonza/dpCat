@@ -197,9 +197,14 @@ Devuelve la información acerca de la versión actual de dpCat.
 """
 def dpcat_info():
     info = {}
-    repo = 'https://github.com/tic-ull/dpCat/'
+    repo = 'https://github.com/tic-ull/dpCat/tree/'
 
     info['version'] = run_command('git tag', 'tail -1').strip()
+    tag_version = run_command('git rev-list --count %s' %
+                              info['version']).strip()
+    head_version = run_command('git rev-list --count HEAD').strip()
+    if tag_version != head_version:
+        info['version'] = 'HEAD'
     info['commit'] = 'r.%s.%s' % (
         run_command('git rev-list --count %s' % info['version']).strip(),
         run_command('git rev-parse --short %s' % info['version']).strip()
