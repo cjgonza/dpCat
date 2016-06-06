@@ -123,6 +123,36 @@ $(document).ready(function() {
              ]
         });
         //inicializar paametros de datatable
+        $('#table_log').DataTable({
+            "paging": true,
+            "pageLength": 25,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "language": {
+                "lengthMenu": "   Mostrar _MENU_ resultados",
+                "emptyTable":     "No hay resultados que mostrar",
+                "infoEmpty":      "Página _PAGE_ de _PAGES_",
+                "info":           "Página _PAGE_ de _PAGES_",
+                "search":         "Buscar:",
+                "zeroRecords":    "No hay resultados que concuerden con la búsqueda",
+                "infoFiltered":   "",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Último",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                },
+            },
+            "columns": [
+               null,
+               { "type": 'date-euro', "targets": 0 },
+               null
+             ]
+        });
+        //inicializar paametros de datatable
         $('#table_stats').DataTable({
             "paging": false,
             "lengthChange": false,
