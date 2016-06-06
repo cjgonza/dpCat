@@ -1,4 +1,4 @@
-#encoding: utf-8
+# encoding: utf-8
 from postproduccion.models import Cola, HistoricoCodificacion
 from postproduccion.video import create_pil, create_preview, copy_video
 from django.conf import settings
@@ -11,34 +11,38 @@ import tempfile
 import signal
 from datetime import datetime
 
-"""
-Encola el video de tipo normal dado para que sea copiado.
-"""
+
 def enqueue_copy(v):
+    """
+    Encola el video de tipo normal dado para que sea copiado.
+    """
     log.copy_enqueue(v)
     c = Cola(video=v, tipo='COP')
     c.save()
 
-"""
-Encola el video de tipo píldora dado para que sea montado.
-"""
+
 def enqueue_pil(v):
+    """
+    Encola el video de tipo píldora dado para que sea montado.
+    """
     log.pil_enqueue(v)
     c = Cola(video=v, tipo='PIL')
     c.save()
 
-"""
-Encola un vídeo para generar su previsualización.
-"""
+
 def enqueue_preview(v):
+    """
+    Encola un vídeo para generar su previsualización.
+    """
     log.preview_enqueue(v)
     c = Cola(video=v, tipo='PRE')
     c.save()
 
-"""
-Crea una funcion de notificación de PID para la tarea dada.
-"""
+
 def make_pid_notifier(task):
+    """
+    Crea una funcion de notificación de PID para la tarea dada.
+    """
     """
     Almacena el PID del proceso en ejecución
     """
@@ -48,15 +52,18 @@ def make_pid_notifier(task):
 
     return pid_notifier
 
-"""
-Procesa el elemento dado de la cola.
-"""
-def process_task(task):
 
+def process_task(task):
+    """
+    Procesa el elemento dado de la cola.
+    """
     error = False
 
     # Crea el fichero para el registro de la salida de codificación.
-    (handle, path) = tempfile.mkstemp(suffix = '.log', dir = settings.MEDIA_ROOT + '/logs')
+    (handle, path) = tempfile.mkstemp(
+        suffix='.log',
+        dir=settings.MEDIA_ROOT + '/logs'
+    )
 
     # Actualiza la información de la base de datos.
     task.logfile = 'logs/' + os.path.basename(path)
@@ -95,16 +102,17 @@ def process_task(task):
 
     # Cierra el fichero de registro
     os.close(handle)
-    
+
     # Actualiza la información de la base de datos.
     task.fin = datetime.now()
     task.status = 'HEC' if not error else 'ERR'
     task.save()
 
-"""
-Devuelve el progreso de codificación de una tarea.
-"""
+
 def progress(task):
+    """
+    Devuelve el progreso de codificación de una tarea.
+    """
     if task.status == 'PEN':
         return 0
     if task.status == 'HEC':
@@ -127,7 +135,10 @@ def progress(task):
         if task.tipo == 'PIL':
             pro = int(re.findall(' percentage: *([0-9]*)', data)[-1])
         if task.tipo == 'PRE':
-            pro = int(utils.time_to_seconds(re.findall(' time=([^=]*) ', data)[-1]) * 100 / task.video.tecdata.duration)
+            pro = int(utils.time_to_seconds(re.findall(
+                ' time=([^=]*) ',
+                data
+            )[-1]) * 100 / task.video.tecdata.duration)
     except:
         pro = 0
 
@@ -138,32 +149,43 @@ def progress(task):
 
     return pro
 
-"""
-Elimina de la lista los trabajos completados.
-"""
+
 def removeCompleted():
+    """
+    Elimina de la lista los trabajos completados.
+    """
     Cola.objects.filter(status='HEC').delete()
 
-"""
-Elimina los trabajos asociados a un vídeo.
-"""
+
 def removeVideoTasks(v):
+    """
+    Elimina los trabajos asociados a un vídeo.
+    """
     tasks = Cola.objects.filter(video=v).order_by('pk')
     for t in tasks:
-        hist = HistoricoCodificacion(informe = v.informeproduccion, tipo = t.tipo, fecha = t.comienzo, status = (t.status == 'HEC'))
+        hist = HistoricoCodificacion(
+            informe=v.informeproduccion,
+            tipo=t.tipo,
+            fecha=t.comienzo,
+            status=(t.status == 'HEC')
+        )
         hist.save()
-    tasks.delete()   
+    tasks.delete()
 
-"""
-Devuelve el número de puestos libres para iniciar el proceso de codificación.
-"""
+
 def available_slots():
-    return int(config.get_option('MAX_ENCODING_TASKS')) - Cola.objects.count_actives()
+    """
+    Devuelve el número de puestos libres para
+    iniciar el proceso de codificación.
+    """
+    return int(config.get_option('MAX_ENCODING_TASKS')) - \
+        Cola.objects.count_actives()
 
-"""
-Cancela la ejecución de una tarea.
-"""
+
 def cancel_task(task):
+    """
+    Cancela la ejecución de una tarea.
+    """
     if task.status == 'PRO' and task.pid:
         try:
             os.kill(task.pid, signal.SIGTERM)
@@ -172,10 +194,11 @@ def cancel_task(task):
             task.save()
         while Cola.objects.get(pk=task.id).status == 'PRO': pass
 
-"""
-Devuelve el contenido del log de una tarea.
-"""
+
 def get_log(task):
+    """
+    Devuelve el contenido del log de una tarea.
+    """
     task.logfile.file.open()
     data = task.logfile.file.read()
     task.logfile.file.close()

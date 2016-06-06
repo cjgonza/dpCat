@@ -1,4 +1,4 @@
-#encoding: utf-8
+# encoding: utf-8
 from django.db import models
 from django.contrib.auth.models import User
 from postproduccion import utils
@@ -8,10 +8,11 @@ import signal
 
 # Create your models here.
 
-class PlantillaFDV(models.Model):   # (Fondo-Disapositiva-Video)
-    nombre = models.CharField(max_length = 50)
 
-    fondo = models.ImageField(upload_to = 'plantillas')
+class PlantillaFDV(models.Model):   # (Fondo-Disapositiva-Video)
+    nombre = models.CharField(max_length=50)
+
+    fondo = models.ImageField(upload_to='plantillas')
 
     class Meta:
         verbose_name = u'Plantilla Fondo-Diapositiva-Vídeo'
@@ -19,18 +20,20 @@ class PlantillaFDV(models.Model):   # (Fondo-Disapositiva-Video)
     def __unicode__(self):
         return self.nombre
 
+
 class TipoVideo(models.Model):
-    nombre = models.CharField(max_length = 30)
-    plantilla =  models.ForeignKey(PlantillaFDV)
+    nombre = models.CharField(max_length=30)
+    plantilla = models.ForeignKey(PlantillaFDV)
 
     x = models.PositiveSmallIntegerField()
     y = models.PositiveSmallIntegerField()
     ancho = models.PositiveSmallIntegerField()
     alto = models.PositiveSmallIntegerField()
-    mix = models.PositiveSmallIntegerField(default = 100)
+    mix = models.PositiveSmallIntegerField(default=100)
 
     def __unicode__(self):
         return self.nombre
+
 
 class Coleccion(models.Model):
     VIDEO_TYPE = (
@@ -42,29 +45,63 @@ class Coleccion(models.Model):
         ('OTR', u'Otros'),
     )
 
-    titulo = models.CharField(max_length = 100, verbose_name = u'Título de Colección')
+    titulo = models.CharField(
+        max_length=100,
+        verbose_name=u'Título de Colección'
+    )
 
-    autor = models.CharField(max_length = 255, default = "", verbose_name = u'Responsable')
-    email = models.EmailField(default = "", verbose_name = u'Email del responsable')
-    tipoVideo = models.CharField(verbose_name="Tipo Producción", max_length = 3, choices = VIDEO_TYPE, default = 'UNK')
-    objecto_aprendizaje = models.BooleanField(default = True, verbose_name = u'Objeto de aprendizaje')
-    fecha = models.DateTimeField(null = True, blank = True, verbose_name = u'Fecha de creación')
+    autor = models.CharField(
+        max_length=255,
+        default="",
+        verbose_name=u'Responsable'
+    )
+    email = models.EmailField(
+        default="",
+        verbose_name=u'Email del responsable'
+    )
+    tipoVideo = models.CharField(
+        verbose_name="Tipo Producción",
+        max_length=3,
+        choices=VIDEO_TYPE,
+        default='UNK'
+    )
+    objecto_aprendizaje = models.BooleanField(
+        default=True,
+        verbose_name=u'Objeto de aprendizaje'
+    )
+    fecha = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name=u'Fecha de creación'
+    )
 
     def __unicode__(self):
         return self.titulo
 
+
 class Video(models.Model):
     VIDEO_STATUS = (
-        ('INC', u'Incompleto'),                  # Creado pero sin ficheros de entrada.
-        ('DEF', u'Definido'),                    # Definidos los ficheros de entrada (en cola para ser procesado).
-        ('PRV', u'Procesando vídeo'),            # Está siendo procesado (montaje o copia).
-        ('COM', u'Completado'),                  # Procesamiento completado (en cola para generar previsualización).
-        ('PRP', u'Procesando previsualización'), # Está siendo generada la previsualización.
-        ('PTU', u'Pendiente del usuario'),       # A la espera de que el usuario rellene los metadatos y acepte el vídeo.
-        ('PTO', u'Pendiente del operador'),      # A la espera de que el operador rellene los metadatos.
-        ('ACE', u'Aceptado'),                    # Aceptado por el usuario, a la espera de que lo valide el operador.
-        ('REC', u'Rechazado'),                   # Rechazado por el usuario, a la espera de que el operador tome las medidas necesarias.
-        ('LIS', u'Listo'),                       # Validado por el operador, todos los procedimientos terminados.
+        # Creado pero sin ficheros de entrada.
+        ('INC', u'Incompleto'),
+        # Definidos los ficheros de entrada (en cola para ser procesado).
+        ('DEF', u'Definido'),
+        # Está siendo procesado (montaje o copia).
+        ('PRV', u'Procesando vídeo'),
+        # Procesamiento completado (en cola para generar previsualización).
+        ('COM', u'Completado'),
+        # Está siendo generada la previsualización.
+        ('PRP', u'Procesando previsualización'),
+        # A la espera de que el usuario rellene los metadatos y acepte el vídeo
+        ('PTU', u'Pendiente del usuario'),
+        # A la espera de que el operador rellene los metadatos.
+        ('PTO', u'Pendiente del operador'),
+        # Aceptado por el usuario, a la espera de que lo valide el operador.
+        ('ACE', u'Aceptado'),
+        # Rechazado por el usuario, a la espera de que
+        # el operador tome las medidas necesarias.
+        ('REC', u'Rechazado'),
+        # Validado por el operador, todos los procedimientos terminados.
+        ('LIS', u'Listo'),
     )
 
     VIDEO_TYPE = (
@@ -76,20 +113,33 @@ class Video(models.Model):
         ('OTR', u'Otros'),
     )
 
-    fichero = models.CharField(max_length = 255, editable = False)
-    status = models.CharField(max_length = 3, choices = VIDEO_STATUS, editable = False, default = 'INC')
-    plantilla = models.ForeignKey(PlantillaFDV, null = True, blank = True)
-    coleccion = models.ForeignKey(Coleccion, null = True, blank = True)
+    fichero = models.CharField(max_length=255, editable=False)
+    status = models.CharField(
+        max_length=3,
+        choices=VIDEO_STATUS,
+        editable=False,
+        default='INC'
+    )
+    plantilla = models.ForeignKey(PlantillaFDV, null=True, blank=True)
+    coleccion = models.ForeignKey(Coleccion, null=True, blank=True)
 
-    titulo = models.CharField(max_length = 100)
-    autor = models.CharField(max_length = 255, verbose_name = u'Responsable')
-    email = models.EmailField(verbose_name = u'Email del responsable')
+    titulo = models.CharField(max_length=100)
+    autor = models.CharField(max_length=255, verbose_name=u'Responsable')
+    email = models.EmailField(verbose_name=u'Email del responsable')
 
-    tipoVideo = models.CharField(verbose_name="Tipo Producción", max_length = 3, choices = VIDEO_TYPE, default = 'UNK')
+    tipoVideo = models.CharField(
+        verbose_name="Tipo Producción",
+        max_length=3,
+        choices=VIDEO_TYPE,
+        default='UNK'
+    )
 
-    objecto_aprendizaje = models.BooleanField(default = True, verbose_name = u'Objeto de aprendizaje')
+    objecto_aprendizaje = models.BooleanField(
+        default=True,
+        verbose_name=u'Objeto de aprendizaje'
+    )
 
-    archivado = models.BooleanField(default = False, verbose_name = u'Archivar')
+    archivado = models.BooleanField(default=False, verbose_name=u'Archivar')
 
     def __unicode__(self):
         return self.titulo
@@ -113,21 +163,24 @@ class Video(models.Model):
             ("video_library", u"Puede consultar la videoteca"),
         )
 
+
 class InformeProduccion(models.Model):
-    video = models.OneToOneField(Video, editable = False)
-    operador = models.ForeignKey(User, editable = False)
-    observacion = models.TextField(null = True, blank = True)
+    video = models.OneToOneField(Video, editable=False)
+    operador = models.ForeignKey(User, editable=False)
+    observacion = models.TextField(null=True, blank=True)
     fecha_grabacion = models.DateTimeField()
-    fecha_produccion = models.DateTimeField(auto_now_add = True)
-    fecha_validacion = models.DateTimeField(null = True, blank = True)
-    aprobacion = models.BooleanField(default = True)
+    fecha_produccion = models.DateTimeField(auto_now_add=True)
+    fecha_validacion = models.DateTimeField(null=True, blank=True)
+    aprobacion = models.BooleanField(default=True)
+
 
 class IncidenciaProduccion(models.Model):
-    informe = models.ForeignKey(InformeProduccion, editable = False)
-    emisor = models.ForeignKey(User, editable = False, null = True)
-    comentario = models.TextField(null = True)
-    fecha =  models.DateTimeField(auto_now_add = True)
+    informe = models.ForeignKey(InformeProduccion, editable=False)
+    emisor = models.ForeignKey(User, editable=False, null=True)
+    comentario = models.TextField(null=True)
+    fecha = models.DateTimeField(auto_now_add=True)
     aceptado = models.NullBooleanField()
+
 
 class HistoricoCodificacion(models.Model):
     TASK_TYPE = (
@@ -136,15 +189,16 @@ class HistoricoCodificacion(models.Model):
         ('PRE', u'Previsualización')
     )
 
-    informe = models.ForeignKey(InformeProduccion, editable = False)
-    tipo = models.CharField(max_length = 3, choices = TASK_TYPE)
+    informe = models.ForeignKey(InformeProduccion, editable=False)
+    tipo = models.CharField(max_length=3, choices=TASK_TYPE)
     fecha = models.DateTimeField()
     status = models.BooleanField(default=False)
 
+
 class FicheroEntrada(models.Model):
-    video = models.ForeignKey(Video, editable = False)
-    tipo = models.ForeignKey(TipoVideo, editable = False, null = True)
-    fichero = models.CharField(max_length = 255)
+    video = models.ForeignKey(Video, editable=False)
+    tipo = models.ForeignKey(TipoVideo, editable=False, null=True)
+    fichero = models.CharField(max_length=255)
 
     def __unicode__(self):
         if self.tipo:
@@ -156,12 +210,14 @@ class FicheroEntrada(models.Model):
         try:
             str(self.fichero)
         except UnicodeEncodeError:
-            raise ValidationError(u"La URI del fichero no debe contener tíldes ni caracteres especiales")
+            raise ValidationError(u"La URI del fichero no debe "
+                                  u"contener tíldes ni caracteres especiales")
+
 
 class TecData(models.Model):
-    duration = models.FloatField(null = True)
-    xml_data = models.TextField(null = True)
-    txt_data = models.TextField(null = True)
+    duration = models.FloatField(null=True)
+    xml_data = models.TextField(null=True)
+    txt_data = models.TextField(null=True)
 
     video = models.OneToOneField(Video)
 
@@ -172,14 +228,16 @@ class TecData(models.Model):
     def __unicode__(self):
         return self.video.titulo
 
+
 class Previsualizacion(models.Model):
     video = models.OneToOneField(Video)
-    fichero = models.CharField(max_length = 255)
+    fichero = models.CharField(max_length=255)
 
     def delete(self, *args, **kwargs):
         if self.fichero:
             utils.remove_file_path(self.fichero)
         super(Previsualizacion, self).delete(*args, **kwargs)
+
 
 class Metadata(models.Model):
     KNOWLEDGE_AREAS_KEYS = (
@@ -211,7 +269,8 @@ class Metadata(models.Model):
                 ('AV', u'Otorrinolaringología [653]'),
                 ('AW', u'Parasitología [660]'),
                 ('AX', u'Pediatría [670]'),
-                ('BY', u'Personalidad, Evaluación y Tratamiento Psicológico [680]'),
+                ('BY', u'Personalidad, Evaluación '
+                       u'y Tratamiento Psicológico [680]'),
                 ('AY', u'Psicobiología [725]'),
                 ('AZ', u'Psiquiatría [745]'),
                 ('BA', u'Radiología y Medicina Física [770]'),
@@ -234,14 +293,16 @@ class Metadata(models.Model):
                 ('BL', u'Derecho Eclesiástico del Estado [145]'),
                 ('BM', u'Derecho Financiero y Tributario [150]'),
                 ('BN', u'Derecho Internacional Privado [155]'),
-                ('BO', u'Derecho Internacional Público y Relaciones Internacionales [160]'),
+                ('BO', u'Derecho Internacional Público y '
+                       u'Relaciones Internacionales [160]'),
                 ('BP', u'Derecho Mercantil [165]'),
                 ('BQ', u'Derecho Penal [170]'),
                 ('BR', u'Derecho Procesal [175]'),
                 ('BS', u'Derecho Romano [180]'),
                 ('FG', u'Didáctica de la Expresión Corporal [187]'),
                 ('FH', u'Didáctica de la Expresión Musical [189]'),
-                ('FI', u'Didáctica de la Expresión Musical, Plástica y Corporal (Desagregada) [190]'),
+                ('FI', u'Didáctica de la Expresión Musical, '
+                       u'Plástica y Corporal (Desagregada) [190]'),
                 ('FJ', u'Didáctica de la Expresión Plástica [193]'),
                 ('FK', u'Didáctica de la Lengua y la Literatura [195]'),
                 ('FL', u'Didáctica de la Matemática [200]'),
@@ -255,8 +316,10 @@ class Metadata(models.Model):
                 ('BW', u'Fundamentos del Análisis Económico [415]'),
                 ('GK', u'Geografía Física [430]'),
                 ('GL', u'Geografía Humana [435]'),
-                ('HC', u'Metodología de las Ciencias del Comportamiento [620]'),
-                ('HD', u'Métodos de Investigación y Diagnóstico en Educación [625]'),
+                ('HC', u'Metodología de las Ciencias '
+                       u'del Comportamiento [620]'),
+                ('HD', u'Métodos de Investigación y '
+                       u'Diagnóstico en Educación [625]'),
                 ('BX', u'Periodismo [675]'),
                 ('BZ', u'Psicología Básica [730]'),
                 ('CA', u'Psicología Evolutiva y de la Educación [735]'),
@@ -305,8 +368,10 @@ class Metadata(models.Model):
         (u'Arquitectura e Ingeniería',
             (
                 ('DE', u'Arquitectura y Tecnología de Computadores [035]'),
-                ('DF', u'Ciencia de los Materiales e Ingeniería Metalúrgica [065]'),
-                ('DG', u'Ciencia de la Computación e Inteligencia Artificial [075]'),
+                ('DF', u'Ciencia de los Materiales e '
+                       u'Ingeniería Metalúrgica [065]'),
+                ('DG', u'Ciencia de la Computación e '
+                       u'Inteligencia Artificial [075]'),
                 ('DH', u'Ciencias y Técnicas de la Navegación [083]'),
                 ('DI', u'Composición Arquitectónica [100]'),
                 ('DJ', u'Construcciones Arquitectónicas [110]'),
@@ -317,12 +382,14 @@ class Metadata(models.Model):
                 ('DS', u'Expresión Gráfica en la Ingeniería [305]'),
                 ('DZ', u'Ingeniería Aeroespacial [495]'),
                 ('EA', u'Ingeniería Agroforestal [500]'),
-                ('EB', u'Ingeniería Cartográfica, Geodésica y Fotogrametría [505]'),
+                ('EB', u'Ingeniería Cartográfica, Geodésica '
+                       u'y Fotogrametría [505]'),
                 ('EC', u'Ingeniería de la Construcción [510]'),
                 ('ED', u'Ingeniería de los Procesos de Fabricación [515]'),
                 ('EE', u'Ingeniería de Sistemas y Automática [520]'),
                 ('EF', u'Ingeniería del Terreno [525]'),
-                ('EG', u'Ingeniería e Infraestructura de los Transportes [530]'),
+                ('EG', u'Ingeniería e Infraestructura '
+                       u'de los Transportes [530]'),
                 ('EH', u'Ingeniería Eléctrica [535]'),
                 ('EI', u'Ingeniería Hidráulica [540]'),
                 ('EJ', u'Ingeniería Mecánica [545]'),
@@ -333,7 +400,8 @@ class Metadata(models.Model):
                 ('EO', u'Lenguajes y Sistemas Informáticos [570]'),
                 ('EP', u'Máquinas y Motores Térmicos [590]'),
                 ('EQ', u'Mecánica de Fluídos [600]'),
-                ('ER', u'Mecánica de Medios Contínuos y Teoría de Estructuras [605]'),
+                ('ER', u'Mecánica de Medios Contínuos y '
+                       u'Teoría de Estructuras [605]'),
                 ('ET', u'Prospección e Investigación Minera [710]'),
                 ('EU', u'Proyectos Arquitectónicos [715]'),
                 ('EV', u'Proyectos de Ingeniería [720]'),
@@ -373,7 +441,8 @@ class Metadata(models.Model):
                 ('GP', u'Historia de la Ciencia [460]'),
                 ('GQ', u'Historia del Arte [465]'),
                 ('GR', u'Historia del Derecho y de las Instituciones [470]'),
-                ('GS', u'Historia del Pensamiento y de los Movimientos Sociales [475]'),
+                ('GS', u'Historia del Pensamiento y '
+                       u'de los Movimientos Sociales [475]'),
                 ('GT', u'Historia e Instituciones Económicas [480]'),
                 ('GU', u'Historia Medieval [485]'),
                 ('GV', u'Historia Moderna [490]'),
@@ -387,7 +456,8 @@ class Metadata(models.Model):
                 ('HF', u'Paleontología [655]'),
                 ('HG', u'Pintura [690]'),
                 ('HH', u'Prehistoria [695]'),
-                ('HI', u'Teoría de la Literatura y Literatura Comparada [796]'),
+                ('HI', u'Teoría de la Literatura y '
+                       u'Literatura Comparada [796]'),
                 ('HK', u'Traducción e Interpretación [814]'),
             )
         ),
@@ -415,22 +485,47 @@ class Metadata(models.Model):
     LICENSE_KEYS = (
         ('CR', u'Todos los derechos reservados.'),
         ('MD', u'Creative Commons: Reconocimiento - No Comercial'),
-        ('SA', u'Creative Commons: Reconocimiento - No Comercial - Compartir Igual'),
-        ('ND', u'Creative Commons: Reconocimiento - No Comercial - Sin Obra Derivada'),
+        ('SA', u'Creative Commons: Reconocimiento '
+               u'- No Comercial - Compartir Igual'),
+        ('ND', u'Creative Commons: Reconocimiento '
+               u'- No Comercial - Sin Obra Derivada'),
     )
 
-    video = models.OneToOneField(Video, editable = False)
+    video = models.OneToOneField(Video, editable=False)
 
-    knowledge_areas = models.CharField(max_length = 2, choices = KNOWLEDGE_AREAS_KEYS, verbose_name = u'Clasificación Universidad')
-    title = models.CharField(max_length = 100, verbose_name = u'Título completo de la producción')
-    creator = models.CharField(max_length = 255, verbose_name = u'Autor/es o creador/es')
-    keyword = models.CharField(max_length = 255, verbose_name = u'Palabras clave o etiquetas', help_text = u'Pude incluir tantas como quiera siempre y cuando se separen por comas.')
-    description = models.TextField(verbose_name = u'Descripción breve')
-    license = models.CharField(max_length = 2, choices = LICENSE_KEYS, verbose_name = u'Licencia de uso', help_text = u'Si el contenido dispone de alguna limitación de uso, incluya aquí una referencia a su licencia.')
-
+    knowledge_areas = models.CharField(
+        max_length=2,
+        choices=KNOWLEDGE_AREAS_KEYS,
+        verbose_name=u'Clasificación Universidad'
+    )
+    title = models.CharField(
+        max_length=100,
+        verbose_name=u'Título completo de la producción'
+    )
+    creator = models.CharField(
+        max_length=255,
+        verbose_name=u'Autor/es o creador/es'
+    )
+    keyword = models.CharField(
+        max_length=255,
+        verbose_name=u'Palabras clave o etiquetas',
+        help_text=u'Pude incluir tantas como quiera '
+                  u'siempre y cuando se separen por comas.'
+    )
+    description = models.TextField(
+        verbose_name=u'Descripción breve'
+    )
+    license = models.CharField(
+        max_length=2,
+        choices=LICENSE_KEYS,
+        verbose_name=u'Licencia de uso',
+        help_text=u'Si el contenido dispone de alguna limitación '
+                  u'de uso, incluya aquí una referencia a su licencia.'
+    )
 
     class Meta:
         abstract = True
+
 
 class MetadataOA(Metadata):
     AUDIENCE_KEYS = (
@@ -489,10 +584,13 @@ class MetadataOA(Metadata):
     )
 
     INTERACTIVITY_LEVEL_KEYS = (
-        ('AA', u'Muy bajo: Documento, imagen, video, sonido, etc. de carácter expositivo.'),
-        ('AB', u'Bajo: Conjunto de documentos, imágenes, vídeos, sonidos, etc. enlazados.'),
+        ('AA', u'Muy bajo: Documento, imagen, video, sonido, '
+               u'etc. de carácter expositivo.'),
+        ('AB', u'Bajo: Conjunto de documentos, imágenes, '
+               u'vídeos, sonidos, etc. enlazados.'),
         ('AC', u'Medio: El contenido dispone de elementos interactivos'),
-        ('AD', u'Alto: Cuestionario, consulta, encuesta, examen, ejercicio, etc.'),
+        ('AD', u'Alto: Cuestionario, consulta, encuesta, '
+               u' examen, ejercicio, etc.'),
         ('AE', u'Muy alto: Juego, simulación, etc.'),
     )
 
@@ -501,7 +599,8 @@ class MetadataOA(Metadata):
         ('AB', u'Bajo: contiene elementos interactivos para el usuario.'),
         ('AC', u'Medio: contenido audiovisual complejo, etc.'),
         ('AD', u'Alto: gráficos, tablas, diagramas complejos, etc.'),
-        ('AE', u'Muy alto: presentaciones gráficas complejas o producciones audiovisuales. '),
+        ('AE', u'Muy alto: presentaciones gráficas '
+               u'complejas o producciones audiovisuales. '),
     )
 
     CONTEXT_KEYS = (
@@ -577,31 +676,145 @@ class MetadataOA(Metadata):
         ('BA', u'Vida universitaria'),
     )
 
-    guideline = models.CharField(max_length = 2, choices = GUIDELINE_KEYS, verbose_name = u'Área de conocimiento UNESCO')
-    contributor = models.CharField(max_length = 255, verbose_name = u'Colaborador/es', help_text = u'Aquellas personas, entidades u organizaciones que han participado en la creación de esta producción')
-    audience = models.CharField(max_length = 2, choices = AUDIENCE_KEYS, verbose_name = u'Audiencia o público objetivo')
-    typical_age_range = models.CharField(max_length = 255, verbose_name = u'Edad de la audiencia o público objetivo')
-    source = models.CharField(max_length = 255, null = True, blank = True, verbose_name = u'Identificador de obra derivada', help_text = u'Si el contenido es derivado de otra material, indique aquí la referencia al original')
-    language = models.CharField(max_length = 255, verbose_name = u'Idioma', default = u'Español')
-    ispartof = models.CharField(max_length = 255, null = True, blank = True, verbose_name = u'Serie a la que pertenece')
-    location = models.CharField(max_length = 255, verbose_name = u'Localización', help_text = u'Por ejemplo: el nombre de la institución, departamento, edificio, etc.')
-    venue = models.CharField(max_length = 255, verbose_name = u'Lugar de celebración', help_text = u'Por ejemplo: San Cristóbal de La Laguna, Tenerife (España)', default = u'San Cristóbal de La Laguna, Tenerife (España)')
-    temporal = models.TextField(null = True, blank = True, verbose_name = u'Intervalo de tiempo', help_text = u'Si en la producción intervienen diferentes actores, indique aquí el nombre y el momento en el que interviene cada uno de ellos.')
-    rightsholder = models.CharField(max_length = 255, verbose_name = u'Persona, entidad u organización responsable de la gestión de los derechos de autor')
-    date = models.DateTimeField(verbose_name = u'Fecha de grabación', editable = False)
-    created = models.DateTimeField(verbose_name = u'Fecha de producción', editable = False, help_text = u'La fecha de producción será incluida de manera automática por el sistema')
-    valid = models.DateTimeField(null = True, blank = True, editable = False, verbose_name = u'Fecha de validación', help_text = u'La fecha de validación será incluida de manera automática por el sistema.')
-    type = models.CharField(max_length = 2, choices = TYPE_KEYS, verbose_name = u'Tipo de producción')
-    interactivity_type = models.CharField(max_length = 2, choices = INTERACTIVITY_TYPE_KEYS, verbose_name = u'Tipo de interacción con la audiencia o público objetivo')
-    interactivity_level = models.CharField(max_length = 2, choices = INTERACTIVITY_LEVEL_KEYS, verbose_name = u'Nivel de interacción')
-    learning_resource_type = models.CharField(max_length = 2, choices = LEARNING_RESOURCE_TYPE_KEYS, verbose_name = u'Tipo de recurso educativo')
-    semantic_density = models.CharField(max_length = 2, choices = SEMANTIC_DENSITY_KEYS, verbose_name = u'Densidad semántica del contenido')
-    context = models.CharField(max_length = 2, choices = CONTEXT_KEYS, verbose_name = u'Contexto educativo')
-    dificulty = models.CharField(max_length = 2, choices = DIFICULTY_KEYS, verbose_name = u'Nivel de Dificultad')
-    typical_learning_time = models.CharField(max_length = 255, verbose_name = u'Tiempo estimado para la adquisición de conocimientos', help_text = u'Ejemplo: 2 horas')
-    educational_language = models.CharField(max_length = 2, choices = EDUCATIONAL_LANGUAGE_KEYS, verbose_name = u'Características del lenguaje educativo')
-    purpose = models.CharField(max_length = 2, choices = PURPOSE_KEYS, verbose_name = u'Objetivo del contenido')
-    unesco = models.CharField(max_length = 2, choices = UNESCO_KEYS, verbose_name = u'Dominio de conocimiento')
+    guideline = models.CharField(
+        max_length=2,
+        choices=GUIDELINE_KEYS,
+        verbose_name=u'Área de conocimiento UNESCO'
+    )
+    contributor = models.CharField(
+        max_length=255,
+        verbose_name=u'Colaborador/es',
+        help_text=u'Aquellas personas,zentidades u organizaciones '
+                  u' que han participado en la creación de esta producción'
+        )
+    audience = models.CharField(
+        max_length=2,
+        choices=AUDIENCE_KEYS,
+        verbose_name=u'Audiencia o público objetivo'
+    )
+    typical_age_range = models.CharField(
+        max_length=255,
+        verbose_name=u'Edad de la audiencia o público objetivo'
+    )
+    source = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name=u'Identificador de obra derivada',
+        help_text=u'Si el contenido es derivado de otra '
+                  u'material, indique aquí la referencia al original'
+    )
+    language = models.CharField(
+        max_length=255,
+        verbose_name=u'Idioma',
+        default=u'Español'
+    )
+    ispartof = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name=u'Serie a la que pertenece'
+    )
+    location = models.CharField(
+        max_length=255,
+        verbose_name=u'Localización',
+        help_text=u'Por ejemplo: el nombre de la institución, '
+                  u'departamento, edificio, etc.'
+        )
+    venue = models.CharField(
+        max_length=255,
+        verbose_name=u'Lugar de celebración',
+        help_text=u'Por ejemplo: San Cristóbal de '
+                  u'La Laguna, Tenerife (España)',
+        default=u'San Cristóbal de La Laguna, Tenerife (España)'
+    )
+    temporal = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name=u'Intervalo de tiempo',
+        help_text=u'Si en la producción intervienen diferentes actores, '
+                  u'indique aquí el nombre y el momento en el que '
+                  u'interviene cada uno de ellos.'
+        )
+    rightsholder = models.CharField(
+        max_length=255,
+        verbose_name=u'Persona, entidad u organización responsable '
+                     u'de la gestión de los derechos de autor'
+    )
+    date = models.DateTimeField(
+        verbose_name=u'Fecha de grabación',
+        editable=False
+    )
+    created = models.DateTimeField(
+        verbose_name=u'Fecha de producción',
+        editable=False,
+        help_text=u'La fecha de producción será incluida de '
+                  u'manera automática por el sistema'
+    )
+    valid = models.DateTimeField(
+        null=True,
+        blank=True,
+        editable=False,
+        verbose_name=u'Fecha de validación',
+        help_text=u'La fecha de validación será incluida '
+                  u'de manera automática por el sistema.'
+    )
+    type = models.CharField(
+        max_length=2,
+        choices=TYPE_KEYS,
+        verbose_name=u'Tipo de producción'
+    )
+    interactivity_type = models.CharField(
+        max_length=2,
+        choices=INTERACTIVITY_TYPE_KEYS,
+        verbose_name=u'Tipo de interacción con la '
+                     u'audiencia o público objetivo'
+    )
+    interactivity_level = models.CharField(
+        max_length=2,
+        choices=INTERACTIVITY_LEVEL_KEYS,
+        verbose_name=u'Nivel de interacción'
+    )
+    learning_resource_type = models.CharField(
+        max_length=2,
+        choices=LEARNING_RESOURCE_TYPE_KEYS,
+        verbose_name=u'Tipo de recurso educativo'
+    )
+    semantic_density = models.CharField(
+        max_length=2,
+        choices=SEMANTIC_DENSITY_KEYS,
+        verbose_name=u'Densidad semántica del contenido'
+    )
+    context = models.CharField(
+        max_length=2,
+        choices=CONTEXT_KEYS,
+        verbose_name=u'Contexto educativo'
+    )
+    dificulty = models.CharField(
+        max_length=2,
+        choices=DIFICULTY_KEYS,
+        verbose_name=u'Nivel de Dificultad'
+    )
+    typical_learning_time = models.CharField(
+        max_length=255,
+        verbose_name=u'Tiempo estimado para la adquisición de conocimientos',
+        help_text=u'Ejemplo: 2 horas'
+    )
+    educational_language = models.CharField(
+        max_length=2,
+        choices=EDUCATIONAL_LANGUAGE_KEYS,
+        verbose_name=u'Características del lenguaje educativo'
+    )
+    purpose = models.CharField(
+        max_length=2,
+        choices=PURPOSE_KEYS,
+        verbose_name=u'Objetivo del contenido'
+    )
+    unesco = models.CharField(
+        max_length=2,
+        choices=UNESCO_KEYS,
+        verbose_name=u'Dominio de conocimiento'
+    )
 
     class Meta:
         verbose_name = u'Metadatos de Objeto de Aprendizaje'
@@ -610,13 +823,47 @@ class MetadataOA(Metadata):
     def __unicode__(self):
         return self.video.titulo
 
+
 class MetadataGen(Metadata):
 
-    transcription = models.TextField(verbose_name = u'Transcripción', help_text = u'Texto que se narra en el vídeo.', null = True, blank = True)
-    contributor = models.CharField(max_length = 255, verbose_name = u'Colaborador/es', help_text = u'Aquellas personas, entidades u organizaciones que han participado en la creación de esta producción', null = True, blank = True)
-    language = models.CharField(max_length = 255, verbose_name = u'Idioma', default = u'Español', null = True, blank = True)
-    location = models.CharField(max_length = 255, verbose_name = u'Localización', help_text = u'Por ejemplo: el nombre de la institución, departamento, edificio, etc.', null = True, blank = True)
-    venue = models.CharField(max_length = 255, verbose_name = u'Lugar de celebración', help_text = u'Por ejemplo: San Cristóbal de La Laguna, Tenerife (España)', default = u'San Cristóbal de La Laguna, Tenerife (España)', null = True, blank = True)
+    transcription = models.TextField(
+        verbose_name=u'Transcripción',
+        help_text=u'Texto que se narra en el vídeo.',
+        null=True,
+        blank=True
+    )
+    contributor = models.CharField(
+        max_length=255,
+        verbose_name=u'Colaborador/es',
+        help_text=u'Aquellas personas, entidades u organizaciones '
+                  u'que han participado en la creación de esta producción',
+        null=True,
+        blank=True
+    )
+    language = models.CharField(
+        max_length=255,
+        verbose_name=u'Idioma',
+        default=u'Español',
+        null=True,
+        blank=True
+    )
+    location = models.CharField(
+        max_length=255,
+        verbose_name=u'Localización',
+        help_text=u'Por ejemplo: el nombre de la institución, '
+                  u'departamento, edificio, etc.',
+        null=True,
+        blank=True
+    )
+    venue = models.CharField(
+        max_length=255,
+        verbose_name=u'Lugar de celebración',
+        help_text=u'Por ejemplo: San Cristóbal de '
+                  u'La Laguna, Tenerife (España)',
+        default=u'San Cristóbal de La Laguna, Tenerife (España)',
+        null=True,
+        blank=True
+    )
 
     class Meta:
         verbose_name = u'Metadatos de Producción Genérica'
@@ -625,26 +872,37 @@ class MetadataGen(Metadata):
     def __unicode__(self):
         return self.video.titulo
 
-## COLA ##
+
+# COLA ##
 
 class ColaManager(models.Manager):
     """
-    Devuelve el número de trabajos que están siendo codificados en este momento.
+    Devuelve el número de trabajos que están siendo codificados en este momento
     """
     def count_actives(self):
-        return super(ColaManager, self).get_queryset().filter(status = 'PRO').count()
+        return super(
+            ColaManager,
+            self
+        ).get_queryset().filter(status='PRO').count()
 
     """
     Devuelve el número de trabajos que están pendientes de ser procesados
     """
     def count_pendings(self):
-        return super(ColaManager, self).get_queryset().filter(status = 'PEN').count()
+        return super(
+            ColaManager,
+            self
+        ).get_queryset().filter(status='PEN').count()
 
     """
     Devuelve la lista de vídeos pendientes de ser procesados.
     """
     def get_pendings(self):
-         return super(ColaManager, self).get_queryset().filter(status = 'PEN').order_by('id')
+        return super(
+            ColaManager,
+            self
+        ).get_queryset().filter(status='PEN').order_by('id')
+
 
 class Cola(models.Model):
     QUEUE_STATUS = (
@@ -663,15 +921,20 @@ class Cola(models.Model):
     objects = ColaManager()
 
     video = models.ForeignKey(Video)
-    status = models.CharField(max_length = 3, choices = QUEUE_STATUS, default = 'PEN')
-    tipo = models.CharField(max_length = 3, choices = QUEUE_TYPE)
-    comienzo = models.DateTimeField(null = True, blank = True)
-    fin = models.DateTimeField(null = True, blank = True)
-    logfile = models.FileField(upload_to = "logs", null = True, blank = True)
-    pid = models.IntegerField(null = True, editable = False)
+    status = models.CharField(
+        max_length=3,
+        choices=QUEUE_STATUS,
+        default='PEN'
+    )
+    tipo = models.CharField(max_length=3, choices=QUEUE_TYPE)
+    comienzo = models.DateTimeField(null=True, blank=True)
+    fin = models.DateTimeField(null=True, blank=True)
+    logfile = models.FileField(upload_to="logs", null=True, blank=True)
+    pid = models.IntegerField(null=True, editable=False)
 
     def __unicode__(self):
-       return dict(self.QUEUE_TYPE)[self.tipo] + ": " + self.video.__unicode__()
+        return dict(self.QUEUE_TYPE)[self.tipo] + \
+            ": " + self.video.__unicode__()
 
     def set_status(self, st):
         self.status = st
@@ -693,19 +956,21 @@ class Cola(models.Model):
         verbose_name = u'tarea'
         verbose_name_plural = u'tareas'
 
+
 class Token(models.Model):
 
-    token = models.CharField(max_length = 25, unique = True)
-    instante = models.DateTimeField(auto_now_add = True)
+    token = models.CharField(max_length=25, unique=True)
+    instante = models.DateTimeField(auto_now_add=True)
     video = models.OneToOneField(Video)
 
     def __unicode__(self):
         return self.video.titulo
 
+
 class RegistroPublicacion(models.Model):
     video = models.ForeignKey(Video)
-    fecha = models.DateTimeField(auto_now_add = True)
-    enlace = models.CharField(max_length = 255)
+    fecha = models.DateTimeField(auto_now_add=True)
+    enlace = models.CharField(max_length=255)
 
     class Meta:
         verbose_name = u'registro de publicación'
