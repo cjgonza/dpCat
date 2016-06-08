@@ -10,10 +10,8 @@
     <div class="box-header with-border">
         <h3 class="box-title">Cola de procesamiento</h3>
     </div>
-    <div class="box-body">
-        <div class="table-responsive" id="contenedor">
-            <span class="ajax-loader"></span>
-        </div>
+    <div class="box-body" id="contenedor">
+        <span class="ajax-loader"></span>
     </div>
 </div>
 {% endblock %}
@@ -45,7 +43,7 @@
 {% block page-script %}
     <script type="text/javascript">
         function tablaBase() {
-            str = '<table id="tabla_id" class="table no-margin">';
+            str = '<table id="tabla_id" class="table table-bordered table-hover">';
             str += '<thead><th>ID</th><th>Informaci&oacute;n</th><th>Fecha</th><th>T&iacute;tulo</th><th>Log</th> </thead>';
             str += '<tbody></tbody>';
             str += '</table>';
@@ -130,7 +128,7 @@
             }
             // Crea los nuevos elementos insertados al final de la cola.
             for (;cont < data.length; cont++) {
-                $("#tabla_id tbody").append('<tr>' + creaLinea(data[cont]) + '</tr>');
+                $("#tabla_id tbody").prepend('<tr>' + creaLinea(data[cont]) + '</tr>');
                 $('#progressbar' + data[cont]['id']).css("width" , data[cont]['progress']+"%");
             }
         }
@@ -139,7 +137,7 @@
             $.getJSON('/postproduccion/cola_listado/', function(data) {
                 actualizaTabla(data);
             }).complete(function() { setTimeout("refrescar();", 1000); });
-            
+
         }
 
         $(document).ready( function() {

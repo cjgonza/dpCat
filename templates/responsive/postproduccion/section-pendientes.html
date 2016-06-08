@@ -10,9 +10,8 @@
         <h3 class="box-title">Producciones con tareas pendientes</h3>
     </div>
     <div class="box-body">
-        <div class="table-responsive" id="box-pendientes">
-            {% if list %}
-            <table id="example" class="table table-bordered table-hover dataTable">
+        <div>
+            <table id="table_pendientes" class="table table-bordered table-hover dataTable">
               <thead>
                   <tr role="row">
                     <th>ID</th>
@@ -24,6 +23,7 @@
                   </tr>
               </thead>
               <tbody>
+              {% if list %}
                 {% for video in list %}
                 <tr>
                     <td>{{ video.id }}</td>
@@ -38,13 +38,9 @@
                     {% endif %}
                 </tr>
                 {% endfor %}
+              {% endif %}
               </tbody>
             </table>
-            {% else %}
-                <div class="alert alert-info alert-dismissible">
-                    <i class="icon fa fa-info"></i>No se ha encontrado ninguna producci&oacute;n que tenga alguna tarea pendiente.
-                </div>
-            {% endif %}
         </div>
     </div>
 </div>
