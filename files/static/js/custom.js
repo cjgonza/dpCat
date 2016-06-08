@@ -91,6 +91,39 @@ $(document).ready(function() {
              ]
         });
         //inicializar paametros de datatable
+        $('#table_pendientes').DataTable({
+            "paging": true,
+            "pageLength": 25,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ resultados",
+                "emptyTable": "No hay producciones con tareas pendientes",
+                "info": "Página _PAGE_ de _PAGES_",
+                "infoEmpty":  "Página _PAGE_ de _PAGES_",
+                "search":     "Buscar:",
+                "zeroRecords":    "No hay resultados que concuerden con la búsqueda",
+                "infoFiltered":   "",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Último",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                },
+            },
+            "columns": [
+               null,
+               { "type": 'date-eu', "targets": 0 },
+               null,
+               null,
+               null,
+               null
+             ]
+        });
+        //inicializar paametros de datatable
         $('#table_videoteca').DataTable({
             "paging": true,
             "pageLength": 25,
