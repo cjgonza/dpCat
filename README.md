@@ -9,4 +9,3 @@ Plataforma web para la optimización, unificación y sistematización de la prod
 * [Víctor Hernández Pérez](https://github.com/alu0100697032)
 * [Moisés Lodeiro](https://github.com/moiseslodeiro)
 * [Adrián Rodríguez](https://github.com/adrianrv)
-* [Joram Real Gómez](https://github.com/joramreal)
